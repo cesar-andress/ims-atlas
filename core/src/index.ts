@@ -216,7 +216,7 @@ export {
   type SmacofResult,
 } from "./mds.js";
 
-export { kMeans2d, type KMeansResult } from "./cluster.js";
+export { kMeans2d, silhouette2d, type KMeansResult } from "./cluster.js";
 
 export {
   buildMarketLayout,

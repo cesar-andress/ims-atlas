@@ -1,14 +1,26 @@
 import { useEffect, useRef, useState } from "react";
-import type { Map as MapLibreMap } from "maplibre-gl";
+import type { GeoJSONSource, Map as MapLibreMap } from "maplibre-gl";
 import { neGeojsonUrl } from "../geo/neGeojson";
 
 /** ISO_A3 keyed scores for choropleth fill. */
-export type ChoroplethDatum = { iso3: string; score: number; rank: number };
+export type ChoroplethDatum = {
+  iso3: string;
+  score: number;
+  rank: number;
+  quadrant?: number;
+};
 
 type Props = {
   rows: ChoroplethDatum[];
   selected?: string | undefined;
+  origin?: string | undefined;
   onSelect?: ((iso3: string) => void) | undefined;
+  /** Flat vs globe projection (MapLibre globe). */
+  projection?: "mercator" | "globe";
+  /** Extrude country polygons by score (3D). */
+  extrude?: boolean;
+  /** Great-circle arcs from origin to top markets. */
+  arcsTopN?: number;
 };
 
 function scoreColor(t: number): string {
@@ -18,16 +30,83 @@ function scoreColor(t: number): string {
   return `rgb(${r},${g},${b})`;
 }
 
+function greatCircle(
+  from: [number, number],
+  to: [number, number],
+  steps = 32,
+): [number, number][] {
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const toDeg = (r: number) => (r * 180) / Math.PI;
+  const [lon1, lat1] = [toRad(from[0]), toRad(from[1])];
+  const [lon2, lat2] = [toRad(to[0]), toRad(to[1])];
+  const d =
+    2 *
+    Math.asin(
+      Math.sqrt(
+        Math.sin((lat2 - lat1) / 2) ** 2 +
+          Math.cos(lat1) * Math.cos(lat2) * Math.sin((lon2 - lon1) / 2) ** 2,
+      ),
+    );
+  if (d < 1e-9) return [from, to];
+  const coords: [number, number][] = [];
+  for (let i = 0; i <= steps; i++) {
+    const f = i / steps;
+    const A = Math.sin((1 - f) * d) / Math.sin(d);
+    const B = Math.sin(f * d) / Math.sin(d);
+    const x = A * Math.cos(lat1) * Math.cos(lon1) + B * Math.cos(lat2) * Math.cos(lon2);
+    const y = A * Math.cos(lat1) * Math.sin(lon1) + B * Math.cos(lat2) * Math.sin(lon2);
+    const z = A * Math.sin(lat1) + B * Math.sin(lat2);
+    coords.push([
+      toDeg(Math.atan2(y, x)),
+      toDeg(Math.atan2(z, Math.sqrt(x * x + y * y))),
+    ]);
+  }
+  return coords;
+}
+
+/** Rough centroid lon/lat from Natural Earth feature bbox centre (fallback table). */
+const ISO_CENTROID: Record<string, [number, number]> = {
+  COL: [-74.3, 4.6],
+  USA: [-98, 39],
+  DEU: [10.5, 51.2],
+  CZE: [15.5, 49.8],
+  CHN: [104, 35],
+  BRA: [-53, -14],
+  MEX: [-102, 23],
+  ESP: [-3.7, 40.4],
+  FRA: [2.2, 46.2],
+  GBR: [-2.5, 54.2],
+  ITA: [12.5, 42.5],
+  JPN: [138, 36],
+  KOR: [127.8, 36.5],
+  CAN: [-106, 56],
+  AUS: [134, -25],
+  IND: [79, 22],
+  NLD: [5.3, 52.1],
+  BEL: [4.5, 50.5],
+  POL: [19.4, 52.1],
+  TUR: [35.2, 39],
+};
+
 /**
- * MapLibre choropleth (lazy-loads maplibre-gl + CSS on mount).
- * Mount is deferred until the container is near the viewport.
+ * MapLibre choropleth with optional globe, extrusion and origin arcs.
+ * Basemap: Natural Earth 110m (public domain). Lazy-loads maplibre-gl.
  */
-export function WorldChoropleth({ rows, selected, onSelect }: Props) {
+export function WorldChoropleth({
+  rows,
+  selected,
+  origin,
+  onSelect,
+  projection = "globe",
+  extrude = false,
+  arcsTopN = 5,
+}: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const rowsRef = useRef(rows);
   const onSelectRef = useRef(onSelect);
   const [active, setActive] = useState(false);
+  const [webglOk, setWebglOk] = useState(true);
   rowsRef.current = rows;
   onSelectRef.current = onSelect;
 
@@ -57,6 +136,19 @@ export function WorldChoropleth({ rows, selected, onSelect }: Props) {
     let map: MapLibreMap | null = null;
 
     void (async () => {
+      try {
+        const canvas = document.createElement("canvas");
+        const gl =
+          canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+        if (!gl) {
+          setWebglOk(false);
+          return;
+        }
+      } catch {
+        setWebglOk(false);
+        return;
+      }
+
       const maplibregl = (await import("maplibre-gl")).default;
       await import("maplibre-gl/dist/maplibre-gl.css");
       if (cancelled || !containerRef.current) return;
@@ -75,7 +167,7 @@ export function WorldChoropleth({ rows, selected, onSelect }: Props) {
             {
               id: "bg",
               type: "background",
-              paint: { "background-color": "#e8ebe8" },
+              paint: { "background-color": "#dfe6e9" },
             },
             {
               id: "countries-fill",
@@ -98,17 +190,31 @@ export function WorldChoropleth({ rows, selected, onSelect }: Props) {
           ],
         },
         center: [10, 20],
-        zoom: 1.2,
-        attributionControl: {},
+        zoom: 1.35,
+        pitch: extrude ? 45 : 0,
+        attributionControl: { compact: true },
       });
 
       map.addControl(
-        new maplibregl.NavigationControl({ showCompass: false }),
+        new maplibregl.NavigationControl({ visualizePitch: true }),
         "top-right",
       );
 
       map.on("load", () => {
-        if (map) applyColors(map, rowsRef.current, selected);
+        if (!map) return;
+        try {
+          if (projection === "globe" && "setProjection" in map) {
+            (
+              map as MapLibreMap & { setProjection: (p: { type: string }) => void }
+            ).setProjection({
+              type: "globe",
+            });
+          }
+        } catch {
+          /* older MapLibre without globe */
+        }
+        applyColors(map, rowsRef.current, selected, origin, extrude);
+        applyArcs(map, rowsRef.current, origin, arcsTopN);
       });
 
       map.on("click", "countries-fill", (e) => {
@@ -133,17 +239,67 @@ export function WorldChoropleth({ rows, selected, onSelect }: Props) {
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !map.isStyleLoaded()) return;
-    applyColors(map, rows, selected);
-  }, [rows, selected]);
+    try {
+      if (projection === "globe" && "setProjection" in map) {
+        (
+          map as MapLibreMap & { setProjection: (p: { type: string }) => void }
+        ).setProjection({
+          type: "globe",
+        });
+      } else if ("setProjection" in map) {
+        (
+          map as MapLibreMap & { setProjection: (p: { type: string }) => void }
+        ).setProjection({
+          type: "mercator",
+        });
+      }
+    } catch {
+      /* ignore */
+    }
+    map.setPitch(extrude ? 45 : 0);
+    applyColors(map, rows, selected, origin, extrude);
+    applyArcs(map, rows, origin, arcsTopN);
+  }, [rows, selected, origin, projection, extrude, arcsTopN]);
+
+  const scores = rows.map((r) => r.score);
+  const min = scores.length ? Math.min(...scores) : 0;
+  const max = scores.length ? Math.max(...scores) : 1;
 
   return (
-    <div
-      className="choropleth"
-      data-testid="world-choropleth"
-      ref={containerRef}
-      role="img"
-      aria-label="World choropleth of ranking scores"
-    />
+    <div className="choropleth-wrap" data-testid="world-choropleth-wrap">
+      {!webglOk ? (
+        <p className="muted" data-testid="choropleth-webgl-fallback">
+          WebGL unavailable — showing 2D fallback unavailable; open the similarity map
+          below.
+        </p>
+      ) : null}
+      <div
+        className="choropleth"
+        data-testid="world-choropleth"
+        ref={containerRef}
+        role="img"
+        aria-label="World choropleth of ranking scores"
+        style={{ height: 420, borderRadius: 14, overflow: "hidden" }}
+      />
+      <div className="choropleth-legend" data-testid="choropleth-legend">
+        <span className="muted small">Score (colour)</span>
+        <div
+          className="choropleth-legend-bar"
+          style={{
+            height: 10,
+            borderRadius: 999,
+            background: `linear-gradient(90deg, ${scoreColor(0)}, ${scoreColor(1)})`,
+          }}
+        />
+        <div className="flex justify-between text-xs font-tabular text-ink-2">
+          <span>{min.toFixed(2)}</span>
+          <span>{max.toFixed(2)}</span>
+        </div>
+        <p className="muted small m-0">
+          Natural Earth 110m · public domain · © IMS Atlas · atlas.aiserv.es
+        </p>
+      </div>
+    </div>
   );
 }
 
@@ -151,8 +307,11 @@ function applyColors(
   map: MapLibreMap,
   rows: ChoroplethDatum[],
   selected: string | undefined,
+  origin: string | undefined,
+  extrude: boolean,
 ): void {
   if (rows.length === 0) return;
+  const analyzed = new Set(rows.map((r) => r.iso3));
   const scores = rows.map((r) => r.score);
   const min = Math.min(...scores);
   const max = Math.max(...scores);
@@ -162,15 +321,105 @@ function applyColors(
     const t = (row.score - min) / span;
     matchExpr.push(row.iso3, scoreColor(t));
   }
+  if (origin) matchExpr.push(origin, "#0f766e");
   matchExpr.push("#c8ccc8");
   map.setPaintProperty("countries-fill", "fill-color", matchExpr as never);
 
-  if (selected) {
+  map.setPaintProperty("countries-fill", "fill-opacity", [
+    "case",
+    ["in", ["get", "ADM0_A3"], ["literal", [...analyzed, origin].filter(Boolean)]],
+    0.95,
+    0.35,
+  ] as never);
+
+  if (selected || origin) {
     map.setPaintProperty("countries-line", "line-width", [
       "case",
-      ["==", ["get", "ADM0_A3"], selected],
-      2.2,
+      ["==", ["get", "ADM0_A3"], selected ?? ""],
+      2.4,
+      ["==", ["get", "ADM0_A3"], origin ?? ""],
+      2,
       0.4,
     ] as never);
+  }
+
+  if (extrude) {
+    if (!map.getLayer("countries-extrusion")) {
+      map.addLayer({
+        id: "countries-extrusion",
+        type: "fill-extrusion",
+        source: "ne",
+        paint: {
+          "fill-extrusion-color": matchExpr as never,
+          "fill-extrusion-height": 10000,
+          "fill-extrusion-opacity": 0.85,
+        },
+      });
+    }
+    const heightExpr: unknown[] = ["match", ["get", "ADM0_A3"]];
+    for (const row of rows) {
+      const t = (row.score - min) / span;
+      heightExpr.push(row.iso3, 20_000 + t * 280_000);
+    }
+    heightExpr.push(0);
+    map.setPaintProperty(
+      "countries-extrusion",
+      "fill-extrusion-height",
+      heightExpr as never,
+    );
+    map.setPaintProperty(
+      "countries-extrusion",
+      "fill-extrusion-color",
+      matchExpr as never,
+    );
+  } else if (map.getLayer("countries-extrusion")) {
+    map.removeLayer("countries-extrusion");
+  }
+}
+
+function applyArcs(
+  map: MapLibreMap,
+  rows: ChoroplethDatum[],
+  origin: string | undefined,
+  topN: number,
+): void {
+  if (!origin || topN <= 0) return;
+  const from = ISO_CENTROID[origin];
+  if (!from) return;
+  const top = [...rows].sort((a, b) => a.rank - b.rank).slice(0, topN);
+  const features = top
+    .map((r) => {
+      const to = ISO_CENTROID[r.iso3];
+      if (!to) return null;
+      return {
+        type: "Feature" as const,
+        properties: { iso3: r.iso3, rank: r.rank },
+        geometry: {
+          type: "LineString" as const,
+          coordinates: greatCircle(from, to),
+        },
+      };
+    })
+    .filter(Boolean);
+
+  const data = {
+    type: "FeatureCollection" as const,
+    features: features as object[],
+  };
+
+  if (map.getSource("arcs")) {
+    (map.getSource("arcs") as GeoJSONSource).setData(data as never);
+  } else {
+    map.addSource("arcs", { type: "geojson", data: data as never });
+    map.addLayer({
+      id: "arcs-line",
+      type: "line",
+      source: "arcs",
+      paint: {
+        "line-color": "#0f766e",
+        "line-width": 1.6,
+        "line-opacity": 0.65,
+      },
+    });
   }
 }

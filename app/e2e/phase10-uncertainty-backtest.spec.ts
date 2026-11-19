@@ -58,8 +58,12 @@ test.describe("Phase 10 uncertainty + backtest", () => {
   });
 
   test("SMAA view renders acceptability and P(top-1)", async ({ page }) => {
+    test.setTimeout(90_000);
     await page.goto(`/uncertainty?c=${encodeConfig(baseConfig)}`);
     await expect(page.getByTestId("uncertainty-view")).toBeVisible({ timeout: 20_000 });
+    await expect(page.getByTestId("topk-prob-bars")).toBeVisible({
+      timeout: 60_000,
+    });
     await expect(page.getByTestId("smaa-acceptability-chart")).toBeVisible({
       timeout: 60_000,
     });

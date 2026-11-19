@@ -2,6 +2,9 @@ import { lazy, Suspense, useMemo, useRef } from "react";
 import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
 import { ExportMenu } from "../components/ExportMenu";
+import { QuantileDotPlot } from "../components/uncertainty/QuantileDotPlot";
+import { acceptabilityToRankProb } from "../components/uncertainty/rankProb";
+import { TopKProbabilityBars } from "../components/uncertainty/TopKProbabilityBars";
 import { formatScore } from "../format";
 import { analysisErrorMessage } from "../ranking/analysisError";
 import { useRankingModel } from "../ranking/useRankingModelApi";
@@ -45,6 +48,18 @@ export function Uncertainty() {
       .slice(0, 15);
   }, [smaaModel]);
 
+  const qdpRows = useMemo(() => {
+    if (!smaaModel) return [];
+    return topRows.slice(0, 8).map((row) => {
+      const idx = smaaModel.smaa.alternatives.indexOf(row.iso3);
+      const acc = smaaModel.smaa.acceptability[idx] ?? [];
+      return {
+        iso3: row.iso3,
+        rankProb: acceptabilityToRankProb(acc, 10),
+      };
+    });
+  }, [smaaModel, topRows]);
+
   const central = useMemo(() => {
     if (!smaaModel) return [];
     return Object.entries(smaaModel.smaa.centralWeights)
@@ -59,6 +74,7 @@ export function Uncertainty() {
       intro={t("uncertaintyIntro")}
       model={model}
       error={combinedError}
+      chrome="results"
     >
       {(m) =>
         !m ? null : (
@@ -70,9 +86,30 @@ export function Uncertainty() {
             ) : (
               <>
                 <p className="muted small" data-testid="smaa-meta">
-                  SMAA Dirichlet · n={smaaModel.nSamples} · seed={smaaModel.smaa.seed} ·{" "}
+                  n={smaaModel.nSamples} · seed={smaaModel.smaa.seed} ·{" "}
                   {m.prepared.candidates.length} destinations
                 </p>
+
+                <h2>{t("pTopKTable")}</h2>
+                <TopKProbabilityBars
+                  rows={topRows.slice(0, 10).map((r) => ({
+                    iso3: r.iso3,
+                    pTop5: r.p5,
+                    pTop10: r.p10,
+                  }))}
+                  plainLine={(iso, n) =>
+                    t("uncertaintyPlainTop")
+                      .replace("{iso}", iso)
+                      .replace("{n}", String(n))
+                  }
+                />
+
+                <h2>Quantile dots (rank)</h2>
+                <QuantileDotPlot
+                  rows={qdpRows}
+                  caption="Each row: 20 dots ≈ rank under sampled weights (Kay et al., CHI 2016)."
+                />
+
                 <div data-export-surface="chart">
                   <ExportMenu
                     testIdPrefix="smaa-accept"
@@ -91,7 +128,7 @@ export function Uncertainty() {
                   </Suspense>
                 </div>
 
-                <h2>{t("pTopKTable")}</h2>
+                <h2>{t("pTopKTable")} (table)</h2>
                 <div className="table-scroll" data-export-surface="table">
                   <ExportMenu
                     testIdPrefix="ptop"

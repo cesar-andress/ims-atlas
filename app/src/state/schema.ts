@@ -4,6 +4,10 @@
 
 const VIEWS = [
   "home",
+  "datos",
+  "variables",
+  "analisis",
+  "design",
   "catalog",
   "builder",
   "ranking",

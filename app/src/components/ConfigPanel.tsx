@@ -522,11 +522,21 @@ export function ConfigPanel() {
                 })
               }
             >
-              <option value="expert_mean">{t("presetExpert2025")}</option>
-              <option value="equal">{t("weightsEqual")}</option>
-              <option value="manual">{t("weightsManual")}</option>
-              <option value="entropy">entropy</option>
-              <option value="critic">CRITIC</option>
+              <option value="expert_mean" title="expert_mean">
+                {t("weightLabelExpert")}
+              </option>
+              <option value="equal" title="equal">
+                {t("weightLabelEqual")}
+              </option>
+              <option value="manual" title="manual">
+                {t("weightLabelManual")}
+              </option>
+              <option value="entropy" title="entropy">
+                {t("weightLabelEntropy")}
+              </option>
+              <option value="critic" title="critic">
+                {t("weightLabelCritic")}
+              </option>
             </select>
           </label>
 
@@ -584,12 +594,24 @@ export function ConfigPanel() {
                 })
               }
             >
-              <option value="minmax">minmax</option>
-              <option value="ratio_legacy">ratio_legacy</option>
-              <option value="zscore">zscore</option>
-              <option value="robust_z">robust_z</option>
-              <option value="rank">rank</option>
-              <option value="log_minmax">log_minmax</option>
+              <option value="minmax" title="minmax">
+                {t("normLabelMinmax")}
+              </option>
+              <option value="ratio_legacy" title="ratio_legacy">
+                {t("normLabelRatio")}
+              </option>
+              <option value="zscore" title="zscore">
+                {t("normLabelZscore")}
+              </option>
+              <option value="robust_z" title="robust_z">
+                robust_z
+              </option>
+              <option value="rank" title="rank">
+                rank
+              </option>
+              <option value="log_minmax" title="log_minmax">
+                log_minmax
+              </option>
             </select>
           </label>
           <p className="muted small">
@@ -607,15 +629,23 @@ export function ConfigPanel() {
                 })
               }
             >
-              <option value="wsm">wsm</option>
-              <option value="topsis">topsis</option>
-              <option value="vikor">vikor</option>
-              <option value="promethee_ii">promethee_ii</option>
+              <option value="wsm" title="wsm">
+                {t("methodLabelWsm")}
+              </option>
+              <option value="topsis" title="topsis">
+                {t("methodLabelTopsis")}
+              </option>
+              <option value="vikor" title="vikor">
+                {t("methodLabelVikor")}
+              </option>
+              <option value="promethee_ii" title="promethee_ii">
+                {t("methodLabelPromethee")}
+              </option>
             </select>
           </label>
 
           <label>
-            {t("missingThreshold")}
+            <span title={t("missingThreshold")}>{t("missingThresholdPlain")}</span>
             <input
               type="number"
               min={0}

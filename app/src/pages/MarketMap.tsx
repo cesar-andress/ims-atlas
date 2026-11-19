@@ -1,49 +1,31 @@
 import { useEffect, useMemo, useState } from "react";
+import { kMeans2d, silhouette2d, type MarketLayoutResult } from "@ims-atlas/core";
 import { useTranslation } from "../i18n";
-import type { MarketLayoutResult } from "@ims-atlas/core";
 import { AnalysisPage } from "../components/AnalysisPage";
-import { MarketMapCanvas, type MapMode } from "../components/MarketMapCanvas";
+import { MarketMapCanvas } from "../components/MarketMapCanvas";
+import { WorldChoropleth } from "../components/WorldChoropleth";
+import { PermalinkLink } from "../components/PermalinkLink";
 import { analysisErrorMessage } from "../ranking/analysisError";
 import { useRankingModel } from "../ranking/useRankingModelApi";
 import { useStrategicMatrix } from "../ranking/useStrategicMatrix";
 import { useAnalysis } from "../state/useAnalysis";
 import { runMarketLayoutWorker } from "../workers/runWorker";
 
+/** Read-only map: geographic choropleth + SMACOF clusters. Config via Variables. */
 export function MarketMap() {
   const { t } = useTranslation();
   const { config, setConfig } = useAnalysis();
   const { model, error } = useRankingModel();
   const [layout, setLayout] = useState<MarketLayoutResult | null>(null);
   const [layoutError, setLayoutError] = useState<string | null>(null);
-  const [focusQuery, setFocusQuery] = useState("");
+  const [projection, setProjection] = useState<"globe" | "mercator">("globe");
+  const [extrude, setExtrude] = useState(false);
 
   const clusterK = config.clusterK ?? 4;
   const mapSeed = config.mapSeed ?? 42;
   const colorMode = config.mapColor === "quadrant" ? "quadrant" : "cluster";
-  const mapMode: MapMode = config.mapMode ?? "network";
+  const mapMode = config.mapMode ?? "network";
   const matrix = useStrategicMatrix(model);
-
-  const overlayVarIds = useMemo(() => {
-    if (!model) return [] as string[];
-    return model.panel.variables.map((v) => v.id);
-  }, [model]);
-
-  const overlayVar =
-    config.mapOverlayVar && overlayVarIds.includes(config.mapOverlayVar)
-      ? config.mapOverlayVar
-      : (overlayVarIds[0] ?? "IMPV");
-
-  const overlayValues = useMemo(() => {
-    if (!model || mapMode !== "overlay") return undefined;
-    const col = model.panel.variables.findIndex((v) => v.id === overlayVar);
-    if (col < 0) return undefined;
-    const out: Record<string, number | null> = {};
-    for (let i = 0; i < model.panel.candidates.length; i++) {
-      const iso = model.panel.candidates[i]!;
-      out[iso] = model.panel.values[i]?.[col] ?? null;
-    }
-    return out;
-  }, [model, mapMode, overlayVar]);
 
   useEffect(() => {
     if (!model) {
@@ -80,6 +62,33 @@ export function MarketMap() {
     return Object.fromEntries(matrix.points.map((p) => [p.iso3, p.quadrant]));
   }, [matrix]);
 
+  const choroplethRows = useMemo(() => {
+    if (!model) return [];
+    return model.ranking.map((r) => {
+      const q = quadrants?.[r.iso3];
+      return q !== undefined
+        ? { iso3: r.iso3, score: r.score, rank: r.rank, quadrant: q }
+        : { iso3: r.iso3, score: r.score, rank: r.rank };
+    });
+  }, [model, quadrants]);
+
+  const silhouetteSweep = useMemo(() => {
+    if (!layout || layout.nodes.length < 4) return [] as { k: number; sil: number }[];
+    const points = layout.nodes.map((n) => ({ x: n.x, y: n.y }));
+    const out: { k: number; sil: number }[] = [];
+    for (let k = 2; k <= 8; k++) {
+      const km = kMeans2d(points, k, { seed: mapSeed });
+      const sil = silhouette2d(points, km.labels);
+      if (sil !== null) out.push({ k, sil });
+    }
+    return out;
+  }, [layout, mapSeed]);
+
+  const currentSil =
+    silhouetteSweep.find((s) => s.k === clusterK)?.sil ??
+    silhouetteSweep[0]?.sil ??
+    null;
+
   const combinedError =
     error ?? (layoutError ? analysisErrorMessage(layoutError) : null);
 
@@ -90,114 +99,110 @@ export function MarketMap() {
       intro={t("mapIntro")}
       model={model}
       error={combinedError}
-      controls={
-        <div className="matrix-controls" data-testid="map-controls">
-          <label>
-            {t("mapMode")}
-            <select
-              value={mapMode}
-              data-testid="map-mode"
-              onChange={(e) =>
-                setConfig({
-                  mapMode: e.target.value as MapMode,
-                })
-              }
-            >
-              <option value="network">{t("mapModeNetwork")}</option>
-              <option value="overlay">{t("mapModeOverlay")}</option>
-              <option value="density">{t("mapModeDensity")}</option>
-            </select>
-          </label>
-          {mapMode === "overlay" ? (
-            <label>
-              {t("mapOverlayVar")}
-              <select
-                value={overlayVar}
-                data-testid="map-overlay-var"
-                onChange={(e) => setConfig({ mapOverlayVar: e.target.value })}
-              >
-                {overlayVarIds.map((id) => (
-                  <option key={id} value={id}>
-                    {id}
-                  </option>
-                ))}
-              </select>
-            </label>
-          ) : null}
-          {mapMode === "network" ? (
-            <label>
-              {t("mapColor")}
-              <select
-                value={colorMode}
-                data-testid="map-color"
-                onChange={(e) =>
-                  setConfig({
-                    mapColor: e.target.value as "cluster" | "quadrant",
-                  })
-                }
-              >
-                <option value="cluster">{t("colorCluster")}</option>
-                <option value="quadrant">{t("colorQuadrant")}</option>
-              </select>
-            </label>
-          ) : null}
-          <label>
-            k
-            <input
-              type="number"
-              min={2}
-              max={12}
-              value={clusterK}
-              data-testid="cluster-k"
-              onChange={(e) => setConfig({ clusterK: Number(e.target.value) || 4 })}
-            />
-          </label>
-          <label>
-            {t("mapSeed")}
-            <input
-              type="number"
-              value={mapSeed}
-              data-testid="map-seed"
-              onChange={(e) => setConfig({ mapSeed: Number(e.target.value) || 42 })}
-            />
-          </label>
-          <label>
-            {t("mapSearch")}
-            <input
-              value={focusQuery}
-              placeholder="USA"
-              data-testid="map-search"
-              onChange={(e) => setFocusQuery(e.target.value)}
-            />
-          </label>
-        </div>
-      }
+      chrome="results"
     >
-      {() =>
-        layout ? (
-          <>
-            <p className="muted small" data-testid="map-stress">
-              SMACOF stress:{" "}
-              {layout.stressHistory[layout.stressHistory.length - 1]?.toFixed(6)} (iters{" "}
-              {layout.stressHistory.length - 1}) · n={layout.nodes.length} · edges=
-              {layout.edges?.length ?? 0}
-            </p>
-            <MarketMapCanvas
-              nodes={layout.nodes}
-              edges={layout.edges ?? []}
-              mode={mapMode}
-              colorMode={colorMode}
-              overlayValues={overlayValues}
-              quadrants={quadrants}
-              selected={config.compareA}
-              focusQuery={focusQuery}
-              onSelect={(iso3) => setConfig({ compareA: iso3 })}
-            />
-          </>
-        ) : (
-          <p data-testid="map-layout-loading">{t("loading")}</p>
-        )
-      }
+      {() => (
+        <div className="map-results" data-testid="map-results">
+          <div className="mb-3 flex flex-wrap gap-2" data-testid="map-view-toggles">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              data-testid="map-proj-globe"
+              aria-pressed={projection === "globe"}
+              onClick={() => setProjection("globe")}
+            >
+              Globe
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              data-testid="map-proj-flat"
+              aria-pressed={projection === "mercator"}
+              onClick={() => setProjection("mercator")}
+            >
+              Flat
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              data-testid="map-extrude"
+              aria-pressed={extrude}
+              onClick={() => setExtrude((v) => !v)}
+            >
+              3D
+            </button>
+            <PermalinkLink view="variables" className="btn btn-secondary">
+              {t("changeAnalysis")} (k={clusterK})
+            </PermalinkLink>
+          </div>
+
+          <WorldChoropleth
+            rows={choroplethRows}
+            selected={config.compareA}
+            origin={config.origin}
+            projection={projection}
+            extrude={extrude}
+            arcsTopN={6}
+            onSelect={(iso3) => setConfig({ compareA: iso3 })}
+          />
+
+          <h2 className="mt-6">Similarity map (SMACOF)</h2>
+          {layout ? (
+            <>
+              <p className="muted small" data-testid="map-stress">
+                SMACOF stress:{" "}
+                {layout.stressHistory[layout.stressHistory.length - 1]?.toFixed(6)}{" "}
+                (iters {layout.stressHistory.length - 1}) · n={layout.nodes.length} ·
+                edges={layout.edges?.length ?? 0}
+                {currentSil !== null
+                  ? ` · silhouette(k=${clusterK})=${currentSil.toFixed(3)}`
+                  : ""}
+              </p>
+              {currentSil !== null && currentSil < 0.25 ? (
+                <p className="note" data-testid="cluster-weak-warn">
+                  Silhouette &lt; 0.25 — los grupos son débiles.
+                </p>
+              ) : null}
+              <div
+                data-testid="cluster-how"
+                className="mb-3 rounded-card border border-border bg-surface p-3"
+              >
+                <p className="m-0 text-sm font-semibold">How were clusters made?</p>
+                <p className="muted small m-0">
+                  k-means on SMACOF coordinates · seed {mapSeed} · k {clusterK}
+                </p>
+                <div
+                  className="mt-2 flex h-16 items-end gap-1"
+                  data-testid="silhouette-chart"
+                >
+                  {silhouetteSweep.map((s) => (
+                    <div key={s.k} className="flex flex-1 flex-col items-center gap-1">
+                      <div
+                        className="w-full rounded-t bg-primary"
+                        style={{ height: `${Math.max(4, s.sil * 64)}px` }}
+                        title={`k=${s.k} sil=${s.sil.toFixed(3)}`}
+                      />
+                      <span className="text-xs font-tabular text-ink-3">{s.k}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <MarketMapCanvas
+                nodes={layout.nodes}
+                edges={layout.edges ?? []}
+                mode={mapMode}
+                colorMode={colorMode}
+                quadrants={quadrants}
+                selected={config.compareA}
+                showHulls
+                onSelect={(iso3) => setConfig({ compareA: iso3 })}
+              />
+            </>
+          ) : (
+            <p data-testid="map-layout-loading">{t("loading")}</p>
+          )}
+        </div>
+      )}
     </AnalysisPage>
   );
 }

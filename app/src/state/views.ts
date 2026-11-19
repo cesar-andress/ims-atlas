@@ -1,46 +1,38 @@
 import type { AnalysisConfig, ViewId } from "./schema";
 
-/** Primary workspace views (shown in the main nav). */
+/** Information flow: Datos · Variables · Análisis · Proyectos. */
 export const PRIMARY_VIEWS: readonly ViewId[] = [
-  "home",
-  "catalog",
-  "builder",
-  "ranking",
-  "matrix",
-  "map",
-  "uncertainty",
-  "backtest",
-  "time",
-  "cite",
-  "byod",
-  "docs",
-  "factors",
-  "compare",
+  "datos",
+  "variables",
+  "analisis",
   "projects",
-  "explore",
 ] as const;
 
-/** Transparency / pipeline views (SPEC §10.4) under More. */
+/** Secondary tools under “More” (docs / transparency / labs). */
 export const SECONDARY_VIEWS: readonly ViewId[] = [
-  "explore_analysis",
-  "country",
-  "sql",
-  "project_dashboard",
-  "project_variables",
-  "project_coverage",
-  "norm_lab",
+  "design",
+  "docs",
+  "cite",
+  "byod",
   "paper",
   "changelog",
+  "catalog",
+  "explore",
+  "sql",
+  "norm_lab",
   "status",
   "data_sources",
-  "data_variable",
   "data_pipeline",
   "data_releases",
   "data_updates",
+  "project_dashboard",
+  "project_variables",
+  "project_coverage",
 ] as const;
 
 /** Views that share the analysis config panel + ranking model. */
 export const ANALYSIS_VIEWS: readonly ViewId[] = [
+  "variables",
   "builder",
   "ranking",
   "matrix",
@@ -55,6 +47,7 @@ export const ANALYSIS_VIEWS: readonly ViewId[] = [
   "project_variables",
   "project_coverage",
   "project_dashboard",
+  "analisis",
 ] as const;
 
 export function isAnalysisView(view: ViewId): boolean {
@@ -68,4 +61,18 @@ export function isPrimaryView(view: ViewId): boolean {
 /** Ranking / matrix / map need origin + HS + year before computing. */
 export function isAnalysisReady(config: AnalysisConfig): boolean {
   return Boolean(config.origin && config.hs && config.year);
+}
+
+/** Result screens must not show config (GUI simplicity rule). */
+export function isResultsView(view: ViewId): boolean {
+  return (
+    view === "ranking" ||
+    view === "matrix" ||
+    view === "map" ||
+    view === "uncertainty" ||
+    view === "backtest" ||
+    view === "time" ||
+    view === "compare" ||
+    view === "factors"
+  );
 }

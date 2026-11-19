@@ -74,6 +74,7 @@ export function paintMarketMapFrame(
     selected?: string;
     focusSet?: Set<string>;
     view: { scale: number; tx: number; ty: number };
+    showHulls?: boolean;
   },
 ): number {
   const t0 = typeof performance !== "undefined" ? performance.now() : Date.now();
@@ -88,6 +89,7 @@ export function paintMarketMapFrame(
     overlayValues,
     quadrants,
     selected,
+    showHulls,
     focusSet,
     view,
   } = opts;
@@ -154,6 +156,44 @@ export function paintMarketMapFrame(
     ctx.globalAlpha = 1;
   }
 
+  if (showHulls && mode === "network") {
+    const byCluster = new Map<number, LabelPos[]>();
+    for (const lab of labels) {
+      const node = nodes.find((n) => n.iso3 === lab.iso3);
+      if (!node) continue;
+      const c =
+        colorMode === "quadrant"
+          ? (quadrants?.[node.iso3] ?? node.cluster)
+          : node.cluster;
+      const arr = byCluster.get(c) ?? [];
+      arr.push(lab);
+      byCluster.set(c, arr);
+    }
+    for (const [c, pts] of byCluster) {
+      if (pts.length < 3) continue;
+      const hull = convexHull(pts.map((p) => ({ x: p.x, y: p.y })));
+      if (hull.length < 3) continue;
+      const color = CLUSTER_COLORS[c % CLUSTER_COLORS.length] ?? "#444";
+      ctx.beginPath();
+      ctx.moveTo(hull[0]!.x, hull[0]!.y);
+      for (let i = 1; i < hull.length; i++) ctx.lineTo(hull[i]!.x, hull[i]!.y);
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.globalAlpha = 0.12;
+      ctx.fill();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.2 / view.scale;
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+      const cx = hull.reduce((s, p) => s + p.x, 0) / hull.length;
+      const cy = hull.reduce((s, p) => s + p.y, 0) / hull.length;
+      ctx.fillStyle = color;
+      ctx.font = `bold ${12 / view.scale}px Inter, sans-serif`;
+      ctx.fillText(`C${c}`, cx, cy);
+    }
+  }
+
   if (mode === "network" && edges.length > 0) {
     for (const e of edges) {
       const a = byIso.get(e.source);
@@ -210,6 +250,43 @@ export function paintMarketMapFrame(
   ctx.restore();
   const t1 = typeof performance !== "undefined" ? performance.now() : Date.now();
   return t1 - t0;
+}
+
+/** Monotone-chain convex hull for cluster fills. */
+export function convexHull(
+  points: { x: number; y: number }[],
+): { x: number; y: number }[] {
+  const pts = [...points].sort((a, b) => a.x - b.x || a.y - b.y);
+  if (pts.length <= 1) return pts;
+  const cross = (
+    o: { x: number; y: number },
+    a: { x: number; y: number },
+    b: { x: number; y: number },
+  ) => (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
+  const lower: { x: number; y: number }[] = [];
+  for (const p of pts) {
+    while (
+      lower.length >= 2 &&
+      cross(lower[lower.length - 2]!, lower[lower.length - 1]!, p) <= 0
+    ) {
+      lower.pop();
+    }
+    lower.push(p);
+  }
+  const upper: { x: number; y: number }[] = [];
+  for (let i = pts.length - 1; i >= 0; i--) {
+    const p = pts[i]!;
+    while (
+      upper.length >= 2 &&
+      cross(upper[upper.length - 2]!, upper[upper.length - 1]!, p) <= 0
+    ) {
+      upper.pop();
+    }
+    upper.push(p);
+  }
+  lower.pop();
+  upper.pop();
+  return lower.concat(upper);
 }
 
 /** Synthetic layout for CI frame-budget (200+ nodes). */

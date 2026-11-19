@@ -9,7 +9,7 @@ import { prefetchCriticalRoutes } from "./ranking/prefetchRoutes";
 import { scheduleIdle } from "./scheduleIdle";
 import { AnalysisProvider } from "./state/AnalysisContext";
 import { useAnalysis } from "./state/useAnalysis";
-import { isAnalysisView } from "./state/views";
+import { isAnalysisView, isResultsView } from "./state/views";
 import { useTranslation } from "./i18n";
 
 const ConfigPanel = lazy(() =>
@@ -122,6 +122,20 @@ const DataUpdates = lazy(() =>
 const Privacy = lazy(() =>
   import("./pages/Privacy").then((m) => ({ default: m.Privacy })),
 );
+const DesignSystem = lazy(() =>
+  import("./pages/DesignSystem").then((m) => ({ default: m.DesignSystem })),
+);
+const DatosHub = lazy(() =>
+  import("./pages/hubs/DatosHub").then((m) => ({ default: m.DatosHub })),
+);
+const VariablesHub = lazy(() =>
+  import("./pages/hubs/VariablesHub").then((m) => ({ default: m.VariablesHub })),
+);
+const AnalisisGallery = lazy(() =>
+  import("./pages/hubs/AnalisisGallery").then((m) => ({
+    default: m.AnalisisGallery,
+  })),
+);
 
 function RouteFallback() {
   const { t } = useTranslation();
@@ -134,10 +148,12 @@ function RouteFallback() {
 
 function AppShell() {
   const { config } = useAnalysis();
-  // GUI-0 simplicity: no permanent config on read-only result screens.
+  // GUI simplicity: config only on Variables / builder / lab — never on results.
   const showConfig =
     isAnalysisView(config.view) &&
+    !isResultsView(config.view) &&
     (config.view === "builder" ||
+      config.view === "variables" ||
       config.view === "norm_lab" ||
       config.view === "project_variables");
 
@@ -157,6 +173,10 @@ function AppShell() {
       <Suspense fallback={<RouteFallback />}>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/datos" element={<DatosHub />} />
+          <Route path="/variables" element={<VariablesHub />} />
+          <Route path="/analisis" element={<AnalisisGallery />} />
+          <Route path="/design" element={<DesignSystem />} />
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/builder" element={<Builder />} />
           <Route path="/ranking" element={<Ranking />} />

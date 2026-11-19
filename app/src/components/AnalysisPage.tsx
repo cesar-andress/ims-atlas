@@ -6,11 +6,11 @@ import { useAnalysis } from "../state/useAnalysis";
 import { COL_HS64_PRESET } from "../state/schema";
 import { isAnalysisReady } from "../state/views";
 import { AnalysisSummary } from "./AnalysisSummary";
-import { AnalysisTabs } from "./AnalysisTabs";
 import { HelpButton } from "./HelpButton";
 import { PendingReleaseNotice } from "./PendingReleaseNotice";
 import { PermalinkLink } from "./PermalinkLink";
 import { ProductContextBanner } from "./ProductContextBanner";
+import { methodPlainLabel } from "../design/plainLabels";
 
 type Props = {
   testId: string;
@@ -84,17 +84,11 @@ export function AnalysisPage({
             </PermalinkLink>
           </div>
           <ProductContextBanner />
-          <nav
-            className="results-study-nav"
-            data-testid="analysis-tabs"
-            aria-label="Studies"
-          >
-            <PermalinkLink view="ranking">{t("nav.ranking")}</PermalinkLink>
-            <PermalinkLink view="matrix">{t("nav.matrix")}</PermalinkLink>
-            <PermalinkLink view="map">{t("nav.map")}</PermalinkLink>
-            <PermalinkLink view="compare">{t("nav.compare")}</PermalinkLink>
-            <PermalinkLink view="uncertainty">{t("nav.uncertainty")}</PermalinkLink>
-          </nav>
+          <p className="muted small">
+            <PermalinkLink view="analisis">{t("nav.analisis")}</PermalinkLink>
+            {" · "}
+            <PermalinkLink view="variables">{t("changeAnalysis")}</PermalinkLink>
+          </p>
         </div>
       ) : resultsChrome ? null : (
         <header className="analysis-page-header">
@@ -103,11 +97,18 @@ export function AnalysisPage({
             <HelpButton />
           </div>
           {intro ? <p className="muted">{intro}</p> : null}
-          <AnalysisTabs />
+          <p className="muted small" data-testid="analysis-tabs">
+            <PermalinkLink view="analisis">{t("nav.analisis")}</PermalinkLink>
+            {" · "}
+            <PermalinkLink view="variables">{t("changeAnalysis")}</PermalinkLink>
+          </p>
           <ProductContextBanner />
           <p className="analysis-context muted small" data-testid="analysis-context">
-            {config.weightScheme ?? "expert_mean"} · {config.mcdm ?? "wsm"} ·{" "}
-            {config.normalization ?? "minmax"}
+            {methodPlainLabel("weight", config.weightScheme ?? "expert_mean", t)}
+            {" · "}
+            {methodPlainLabel("mcdm", config.mcdm ?? "wsm", t)}
+            {" · "}
+            {methodPlainLabel("norm", config.normalization ?? "minmax", t)}
           </p>
         </header>
       )}

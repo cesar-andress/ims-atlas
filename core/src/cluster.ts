@@ -119,3 +119,46 @@ export function kMeans2d(
   }
   return { labels, centroids, inertia };
 }
+
+/**
+ * Mean silhouette coefficient for a 2D labelling (Rousseeuw 1987).
+ * Returns null when k < 2 or n < 2.
+ */
+export function silhouette2d(
+  points: readonly Point2[],
+  labels: readonly number[],
+): number | null {
+  const n = points.length;
+  if (n < 2 || labels.length !== n) return null;
+  const clusters = new Set(labels);
+  if (clusters.size < 2) return null;
+
+  let sum = 0;
+  for (let i = 0; i < n; i++) {
+    const li = labels[i]!;
+    const same: number[] = [];
+    const otherBy: Map<number, number[]> = new Map();
+    for (let j = 0; j < n; j++) {
+      if (i === j) continue;
+      const d = Math.sqrt(dist2(points[i]!, points[j]!));
+      if (labels[j] === li) same.push(d);
+      else {
+        const lj = labels[j]!;
+        const arr = otherBy.get(lj) ?? [];
+        arr.push(d);
+        otherBy.set(lj, arr);
+      }
+    }
+    const a = same.length === 0 ? 0 : same.reduce((s, v) => s + v, 0) / same.length;
+    let b = Infinity;
+    for (const arr of otherBy.values()) {
+      if (arr.length === 0) continue;
+      const mean = arr.reduce((s, v) => s + v, 0) / arr.length;
+      if (mean < b) b = mean;
+    }
+    if (!Number.isFinite(b)) b = 0;
+    const denom = Math.max(a, b) || 1;
+    sum += (b - a) / denom;
+  }
+  return sum / n;
+}

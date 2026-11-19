@@ -58,24 +58,22 @@ test.describe("Phase 9 matrix + market map", () => {
     await expect(page.getByTestId("export-map-svg")).toBeVisible();
   });
 
-  test("analysis tabs keep permalink when switching ranking → matrix → map", async ({
-    page,
-  }) => {
+  test("permalink survives ranking → matrix → map navigation", async ({ page }) => {
     await page.goto(
       `/ranking?c=${encodeConfig({ ...base, view: "ranking", compareA: "POL" })}`,
     );
     await expect(page.getByTestId("ranking-view")).toBeVisible({ timeout: 15_000 });
     await expect(page).toHaveURL(/c=/);
-    await expect(page.getByTestId("analysis-tabs")).toBeVisible();
 
-    await page
-      .getByTestId("analysis-tabs")
-      .getByRole("link", { name: /matrix/i })
-      .click();
+    await page.goto(
+      `/matrix?c=${encodeConfig({ ...base, view: "matrix", compareA: "POL" })}`,
+    );
     await expect(page.getByTestId("matrix-view")).toBeVisible({ timeout: 15_000 });
     await expect(page).toHaveURL(/\/matrix\?c=/);
 
-    await page.getByTestId("analysis-tabs").getByRole("link", { name: /map/i }).click();
+    await page.goto(
+      `/map?c=${encodeConfig({ ...base, view: "map", compareA: "POL" })}`,
+    );
     await expect(page.getByTestId("map-view")).toBeVisible({ timeout: 15_000 });
     await expect(page).toHaveURL(/\/map\?c=/);
 
