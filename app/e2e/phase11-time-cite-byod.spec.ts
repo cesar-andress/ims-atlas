@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { encodeConfig } from "./_helpers";
+import { routeSyntheticDemoPanel } from "./_syntheticPanel";
 
 const ranks = JSON.parse(
   readFileSync(
@@ -33,6 +34,7 @@ const base = {
 
 test.describe("Phase 11 time / cite / byod", () => {
   test("bump chart shows multi-year ranks for focus countries", async ({ page }) => {
+    await routeSyntheticDemoPanel(page);
     await page.goto(`/time?c=${encodeConfig({ ...base, view: "time" })}`);
     await expect(page.getByTestId("time-view")).toBeVisible({ timeout: 20_000 });
     await expect(page.getByTestId("bump-chart")).toBeVisible({ timeout: 30_000 });
@@ -42,6 +44,7 @@ test.describe("Phase 11 time / cite / byod", () => {
   });
 
   test("cite view shows hash, APA, and pending DOI", async ({ page }) => {
+    await routeSyntheticDemoPanel(page);
     await page.goto(`/cite?c=${encodeConfig({ ...base, view: "cite" })}`);
     await expect(page.getByTestId("cite-view")).toBeVisible({ timeout: 20_000 });
     await expect(page.getByTestId("cite-body")).toBeVisible({ timeout: 30_000 });

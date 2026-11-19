@@ -351,12 +351,33 @@ _PUBLIC_DROP_IDS = frozenset({"TARIF", "CULT"})
 
 
 def default_output_paths() -> tuple[Path, Path, Path]:
+    """Synthetic fixtures (core + e2e) and the public pending stub path.
+
+    Synthetic rankings must never be written under app/public (Phase 12-fix).
+    """
     root = repo_root()
     return (
-        root / "core" / "fixtures" / "phase8" / "golden.json",
-        root / "app" / "e2e" / "fixtures" / "phase8_col_hs64_full.json",
-        root / "app" / "public" / "meta" / "phase8_col_hs64.json",
+        root / "core" / "fixtures" / "phase8" / "synthetic_col_hs64.json",
+        root / "app" / "e2e" / "fixtures" / "synthetic_col_hs64_full.json",
+        root / "app" / "public" / "meta" / "col_hs64_demo.json",
     )
+
+
+def pending_public_demo_payload() -> dict[str, Any]:
+    """Honest empty-state payload when the gated release cannot score COL/HS64."""
+    return {
+        "status": "pending",
+        "origin": "COL",
+        "hs": "64",
+        "year": 2023,
+        "release_version": "1.0.0",
+        "n_included_variables": 0,
+        "message": "Data release pending",
+        "reason": (
+            "Published release has zero verified redistributable variables "
+            "(n_included_variables=0); no COL/HS64 panel is shipped."
+        ),
+    }
 
 
 _APP_BLOCK_KEYS = (
@@ -450,7 +471,7 @@ def slim_block_for_public(block: dict[str, Any]) -> dict[str, Any]:
     slim["ranking_expert"] = ranking
     slim["notes"] = [
         "Public demo without BYOD variables TARIF and CULT (gate: byod_only).",
-        "Full ranking: app/e2e/fixtures/phase8_col_hs64_full.json",
+        "Full ranking: app/e2e/fixtures/synthetic_col_hs64_full.json",
     ]
     slim["excluded_byod"] = [
         {"id": "TARIF", "reason": "redistributable:false / byod_only"},
@@ -463,6 +484,7 @@ def write_phase8_goldens(path: Path | None = None) -> Path:
     block = build_col_hs64_block()
     full = {
         "spec": "phase8",
+        "synthetic": True,
         "imsfe_source": "ims-backtest@v0.2.0",
         "tolerance": 1e-9,
         "block": block,
@@ -483,6 +505,7 @@ def write_phase8_goldens(path: Path | None = None) -> Path:
     )
     e2e_payload = {
         "spec": "phase8",
+        "synthetic": True,
         "imsfe_source": "ims-backtest@v0.2.0",
         "tolerance": 1e-9,
         "block": slim_block_for_app(block),
@@ -491,13 +514,13 @@ def write_phase8_goldens(path: Path | None = None) -> Path:
         json.dumps(e2e_payload, separators=(",", ":"), sort_keys=True) + "\n",
         encoding="utf-8",
     )
-    public_payload = {
-        "provenance": "phase10-fix public demo (no TARIF/CULT raw values)",
-        "block": slim_block_for_public(block),
-    }
-    # Compact JSON for faster first ranking fetch.
+    # Public product data: pending stub only (never synthetic rankings).
     public_path.write_text(
-        json.dumps(public_payload, separators=(",", ":"), sort_keys=True) + "\n",
+        json.dumps(pending_public_demo_payload(), indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+    # Remove legacy synthetic public filename if still present.
+    legacy = repo_root() / "app" / "public" / "meta" / "phase8_col_hs64.json"
+    if legacy.is_file():
+        legacy.unlink()
     return core_path

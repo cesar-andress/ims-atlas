@@ -3,6 +3,7 @@
  */
 import { expect, test } from "@playwright/test";
 import { encodeConfig } from "./_helpers";
+import { routeSyntheticDemoPanel } from "./_syntheticPanel";
 
 const base = {
   v: 1 as const,
@@ -20,6 +21,10 @@ const base = {
 };
 
 test.describe("Phase V VOSviewer-grade map", () => {
+  test.beforeEach(async ({ page }) => {
+    await routeSyntheticDemoPanel(page);
+  });
+
   test("network / overlay / density modes + search focus", async ({ page }) => {
     await page.goto(
       `/map?c=${encodeConfig({ ...base, mapMode: "network", mapColor: "cluster" })}`,

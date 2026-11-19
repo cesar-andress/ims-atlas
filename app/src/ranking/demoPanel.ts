@@ -1,6 +1,9 @@
 /**
- * Demo panel for Phase 8 when the redistributable release has zero verified variables.
- * Source: imsfe-exported COL HS64 2023 golden (public/meta/phase8_col_hs64.json).
+ * COL/HS64 demo panel loader.
+ *
+ * Product path (`meta/col_hs64_demo.json`) is either a pending stub (release empty)
+ * or a future real release-backed panel. Synthetic goldens live only under
+ * core/fixtures and app/e2e/fixtures and are injected by Playwright routes.
  */
 
 import type { Direction, VariableSpec } from "@ims-atlas/core";
@@ -20,9 +23,25 @@ export type DemoPanel = {
   /** BYOD-only ids omitted from the public demo (gate). */
   excludedByod: { id: string; reason: string }[];
   notes: string[];
+  synthetic: boolean;
+};
+
+export class DemoPanelPendingError extends Error {
+  readonly code = "DATA_RELEASE_PENDING" as const;
+  constructor(message: string) {
+    super(message);
+    this.name = "DemoPanelPendingError";
+  }
+}
+
+type PendingFile = {
+  status: "pending";
+  message?: string;
+  reason?: string;
 };
 
 type GoldenFile = {
+  synthetic?: boolean;
   block: {
     origin: string;
     hs: string;
@@ -36,6 +55,8 @@ type GoldenFile = {
   };
 };
 
+export const DEMO_PANEL_URL = "meta/col_hs64_demo.json";
+
 let cache: DemoPanel | null = null;
 let loadPromise: Promise<DemoPanel> | null = null;
 
@@ -47,53 +68,77 @@ export function isColHs64Preset(opts: {
   return opts.origin === "COL" && opts.hs === "64" && opts.year === 2023;
 }
 
+export function resetDemoPanelCache(): void {
+  cache = null;
+  loadPromise = null;
+}
+
+function panelFromBlock(block: GoldenFile["block"], synthetic: boolean): DemoPanel {
+  const variables: VariableSpec[] = block.variables.map((v) => ({
+    id: v.id,
+    factor: v.factor,
+    direction: v.direction,
+  }));
+  const columns = variables.map((v) => v.id);
+  const values = block.raw.map((row) =>
+    columns.map((id) => {
+      const v = row[id];
+      return typeof v === "number" ? v : null;
+    }),
+  );
+  const importVolume: Record<string, number> = {};
+  const coveragePct: Record<string, number> = {};
+  for (const v of variables) {
+    let present = 0;
+    for (const row of block.raw) {
+      if (typeof row[v.id] === "number") present++;
+    }
+    coveragePct[v.id] = (100 * present) / block.raw.length;
+  }
+  for (const row of block.raw) {
+    const iso = String(row.iso3);
+    const impv = row.IMPV;
+    importVolume[iso] = typeof impv === "number" ? impv : 0;
+  }
+  return {
+    origin: block.origin,
+    hs: block.hs,
+    year: block.year,
+    variables,
+    candidates: block.candidates,
+    values,
+    importVolume,
+    coveragePct,
+    expectedExpertRanking: block.ranking_expert,
+    excludedByod: block.excluded_byod ?? [],
+    notes: block.notes ?? [],
+    synthetic,
+  };
+}
+
 export async function loadDemoPanel(): Promise<DemoPanel> {
   if (cache) return cache;
   if (loadPromise) return loadPromise;
   loadPromise = (async () => {
-    const res = await fetch(`${import.meta.env.BASE_URL}meta/phase8_col_hs64.json`);
+    const res = await fetch(`${import.meta.env.BASE_URL}${DEMO_PANEL_URL}`);
     if (!res.ok) throw new Error(`Failed to load demo panel (${res.status})`);
-    const golden = (await res.json()) as GoldenFile;
-    const block = golden.block;
-    const variables: VariableSpec[] = block.variables.map((v) => ({
-      id: v.id,
-      factor: v.factor,
-      direction: v.direction,
-    }));
-    const columns = variables.map((v) => v.id);
-    const values = block.raw.map((row) =>
-      columns.map((id) => {
-        const v = row[id];
-        return typeof v === "number" ? v : null;
-      }),
-    );
-    const importVolume: Record<string, number> = {};
-    const coveragePct: Record<string, number> = {};
-    for (const v of variables) {
-      let present = 0;
-      for (const row of block.raw) {
-        if (typeof row[v.id] === "number") present++;
-      }
-      coveragePct[v.id] = (100 * present) / block.raw.length;
+    const payload = (await res.json()) as PendingFile | GoldenFile;
+    if (
+      payload &&
+      typeof payload === "object" &&
+      "status" in payload &&
+      payload.status === "pending"
+    ) {
+      const msg =
+        payload.message ??
+        payload.reason ??
+        "Data release pending — no redistributable COL/HS64 panel yet.";
+      throw new DemoPanelPendingError(msg);
     }
-    for (const row of block.raw) {
-      const iso = String(row.iso3);
-      const impv = row.IMPV;
-      importVolume[iso] = typeof impv === "number" ? impv : 0;
+    if (!("block" in payload) || !payload.block) {
+      throw new DemoPanelPendingError("Data release pending");
     }
-    cache = {
-      origin: block.origin,
-      hs: block.hs,
-      year: block.year,
-      variables,
-      candidates: block.candidates,
-      values,
-      importVolume,
-      coveragePct,
-      expectedExpertRanking: block.ranking_expert,
-      excludedByod: block.excluded_byod ?? [],
-      notes: block.notes ?? [],
-    };
+    cache = panelFromBlock(payload.block, Boolean(payload.synthetic));
     return cache;
   })();
   return loadPromise;

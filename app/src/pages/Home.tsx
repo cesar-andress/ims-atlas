@@ -1,3 +1,4 @@
+import { version as APP_VERSION } from "@ims-atlas/core";
 import { useTranslation } from "../i18n";
 import { PageShell } from "../components/PageShell";
 import { PermalinkLink } from "../components/PermalinkLink";
@@ -25,12 +26,19 @@ const EXAMPLES: AnalysisConfig[] = [
 
 export function Home() {
   const { t } = useTranslation();
+  const status = t("statusNote")
+    .replaceAll("{appVersion}", APP_VERSION)
+    .replaceAll("{dataVersion}", dataConfig.release_version);
 
   return (
     <PageShell testId="home-view" titleKey="appName" className="hero">
       <p>{t("tagline")}</p>
-      <p className="note">{t("statusNote")}</p>
-      <p className="note">
+      <p className="note" data-testid="home-status">
+        {status}
+      </p>
+      <p className="note" data-testid="home-versions">
+        {t("appVersion")}: <span data-testid="app-version">{APP_VERSION}</span>
+        {" · "}
         {t("dataRelease")}:{" "}
         <a href={releaseUrl("manifest.json")}>v{dataConfig.release_version}</a>
       </p>

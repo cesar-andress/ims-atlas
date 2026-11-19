@@ -18,6 +18,7 @@ import { useAnalysis } from "../state/useAnalysis";
 import { configToSearch, pathForView } from "../state/urlState";
 import { isAnalysisReady } from "../state/views";
 import { version as APP_VERSION } from "@ims-atlas/core";
+import { dataConfig } from "../dataConfig";
 
 export function CiteExport() {
   const { t } = useTranslation();
@@ -78,6 +79,10 @@ export function CiteExport() {
     >
       {(m) => (
         <div data-testid="cite-body">
+          <p className="muted small" data-testid="cite-versions">
+            {t("appVersion")} {APP_VERSION} · {t("dataRelease")} v
+            {dataConfig.release_version}
+          </p>
           <p className="muted small" data-testid="doi-placeholders">
             {t("doiPending")}: software={SOFTWARE_DOI}; data={DATA_DOI}
           </p>

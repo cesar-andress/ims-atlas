@@ -88,7 +88,13 @@ export function useRankingModel(): {
       .catch((err: unknown) => {
         if (!cancelled) {
           setModel(null);
-          setError(err instanceof Error ? err.message : String(err));
+          const msg =
+            err instanceof Error
+              ? err.name === "DemoPanelPendingError"
+                ? `DATA_RELEASE_PENDING: ${err.message}`
+                : err.message
+              : String(err);
+          setError(msg);
           setLoading(false);
         }
       });

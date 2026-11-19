@@ -10,7 +10,7 @@ import { scoreBlock } from "./score.js";
 import type { Direction, VariableSpec } from "./types.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const goldenPath = join(root, "fixtures/phase8/golden.json");
+const goldenPath = join(root, "fixtures/phase8/synthetic_col_hs64.json");
 
 type Golden = {
   tolerance: number;

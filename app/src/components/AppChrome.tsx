@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
+import { version as APP_VERSION } from "@ims-atlas/core";
 import { AppNav } from "./AppNav";
 import { PermalinkLink } from "./PermalinkLink";
+import { dataConfig } from "../dataConfig";
 import { useAnalysis } from "../state/useAnalysis";
 import { ensureLanguage, useTranslation } from "../i18n";
 import { applyTheme, readStoredTheme, type ThemeMode } from "../theme";
@@ -65,6 +67,10 @@ export function AppFooter() {
   return (
     <footer className="site-footer">
       <p>{t("footerCredit")}</p>
+      <p className="muted small" data-testid="footer-versions">
+        {t("appVersion")} {APP_VERSION} · {t("dataRelease")} v
+        {dataConfig.release_version}
+      </p>
       <nav aria-label="Project links">
         <a href={REPO_URL} rel="noopener noreferrer" target="_blank">
           {t("footerRepo")}

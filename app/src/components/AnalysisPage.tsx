@@ -56,9 +56,34 @@ export function AnalysisPage({
       {controls}
 
       {error ? (
-        <p className="error" role="alert">
-          {error}
-        </p>
+        <div
+          className={
+            error.includes("DATA_RELEASE_PENDING") ||
+            error.toLowerCase().includes("release pending")
+              ? "analysis-empty"
+              : "error"
+          }
+          role="alert"
+          data-testid={
+            error.includes("DATA_RELEASE_PENDING") ||
+            error.toLowerCase().includes("release pending")
+              ? "data-release-pending"
+              : "analysis-error"
+          }
+        >
+          <p>
+            {error.includes("DATA_RELEASE_PENDING") ||
+            error.toLowerCase().includes("release pending")
+              ? t("dataReleasePending")
+              : error}
+          </p>
+          {(error.includes("DATA_RELEASE_PENDING") ||
+            error.toLowerCase().includes("release pending")) && (
+            <p className="muted small">
+              {error.replace(/^DATA_RELEASE_PENDING:\s*/, "")}
+            </p>
+          )}
+        </div>
       ) : null}
 
       {!ready && !error ? (

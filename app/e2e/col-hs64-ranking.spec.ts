@@ -7,20 +7,25 @@ import { encodeConfig } from "./_helpers";
 const here = dirname(fileURLToPath(import.meta.url));
 
 const golden = JSON.parse(
-  readFileSync(join(here, "../../core/fixtures/phase8/golden.json"), "utf8"),
+  readFileSync(
+    join(here, "../../core/fixtures/phase8/synthetic_col_hs64.json"),
+    "utf8",
+  ),
 ) as {
   block: { ranking_expert: { iso3: string; score: number; rank: number }[] };
 };
 
 const fullFixture = readFileSync(
-  join(here, "fixtures/phase8_col_hs64_full.json"),
+  join(here, "fixtures/synthetic_col_hs64_full.json"),
   "utf8",
 );
 
 test.describe("COL HS64 2023 IMSFE ranking", () => {
-  test("builder → ranking matches ims-backtest top ranks", async ({ page }) => {
-    // Private full panel (incl. TARIF/CULT) — never shipped under app/public.
-    await page.route("**/meta/phase8_col_hs64.json", async (route) => {
+  test("builder → ranking matches ims-backtest top ranks (synthetic e2e route)", async ({
+    page,
+  }) => {
+    // Private synthetic panel — never shipped under app/public.
+    await page.route("**/meta/col_hs64_demo.json", async (route) => {
       await route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -58,7 +63,6 @@ test.describe("COL HS64 2023 IMSFE ranking", () => {
     const score = Number(scoreAttr);
     expect(Math.abs(score - top.score)).toBeLessThanOrEqual(1e-9);
 
-    // Second and third ranks
     for (const i of [1, 2]) {
       const exp = golden.block.ranking_expert[i]!;
       await expect(page.locator(`tr[data-iso3="${exp.iso3}"]`)).toHaveAttribute(
@@ -74,7 +78,6 @@ test.describe("COL HS64 2023 IMSFE ranking", () => {
     const ms = Number(elapsedText.replace(/[^\d.]/g, ""));
     expect(ms).toBeLessThan(100);
 
-    // Permalink reload keeps identical top rank
     await page.reload();
     await expect(page.locator(`tr[data-iso3="${top.iso3}"]`)).toHaveAttribute(
       "data-rank",
@@ -83,22 +86,12 @@ test.describe("COL HS64 2023 IMSFE ranking", () => {
     );
   });
 
-  test("public demo fixture has no TARIF/CULT and shows BYOD note", async ({
-    page,
-  }) => {
+  test("public demo is pending (no synthetic ranks shipped)", async ({ page }) => {
     const publicDemo = JSON.parse(
-      readFileSync(join(here, "../public/meta/phase8_col_hs64.json"), "utf8"),
-    ) as {
-      block: {
-        variables: { id: string }[];
-        ranking_expert: { iso3: string; rank: number }[];
-      };
-    };
-    const ids = new Set(publicDemo.block.variables.map((v) => v.id));
-    expect(ids.has("TARIF")).toBe(false);
-    expect(ids.has("CULT")).toBe(false);
-    expect(ids.has("PLI")).toBe(true);
-    expect(ids.has("CO2PC")).toBe(true);
+      readFileSync(join(here, "../public/meta/col_hs64_demo.json"), "utf8"),
+    ) as { status: string; block?: unknown };
+    expect(publicDemo.status).toBe("pending");
+    expect(publicDemo.block).toBeUndefined();
 
     const config = {
       v: 1,
@@ -114,17 +107,10 @@ test.describe("COL HS64 2023 IMSFE ranking", () => {
     };
     await page.goto(`/ranking?c=${encodeConfig(config)}`);
     await expect(page.getByTestId("ranking-view")).toBeVisible({ timeout: 15_000 });
-    await expect(page.getByTestId("demo-byod-note")).toBeVisible();
-    const top = publicDemo.block.ranking_expert[0]!;
-    const second = publicDemo.block.ranking_expert[1]!;
-    await expect(page.locator(`tr[data-iso3="${top.iso3}"]`)).toHaveAttribute(
-      "data-rank",
-      "1",
-    );
-    await expect(page.locator(`tr[data-iso3="${second.iso3}"]`)).toHaveAttribute(
-      "data-rank",
-      "2",
-    );
+    await expect(page.getByTestId("data-release-pending")).toBeVisible({
+      timeout: 15_000,
+    });
+    await expect(page.getByTestId("ranking-table")).toHaveCount(0);
   });
 
   test("permalink lang=es applies Spanish chrome", async ({ page }) => {

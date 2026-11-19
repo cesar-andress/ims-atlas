@@ -4987,5 +4987,6 @@
   },
   "imsfe_source": "ims-backtest@v0.2.0",
   "spec": "phase8",
+  "synthetic": true,
   "tolerance": 1e-09
 }

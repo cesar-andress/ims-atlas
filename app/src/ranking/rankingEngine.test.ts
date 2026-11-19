@@ -6,7 +6,7 @@ import { computeRanking } from "./rankingEngine";
 
 const goldenPath = join(
   dirname(fileURLToPath(import.meta.url)),
-  "../../../core/fixtures/phase8/golden.json",
+  "../../../core/fixtures/phase8/synthetic_col_hs64.json",
 );
 
 describe("rankingEngine COL HS64", () => {

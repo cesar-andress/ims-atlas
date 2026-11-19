@@ -10,7 +10,7 @@ import { encodeConfig } from "./_helpers";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const fullFixture = readFileSync(
-  join(here, "fixtures/phase8_col_hs64_full.json"),
+  join(here, "fixtures/synthetic_col_hs64_full.json"),
   "utf8",
 );
 
@@ -27,7 +27,7 @@ const COL = {
 } as const;
 
 async function routeFullPanel(page: import("@playwright/test").Page): Promise<void> {
-  await page.route("**/meta/phase8_col_hs64.json", async (route) => {
+  await page.route("**/meta/col_hs64_demo.json", async (route) => {
     await route.fulfill({
       status: 200,
       contentType: "application/json",

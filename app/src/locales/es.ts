@@ -9,8 +9,14 @@ const es = {
   theme: "Tema",
   themeLight: "Claro",
   themeDark: "Oscuro",
-  statusNote: "En desarrollo — la primera versión pública estará disponible pronto",
+  statusNote:
+    "App v{appVersion}. Publicación de datos v{dataVersion} (vacía: cero variables redistribuibles verificadas).",
   dataRelease: "Publicación de datos",
+  appVersion: "Versión de la app",
+  dataReleasePending:
+    "Publicación de datos pendiente: el preset COL · HS64 · 2023 aún no tiene panel redistribuible. No se muestran rankings.",
+  demoSyntheticNote:
+    "Panel sintético/E2E (no es dato de producto). No interpretar los rangos como resultados empíricos de calzado COL.",
   footerCredit:
     "Desarrollado en el marco del proyecto de I+D+i [nombre/código del proyecto] de AISERV SYSTEMS SLU (Madrid, España).",
   footerRepo: "Repositorio en GitHub",

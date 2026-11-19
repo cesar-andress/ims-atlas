@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { encodeConfig } from "./_helpers";
+import { routeSyntheticDemoPanel } from "./_syntheticPanel";
 
 const base = {
   v: 1 as const,
@@ -14,6 +15,10 @@ const base = {
 };
 
 test.describe("Phase 9 matrix + market map", () => {
+  test.beforeEach(async ({ page }) => {
+    await routeSyntheticDemoPanel(page);
+  });
+
   test("strategic matrix shows quadrants for COL HS64", async ({ page }) => {
     await page.goto(
       `/matrix?c=${encodeConfig({ ...base, view: "matrix", matrixCutoff: "median" })}`,

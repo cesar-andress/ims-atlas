@@ -68,10 +68,11 @@ def test_public_tree_has_no_byod_variable_values(subdir: str) -> None:
     )
 
 
-def test_phase8_public_fixture_excludes_tarif_cult() -> None:
-    path = repo_root() / "app/public/meta/phase8_col_hs64.json"
+def test_public_col_hs64_demo_has_no_byod_raw_block() -> None:
+    """Pending demo stub must not embed BYOD raw value keys."""
+    path = repo_root() / "app/public/meta/col_hs64_demo.json"
     data = json.loads(path.read_text(encoding="utf-8"))
-    ids = [v["id"] for v in data["block"]["variables"]]
-    assert "TARIF" not in ids and "CULT" not in ids
-    for row in data["block"]["raw"]:
-        assert "TARIF" not in row and "CULT" not in row
+    assert data.get("status") == "pending"
+    assert "block" not in data
+    text = path.read_text(encoding="utf-8")
+    assert '"TARIF"' not in text and '"CULT"' not in text

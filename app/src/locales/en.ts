@@ -9,8 +9,14 @@ export const en = {
   theme: "Theme",
   themeLight: "Light",
   themeDark: "Dark",
-  statusNote: "In development — first public version coming soon",
+  statusNote:
+    "App v{appVersion}. Data release v{dataVersion} (empty: zero verified redistributable variables).",
   dataRelease: "Data release",
+  appVersion: "App version",
+  dataReleasePending:
+    "Data release pending — the COL · HS64 · 2023 preset has no redistributable panel yet. Ranking numbers are not shown.",
+  demoSyntheticNote:
+    "E2E/synthetic panel (not product data). Do not treat ranks as empirical COL footwear results.",
   footerCredit:
     "Developed within the R&D&I project [project name/code] of AISERV SYSTEMS SLU (Madrid, Spain).",
   footerRepo: "GitHub repository",

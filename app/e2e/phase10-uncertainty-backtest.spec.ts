@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { encodeConfig } from "./_helpers";
+import { routeSyntheticDemoPanel } from "./_syntheticPanel";
 
 const t4 = JSON.parse(
   readFileSync(
@@ -52,6 +53,10 @@ const baseConfig = {
 };
 
 test.describe("Phase 10 uncertainty + backtest", () => {
+  test.beforeEach(async ({ page }) => {
+    await routeSyntheticDemoPanel(page);
+  });
+
   test("SMAA view renders acceptability and P(top-1)", async ({ page }) => {
     await page.goto(`/uncertainty?c=${encodeConfig(baseConfig)}`);
     await expect(page.getByTestId("uncertainty-view")).toBeVisible({ timeout: 20_000 });
