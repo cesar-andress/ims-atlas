@@ -1,4 +1,4 @@
-.PHONY: setup lint test build etl release-data dev cname pin-backtest typecheck
+.PHONY: setup lint test e2e build etl release-data dev cname pin-backtest typecheck
 
 NODE_VERSION := 20
 PNPM ?= pnpm
@@ -10,6 +10,7 @@ setup:
 	corepack enable
 	corepack prepare pnpm@9.15.0 --activate
 	$(PNPM) install
+	$(PNPM) --filter @ims-atlas/app exec playwright install chromium
 	cd etl && $(UV) sync --group dev
 	@echo "setup ok (ims-backtest pin optional: make pin-backtest when tag is set)"
 
@@ -31,6 +32,10 @@ typecheck:
 test:
 	$(PNPM) run test
 	cd etl && $(UV) run pytest
+
+e2e:
+	$(PNPM) --filter @ims-atlas/app run build
+	$(PNPM) --filter @ims-atlas/app run e2e
 
 build:
 	$(PNPM) run build

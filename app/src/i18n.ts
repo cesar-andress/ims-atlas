@@ -12,7 +12,11 @@ const resources = {
       theme: "Theme",
       themeLight: "Light",
       themeDark: "Dark",
-      placeholder: "Scaffold only — index builder and data views land in later phases.",
+      statusNote: "In development — first public version coming soon",
+      footerCredit:
+        "Developed within the R&D&I project [project name/code] of AISERV SYSTEMS SLU (Madrid, Spain).",
+      footerRepo: "GitHub repository",
+      footerBacktest: "ims-backtest",
     },
   },
   es: {
@@ -25,8 +29,11 @@ const resources = {
       theme: "Tema",
       themeLight: "Claro",
       themeDark: "Oscuro",
-      placeholder:
-        "Solo andamiaje — el constructor de índices y las vistas de datos llegan en fases posteriores.",
+      statusNote: "En desarrollo — la primera versión pública estará disponible pronto",
+      footerCredit:
+        "Developed within the R&D&I project [project name/code] of AISERV SYSTEMS SLU (Madrid, Spain).",
+      footerRepo: "Repositorio en GitHub",
+      footerBacktest: "ims-backtest",
     },
   },
 } as const;

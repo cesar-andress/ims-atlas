@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { version } from "@ims-atlas/core";
 
 export function Home() {
   const { t } = useTranslation();
@@ -8,9 +7,7 @@ export function Home() {
     <section className="hero" aria-labelledby="home-title">
       <h1 id="home-title">{t("appName")}</h1>
       <p>{t("tagline")}</p>
-      <p className="note">
-        {t("placeholder")} (core {version})
-      </p>
+      <p className="note">{t("statusNote")}</p>
     </section>
   );
 }

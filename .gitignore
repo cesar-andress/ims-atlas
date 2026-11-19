@@ -43,4 +43,7 @@ data/release/
 coverage/
 playwright-report/
 test-results/
+playwright/.cache/
+app/test-results/
+app/playwright-report/
 paper-figures/
