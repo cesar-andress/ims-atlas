@@ -19,9 +19,8 @@ handle /datos-cerrados/whoami.json {
 	header Cache-Control "private, no-store"
 	header X-Robots-Tag "noindex, nofollow"
 	# App expects {user, name, groups} (see app/src/auth/accessSession.ts).
-	respond `{"user":"{http.request.header.Remote-User}","name":"{http.request.header.Remote-Name}","groups":["{http.request.header.Remote-Groups}"],"email":"{http.request.header.Remote-Email}"}` {
-		header Content-Type application/json
-	}
+	header Content-Type application/json
+	respond `{"user":"{http.request.header.Remote-User}","name":"{http.request.header.Remote-Name}","groups":["{http.request.header.Remote-Groups}"],"email":"{http.request.header.Remote-Email}"}`
 }
 
 # --- cerrada store (team Parquet manifests and sidecars) ---
