@@ -1,0 +1,5 @@
+{
+  "n_rows": 0,
+  "note": "Release v1.1.0 has 0 provenance rows. Verify-datum stays empty while n_included_variables=0 (rights-verify pending).",
+  "schema": "provenance-index/v1"
+}

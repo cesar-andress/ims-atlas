@@ -1,4 +1,4 @@
-.PHONY: reproduce-release verify-release spot-check setup lint test e2e figures build etl pipeline-fixture pipeline-live release-staging promote-release release-data catalog-port catalog-validate check-live rights-report qa lineage coverage-report phase3-report export-phase5-goldens export-phase6-goldens export-phase8-goldens dev cname pin-backtest typecheck
+.PHONY: reproduce-release verify-release spot-check setup lint test e2e figures build etl pipeline-fixture pipeline-live release-staging promote-release release-data release-dual catalog-port catalog-validate check-live rights-report qa lineage coverage-report phase3-report export-phase5-goldens export-phase6-goldens export-phase8-goldens dev cname pin-backtest typecheck
 
 NODE_VERSION := 20
 PNPM ?= pnpm
@@ -85,7 +85,7 @@ export-transparency:
 	cd etl && $(UV) run atlas-etl export-transparency
 
 release-staging:
-	cd etl && $(UV) run atlas-etl release --version 1.0.0 --staging --force
+	cd etl && $(UV) run atlas-etl release --version $(VERSION) --staging --force
 	cd etl && $(UV) run atlas-etl lineage
 	cd etl && $(UV) run atlas-etl qa
 	cd etl && $(UV) run atlas-etl coverage-report
@@ -93,7 +93,11 @@ release-staging:
 
 promote-release:
 	@test -n "$(BY)" || (echo "Usage: make promote-release BY='Your Name'"; exit 1)
-	cd etl && $(UV) run atlas-etl promote 1.0.0 --by "$(BY)" --force
+	cd etl && $(UV) run atlas-etl promote $(VERSION) --by "$(BY)" --force
+	cd etl && $(UV) run atlas-etl lineage
+	cd etl && $(UV) run atlas-etl export-transparency
+	cd etl && $(UV) run atlas-etl export-catalog-preview
+	cd etl && $(UV) run atlas-etl export-phase8-goldens
 
 catalog-port:
 	cd etl && $(UV) sync --extra backtest --group dev
@@ -108,7 +112,7 @@ rights-report:
 check-live:
 	cd etl && $(UV) run atlas-etl check-live
 
-VERSION ?= 1.0.0
+VERSION ?= 1.1.0
 # Fixture path by default (CI, no network). Live: make reproduce-release VERSION=x.y.z FIXTURE=
 FIXTURE ?= --fixture-root tests/fixtures/mini_world
 
@@ -120,6 +124,10 @@ verify-release:
 
 spot-check:
 	cd etl && $(UV) run atlas-etl spot-check --n 200 --seed 1
+
+# Phase R: stage public + internal, write dual report (does not promote).
+release-dual:
+	cd etl && $(UV) run atlas-etl release-dual --version $(VERSION) --force
 
 release-data: release-staging
 

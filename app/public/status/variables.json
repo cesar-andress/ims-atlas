@@ -15,6 +15,7 @@
       "factor": "demand",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "IMPV",
         "included": false,
@@ -56,6 +57,7 @@
       "factor": "demand",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "IMPC",
         "included": false,
@@ -101,6 +103,7 @@
       "factor": "demand",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "GRW",
         "included": false,
@@ -142,6 +145,7 @@
       "factor": "demand",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "GDPPC",
         "included": false,
@@ -183,6 +187,7 @@
       "factor": "cost_access",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "DIST",
         "included": false,
@@ -224,6 +229,7 @@
       "factor": "cost_access",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "TARIF",
         "included": false,
@@ -265,6 +271,7 @@
       "factor": "cost_access",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "FTA",
         "included": false,
@@ -306,6 +313,7 @@
       "factor": "logistics",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "LPI",
         "included": false,
@@ -347,6 +355,7 @@
       "factor": "competition",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "ASIASH",
         "included": false,
@@ -388,6 +397,7 @@
       "factor": "competition",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "HHI",
         "included": false,
@@ -429,6 +439,7 @@
       "factor": "product_fit",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "UVGAP",
         "included": false,
@@ -470,6 +481,7 @@
       "factor": "product_fit",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "CULT",
         "included": false,
@@ -511,6 +523,7 @@
       "factor": "product_fit",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "LANG",
         "included": false,
@@ -552,6 +565,7 @@
       "factor": "macro_risk",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "INFL",
         "included": false,
@@ -593,6 +607,7 @@
       "factor": "macro_risk",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "UNEMP",
         "included": false,
@@ -634,6 +649,7 @@
       "factor": "institutional",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "GOV",
         "included": false,
@@ -675,6 +691,7 @@
       "factor": "openness",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "EOC",
         "included": false,
@@ -716,6 +733,7 @@
       "factor": "openness",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "REEXP",
         "included": false,
@@ -773,6 +791,7 @@
       "factor": "communication",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "ITU_IDI",
         "included": false,
@@ -830,6 +849,7 @@
       "factor": "communication",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "EF_EPI",
         "included": false,
@@ -887,6 +907,7 @@
       "factor": "communication",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "ODIN",
         "included": false,
@@ -944,6 +965,7 @@
       "factor": "entrepreneurship",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "GEDI",
         "included": false,
@@ -1001,6 +1023,7 @@
       "factor": "entrepreneurship",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "GII",
         "included": false,
@@ -1058,6 +1081,7 @@
       "factor": "entrepreneurship",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "STARTUPBLINK",
         "included": false,
@@ -1115,6 +1139,7 @@
       "factor": "sustainability",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "EPI",
         "included": false,
@@ -1172,6 +1197,7 @@
       "factor": "sustainability",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "CO2PC",
         "included": false,
@@ -1229,6 +1255,7 @@
       "factor": "cost_access",
       "formula": null,
       "gate": {
+        "audience": "public",
         "decision": "byod_only",
         "id": "PLI",
         "included": false,

@@ -33,8 +33,8 @@ def ship_cell_variables(monkeypatch: pytest.MonkeyPatch) -> frozenset[str]:
     """Test-only: let the gate ship CELL_VARIABLES so releases carry cells."""
     original = release_mod._variable_gates
 
-    def gates() -> list[dict[str, Any]]:
-        rows = original()
+    def gates(*, audience: str = "public") -> list[dict[str, Any]]:
+        rows = original(audience=audience)
         for row in rows:
             if row["id"] in CELL_VARIABLES:
                 row["included"] = True

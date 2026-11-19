@@ -6,6 +6,10 @@ All notable changes to IMS Atlas are documented in this file.
 
 ### Added
 
+- Phase R dual release audiences: `atlas-etl release --audience public|internal`,
+  staging under `data/release/staging[/internal]/vX.Y.Z`, promote with
+  `--audience`, and `status/release_report_vX.Y.Z.md`. Public stays empty until
+  human `rights-verify` + RIGHTS.md OK (SPEC §13).
 - Phase H all HS products: BACI country×product metrics (IMPV/GRW/HHI/ASIASH/
   REEXP/IMPC) at HS2/4/6, `country_product/hs2=*/` partitions, DuckDB chapter
   loaders, product context banner, olive-oil/vehicles home examples, COL·HS64

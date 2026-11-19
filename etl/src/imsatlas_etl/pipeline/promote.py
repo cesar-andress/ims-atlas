@@ -1,4 +1,4 @@
-"""Promote a staging release to the public data/release/vX.Y.Z/ tree."""
+"""Promote a staging release to public or internal data/release trees."""
 
 from __future__ import annotations
 
@@ -9,7 +9,12 @@ from pathlib import Path
 from typing import Any
 
 from imsatlas_etl.pipeline.integrity import write_sha256sums
-from imsatlas_etl.pipeline.io_paths import public_release_dir, staging_release_dir
+from imsatlas_etl.pipeline.io_paths import (
+    internal_release_dir,
+    public_release_dir,
+    staging_internal_release_dir,
+    staging_release_dir,
+)
 
 
 def _now_iso() -> str:
@@ -22,20 +27,28 @@ def promote_release(
     by: str,
     root: Path | None = None,
     force: bool = False,
+    audience: str = "public",
 ) -> dict[str, Any]:
     who = by.strip()
     if not who:
         raise ValueError("--by must be a non-empty human name")
+    if audience not in ("public", "internal"):
+        raise ValueError(f"audience must be public|internal, got {audience!r}")
 
-    staging = staging_release_dir(root=root) / f"v{version}"
+    if audience == "internal":
+        staging = staging_internal_release_dir(root=root) / f"v{version}"
+        dest_parent = internal_release_dir(root=root)
+    else:
+        staging = staging_release_dir(root=root) / f"v{version}"
+        dest_parent = public_release_dir(root=root)
+
     if not staging.is_dir():
         raise FileNotFoundError(f"staging release not found: {staging}")
 
-    public_parent = public_release_dir(root=root)
-    public_parent.mkdir(parents=True, exist_ok=True)
-    dest = public_parent / f"v{version}"
+    dest_parent.mkdir(parents=True, exist_ok=True)
+    dest = dest_parent / f"v{version}"
     if dest.exists() and not force:
-        raise FileExistsError(f"public release exists: {dest} (use --force)")
+        raise FileExistsError(f"{audience} release exists: {dest} (use --force)")
 
     if dest.exists():
         shutil.rmtree(dest)
@@ -44,6 +57,7 @@ def promote_release(
     manifest_path = dest / "manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     manifest["staging"] = False
+    manifest["audience"] = audience
     manifest["promoted_by"] = who
     manifest["promoted_at"] = _now_iso()
     manifest_path.write_text(
@@ -54,13 +68,14 @@ def promote_release(
     # manifest.json changed: SHA256SUMS must cover the promoted bytes.
     write_sha256sums(dest)
 
-    # Pointer to current public release
-    current = public_parent / "CURRENT"
+    # Pointer to current release for this audience
+    current = dest_parent / "CURRENT"
     current.write_text(f"v{version}\n", encoding="utf-8")
 
     return {
         "version": version,
         "path": str(dest),
+        "audience": audience,
         "promoted_by": who,
         "promoted_at": manifest["promoted_at"],
     }

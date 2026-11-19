@@ -4,7 +4,7 @@
   "n_included_variables": 0,
   "origin": "COL",
   "reason": "Published release has zero verified redistributable variables (n_included_variables=0); no COL/HS64 panel is shipped.",
-  "release_version": "1.0.0",
+  "release_version": "1.1.0",
   "status": "pending",
   "year": 2023
 }

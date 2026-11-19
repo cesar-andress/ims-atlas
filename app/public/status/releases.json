@@ -1,33 +1,39 @@
 {
-  "current": "1.0.0",
+  "current": "1.1.0",
   "fixture_banner": "Fixture pipeline artefact (mini_world test data). Not a live ingest and not a production data release.",
   "is_fixture": true,
-  "provenance_path": "/data/v1.0.0/provenance.parquet",
+  "provenance_path": "/data/v1.1.0/provenance.parquet",
   "releases": [
     {
-      "created_at": "2026-11-19T19:29:09Z",
-      "manifest_path": "/data/v1.0.0/manifest.json",
+      "created_at": "2026-11-19T21:31:09Z",
+      "manifest_path": "/data/v1.1.0/manifest.json",
       "n_included_variables": 0,
-      "promoted_at": "2026-11-19T19:29:32Z",
-      "promoted_by": "C\u00e9sar Andr\u00e9s",
+      "promoted_at": "2026-11-19T21:31:11Z",
+      "promoted_by": "C\u00e9sar Andr\u00e9s (empty public; rights pending)",
       "row_counts": {
         "bilateral_year_rows": 0,
+        "country_product_bytes_by_hs2": {
+          "_empty": 3401
+        },
+        "country_product_parts": 1,
+        "country_product_rows": 0,
         "country_year_rows": 0,
+        "provenance_rows": 0,
         "trade_parts": 1,
         "trade_rows": 0
       },
       "size_bytes": {
         "largest_bytes": 3501,
         "largest_path": "bilateral_year.parquet",
-        "total_bytes": 10770
+        "total_bytes": 18094
       },
-      "version": "1.0.0"
+      "version": "1.1.0"
     }
   ],
   "schema": "transparency-releases/v1",
-  "sha256sums_path": "/data/v1.0.0/SHA256SUMS",
+  "sha256sums_path": "/data/v1.1.0/SHA256SUMS",
   "signature": {
-    "note": "SHA256SUMS / signature fields appear on releases built after Phase D.",
+    "note": "git tag -s not configured for this release",
     "status": "unsigned"
   }
 }

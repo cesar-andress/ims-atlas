@@ -2,74 +2,74 @@
   "edges": [
     {
       "from": "source:worldbank_wdi",
-      "to": "raw:worldbank_wdi:mini-2022"
+      "to": "raw:worldbank_wdi:2026-11-11"
     },
     {
-      "from": "raw:worldbank_wdi:mini-2022",
+      "from": "raw:worldbank_wdi:2026-11-11",
       "to": "curated:country_year"
     },
     {
-      "from": "raw:worldbank_wdi:mini-2022",
+      "from": "raw:worldbank_wdi:2026-11-11",
       "to": "curated:bilateral_year"
     },
     {
-      "from": "raw:worldbank_wdi:mini-2022",
+      "from": "raw:worldbank_wdi:2026-11-11",
       "to": "curated:trade_hs2"
     },
     {
-      "from": "raw:worldbank_wdi:mini-2022",
+      "from": "raw:worldbank_wdi:2026-11-11",
       "to": "curated:trade_hs4"
     },
     {
-      "from": "raw:worldbank_wdi:mini-2022",
+      "from": "raw:worldbank_wdi:2026-11-11",
       "to": "curated:trade_hs6"
     },
     {
       "from": "source:worldbank_wgi",
-      "to": "raw:worldbank_wgi:mini-2022"
+      "to": "raw:worldbank_wgi:2026-09-25"
     },
     {
-      "from": "raw:worldbank_wgi:mini-2022",
+      "from": "raw:worldbank_wgi:2026-09-25",
       "to": "curated:country_year"
     },
     {
-      "from": "raw:worldbank_wgi:mini-2022",
+      "from": "raw:worldbank_wgi:2026-09-25",
       "to": "curated:bilateral_year"
     },
     {
-      "from": "raw:worldbank_wgi:mini-2022",
+      "from": "raw:worldbank_wgi:2026-09-25",
       "to": "curated:trade_hs2"
     },
     {
-      "from": "raw:worldbank_wgi:mini-2022",
+      "from": "raw:worldbank_wgi:2026-09-25",
       "to": "curated:trade_hs4"
     },
     {
-      "from": "raw:worldbank_wgi:mini-2022",
+      "from": "raw:worldbank_wgi:2026-09-25",
       "to": "curated:trade_hs6"
     },
     {
       "from": "source:worldbank_lpi",
-      "to": "raw:worldbank_lpi:mini-2022"
+      "to": "raw:worldbank_lpi:2026-11-11"
     },
     {
-      "from": "raw:worldbank_lpi:mini-2022",
+      "from": "raw:worldbank_lpi:2026-11-11",
       "to": "curated:country_year"
     },
     {
-      "from": "raw:worldbank_lpi:mini-2022",
+      "from": "raw:worldbank_lpi:2026-11-11",
       "to": "curated:bilateral_year"
     },
     {
-      "from": "raw:worldbank_lpi:mini-2022",
+      "from": "raw:worldbank_lpi:2026-11-11",
       "to": "curated:trade_hs2"
     },
     {
-      "from": "raw:worldbank_lpi:mini-2022",
+      "from": "raw:worldbank_lpi:2026-11-11",
       "to": "curated:trade_hs4"
     },
     {
-      "from": "raw:worldbank_lpi:mini-2022",
+      "from": "raw:worldbank_lpi:2026-11-11",
       "to": "curated:trade_hs6"
     },
     {
@@ -575,10 +575,50 @@
     {
       "from": "curated:trade_hs6",
       "to": "release:v0.1.0"
+    },
+    {
+      "from": "curated:country_year",
+      "to": "release:v1.0.0"
+    },
+    {
+      "from": "curated:bilateral_year",
+      "to": "release:v1.0.0"
+    },
+    {
+      "from": "curated:trade_hs2",
+      "to": "release:v1.0.0"
+    },
+    {
+      "from": "curated:trade_hs4",
+      "to": "release:v1.0.0"
+    },
+    {
+      "from": "curated:trade_hs6",
+      "to": "release:v1.0.0"
+    },
+    {
+      "from": "curated:country_year",
+      "to": "release:v1.1.0"
+    },
+    {
+      "from": "curated:bilateral_year",
+      "to": "release:v1.1.0"
+    },
+    {
+      "from": "curated:trade_hs2",
+      "to": "release:v1.1.0"
+    },
+    {
+      "from": "curated:trade_hs4",
+      "to": "release:v1.1.0"
+    },
+    {
+      "from": "curated:trade_hs6",
+      "to": "release:v1.1.0"
     }
   ],
   "fixture_banner": "Fixture pipeline artefact (mini_world test data). Not a live ingest and not a production data release.",
-  "generated_at": "2026-11-19T11:47:27Z",
+  "generated_at": "2026-11-19T21:31:12Z",
   "is_fixture": true,
   "nodes": [
     {
@@ -588,9 +628,9 @@
     },
     {
       "exists": true,
-      "id": "raw:worldbank_wdi:mini-2022",
+      "id": "raw:worldbank_wdi:2026-11-11",
       "kind": "raw",
-      "label": "worldbank_wdi/mini-2022"
+      "label": "worldbank_wdi/2026-11-11"
     },
     {
       "exists": true,
@@ -629,9 +669,9 @@
     },
     {
       "exists": true,
-      "id": "raw:worldbank_wgi:mini-2022",
+      "id": "raw:worldbank_wgi:2026-09-25",
       "kind": "raw",
-      "label": "worldbank_wgi/mini-2022"
+      "label": "worldbank_wgi/2026-09-25"
     },
     {
       "id": "source:worldbank_lpi",
@@ -640,9 +680,9 @@
     },
     {
       "exists": true,
-      "id": "raw:worldbank_lpi:mini-2022",
+      "id": "raw:worldbank_lpi:2026-11-11",
       "kind": "raw",
-      "label": "worldbank_lpi/mini-2022"
+      "label": "worldbank_lpi/2026-11-11"
     },
     {
       "id": "source:baci",
@@ -932,6 +972,18 @@
       "id": "release:v0.1.0",
       "kind": "release",
       "label": "v0.1.0"
+    },
+    {
+      "exists": true,
+      "id": "release:v1.0.0",
+      "kind": "release",
+      "label": "v1.0.0"
+    },
+    {
+      "exists": true,
+      "id": "release:v1.1.0",
+      "kind": "release",
+      "label": "v1.1.0"
     }
   ]
 }

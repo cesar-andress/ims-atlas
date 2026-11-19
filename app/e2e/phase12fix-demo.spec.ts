@@ -25,9 +25,9 @@ const base = {
 test.describe("Phase 12-fix synthetic demo gate", () => {
   test("home and footer show app + data release versions", async ({ page }) => {
     await page.goto(`/?c=${encodeConfig({ v: 1, view: "home", lang: "en" })}`);
-    await expect(page.getByTestId("app-version")).toHaveText("1.0.0");
-    await expect(page.getByTestId("home-versions")).toContainText("v1.0.0");
-    await expect(page.getByTestId("footer-versions")).toContainText("1.0.0");
+    await expect(page.getByTestId("app-version")).toHaveText("1.1.0");
+    await expect(page.getByTestId("home-versions")).toContainText("v1.1.0");
+    await expect(page.getByTestId("footer-versions")).toContainText("1.1.0");
   });
 
   test("public COL/HS64 preset shows data-release-pending empty state", async ({

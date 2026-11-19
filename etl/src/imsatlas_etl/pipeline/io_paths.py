@@ -72,6 +72,15 @@ def public_release_dir(*, root: Path | None = None) -> Path:
     return release_dir(root=root) / "public"
 
 
+def internal_release_dir(*, root: Path | None = None) -> Path:
+    """CERRADO / team-only releases (never under app/public)."""
+    return release_dir(root=root) / "internal"
+
+
+def staging_internal_release_dir(*, root: Path | None = None) -> Path:
+    return release_dir(root=root) / "staging" / "internal"
+
+
 def qa_json_path(*, root: Path | None = None) -> Path:
     return status_root(root) / "qa.json"
 

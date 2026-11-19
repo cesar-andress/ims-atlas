@@ -370,7 +370,7 @@ def pending_public_demo_payload() -> dict[str, Any]:
         "origin": "COL",
         "hs": "64",
         "year": 2023,
-        "release_version": "1.0.0",
+        "release_version": "1.1.0",
         "n_included_variables": 0,
         "message": "Data release pending",
         "reason": (

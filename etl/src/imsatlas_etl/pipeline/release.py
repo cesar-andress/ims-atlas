@@ -11,6 +11,7 @@ from typing import Any
 import pandas as pd
 
 from imsatlas_etl.catalog import load_catalog
+from imsatlas_etl.gate import evidence_present
 from imsatlas_etl.paths import repo_root
 from imsatlas_etl.pipeline.integrity import (
     sha256_file,
@@ -19,7 +20,9 @@ from imsatlas_etl.pipeline.integrity import (
 )
 from imsatlas_etl.pipeline.io_paths import (
     freshness_path,
+    internal_release_dir,
     public_release_dir,
+    staging_internal_release_dir,
     staging_release_dir,
 )
 from imsatlas_etl.pipeline.provenance import build_provenance_for_release
@@ -28,6 +31,7 @@ from imsatlas_etl.rights import gate_for_variable, load_deployment
 from imsatlas_etl.sources import sources_by_id
 
 SHIP_DECISIONS = frozenset({"ship_raw", "ship_derived"})
+Audience = str  # "public" | "internal"
 
 # SPEC §3 size budgets
 MAX_RELEASE_BYTES = 800 * 1024 * 1024
@@ -68,7 +72,21 @@ def _source_versions(*, root: Path | None) -> dict[str, str]:
     }
 
 
-def _variable_gates() -> list[dict[str, Any]]:
+def _use_research_ok(variable: dict[str, Any], registry: dict[str, Any]) -> bool:
+    """True when every source has use_research=yes and complete evidence."""
+    sids = list(variable.get("source_ids") or [])
+    if not sids:
+        return False
+    for sid in sids:
+        rights = (registry.get(str(sid)) or {}).get("rights") or {}
+        if rights.get("use_research") != "yes":
+            return False
+        if not evidence_present(rights):
+            return False
+    return True
+
+
+def _variable_gates(*, audience: Audience = "public") -> list[dict[str, Any]]:
     catalog = load_catalog()
     registry = sources_by_id()
     deployment = load_deployment()
@@ -80,11 +98,19 @@ def _variable_gates() -> list[dict[str, Any]]:
             deployment=deployment,
         )
         decision = result["decision"]
+        if audience == "public":
+            included = decision in SHIP_DECISIONS
+        else:
+            # Internal (CERRADO): ship_* or research-use with evidence (SPEC §13).
+            included = decision in SHIP_DECISIONS or (
+                decision != "local_only" and _use_research_ok(variable, registry)
+            )
         rows.append(
             {
                 "id": variable["id"],
                 "decision": decision,
-                "included": decision in SHIP_DECISIONS,
+                "included": included,
+                "audience": audience,
                 "reasons": result["reasons"],
                 "share_alike": result.get("share_alike", False),
                 "source_ids": list(variable.get("source_ids") or []),
@@ -310,25 +336,39 @@ def run_release(
     staging: bool = True,
     force: bool = False,
     out_dir: Path | None = None,
+    audience: Audience = "public",
 ) -> dict[str, Any]:
     """
     Build SPEC §3 release tree from curated/.
 
-    Default writes to data/release/staging/vX.Y.Z/. Use promote to publish.
+    Default writes to data/release/staging/vX.Y.Z/ (public audience).
+    ``audience=internal`` writes staging/internal/vX.Y.Z (research-use scope).
     ``out_dir`` overrides the destination directory (used by reproduce-release
     so a reference release is never overwritten).
     """
-    dest_parent = (
-        staging_release_dir(root=root) if staging else public_release_dir(root=root)
-    )
-    dest = out_dir if out_dir is not None else dest_parent / f"v{version}"
+    if audience not in ("public", "internal"):
+        raise ValueError(f"audience must be public|internal, got {audience!r}")
+    if out_dir is not None:
+        dest = out_dir
+    elif audience == "internal":
+        dest_parent = (
+            staging_internal_release_dir(root=root)
+            if staging
+            else internal_release_dir(root=root)
+        )
+        dest = dest_parent / f"v{version}"
+    else:
+        dest_parent = (
+            staging_release_dir(root=root) if staging else public_release_dir(root=root)
+        )
+        dest = dest_parent / f"v{version}"
     if dest.exists() and not force:
         raise FileExistsError(f"release exists: {dest} (use --force)")
     if dest.exists():
         shutil.rmtree(dest)
     dest.mkdir(parents=True, exist_ok=True)
 
-    gates = _variable_gates()
+    gates = _variable_gates(audience=audience)
     included_ids = {g["id"] for g in gates if g["included"]}
     counts = write_spec3_tables(dest, root=root, included_ids=included_ids)
     counts["provenance_rows"] = build_provenance_for_release(dest, root=root)[
@@ -364,6 +404,7 @@ def run_release(
         "version": version,
         "created_at": _now_iso(),
         "staging": staging,
+        "audience": audience,
         "spec": "SPEC §3",
         "source_versions": _source_versions(root=root),
         "variables": gates,
@@ -386,11 +427,97 @@ def run_release(
         "path": str(dest),
         "version": version,
         "staging": staging,
+        "audience": audience,
         "n_files": len(files_meta),
         "n_included_variables": len(included_ids),
         "manifest": manifest,
         "size_bytes": sizes,
     }
+
+
+def write_dual_release_report(
+    version: str,
+    *,
+    public_result: dict[str, Any],
+    internal_result: dict[str, Any],
+    root: Path | None = None,
+) -> Path:
+    """Write status/release_report_vX.Y.Z.md (Phase R dual staging summary)."""
+    from imsatlas_etl.pipeline.io_paths import status_root
+
+    out_dir = status_root(root=root)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    path = out_dir / f"release_report_v{version}.md"
+
+    def _section(label: str, result: dict[str, Any]) -> list[str]:
+        manifest = result.get("manifest") or {}
+        gates = list(manifest.get("variables") or [])
+        included = [g["id"] for g in gates if g.get("included")]
+        excluded = [
+            f"{g['id']} ({g.get('decision')}: "
+            f"{'; '.join(g.get('reasons') or []) or '—'})"
+            for g in gates
+            if not g.get("included")
+        ]
+        sizes = result.get("size_bytes") or {}
+        budgets = manifest.get("budgets") or {}
+        lines = [
+            f"## {label}",
+            "",
+            f"- Path: `{result.get('path')}`",
+            f"- Included variables ({len(included)}): "
+            f"{', '.join(included) or '(none — empty release)'}",
+            f"- Excluded ({len(excluded)}):",
+        ]
+        for row in excluded:
+            lines.append(f"  - {row}")
+        lines.extend(
+            [
+                f"- Files: {result.get('n_files')}",
+                f"- Total bytes: {sizes.get('total_bytes', 0)} "
+                f"(budget {budgets.get('max_release_bytes', '—')})",
+                f"- Largest file: {sizes.get('largest_file_bytes', 0)} "
+                f"({sizes.get('largest_file', '—')})",
+                "",
+            ],
+        )
+        return lines
+
+    qa_path = status_root(root=root) / "qa.json"
+    qa_summary = "QA status file missing (run `atlas-etl qa`)."
+    if qa_path.is_file():
+        qa = json.loads(qa_path.read_text(encoding="utf-8"))
+        qa_summary = (
+            f"status={qa.get('status')} warn={qa.get('n_warn')} "
+            f"block={qa.get('n_block')}"
+        )
+
+    cov_dir = status_root(root=root) / "coverage"
+    cov_n = len(list(cov_dir.glob("*_coverage.csv"))) if cov_dir.is_dir() else 0
+
+    body = "\n".join(
+        [
+            f"# Dual release report v{version}",
+            "",
+            "Phase R staging (SPEC §13). Public ships only `ship_*`; "
+            "internal may include `use_research=yes` with evidence.",
+            "",
+            f"- QA: {qa_summary}",
+            f"- Coverage CSVs present: {cov_n}",
+            "",
+            *_section("Public audience", public_result),
+            *_section("Internal audience", internal_result),
+            "## Human gate (blocked until César confirms)",
+            "",
+            "No source has a completed `rights-verify` with redistribute or "
+            "use_research evidence. Do **not** mark sources verified in Cursor.",
+            "After RIGHTS.md diff + OK: re-run dual staging, promote, and "
+            "rebuild COL/HS64 demo from the release that has cells.",
+            "",
+        ],
+    )
+    path.write_text(body, encoding="utf-8")
+    return path
 
 
 def rebuild_release_bytes(

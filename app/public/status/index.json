@@ -1,12 +1,12 @@
 {
-  "current_release": "1.0.0",
+  "current_release": "1.1.0",
   "fixture_banner": "Fixture pipeline artefact (mini_world test data). Not a live ingest and not a production data release.",
   "freshness_generated_at": "2026-11-19T20:52:34Z",
   "is_fixture": true,
   "latest_run_id": "20261119T114726Z-2385aff6",
   "latest_run_status": "ok",
   "n_history_runs": 2,
-  "n_lineage_edges": 144,
+  "n_lineage_edges": 154,
   "n_sources": 14,
   "n_variables": 27,
   "paths": {
@@ -14,7 +14,7 @@
     "history": "/status/history.json",
     "latest_run": "/status/runs/latest.json",
     "lineage": "/status/lineage.json",
-    "manifest": "/data/v1.0.0/manifest.json",
+    "manifest": "/data/v1.1.0/manifest.json",
     "qa": "/status/qa.json",
     "releases": "/status/releases.json",
     "sources": "/status/sources.json",

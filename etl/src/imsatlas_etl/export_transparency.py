@@ -284,11 +284,24 @@ def write_transparency_bundle(
             dest_rel / "manifest.json",
             with_fixture_flag(manifest, payload_is_fixture(manifest)),
         )
-        # Also mirror CHANGELOG/README when present (text, not invented).
-        for name in ("CHANGELOG.md", "README.md", "LICENSES.md"):
+        # Also mirror CHANGELOG/README/integrity when present (text, not invented).
+        for name in ("CHANGELOG.md", "README.md", "LICENSES.md", "SHA256SUMS"):
             src = manifest_path.parent / name
             if src.is_file():
                 (dest_rel / name).write_bytes(src.read_bytes())
+        n_prov = int((manifest or {}).get("row_counts", {}).get("provenance_rows") or 0)
+        _write_json(
+            dest_rel / "provenance_index.json",
+            {
+                "schema": "provenance-index/v1",
+                "n_rows": n_prov,
+                "note": (
+                    f"Release v{version} has {n_prov} provenance rows. "
+                    "Verify-datum stays empty while n_included_variables=0 "
+                    "(rights-verify pending)."
+                ),
+            },
+        )
         (root / "app" / "public" / "data" / "CURRENT").write_text(
             f"{version}\n",
             encoding="utf-8",

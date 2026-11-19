@@ -392,6 +392,52 @@ def lineage_cmd() -> None:
     typer.echo(f"atlas-etl {__version__}: wrote {path}")
 
 
+@app.command("release-dual")
+def release_dual_cmd(
+    version: Annotated[
+        str,
+        typer.Option("--version", help="Release version (e.g. 1.1.0)"),
+    ] = "1.1.0",
+    force: Annotated[bool, typer.Option("--force")] = False,
+) -> None:
+    """Stage public + internal releases and write the Phase R dual report."""
+    from imsatlas_etl.pipeline.release import (
+        run_release,
+        write_dual_release_report,
+        write_zenodo_dataset_json,
+    )
+
+    try:
+        public = run_release(
+            version,
+            staging=True,
+            force=force,
+            audience="public",
+        )
+        internal = run_release(
+            version,
+            staging=True,
+            force=force,
+            audience="internal",
+        )
+        report = write_dual_release_report(
+            version,
+            public_result=public,
+            internal_result=internal,
+        )
+        zenodo = write_zenodo_dataset_json(version=version)
+    except (FileExistsError, FileNotFoundError, ValueError) as exc:
+        typer.secho(str(exc), fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=1) from exc
+    typer.echo(
+        f"atlas-etl {__version__}: dual staging v{version} "
+        f"public_vars={public['n_included_variables']} "
+        f"internal_vars={internal['n_included_variables']} "
+        f"report={report}",
+    )
+    typer.echo(f"wrote {zenodo}")
+
+
 @app.command("release")
 def release_cmd(
     version: Annotated[
@@ -402,13 +448,25 @@ def release_cmd(
         bool,
         typer.Option("--staging/--public", help="Write staging (default) or public"),
     ] = True,
+    audience: Annotated[
+        str,
+        typer.Option(
+            "--audience",
+            help="public (redistribute_*) or internal (use_research+evidence)",
+        ),
+    ] = "public",
     force: Annotated[bool, typer.Option("--force")] = False,
 ) -> None:
-    """Build SPEC §3 data/release/staging|public/vX.Y.Z (gate-filtered)."""
+    """Build SPEC §3 data/release/staging|public|internal/vX.Y.Z (gate-filtered)."""
     from imsatlas_etl.pipeline.release import run_release, write_zenodo_dataset_json
 
     try:
-        result = run_release(version, staging=staging, force=force)
+        result = run_release(
+            version,
+            staging=staging,
+            force=force,
+            audience=audience,
+        )
         zenodo = write_zenodo_dataset_json(version=version)
     except (FileExistsError, FileNotFoundError, ValueError) as exc:
         typer.secho(str(exc), fg=typer.colors.RED, err=True)
@@ -416,6 +474,7 @@ def release_cmd(
     sizes = result.get("size_bytes") or {}
     typer.echo(
         f"atlas-etl {__version__}: release v{result['version']} "
+        f"audience={result.get('audience', audience)} "
         f"staging={result['staging']} files={result['n_files']} "
         f"included_vars={result['n_included_variables']} "
         f"bytes={sizes.get('total_bytes', 0)} -> {result['path']}",
@@ -427,18 +486,28 @@ def release_cmd(
 def promote_cmd(
     version: Annotated[str, typer.Argument(help="Version to promote (e.g. 0.1.0)")],
     by: Annotated[str, typer.Option("--by", help="Human approving promotion")],
+    audience: Annotated[
+        str,
+        typer.Option("--audience", help="public or internal"),
+    ] = "public",
     force: Annotated[bool, typer.Option("--force")] = False,
 ) -> None:
-    """Promote staging release to public data/release/public/vX.Y.Z."""
+    """Promote staging release to public or internal data/release/.../vX.Y.Z."""
     from imsatlas_etl.pipeline.promote import promote_release
 
     try:
-        result = promote_release(version, by=by, force=force)
+        result = promote_release(
+            version,
+            by=by,
+            force=force,
+            audience=audience,
+        )
     except (FileExistsError, FileNotFoundError, ValueError) as exc:
         typer.secho(str(exc), fg=typer.colors.RED, err=True)
         raise typer.Exit(code=1) from exc
     typer.echo(
         f"atlas-etl {__version__}: promoted v{result['version']} "
+        f"audience={result.get('audience', audience)} "
         f"by {result['promoted_by']} -> {result['path']}",
     )
 

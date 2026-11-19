@@ -1,7 +1,7 @@
 {
   "name": "ims-atlas",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "description": "IMS Atlas — open browser tool to build and backtest international market selection indices",
   "packageManager": "pnpm@9.15.0",
