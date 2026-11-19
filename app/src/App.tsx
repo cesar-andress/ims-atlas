@@ -26,6 +26,12 @@ const Matrix = lazy(() =>
 const MarketMap = lazy(() =>
   import("./pages/MarketMap").then((m) => ({ default: m.MarketMap })),
 );
+const Uncertainty = lazy(() =>
+  import("./pages/Uncertainty").then((m) => ({ default: m.Uncertainty })),
+);
+const Backtest = lazy(() =>
+  import("./pages/Backtest").then((m) => ({ default: m.Backtest })),
+);
 
 function RouteFallback() {
   const { t } = useTranslation();
@@ -57,6 +63,8 @@ function AppShell() {
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/matrix" element={<Matrix />} />
           <Route path="/map" element={<MarketMap />} />
+          <Route path="/uncertainty" element={<Uncertainty />} />
+          <Route path="/backtest" element={<Backtest />} />
           {SECONDARY_VIEWS.map((view) => (
             <Route key={view} path={`/${view}`} element={<StubView view={view} />} />
           ))}

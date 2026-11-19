@@ -75,5 +75,26 @@ export const en = {
   mapColor: "Colour by",
   colorCluster: "Cluster",
   colorQuadrant: "Quadrant",
+  uncertaintyIntro:
+    "SMAA rank acceptability, P(top-k), central weights, and tornado sensitivity (±50% on each factor weight).",
+  pTopKTable: "P(top-k)",
+  centralWeights: "Central weights",
+  tornadoTitle: "Tornado sensitivity",
+  tornadoHint:
+    "Mean absolute rank change when one factor weight is scaled by ±50% and renormalised.",
+  backtestIntro:
+    "Would it have worked? Walk-forward predictive agreement with trade flows (ims-backtest T4), not causal effect.",
+  backtestDisclaimer:
+    "Figures measure predictive agreement with subsequent trade flows under the paper protocol. They are not estimates of causal effect of using the index.",
+  backtestTarget: "Target",
+  backtestHorizon: "Horizon",
+  ndcgByMethod: "NDCG@10 by method",
+  pairedLift: "Paired lift vs baselines (95% CI)",
+  variableValue: "Variable / factor value (T6 ablation)",
+  variableValueHint:
+    "Walk-forward ΔNDCG@10 when adding fit / competition blocks on top of a macro base (paper T6).",
+  looRankSensitivity: "Leave-one-out rank sensitivity (demo panel)",
+  looHint:
+    "Spearman of ranks after dropping each variable on the current demo panel. Not a walk-forward backtest.",
   nav: navEn,
 } as const;

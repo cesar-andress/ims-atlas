@@ -75,6 +75,27 @@ const es = {
   mapColor: "Color por",
   colorCluster: "Clúster",
   colorQuadrant: "Cuadrante",
+  uncertaintyIntro:
+    "Aceptabilidad de rangos SMAA, P(top-k), pesos centrales y sensibilidad tornado (±50% en cada peso de factor).",
+  pTopKTable: "P(top-k)",
+  centralWeights: "Pesos centrales",
+  tornadoTitle: "Sensibilidad tornado",
+  tornadoHint:
+    "Cambio medio absoluto de rango al escalar un peso de factor ±50% y renormalizar.",
+  backtestIntro:
+    "¿Habría funcionado? Acuerdo predictivo walk-forward con flujos comerciales (ims-backtest T4), no efecto causal.",
+  backtestDisclaimer:
+    "Las cifras miden acuerdo predictivo con flujos comerciales posteriores bajo el protocolo del paper. No estiman el efecto causal de usar el índice.",
+  backtestTarget: "Objetivo",
+  backtestHorizon: "Horizonte",
+  ndcgByMethod: "NDCG@10 por método",
+  pairedLift: "Lift emparejado vs baselines (IC 95%)",
+  variableValue: "Valor de variable / factor (ablación T6)",
+  variableValueHint:
+    "ΔNDCG@10 walk-forward al añadir bloques de encaje / competencia sobre una base macro (T6 del paper).",
+  looRankSensitivity: "Sensibilidad leave-one-out (panel demo)",
+  looHint:
+    "Spearman de rangos tras quitar cada variable en el panel demo actual. No es un backtest walk-forward.",
   nav: navEs,
 } as const;
 

@@ -1,0 +1,1075 @@
+{
+  "source": "ims-backtest / IMSFE paper outputs (T4, T6, A1)",
+  "provenance": "Copied verbatim from paper/outputs/tables; not recomputed in-browser.",
+  "tolerance": {
+    "mean_abs": 1e-09,
+    "note": "Displayed means must match fixture to 1e-9; CIs are reported as shipped."
+  },
+  "focal_method": "wsm|minmax|expert_mean",
+  "metrics": [
+    {
+      "method": "gravity_ppml",
+      "metric": "ndcg@10",
+      "mean": 0.7547485000085123,
+      "ci95_low": 0.7049285907928291,
+      "ci95_high": 0.8045851636977167,
+      "n_blocks": 28,
+      "target": "intensive",
+      "horizon": 1
+    },
+    {
+      "method": "import_volume",
+      "metric": "ndcg@10",
+      "mean": 0.7453753457015067,
+      "ci95_low": 0.6956428332596324,
+      "ci95_high": 0.7948615021321347,
+      "n_blocks": 28,
+      "target": "intensive",
+      "horizon": 1
+    },
+    {
+      "method": "random",
+      "metric": "ndcg@10",
+      "mean": 0.7180925311431766,
+      "ci95_low": 0.6735204491490928,
+      "ci95_high": 0.7607337663425617,
+      "n_blocks": 28,
+      "target": "intensive",
+      "horizon": 1
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "metric": "ndcg@10",
+      "mean": 0.7380960803339234,
+      "ci95_low": 0.685366656301927,
+      "ci95_high": 0.7886837302935231,
+      "n_blocks": 28,
+      "target": "intensive",
+      "horizon": 1
+    },
+    {
+      "method": "gravity_ppml",
+      "metric": "spearman",
+      "mean": 0.1227429433978547,
+      "ci95_low": -0.017052486565602404,
+      "ci95_high": 0.25848758753275397,
+      "n_blocks": 28,
+      "target": "intensive",
+      "horizon": 1
+    },
+    {
+      "method": "import_volume",
+      "metric": "spearman",
+      "mean": 0.03950879194896143,
+      "ci95_low": -0.09075678102672684,
+      "ci95_high": 0.15954883089442068,
+      "n_blocks": 28,
+      "target": "intensive",
+      "horizon": 1
+    },
+    {
+      "method": "random",
+      "metric": "spearman",
+      "mean": -0.0032222441588090132,
+      "ci95_low": -0.02519455987866445,
+      "ci95_high": 0.015917936973393998,
+      "n_blocks": 28,
+      "target": "intensive",
+      "horizon": 1
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "metric": "spearman",
+      "mean": 0.04059985774070323,
+      "ci95_low": -0.08562341046766851,
+      "ci95_high": 0.18038301423030653,
+      "n_blocks": 28,
+      "target": "intensive",
+      "horizon": 1
+    },
+    {
+      "method": "gravity_ppml",
+      "metric": "precision@10",
+      "mean": 0.7178571428571427,
+      "ci95_low": 0.6035714285714285,
+      "ci95_high": 0.8285714285714285,
+      "n_blocks": 28,
+      "target": "intensive",
+      "horizon": 1
+    },
+    {
+      "method": "import_volume",
+      "metric": "precision@10",
+      "mean": 0.6964285714285713,
+      "ci95_low": 0.5784821428571427,
+      "ci95_high": 0.8178571428571428,
+      "n_blocks": 28,
+      "target": "intensive",
+      "horizon": 1
+    },
+    {
+      "method": "random",
+      "metric": "precision@10",
+      "mean": 0.6911785714285713,
+      "ci95_low": 0.5708812500000001,
+      "ci95_high": 0.8045758928571424,
+      "n_blocks": 28,
+      "target": "intensive",
+      "horizon": 1
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "metric": "precision@10",
+      "mean": 0.7107142857142855,
+      "ci95_low": 0.5928571428571427,
+      "ci95_high": 0.8250000000000001,
+      "n_blocks": 28,
+      "target": "intensive",
+      "horizon": 1
+    },
+    {
+      "method": "gravity_ppml",
+      "metric": "auc",
+      "mean": 0.5286959681448802,
+      "ci95_low": 0.4415602825507511,
+      "ci95_high": 0.604490023937199,
+      "n_blocks": 24,
+      "target": "intensive",
+      "horizon": 1
+    },
+    {
+      "method": "import_volume",
+      "metric": "auc",
+      "mean": 0.6271420915378351,
+      "ci95_low": 0.5301277622504738,
+      "ci95_high": 0.7149402551791864,
+      "n_blocks": 24,
+      "target": "intensive",
+      "horizon": 1
+    },
+    {
+      "method": "random",
+      "metric": "auc",
+      "mean": 0.48965727697205713,
+      "ci95_low": 0.4778721596786366,
+      "ci95_high": 0.4997052629403959,
+      "n_blocks": 24,
+      "target": "intensive",
+      "horizon": 1
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "metric": "auc",
+      "mean": 0.5351820584489618,
+      "ci95_low": 0.4347628206260729,
+      "ci95_high": 0.6279566320661799,
+      "n_blocks": 24,
+      "target": "intensive",
+      "horizon": 1
+    },
+    {
+      "method": "gravity_ppml",
+      "metric": "ndcg@10",
+      "mean": 0.6822420111652925,
+      "ci95_low": 0.6442182561178827,
+      "ci95_high": 0.7190940101716254,
+      "n_blocks": 25,
+      "target": "new_markets",
+      "horizon": 1
+    },
+    {
+      "method": "import_volume",
+      "metric": "ndcg@10",
+      "mean": 0.7220385162834431,
+      "ci95_low": 0.6912592699980148,
+      "ci95_high": 0.7518330927754016,
+      "n_blocks": 25,
+      "target": "new_markets",
+      "horizon": 1
+    },
+    {
+      "method": "random",
+      "metric": "ndcg@10",
+      "mean": 0.5827357965838825,
+      "ci95_low": 0.5756467543546324,
+      "ci95_high": 0.5928234877231071,
+      "n_blocks": 25,
+      "target": "new_markets",
+      "horizon": 1
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "metric": "ndcg@10",
+      "mean": 0.7233832306299451,
+      "ci95_low": 0.6838751304253984,
+      "ci95_high": 0.75963354146149,
+      "n_blocks": 25,
+      "target": "new_markets",
+      "horizon": 1
+    },
+    {
+      "method": "gravity_ppml",
+      "metric": "spearman",
+      "mean": 0.2922742535154867,
+      "ci95_low": 0.22353685034685492,
+      "ci95_high": 0.35874480298999767,
+      "n_blocks": 25,
+      "target": "new_markets",
+      "horizon": 1
+    },
+    {
+      "method": "import_volume",
+      "metric": "spearman",
+      "mean": 0.3950686249544421,
+      "ci95_low": 0.3523661033664675,
+      "ci95_high": 0.43878658254713326,
+      "n_blocks": 25,
+      "target": "new_markets",
+      "horizon": 1
+    },
+    {
+      "method": "random",
+      "metric": "spearman",
+      "mean": -0.011260890776671717,
+      "ci95_low": -0.020214401429492372,
+      "ci95_high": -0.0020205272161767608,
+      "n_blocks": 25,
+      "target": "new_markets",
+      "horizon": 1
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "metric": "spearman",
+      "mean": 0.3475247586406857,
+      "ci95_low": 0.2801312500127893,
+      "ci95_high": 0.4096637533565098,
+      "n_blocks": 25,
+      "target": "new_markets",
+      "horizon": 1
+    },
+    {
+      "method": "gravity_ppml",
+      "metric": "precision@10",
+      "mean": 0.46399999999999997,
+      "ci95_low": 0.4037003968253968,
+      "ci95_high": 0.5250271739130433,
+      "n_blocks": 25,
+      "target": "new_markets",
+      "horizon": 1
+    },
+    {
+      "method": "import_volume",
+      "metric": "precision@10",
+      "mean": 0.5319999999999999,
+      "ci95_low": 0.49259259259259264,
+      "ci95_high": 0.5708333333333333,
+      "n_blocks": 25,
+      "target": "new_markets",
+      "horizon": 1
+    },
+    {
+      "method": "random",
+      "metric": "precision@10",
+      "mean": 0.33187999999999995,
+      "ci95_low": 0.32742249999999995,
+      "ci95_high": 0.336958375,
+      "n_blocks": 25,
+      "target": "new_markets",
+      "horizon": 1
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "metric": "precision@10",
+      "mean": 0.428,
+      "ci95_low": 0.375,
+      "ci95_high": 0.4730769230769231,
+      "n_blocks": 25,
+      "target": "new_markets",
+      "horizon": 1
+    },
+    {
+      "method": "gravity_ppml",
+      "metric": "ndcg@10",
+      "mean": 0.5499520080486199,
+      "ci95_low": 0.5101159359207328,
+      "ci95_high": 0.5883018278030159,
+      "n_blocks": 28,
+      "target": "growth",
+      "horizon": 1
+    },
+    {
+      "method": "import_volume",
+      "metric": "ndcg@10",
+      "mean": 0.5470566364317595,
+      "ci95_low": 0.5153576131568186,
+      "ci95_high": 0.5803620612808462,
+      "n_blocks": 28,
+      "target": "growth",
+      "horizon": 1
+    },
+    {
+      "method": "random",
+      "metric": "ndcg@10",
+      "mean": 0.5412343653522723,
+      "ci95_low": 0.5372613341179837,
+      "ci95_high": 0.5448844847895091,
+      "n_blocks": 28,
+      "target": "growth",
+      "horizon": 1
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "metric": "ndcg@10",
+      "mean": 0.5775659085846814,
+      "ci95_low": 0.54023538161902,
+      "ci95_high": 0.6208173815878784,
+      "n_blocks": 28,
+      "target": "growth",
+      "horizon": 1
+    },
+    {
+      "method": "gravity_ppml",
+      "metric": "spearman",
+      "mean": 0.02793936853264577,
+      "ci95_low": -0.03905949184366401,
+      "ci95_high": 0.0960862883147081,
+      "n_blocks": 28,
+      "target": "growth",
+      "horizon": 1
+    },
+    {
+      "method": "import_volume",
+      "metric": "spearman",
+      "mean": 0.004287291705722029,
+      "ci95_low": -0.0449929100021601,
+      "ci95_high": 0.05362897955128898,
+      "n_blocks": 28,
+      "target": "growth",
+      "horizon": 1
+    },
+    {
+      "method": "random",
+      "metric": "spearman",
+      "mean": 0.0009891232706985894,
+      "ci95_low": -0.004062043258696748,
+      "ci95_high": 0.0059714826447033525,
+      "n_blocks": 28,
+      "target": "growth",
+      "horizon": 1
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "metric": "spearman",
+      "mean": 0.037673851631060275,
+      "ci95_low": -0.01907973360127955,
+      "ci95_high": 0.09674864034128755,
+      "n_blocks": 28,
+      "target": "growth",
+      "horizon": 1
+    },
+    {
+      "method": "gravity_ppml",
+      "metric": "precision@10",
+      "mean": 0.1392857142857143,
+      "ci95_low": 0.09642857142857145,
+      "ci95_high": 0.18928571428571425,
+      "n_blocks": 28,
+      "target": "growth",
+      "horizon": 1
+    },
+    {
+      "method": "import_volume",
+      "metric": "precision@10",
+      "mean": 0.12500000000000003,
+      "ci95_low": 0.08928571428571429,
+      "ci95_high": 0.16428571428571428,
+      "n_blocks": 28,
+      "target": "growth",
+      "horizon": 1
+    },
+    {
+      "method": "random",
+      "metric": "precision@10",
+      "mean": 0.16889285714285718,
+      "ci95_low": 0.16560714285714287,
+      "ci95_high": 0.17232142857142854,
+      "n_blocks": 28,
+      "target": "growth",
+      "horizon": 1
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "metric": "precision@10",
+      "mean": 0.16428571428571428,
+      "ci95_low": 0.11776785714285715,
+      "ci95_high": 0.21428571428571433,
+      "n_blocks": 28,
+      "target": "growth",
+      "horizon": 1
+    },
+    {
+      "method": "gravity_ppml",
+      "metric": "ndcg@10",
+      "mean": 0.8063934655889206,
+      "ci95_low": 0.7324024285629599,
+      "ci95_high": 0.8730170337977117,
+      "n_blocks": 14,
+      "target": "intensive",
+      "horizon": 3
+    },
+    {
+      "method": "import_volume",
+      "metric": "ndcg@10",
+      "mean": 0.745351511465561,
+      "ci95_low": 0.6906621470394099,
+      "ci95_high": 0.8013381396873205,
+      "n_blocks": 14,
+      "target": "intensive",
+      "horizon": 3
+    },
+    {
+      "method": "random",
+      "metric": "ndcg@10",
+      "mean": 0.7180697777599864,
+      "ci95_low": 0.659407186526789,
+      "ci95_high": 0.7769432605314497,
+      "n_blocks": 14,
+      "target": "intensive",
+      "horizon": 3
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "metric": "ndcg@10",
+      "mean": 0.7706498332417852,
+      "ci95_low": 0.7185099787138022,
+      "ci95_high": 0.8271621621507141,
+      "n_blocks": 14,
+      "target": "intensive",
+      "horizon": 3
+    },
+    {
+      "method": "gravity_ppml",
+      "metric": "spearman",
+      "mean": 0.32857078465832484,
+      "ci95_low": 0.17084019914300846,
+      "ci95_high": 0.4830669736525539,
+      "n_blocks": 14,
+      "target": "intensive",
+      "horizon": 3
+    },
+    {
+      "method": "import_volume",
+      "metric": "spearman",
+      "mean": -0.00462088967030133,
+      "ci95_low": -0.2198678958978099,
+      "ci95_high": 0.18646077256558105,
+      "n_blocks": 14,
+      "target": "intensive",
+      "horizon": 3
+    },
+    {
+      "method": "random",
+      "metric": "spearman",
+      "mean": 0.0065762032108210855,
+      "ci95_low": -0.02084861635624833,
+      "ci95_high": 0.0342756524027721,
+      "n_blocks": 14,
+      "target": "intensive",
+      "horizon": 3
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "metric": "spearman",
+      "mean": 0.10806233439392424,
+      "ci95_low": -0.08637358160845614,
+      "ci95_high": 0.3194425690958165,
+      "n_blocks": 14,
+      "target": "intensive",
+      "horizon": 3
+    },
+    {
+      "method": "gravity_ppml",
+      "metric": "precision@10",
+      "mean": 0.7285714285714286,
+      "ci95_low": 0.5714285714285715,
+      "ci95_high": 0.8785714285714284,
+      "n_blocks": 14,
+      "target": "intensive",
+      "horizon": 3
+    },
+    {
+      "method": "import_volume",
+      "metric": "precision@10",
+      "mean": 0.6857142857142857,
+      "ci95_low": 0.5071428571428571,
+      "ci95_high": 0.8357142857142857,
+      "n_blocks": 14,
+      "target": "intensive",
+      "horizon": 3
+    },
+    {
+      "method": "random",
+      "metric": "precision@10",
+      "mean": 0.6911428571428572,
+      "ci95_low": 0.5305714285714286,
+      "ci95_high": 0.8393821428571426,
+      "n_blocks": 14,
+      "target": "intensive",
+      "horizon": 3
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "metric": "precision@10",
+      "mean": 0.7285714285714286,
+      "ci95_low": 0.5785714285714285,
+      "ci95_high": 0.8642857142857144,
+      "n_blocks": 14,
+      "target": "intensive",
+      "horizon": 3
+    },
+    {
+      "method": "gravity_ppml",
+      "metric": "auc",
+      "mean": 0.5258866923974389,
+      "ci95_low": 0.4112026928948714,
+      "ci95_high": 0.6276895891262558,
+      "n_blocks": 12,
+      "target": "intensive",
+      "horizon": 3
+    },
+    {
+      "method": "import_volume",
+      "metric": "auc",
+      "mean": 0.6098244544679833,
+      "ci95_low": 0.45435031197418563,
+      "ci95_high": 0.7460127499160751,
+      "n_blocks": 12,
+      "target": "intensive",
+      "horizon": 3
+    },
+    {
+      "method": "random",
+      "metric": "auc",
+      "mean": 0.4874548804100662,
+      "ci95_low": 0.4732770327578832,
+      "ci95_high": 0.4989494339548759,
+      "n_blocks": 12,
+      "target": "intensive",
+      "horizon": 3
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "metric": "auc",
+      "mean": 0.498154584731229,
+      "ci95_low": 0.3777000204201686,
+      "ci95_high": 0.597483467756494,
+      "n_blocks": 12,
+      "target": "intensive",
+      "horizon": 3
+    },
+    {
+      "method": "gravity_ppml",
+      "metric": "ndcg@10",
+      "mean": 0.7086051880051839,
+      "ci95_low": 0.6699419931380196,
+      "ci95_high": 0.745807220611571,
+      "n_blocks": 13,
+      "target": "new_markets",
+      "horizon": 3
+    },
+    {
+      "method": "import_volume",
+      "metric": "ndcg@10",
+      "mean": 0.7237591471326099,
+      "ci95_low": 0.6828115705425424,
+      "ci95_high": 0.7626759791062654,
+      "n_blocks": 13,
+      "target": "new_markets",
+      "horizon": 3
+    },
+    {
+      "method": "random",
+      "metric": "ndcg@10",
+      "mean": 0.586500970266165,
+      "ci95_low": 0.5747498467249136,
+      "ci95_high": 0.6040104022678665,
+      "n_blocks": 13,
+      "target": "new_markets",
+      "horizon": 3
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "metric": "ndcg@10",
+      "mean": 0.7119373122441375,
+      "ci95_low": 0.6683182028573219,
+      "ci95_high": 0.7656862069296964,
+      "n_blocks": 13,
+      "target": "new_markets",
+      "horizon": 3
+    },
+    {
+      "method": "gravity_ppml",
+      "metric": "spearman",
+      "mean": 0.3115944069407837,
+      "ci95_low": 0.24534876080322884,
+      "ci95_high": 0.37737404573379235,
+      "n_blocks": 13,
+      "target": "new_markets",
+      "horizon": 3
+    },
+    {
+      "method": "import_volume",
+      "metric": "spearman",
+      "mean": 0.40866333337213806,
+      "ci95_low": 0.37264645328183493,
+      "ci95_high": 0.4435103587246101,
+      "n_blocks": 13,
+      "target": "new_markets",
+      "horizon": 3
+    },
+    {
+      "method": "random",
+      "metric": "spearman",
+      "mean": -0.014265280137168322,
+      "ci95_low": -0.025961616015743767,
+      "ci95_high": -0.0014022654115815277,
+      "n_blocks": 13,
+      "target": "new_markets",
+      "horizon": 3
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "metric": "spearman",
+      "mean": 0.33268567328084503,
+      "ci95_low": 0.25163295180003215,
+      "ci95_high": 0.4138803624346586,
+      "n_blocks": 13,
+      "target": "new_markets",
+      "horizon": 3
+    },
+    {
+      "method": "gravity_ppml",
+      "metric": "precision@10",
+      "mean": 0.46153846153846156,
+      "ci95_low": 0.4,
+      "ci95_high": 0.525,
+      "n_blocks": 13,
+      "target": "new_markets",
+      "horizon": 3
+    },
+    {
+      "method": "import_volume",
+      "metric": "precision@10",
+      "mean": 0.5076923076923077,
+      "ci95_low": 0.45374999999999993,
+      "ci95_high": 0.5583749999999997,
+      "n_blocks": 13,
+      "target": "new_markets",
+      "horizon": 3
+    },
+    {
+      "method": "random",
+      "metric": "precision@10",
+      "mean": 0.32584615384615384,
+      "ci95_low": 0.31972639860139856,
+      "ci95_high": 0.3313649621212121,
+      "n_blocks": 13,
+      "target": "new_markets",
+      "horizon": 3
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "metric": "precision@10",
+      "mean": 0.39230769230769236,
+      "ci95_low": 0.3307692307692308,
+      "ci95_high": 0.44615384615384623,
+      "n_blocks": 13,
+      "target": "new_markets",
+      "horizon": 3
+    },
+    {
+      "method": "gravity_ppml",
+      "metric": "ndcg@10",
+      "mean": 0.5826009012449772,
+      "ci95_low": 0.523424030734782,
+      "ci95_high": 0.6343857447165278,
+      "n_blocks": 14,
+      "target": "growth",
+      "horizon": 3
+    },
+    {
+      "method": "import_volume",
+      "metric": "ndcg@10",
+      "mean": 0.5529106681669619,
+      "ci95_low": 0.514507436408527,
+      "ci95_high": 0.5872034520470094,
+      "n_blocks": 14,
+      "target": "growth",
+      "horizon": 3
+    },
+    {
+      "method": "random",
+      "metric": "ndcg@10",
+      "mean": 0.5409193422086702,
+      "ci95_low": 0.5362666221142289,
+      "ci95_high": 0.545414369277315,
+      "n_blocks": 14,
+      "target": "growth",
+      "horizon": 3
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "metric": "ndcg@10",
+      "mean": 0.5934224951705511,
+      "ci95_low": 0.5473404817643134,
+      "ci95_high": 0.6426518176879071,
+      "n_blocks": 14,
+      "target": "growth",
+      "horizon": 3
+    },
+    {
+      "method": "gravity_ppml",
+      "metric": "spearman",
+      "mean": 0.11305183054933099,
+      "ci95_low": 0.038562757311746146,
+      "ci95_high": 0.18006622877413853,
+      "n_blocks": 14,
+      "target": "growth",
+      "horizon": 3
+    },
+    {
+      "method": "import_volume",
+      "metric": "spearman",
+      "mean": 0.02103809278327325,
+      "ci95_low": -0.05528184046598912,
+      "ci95_high": 0.09230902106785235,
+      "n_blocks": 14,
+      "target": "growth",
+      "horizon": 3
+    },
+    {
+      "method": "random",
+      "metric": "spearman",
+      "mean": 0.0009941875036612714,
+      "ci95_low": -0.004786997106879455,
+      "ci95_high": 0.0068018355734031305,
+      "n_blocks": 14,
+      "target": "growth",
+      "horizon": 3
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "metric": "spearman",
+      "mean": 0.057735500602187274,
+      "ci95_low": -0.01646109765336852,
+      "ci95_high": 0.13433301840051076,
+      "n_blocks": 14,
+      "target": "growth",
+      "horizon": 3
+    },
+    {
+      "method": "gravity_ppml",
+      "metric": "precision@10",
+      "mean": 0.14285714285714288,
+      "ci95_low": 0.10000000000000002,
+      "ci95_high": 0.18571428571428575,
+      "n_blocks": 14,
+      "target": "growth",
+      "horizon": 3
+    },
+    {
+      "method": "import_volume",
+      "metric": "precision@10",
+      "mean": 0.10000000000000002,
+      "ci95_low": 0.04285714285714286,
+      "ci95_high": 0.17142857142857143,
+      "n_blocks": 14,
+      "target": "growth",
+      "horizon": 3
+    },
+    {
+      "method": "random",
+      "metric": "precision@10",
+      "mean": 0.174,
+      "ci95_low": 0.16742857142857143,
+      "ci95_high": 0.17942857142857144,
+      "n_blocks": 14,
+      "target": "growth",
+      "horizon": 3
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "metric": "precision@10",
+      "mean": 0.13571428571428573,
+      "ci95_low": 0.07857142857142856,
+      "ci95_high": 0.19999999999999998,
+      "n_blocks": 14,
+      "target": "growth",
+      "horizon": 3
+    }
+  ],
+  "paired_lift": [
+    {
+      "method": "wsm|minmax|expert_mean",
+      "baseline": "import_volume",
+      "metric": "ndcg@10",
+      "target": "intensive",
+      "horizon": 1,
+      "delta_mean": -0.007279265367583147,
+      "ci95_low": -0.04254547174614675,
+      "ci95_high": 0.026757371008145465,
+      "n_blocks": 28
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "baseline": "gravity_ppml",
+      "metric": "ndcg@10",
+      "target": "intensive",
+      "horizon": 1,
+      "delta_mean": -0.016652419674588876,
+      "ci95_low": -0.05399495541452022,
+      "ci95_high": 0.01848006448110138,
+      "n_blocks": 28
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "baseline": "random",
+      "metric": "ndcg@10",
+      "target": "intensive",
+      "horizon": 1,
+      "delta_mean": 0.020003549190747004,
+      "ci95_low": -0.01909388661507706,
+      "ci95_high": 0.05741790413040039,
+      "n_blocks": 28
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "baseline": "import_volume",
+      "metric": "ndcg@10",
+      "target": "new_markets",
+      "horizon": 1,
+      "delta_mean": 0.0013447143465022294,
+      "ci95_low": -0.04385552370361799,
+      "ci95_high": 0.04440257231364826,
+      "n_blocks": 25
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "baseline": "gravity_ppml",
+      "metric": "ndcg@10",
+      "target": "new_markets",
+      "horizon": 1,
+      "delta_mean": 0.04114121946465284,
+      "ci95_low": -0.008907188961359254,
+      "ci95_high": 0.0894998733495661,
+      "n_blocks": 25
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "baseline": "random",
+      "metric": "ndcg@10",
+      "target": "new_markets",
+      "horizon": 1,
+      "delta_mean": 0.1406474340460625,
+      "ci95_low": 0.10486871474766522,
+      "ci95_high": 0.17450841333274617,
+      "n_blocks": 25
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "baseline": "import_volume",
+      "metric": "ndcg@10",
+      "target": "growth",
+      "horizon": 1,
+      "delta_mean": 0.030509272152921853,
+      "ci95_low": -0.012081846392541031,
+      "ci95_high": 0.07505379390335473,
+      "n_blocks": 28
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "baseline": "gravity_ppml",
+      "metric": "ndcg@10",
+      "target": "growth",
+      "horizon": 1,
+      "delta_mean": 0.02761390053606155,
+      "ci95_low": -0.023245519842797654,
+      "ci95_high": 0.0763758497683783,
+      "n_blocks": 28
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "baseline": "random",
+      "metric": "ndcg@10",
+      "target": "growth",
+      "horizon": 1,
+      "delta_mean": 0.03633154323240907,
+      "ci95_low": -0.0027243087861485047,
+      "ci95_high": 0.07807976890365237,
+      "n_blocks": 28
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "baseline": "import_volume",
+      "metric": "ndcg@10",
+      "target": "intensive",
+      "horizon": 3,
+      "delta_mean": 0.025298321776223782,
+      "ci95_low": -0.03359803307619193,
+      "ci95_high": 0.0815847107065066,
+      "n_blocks": 14
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "baseline": "gravity_ppml",
+      "metric": "ndcg@10",
+      "target": "intensive",
+      "horizon": 3,
+      "delta_mean": -0.035743632347135686,
+      "ci95_low": -0.1049631038413823,
+      "ci95_high": 0.04038535879817649,
+      "n_blocks": 14
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "baseline": "random",
+      "metric": "ndcg@10",
+      "target": "intensive",
+      "horizon": 3,
+      "delta_mean": 0.052580055481798615,
+      "ci95_low": 0.001643005839057634,
+      "ci95_high": 0.10129097938499397,
+      "n_blocks": 14
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "baseline": "import_volume",
+      "metric": "ndcg@10",
+      "target": "new_markets",
+      "horizon": 3,
+      "delta_mean": -0.01182183488847249,
+      "ci95_low": -0.05849580818993363,
+      "ci95_high": 0.034237484590749906,
+      "n_blocks": 13
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "baseline": "gravity_ppml",
+      "metric": "ndcg@10",
+      "target": "new_markets",
+      "horizon": 3,
+      "delta_mean": 0.0033321242389535285,
+      "ci95_low": -0.05586231611889175,
+      "ci95_high": 0.06938210582191708,
+      "n_blocks": 13
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "baseline": "random",
+      "metric": "ndcg@10",
+      "target": "new_markets",
+      "horizon": 3,
+      "delta_mean": 0.12543634197797232,
+      "ci95_low": 0.08727064569217918,
+      "ci95_high": 0.16815210526313887,
+      "n_blocks": 13
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "baseline": "import_volume",
+      "metric": "ndcg@10",
+      "target": "growth",
+      "horizon": 3,
+      "delta_mean": 0.04051182700358919,
+      "ci95_low": 0.009611471774753032,
+      "ci95_high": 0.0721286412131385,
+      "n_blocks": 14
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "baseline": "gravity_ppml",
+      "metric": "ndcg@10",
+      "target": "growth",
+      "horizon": 3,
+      "delta_mean": 0.010821593925573981,
+      "ci95_low": -0.06205757959171606,
+      "ci95_high": 0.09019156511567417,
+      "n_blocks": 14
+    },
+    {
+      "method": "wsm|minmax|expert_mean",
+      "baseline": "random",
+      "metric": "ndcg@10",
+      "target": "growth",
+      "horizon": 3,
+      "delta_mean": 0.052503152961880954,
+      "ci95_low": 0.000606874404065249,
+      "ci95_high": 0.10855393838450662,
+      "n_blocks": 14
+    }
+  ],
+  "ablation": [
+    {
+      "contrast": "plus_fit - base_macro",
+      "metric": "ndcg@10",
+      "delta_mean": 0.005399227432634399,
+      "ci95_low": -0.019076978241435165,
+      "ci95_high": 0.030741122487754523,
+      "n_blocks": 28
+    },
+    {
+      "contrast": "plus_fit_comp - base_macro",
+      "metric": "ndcg@10",
+      "delta_mean": 0.0029939131340591197,
+      "ci95_low": -0.027665478913189784,
+      "ci95_high": 0.033301682123073974,
+      "n_blocks": 28
+    }
+  ],
+  "ablation_levels": [
+    {
+      "method": "base_macro",
+      "metric": "ndcg@10",
+      "mean": 0.7159093935280433,
+      "ci95_low": 0.6657143421363083,
+      "ci95_high": 0.7638752774596407,
+      "n_blocks": 28
+    },
+    {
+      "method": "plus_fit",
+      "metric": "ndcg@10",
+      "mean": 0.7213086209606775,
+      "ci95_low": 0.6733062665629002,
+      "ci95_high": 0.7667519598920118,
+      "n_blocks": 28
+    },
+    {
+      "method": "plus_fit_comp",
+      "metric": "ndcg@10",
+      "mean": 0.7189033066621022,
+      "ci95_low": 0.6722794054406274,
+      "ci95_high": 0.7684768046972813,
+      "n_blocks": 28
+    }
+  ],
+  "col_hs64": [
+    {
+      "sweep": "origin_horizon",
+      "origin": "COL",
+      "hs_chapter": "64",
+      "horizon_k": 1,
+      "mean_ndcg_at_10": 0.763177991974114,
+      "n_blocks": 4,
+      "status": "ok"
+    },
+    {
+      "sweep": "origin_horizon",
+      "origin": "COL",
+      "hs_chapter": "64",
+      "horizon_k": 3,
+      "mean_ndcg_at_10": 0.8223878128955773,
+      "n_blocks": 2,
+      "status": "ok"
+    }
+  ]
+}

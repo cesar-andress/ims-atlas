@@ -58,6 +58,8 @@ export type AnalysisConfig = {
   clusterK?: number | undefined;
   mapSeed?: number | undefined;
   mapColor?: "cluster" | "quadrant" | undefined;
+  backtestTarget?: "intensive" | "new_markets" | "growth" | undefined;
+  backtestHorizon?: 1 | 3 | undefined;
   lang?: "en" | "es" | undefined;
 };
 
@@ -213,6 +215,18 @@ export function parseAnalysisConfig(input: unknown): AnalysisConfig {
 
   const mapColor = asEnum(input.mapColor, ["cluster", "quadrant"] as const);
   if (mapColor) out.mapColor = mapColor;
+
+  const backtestTarget = asEnum(input.backtestTarget, [
+    "intensive",
+    "new_markets",
+    "growth",
+  ] as const);
+  if (backtestTarget) out.backtestTarget = backtestTarget;
+
+  const backtestHorizon = asFiniteNumber(input.backtestHorizon);
+  if (backtestHorizon === 1 || backtestHorizon === 3) {
+    out.backtestHorizon = backtestHorizon;
+  }
 
   const lang = asEnum(input.lang, ["en", "es"] as const);
   if (lang) out.lang = lang;

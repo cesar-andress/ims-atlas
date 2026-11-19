@@ -130,6 +130,10 @@ export {
   type WorkerResponse,
 } from "./workerProtocol.js";
 
+export { tornadoWeightSensitivity, type TornadoBar } from "./sensitivity.js";
+
+export { weightStatsFromHierarchical } from "./weightStats.js";
+
 export {
   centerAndOrient,
   classicalMds2d,

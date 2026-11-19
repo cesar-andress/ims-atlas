@@ -3,9 +3,9 @@ import { PermalinkLink } from "./PermalinkLink";
 import { useAnalysis } from "../state/useAnalysis";
 import type { ViewId } from "../state/schema";
 
-const TABS: readonly ViewId[] = ["ranking", "matrix", "map"];
+const TABS: readonly ViewId[] = ["ranking", "matrix", "map", "uncertainty", "backtest"];
 
-/** Shared sub-nav so Ranking / Matrix / Map feel like one analysis workspace. */
+/** Shared sub-nav for the analysis workspace. */
 export function AnalysisTabs() {
   const { t } = useTranslation();
   const { config } = useAnalysis();
