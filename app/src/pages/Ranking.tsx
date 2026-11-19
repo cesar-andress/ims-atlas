@@ -81,6 +81,11 @@ function RankingBody({ model }: { model: RankingViewModel }) {
         <span>
           n={model.ranking.length} · imputed={model.prepared.nImputedCells}
         </span>
+        {model.panel.synthetic ? (
+          <p className="muted small" data-testid="demo-synthetic-note">
+            {t("demoSyntheticNote")}
+          </p>
+        ) : null}
         {model.panel.excludedByod.length > 0 ? (
           <p className="muted small" data-testid="demo-byod-note">
             {t("demoByodExcluded")}
@@ -245,7 +250,7 @@ export function Ranking() {
       model={model}
       error={error}
     >
-      {(m) => <RankingBody model={m} />}
+      {(m) => (m ? <RankingBody model={m} /> : null)}
     </AnalysisPage>
   );
 }

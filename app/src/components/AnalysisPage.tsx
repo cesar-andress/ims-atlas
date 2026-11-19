@@ -7,6 +7,7 @@ import { COL_HS64_PRESET } from "../state/schema";
 import { isAnalysisReady } from "../state/views";
 import { AnalysisSummary } from "./AnalysisSummary";
 import { AnalysisTabs } from "./AnalysisTabs";
+import { PendingReleaseNotice } from "./PendingReleaseNotice";
 import { PermalinkLink } from "./PermalinkLink";
 
 type Props = {
@@ -15,9 +16,15 @@ type Props = {
   intro?: string | undefined;
   model: RankingViewModel | null;
   error: AnalysisModelError | null;
-  /** Extra controls rendered under the context line when a model is ready. */
+  /** Extra controls under the context line. */
   controls?: ReactNode;
-  children: (model: RankingViewModel) => ReactNode;
+  /**
+   * Cite / Backtest / Time: still render body when the ranking model is
+   * unavailable (pending release or loading). Ranking-dependent UI should
+   * branch on `model` inside children.
+   */
+  allowWithoutModel?: boolean;
+  children: (model: RankingViewModel | null) => ReactNode;
 };
 
 /**
@@ -31,6 +38,7 @@ export function AnalysisPage({
   model,
   error,
   controls,
+  allowWithoutModel = false,
   children,
 }: Props) {
   const { t, i18n } = useTranslation();
@@ -38,6 +46,13 @@ export function AnalysisPage({
   const lang = i18n.language.startsWith("es") ? "es" : "en";
   const ready = isAnalysisReady(config);
   const pending = error?.kind === "pending";
+  const hardError = error?.kind === "error";
+
+  // Hard errors must not leave stale model UI (e.g. map spinner forever).
+  const showModelBody = ready && Boolean(model) && !hardError;
+  const showFallbackBody =
+    allowWithoutModel && !hardError && (ready || pending) && !showModelBody;
+  const showLoading = ready && !model && !error && !allowWithoutModel && !showModelBody;
 
   return (
     <section
@@ -57,23 +72,9 @@ export function AnalysisPage({
 
       {controls}
 
-      {pending ? (
-        <div className="analysis-empty" role="alert" data-testid="data-release-pending">
-          <p>{t("dataReleasePending")}</p>
-          {error.message ? <p className="muted small">{error.message}</p> : null}
-          <p className="analysis-actions">
-            <PermalinkLink view="status">{t("nav.status")}</PermalinkLink>
-            {" · "}
-            <PermalinkLink view="catalog">{t("nav.catalog")}</PermalinkLink>
-            {" · "}
-            <PermalinkLink view="byod">{t("nav.byod")}</PermalinkLink>
-            {" · "}
-            <PermalinkLink view="data_releases">{t("nav.data_releases")}</PermalinkLink>
-          </p>
-        </div>
-      ) : null}
+      {pending ? <PendingReleaseNotice detail={error.message} /> : null}
 
-      {error && error.kind === "error" ? (
+      {hardError ? (
         <div className="error" role="alert" data-testid="analysis-error">
           <p>{error.message}</p>
         </div>
@@ -104,13 +105,11 @@ export function AnalysisPage({
         </div>
       ) : null}
 
-      {ready && !model && !error ? (
-        <p data-testid="analysis-loading">{t("loading")}</p>
-      ) : null}
+      {showLoading ? <p data-testid="analysis-loading">{t("loading")}</p> : null}
 
-      {ready && model ? (
+      {showModelBody || showFallbackBody ? (
         <>
-          {model.warnings.length > 0 ? (
+          {model && model.warnings.length > 0 ? (
             <ul className="warnings" data-testid="ranking-warnings">
               {model.warnings.map((w) => (
                 <li key={w}>{w}</li>

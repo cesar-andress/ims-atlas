@@ -107,6 +107,7 @@ export function Backtest() {
       intro={t("backtestIntro")}
       model={model}
       error={error ?? (fixtureError ? analysisErrorMessage(fixtureError) : null)}
+      allowWithoutModel
       controls={
         <div className="matrix-controls" data-testid="backtest-controls">
           <label>
@@ -257,24 +258,30 @@ export function Backtest() {
 
             <h3>{t("looRankSensitivity")}</h3>
             <p className="muted small">{t("looHint")}</p>
-            <div className="table-scroll">
-              <table data-testid="loo-table">
-                <thead>
-                  <tr>
-                    <th>Variable dropped</th>
-                    <th>Spearman vs full</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {loo.map((r) => (
-                    <tr key={r.variable} data-variable={r.variable}>
-                      <td>{r.variable}</td>
-                      <td>{formatScore(r.spearman)}</td>
+            {model ? (
+              <div className="table-scroll">
+                <table data-testid="loo-table">
+                  <thead>
+                    <tr>
+                      <th>Variable dropped</th>
+                      <th>Spearman vs full</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {loo.map((r) => (
+                      <tr key={r.variable} data-variable={r.variable}>
+                        <td>{r.variable}</td>
+                        <td>{formatScore(r.spearman)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <p className="muted small" data-testid="loo-unavailable">
+                {t("dataReleasePending")}
+              </p>
+            )}
           </div>
         ) : (
           <p className="muted">{t("loading")}</p>

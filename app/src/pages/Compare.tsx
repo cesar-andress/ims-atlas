@@ -151,7 +151,7 @@ export function Compare() {
       model={model}
       error={error}
     >
-      {(m) => <CompareBody model={m} />}
+      {(m) => (m ? <CompareBody model={m} /> : null)}
     </AnalysisPage>
   );
 }

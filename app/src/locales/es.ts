@@ -115,6 +115,7 @@ const es = {
   analysisNeedConfig:
     "Define origen, producto (HS) y año en el panel, o carga el preset de demostración.",
   homeStart: "Empezar en Builder",
+  homeOpenStatus: "Ver estado de datos",
   status: "Estado",
   coverage: "Cobertura",
   selectVariable: "Selecciona una variable",

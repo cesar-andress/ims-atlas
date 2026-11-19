@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
 import { formatScore } from "../format";
@@ -14,6 +14,11 @@ function FactorsBody({ model }: { model: RankingViewModel }) {
     [model],
   );
   const [factor, setFactor] = useState(factors[0] ?? "demand");
+  useEffect(() => {
+    if (!factors.includes(factor)) {
+      setFactor(factors[0] ?? "demand");
+    }
+  }, [factors, factor]);
   const iso = config.compareA ?? model.ranking[0]?.iso3;
   const rowIdx = iso ? model.prepared.candidates.indexOf(iso) : -1;
 
@@ -117,7 +122,7 @@ export function Factors() {
       model={model}
       error={error}
     >
-      {(m) => <FactorsBody model={m} />}
+      {(m) => (m ? <FactorsBody model={m} /> : null)}
     </AnalysisPage>
   );
 }

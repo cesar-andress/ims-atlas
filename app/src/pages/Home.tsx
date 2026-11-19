@@ -10,17 +10,17 @@ const EXAMPLES: AnalysisConfig[] = [
     v: 1,
     view: "catalog",
     origin: "COL",
+    hs: "64",
     year: 2019,
     lang: "en",
   },
   {
     ...COL_HS64_PRESET,
-    view: "ranking",
+    view: "status",
   },
   {
     ...COL_HS64_PRESET,
-    view: "matrix",
-    matrixCutoff: "median",
+    view: "builder",
   },
 ];
 
@@ -52,11 +52,11 @@ export function Home() {
           {t("homeStart")}
         </PermalinkLink>
         <PermalinkLink
-          view="ranking"
-          replace={{ ...COL_HS64_PRESET, view: "ranking" }}
-          data-testid="home-open-demo"
+          view="status"
+          replace={{ ...COL_HS64_PRESET, view: "status" }}
+          data-testid="home-open-status"
         >
-          {t("presetColHs64")}
+          {t("homeOpenStatus")}
         </PermalinkLink>
       </div>
       <h2>{t("examplePermalinks")}</h2>
@@ -68,7 +68,7 @@ export function Home() {
               replace={ex}
               data-testid={`permalink-example-${i}`}
             >
-              {ex.origin}/{ex.year} → {ex.view}
+              {ex.origin}/{ex.hs ?? "—"}/{ex.year} → {ex.view}
             </PermalinkLink>
           </li>
         ))}

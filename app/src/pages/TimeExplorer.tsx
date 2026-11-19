@@ -48,7 +48,7 @@ export function TimeExplorer() {
   }, []);
 
   const { years, series, tableRows } = useMemo(() => {
-    if (!fixture || !model) {
+    if (!fixture) {
       return {
         years: [] as number[],
         series: [] as BumpSeries[],
@@ -57,11 +57,13 @@ export function TimeExplorer() {
     }
     const years = fixture.years;
     const focus = fixture.focus_iso3;
-    const panelYear = model.panel.year;
-    const liveRank = new Map(model.ranking.map((r) => [r.iso3, r.rank]));
+    const panelYear = model?.panel.year;
+    const liveRank = model ? new Map(model.ranking.map((r) => [r.iso3, r.rank])) : null;
     const rankAt = (iso3: string, y: number): number | null => {
-      // Same config year must match the live ranking panel (Phase 12-fix).
-      if (y === panelYear) return liveRank.get(iso3) ?? null;
+      // Live panel year overlays the ranking model when available (Phase 12-fix).
+      if (liveRank && panelYear !== undefined && y === panelYear) {
+        return liveRank.get(iso3) ?? null;
+      }
       const row = fixture.rankings[String(y)]?.find((r) => r.iso3 === iso3);
       return row?.rank ?? null;
     };
@@ -92,6 +94,7 @@ export function TimeExplorer() {
       intro={t("timeIntro")}
       model={model}
       error={pageError}
+      allowWithoutModel
       controls={
         fixture ? (
           <div className="matrix-controls" data-testid="time-controls">

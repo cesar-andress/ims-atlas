@@ -2,9 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "../i18n";
 import { hsCategoryTree, hsLabel, REGIONS, searchHs } from "../data/hsProducts";
 import { searchOrigins } from "../data/iso3Exporters";
+import { analysisErrorFromUnknown } from "../ranking/analysisError";
 import { loadDemoPanel, type DemoPanel } from "../ranking/demoPanel";
 import { COL_HS64_PRESET } from "../state/schema";
 import { useAnalysis } from "../state/useAnalysis";
+import { PermalinkLink } from "./PermalinkLink";
 
 const FACTOR_ORDER = [
   "demand",
@@ -36,11 +38,31 @@ export function ConfigPanel() {
     config.year !== undefined ? String(config.year) : "",
   );
   const [panel, setPanel] = useState<DemoPanel | null>(null);
+  const [panelStatus, setPanelStatus] = useState<
+    "loading" | "ready" | "pending" | "error"
+  >("loading");
+  const [panelDetail, setPanelDetail] = useState<string | undefined>();
 
   useEffect(() => {
+    let cancelled = false;
+    setPanelStatus("loading");
     void loadDemoPanel()
-      .then(setPanel)
-      .catch(() => setPanel(null));
+      .then((p) => {
+        if (cancelled) return;
+        setPanel(p);
+        setPanelStatus("ready");
+        setPanelDetail(undefined);
+      })
+      .catch((err: unknown) => {
+        if (cancelled) return;
+        setPanel(null);
+        const mapped = analysisErrorFromUnknown(err);
+        setPanelStatus(mapped.kind === "pending" ? "pending" : "error");
+        setPanelDetail(mapped.message);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   // Keep local drafts in sync when permalink / preset changes config.
@@ -313,8 +335,24 @@ export function ConfigPanel() {
                   </div>
                 );
               })
+            ) : panelStatus === "pending" ? (
+              <div data-testid="config-panel-pending">
+                <p className="muted small">{t("dataReleasePending")}</p>
+                {panelDetail ? <p className="muted small">{panelDetail}</p> : null}
+                <p className="analysis-actions">
+                  <PermalinkLink view="status">{t("nav.status")}</PermalinkLink>
+                  {" · "}
+                  <PermalinkLink view="catalog">{t("nav.catalog")}</PermalinkLink>
+                </p>
+              </div>
+            ) : panelStatus === "error" ? (
+              <p className="error" role="alert" data-testid="config-panel-error">
+                {panelDetail ?? t("loading")}
+              </p>
             ) : (
-              <p className="muted">{t("loading")}</p>
+              <p className="muted" data-testid="config-panel-loading">
+                {t("loading")}
+              </p>
             )}
           </fieldset>
 

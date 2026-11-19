@@ -114,6 +114,7 @@ export const en = {
   analysisNeedConfig:
     "Set origin, product (HS) and year in the config panel, or load the demo preset.",
   homeStart: "Start in Builder",
+  homeOpenStatus: "Check data status",
   status: "Status",
   coverage: "Coverage",
   selectVariable: "Select a variable",

@@ -21,7 +21,7 @@ export function MarketMap() {
   const mapSeed = config.mapSeed ?? 42;
   const colorMode = config.mapColor === "quadrant" ? "quadrant" : "cluster";
   const mapMode: MapMode = config.mapMode ?? "network";
-  const matrix = useStrategicMatrix(model, "median");
+  const matrix = useStrategicMatrix(model);
 
   const overlayVarIds = useMemo(() => {
     if (!model) return [] as string[];

@@ -55,87 +55,89 @@ export function Uncertainty() {
       model={model}
       error={combinedError}
     >
-      {(m) => (
-        <div className="uncertainty-body" data-testid="uncertainty-body">
-          {loading || !smaaModel ? (
-            <p className="muted" data-testid="smaa-loading">
-              {t("loading")}
-            </p>
-          ) : (
-            <>
-              <p className="muted small" data-testid="smaa-meta">
-                SMAA Dirichlet · n={smaaModel.nSamples} · seed={smaaModel.smaa.seed} ·{" "}
-                {m.prepared.candidates.length} destinations
+      {(m) =>
+        !m ? null : (
+          <div className="uncertainty-body" data-testid="uncertainty-body">
+            {loading || !smaaModel ? (
+              <p className="muted" data-testid="smaa-loading">
+                {t("loading")}
               </p>
-              <Suspense fallback={<p className="muted">{t("loading")}</p>}>
-                <RankAcceptabilityChart
-                  alternatives={smaaModel.smaa.alternatives}
-                  acceptability={smaaModel.smaa.acceptability}
-                />
-              </Suspense>
+            ) : (
+              <>
+                <p className="muted small" data-testid="smaa-meta">
+                  SMAA Dirichlet · n={smaaModel.nSamples} · seed={smaaModel.smaa.seed} ·{" "}
+                  {m.prepared.candidates.length} destinations
+                </p>
+                <Suspense fallback={<p className="muted">{t("loading")}</p>}>
+                  <RankAcceptabilityChart
+                    alternatives={smaaModel.smaa.alternatives}
+                    acceptability={smaaModel.smaa.acceptability}
+                  />
+                </Suspense>
 
-              <h2>{t("pTopKTable")}</h2>
-              <div className="table-scroll">
-                <table data-testid="ptop-table">
+                <h2>{t("pTopKTable")}</h2>
+                <div className="table-scroll">
+                  <table data-testid="ptop-table">
+                    <thead>
+                      <tr>
+                        <th>ISO3</th>
+                        <th>P(top-1)</th>
+                        <th>P(top-5)</th>
+                        <th>P(top-10)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {topRows.map((row) => (
+                        <tr key={row.iso3} data-iso3={row.iso3}>
+                          <td>{row.iso3}</td>
+                          <td data-testid={`p1-${row.iso3}`}>{formatScore(row.p1)}</td>
+                          <td>{formatScore(row.p5)}</td>
+                          <td>{formatScore(row.p10)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <h2>{t("centralWeights")}</h2>
+                <ul className="central-weights" data-testid="central-weights">
+                  {central.map(([id, w]) => (
+                    <li key={id}>
+                      <code>{id}</code>: {formatScore(w)}
+                    </li>
+                  ))}
+                </ul>
+
+                <h2>{t("tornadoTitle")}</h2>
+                <p className="muted small">{t("tornadoHint")}</p>
+                <Suspense fallback={<p className="muted">{t("loading")}</p>}>
+                  <TornadoChart bars={smaaModel.tornado} />
+                </Suspense>
+                <table data-testid="tornado-table" className="small">
                   <thead>
                     <tr>
-                      <th>ISO3</th>
-                      <th>P(top-1)</th>
-                      <th>P(top-5)</th>
-                      <th>P(top-10)</th>
+                      <th>Factor</th>
+                      <th>−50%</th>
+                      <th>+50%</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {topRows.map((row) => (
-                      <tr key={row.iso3} data-iso3={row.iso3}>
-                        <td>{row.iso3}</td>
-                        <td data-testid={`p1-${row.iso3}`}>{formatScore(row.p1)}</td>
-                        <td>{formatScore(row.p5)}</td>
-                        <td>{formatScore(row.p10)}</td>
-                      </tr>
-                    ))}
+                    {smaaModel.tornado
+                      .filter((b) => b.level === "factor")
+                      .map((b) => (
+                        <tr key={b.id} data-factor={b.id}>
+                          <td>{b.id}</td>
+                          <td>{formatScore(b.lowDelta)}</td>
+                          <td>{formatScore(b.highDelta)}</td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
-              </div>
-
-              <h2>{t("centralWeights")}</h2>
-              <ul className="central-weights" data-testid="central-weights">
-                {central.map(([id, w]) => (
-                  <li key={id}>
-                    <code>{id}</code>: {formatScore(w)}
-                  </li>
-                ))}
-              </ul>
-
-              <h2>{t("tornadoTitle")}</h2>
-              <p className="muted small">{t("tornadoHint")}</p>
-              <Suspense fallback={<p className="muted">{t("loading")}</p>}>
-                <TornadoChart bars={smaaModel.tornado} />
-              </Suspense>
-              <table data-testid="tornado-table" className="small">
-                <thead>
-                  <tr>
-                    <th>Factor</th>
-                    <th>−50%</th>
-                    <th>+50%</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {smaaModel.tornado
-                    .filter((b) => b.level === "factor")
-                    .map((b) => (
-                      <tr key={b.id} data-factor={b.id}>
-                        <td>{b.id}</td>
-                        <td>{formatScore(b.lowDelta)}</td>
-                        <td>{formatScore(b.highDelta)}</td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </>
-          )}
-        </div>
-      )}
+              </>
+            )}
+          </div>
+        )
+      }
     </AnalysisPage>
   );
 }
