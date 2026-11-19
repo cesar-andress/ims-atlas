@@ -22,20 +22,26 @@ import {
   saveProjectToStorage,
 } from "./projectStore";
 
+function sameConfig(a: AnalysisConfig, b: AnalysisConfig): boolean {
+  return JSON.stringify(a) === JSON.stringify(b);
+}
+
 /**
  * Controller: analysis config is the model; URL (path + ?c=) is persistence.
- * Updates use a ref snapshot so rapid patches do not clobber each other.
+ * Pathname wins for `view` when it disagrees with the permalink payload.
  */
 export function AnalysisProvider({ children }: { children: ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [config, setConfigState] = useState<AnalysisConfig>(() => {
-    const fromUrl = parseConfigFromSearch(location.search);
-    if (location.search.includes("c=")) return fromUrl;
+    const view = viewFromPath(location.pathname);
+    if (location.search.includes("c=")) {
+      return { ...parseConfigFromSearch(location.search), view };
+    }
     return (
       loadProjectFromStorage() ?? {
         ...DEFAULT_CONFIG,
-        view: viewFromPath(location.pathname),
+        view,
       }
     );
   });
@@ -44,26 +50,28 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const view = viewFromPath(location.pathname);
-    setConfigState((prev) => (prev.view === view ? prev : { ...prev, view }));
-  }, [location.pathname]);
 
-  useEffect(() => {
-    if (!location.search.includes("c=")) return;
-    const parsed = parseConfigFromSearch(location.search);
-    setConfigState(parsed);
-    if (parsed.view) {
-      const target = pathForView(parsed.view);
-      if (
-        location.pathname !== target &&
-        !(target === "/" && location.pathname === "")
-      ) {
-        navigate({ pathname: target, search: location.search }, { replace: true });
-      }
+    if (!location.search.includes("c=")) {
+      setConfigState((prev) => (prev.view === view ? prev : { ...prev, view }));
+      return;
     }
-  }, [location.search, location.pathname, navigate]);
+
+    const parsed = parseConfigFromSearch(location.search);
+    const next = { ...parsed, view };
+    setConfigState((prev) => (sameConfig(prev, next) ? prev : next));
+
+    // Permalink said another view: keep path as source of truth and rewrite ?c=.
+    if (parsed.view !== view) {
+      navigate(
+        { pathname: pathForView(view), search: configToSearch(next) },
+        { replace: true },
+      );
+    }
+  }, [location.pathname, location.search, navigate]);
 
   const commit = useCallback(
     (next: AnalysisConfig) => {
+      if (sameConfig(configRef.current, next)) return;
       setConfigState(next);
       navigate({
         pathname: pathForView(next.view),

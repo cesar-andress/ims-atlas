@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "../i18n";
 import { CoverageHeatmap } from "../components/CoverageHeatmap";
 import { LicenceBadge } from "../components/LicenceBadge";
+import { PageShell } from "../components/PageShell";
 import { loadCatalogPreview } from "../data/catalogLoader";
 import type { CatalogPreview, CatalogVariable } from "../data/types";
 import { useAnalysis } from "../state/useAnalysis";
@@ -50,13 +51,12 @@ export function Catalog() {
   const lang = i18n.language.startsWith("es") ? "es" : "en";
 
   return (
-    <section
+    <PageShell
+      testId="catalog-view"
+      titleKey="nav.catalog"
+      intro={t("catalogIntro")}
       className="catalog"
-      data-testid="catalog-view"
-      aria-labelledby="catalog-title"
     >
-      <h1 id="catalog-title">{t("nav.catalog")}</h1>
-      <p className="muted">{t("catalogIntro")}</p>
       {config.origin || config.year ? (
         <p className="note" data-testid="catalog-config-echo">
           {t("permalinkState")}: {config.origin ?? "—"} / {config.year ?? "—"}
@@ -131,6 +131,6 @@ export function Catalog() {
         </div>
       ) : null}
       {catalog?.note ? <p className="muted">{catalog.note}</p> : null}
-    </section>
+    </PageShell>
   );
 }

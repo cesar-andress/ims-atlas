@@ -1,5 +1,6 @@
 import { useTranslation } from "../i18n";
 import type { ViewId } from "../state/schema";
+import { PageShell } from "../components/PageShell";
 
 type Props = {
   view: ViewId;
@@ -8,9 +9,8 @@ type Props = {
 export function StubView({ view }: Props) {
   const { t } = useTranslation();
   return (
-    <section className="stub" data-testid={`stub-${view}`}>
-      <h1>{t(`nav.${view}`)}</h1>
+    <PageShell testId={`stub-${view}`} titleKey={`nav.${view}`} className="stub">
       <p className="muted">{t("stubSoon")}</p>
-    </section>
+    </PageShell>
   );
 }

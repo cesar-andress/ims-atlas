@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAnalysis } from "../state/useAnalysis";
+import { isAnalysisReady } from "../state/views";
 import { getCachedRanking } from "./rankingCache";
 import type { RankingViewModel } from "./rankingEngine";
 
@@ -11,8 +12,14 @@ export function useRankingModel(): {
   const { config } = useAnalysis();
   const [model, setModel] = useState<RankingViewModel | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const ready = isAnalysisReady(config);
 
   useEffect(() => {
+    if (!ready) {
+      setModel(null);
+      setError(null);
+      return;
+    }
     let cancelled = false;
     setError(null);
     void getCachedRanking({
@@ -41,6 +48,7 @@ export function useRankingModel(): {
       cancelled = true;
     };
   }, [
+    ready,
     config.origin,
     config.hs,
     config.year,

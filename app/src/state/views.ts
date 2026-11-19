@@ -1,4 +1,4 @@
-import type { ViewId } from "./schema";
+import type { AnalysisConfig, ViewId } from "./schema";
 
 /** Primary workspace views (shown in the main nav). */
 export const PRIMARY_VIEWS: readonly ViewId[] = [
@@ -34,4 +34,9 @@ export function isAnalysisView(view: ViewId): boolean {
 
 export function isPrimaryView(view: ViewId): boolean {
   return (PRIMARY_VIEWS as readonly string[]).includes(view);
+}
+
+/** Ranking / matrix / map need origin + HS + year before computing. */
+export function isAnalysisReady(config: AnalysisConfig): boolean {
+  return Boolean(config.origin && config.hs && config.year);
 }

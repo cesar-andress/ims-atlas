@@ -204,13 +204,47 @@ input:focus-visible {
 }
 
 .config-panel {
-  padding: 1rem 1rem 1.5rem;
+  padding: 0.75rem 1rem 1.5rem;
   border-right: 1px solid var(--border);
   background: var(--surface);
+  max-width: 100%;
+}
+
+.config-panel-fold {
+  border: none;
+}
+
+.config-panel-fold > summary {
+  cursor: pointer;
+  list-style: none;
+  margin-bottom: 0.75rem;
+}
+
+.config-panel-fold > summary::-webkit-details-marker {
+  display: none;
+}
+
+.config-panel-fold > summary h2 {
+  display: inline;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.config-panel-fold > summary::after {
+  content: "▾";
+  margin-left: 0.4rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.config-panel-fold:not([open]) > summary::after {
+  content: "▸";
+}
+
+.config-panel-body {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  max-width: 100%;
 }
 
 .config-panel h2 {

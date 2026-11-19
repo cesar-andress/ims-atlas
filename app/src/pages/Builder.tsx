@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "../i18n";
 import { AnalysisSummary } from "../components/AnalysisSummary";
+import { PageShell } from "../components/PageShell";
 import { useAnalysis } from "../state/useAnalysis";
 import { COL_HS64_PRESET } from "../state/schema";
 import { configToSearch } from "../state/urlState";
@@ -26,12 +27,11 @@ export function Builder() {
   };
 
   return (
-    <section
+    <PageShell
+      testId="builder-view"
+      titleKey="nav.builder"
       className="builder analysis-page"
-      data-testid="builder-view"
-      aria-labelledby="builder-title"
     >
-      <h1 id="builder-title">{t("nav.builder")}</h1>
       <p>{t("builderIntro")}</p>
       <AnalysisSummary />
       <p className="note">{t("builderHint")}</p>
@@ -47,6 +47,6 @@ export function Builder() {
           {t("openRanking")}
         </Link>
       </p>
-    </section>
+    </PageShell>
   );
 }

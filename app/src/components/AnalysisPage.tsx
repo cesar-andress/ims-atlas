@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "../i18n";
 import { useAnalysis } from "../state/useAnalysis";
 import { COL_HS64_PRESET } from "../state/schema";
+import { configToSearch, pathForView } from "../state/urlState";
+import { isAnalysisReady } from "../state/views";
 import { AnalysisSummary } from "./AnalysisSummary";
 import type { RankingViewModel } from "../ranking/rankingEngine";
 
@@ -33,7 +35,11 @@ export function AnalysisPage({
   const { t, i18n } = useTranslation();
   const { config, setConfig } = useAnalysis();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
-  const ready = Boolean(config.origin && config.hs && config.year);
+  const ready = isAnalysisReady(config);
+  const builderTo = {
+    pathname: pathForView("builder"),
+    search: configToSearch({ ...config, view: "builder" }),
+  };
 
   return (
     <section
@@ -62,7 +68,7 @@ export function AnalysisPage({
         <div className="analysis-empty" data-testid="analysis-empty">
           <p>{t("analysisNeedConfig")}</p>
           <AnalysisSummary />
-          <p>
+          <p className="analysis-actions">
             <button
               type="button"
               data-testid="analysis-load-preset"
@@ -76,9 +82,7 @@ export function AnalysisPage({
             >
               {t("presetColHs64")}
             </button>{" "}
-            <Link to="/builder" onClick={() => setConfig({ view: "builder" })}>
-              {t("nav.builder")}
-            </Link>
+            <Link to={builderTo}>{t("nav.builder")}</Link>
           </p>
         </div>
       ) : null}
