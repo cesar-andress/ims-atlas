@@ -6,6 +6,10 @@ All notable changes to IMS Atlas are documented in this file.
 
 ### Added
 
+- Phase I ABIERTO/CERRADO: `access_mode` in `config/deployment.yaml`, dual
+  stores under `data/store/{abierta,cerrada}`, taint rule, Entrar/Acceso equipo
+  header, `/privacidad`, deploy/access Authelia scaffolding, `/datos-cerrados/`
+  nginx path (auth at Caddy edge).
 - Phase D verifiable data: cell provenance (`provenance.parquet` /
   `provenance.jsonl`), `SHA256SUMS` + `atlas-etl verify-release`,
   `make reproduce-release` / `docs/reproduce.md`, seeded

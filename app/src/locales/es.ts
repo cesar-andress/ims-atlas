@@ -48,6 +48,41 @@ const es = {
   permalinkState: "Config del permalink",
   loading: "Cargando…",
   navMore: "Más",
+  access: {
+    login: "Entrar",
+    logout: "Salir",
+    requestAccess: "Solicitar acceso",
+    teamBadge: "Acceso equipo",
+    sessionExpired: "Su sesión ha caducado.",
+    dismissToast: "Cerrar aviso",
+    badgeAbierta: "Abierta",
+    badgeCerrada: "Cerrada",
+    catalogTeamOnly: "Disponible con acceso del equipo",
+  },
+  privacy: {
+    intro:
+      "Cómo funciona el acceso a datos cerrados, qué guarda el portal de identidad y cómo solicitar la eliminación de datos.",
+    autheliaTitle: "Portal de identidad (Authelia)",
+    autheliaBody:
+      "El acceso del equipo a datos cerrados se gestiona con Authelia en auth.aiserv.es. El portal solo almacena lo necesario para autenticar y auditar el acceso.",
+    store: {
+      username: "Nombre de usuario (identificador de acceso)",
+      name: "Nombre para mostrar",
+      email: "Correo de contacto",
+      passwordHash: "Contraseña hasheada (nunca en texto plano)",
+      totp: "Secreto TOTP si está activada la verificación en dos pasos",
+      loginTimestamps: "Marcas de tiempo de inicio de sesión para auditoría",
+    },
+    whoTitle: "Quién puede acceder a estos datos",
+    whoBody:
+      "El acceso administrativo a los registros de usuario de Authelia en este despliegue está limitado a César Andrés (operador del sitio).",
+    deletionTitle: "Solicitudes de eliminación",
+    deletionBody: "Para solicitar la eliminación de su cuenta en Authelia, escriba a",
+    deletionLink: "el administrador del sitio",
+    analyticsTitle: "Analítica",
+    analyticsBody:
+      "Esta aplicación no ejecuta analítica de terceros ni seguimiento conductual en el navegador.",
+  },
   transparencyIntro:
     "Frescura, QA y última ejecución del pipeline: valores solo desde status/*.json.",
   transparencyNav: "Páginas de transparencia",
@@ -134,6 +169,7 @@ const es = {
   transparencyLastRunStatus: "Estado de la última ejecución",
   transparencyNSources: "Fuentes",
   transparencyNVariables: "Variables",
+  transparencyAccess: "Almacén de acceso",
   transparencyPublisher: "Editor",
   transparencyLicence: "Licencia",
   transparencyCadence: "Cadencia",

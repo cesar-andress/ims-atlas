@@ -14,6 +14,8 @@ export {
   type YesNoUnknown,
 } from "./gate.js";
 
+export { taint, type StoreKind } from "./access.js";
+
 export type {
   Direction,
   FactorId,

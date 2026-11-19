@@ -35,6 +35,7 @@ export type TransparencySource = {
   rights?: Record<string, unknown>;
   freshness?: Record<string, unknown>;
   release_version?: string | null;
+  store?: "abierta" | "cerrada" | null;
 };
 
 export type TransparencyVariable = {

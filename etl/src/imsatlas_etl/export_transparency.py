@@ -8,6 +8,7 @@ import re
 from pathlib import Path
 from typing import Any
 
+from imsatlas_etl.access import source_store, source_store_reason
 from imsatlas_etl.catalog import load_catalog
 from imsatlas_etl.paths import repo_root
 from imsatlas_etl.pipeline.changes import (
@@ -150,6 +151,8 @@ def _sources_payload(
                     "terms_changed": terms_changed_for_source(src),
                 },
                 "release_version": versions.get(sid),
+                "store": source_store(rights),
+                "store_reason": source_store_reason(rights),
             },
         )
     return {

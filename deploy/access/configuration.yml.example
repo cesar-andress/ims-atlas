@@ -1,0 +1,89 @@
+# IMS Atlas — Authelia example (vpn-aplicaciones / auth.aiserv.es).
+# Copy to /opt/services/authelia/configuration.yml and load secrets via *_FILE env vars.
+# Validate: docker run --rm -v /opt/services/authelia:/config authelia/authelia:latest \
+#   authelia config validate --config /config/configuration.yml
+
+theme: auto
+default_2fa_method: totp
+
+# Authelia v4.38+ — set language for the portal UI
+identity_validation:
+  reset_password:
+    jwt_secret: 'REPLACE_VIA_AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE'
+
+server:
+  address: 'tcp://0.0.0.0:9091/'
+  endpoints:
+    authz:
+      forward-auth:
+        implementation: 'ForwardAuth'
+
+log:
+  level: info
+
+totp:
+  issuer: 'IMS Atlas'
+  period: 30
+  skew: 1
+
+authentication_backend:
+  file:
+    path: /config/users_database.yml
+    password:
+      algorithm: argon2
+      argon2:
+        variant: argon2id
+        iterations: 3
+        parallelism: 4
+        memory: 65536
+
+access_control:
+  default_policy: deny
+  rules:
+    - domain: 'atlas.aiserv.es'
+      policy: two_factor
+      subject:
+        - 'group:equipo'
+      resources:
+        - '^/datos-cerrados/.*$'
+
+session:
+  name: authelia_session
+  same_site: lax
+  inactivity: 30m
+  expiration: 12h
+  remember_me: 1M
+  # secret via AUTHELIA_SESSION_SECRET_FILE
+  secret: insecure_session_secret_for_validation_only
+  cookies:
+    - domain: 'aiserv.es'
+      authelia_url: 'https://auth.aiserv.es'
+      default_redirection_url: 'https://atlas.aiserv.es/'
+      name: authelia_session
+      same_site: lax
+      inactivity: 30m
+      expiration: 12h
+      remember_me: 1M
+
+regulation:
+  modes:
+    - user
+    - ip
+  max_retries: 3
+  find_time: 2m
+  ban_time: 15m
+
+storage:
+  # encryption_key via AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE
+  encryption_key: insecure_encryption_key_for_validation_only
+  local:
+    path: /config/db.sqlite3
+
+# Production: switch to notifier.smtp (see README-access.md)
+notifier:
+  filesystem:
+    filename: /config/notification.txt
+
+# Portal language (Spanish): no server-wide default_locale — operators choose
+# es / es-ES in the Authelia UI (browser local storage).
+# https://www.authelia.com/reference/guides/internationalization/

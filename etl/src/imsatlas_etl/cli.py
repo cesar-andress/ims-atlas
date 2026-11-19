@@ -286,10 +286,20 @@ def run_cmd(
             "--live",
             help=(
                 "Live run (mode=live): check, extract, validate, transform, qa, "
-                "lineage. Exit 0 ok, 1 QA block/failure, 2 source unreachable."
+                "lineage, stores. Exit 0 ok, 1 QA block/failure, 2 source unreachable."
             ),
         ),
     ] = False,
+    access_mode: Annotated[
+        str | None,
+        typer.Option(
+            "--access-mode",
+            help=(
+                "ABIERTO (abierta sources only) or CERRADO (all). "
+                "Default: deployment.yaml"
+            ),
+        ),
+    ] = None,
 ) -> None:
     """Run the DAG: fixture mode (--fixture-root) or live mode (--live)."""
     from pathlib import Path
@@ -316,6 +326,7 @@ def run_cmd(
             sources=_parse_sources(source),
             fixture_root=Path(fixture_root) if fixture_root else None,
             force=force,
+            access_mode=access_mode,
         )
     except SourceUnavailableError as exc:
         typer.secho(str(exc), fg=typer.colors.RED, err=True)
@@ -326,7 +337,7 @@ def run_cmd(
     counts = log.get("steps", {}).get("transform", {}).get("row_counts", {})
     typer.echo(
         f"atlas-etl {__version__}: run {log['status']} mode={log['mode']} "
-        f"id={log['run_id']} rows={counts}",
+        f"access={log.get('access_mode')} id={log['run_id']} rows={counts}",
     )
     if log["status"] == "qa_blocked":
         typer.secho("QA blocked: see status/qa.md", fg=typer.colors.RED, err=True)

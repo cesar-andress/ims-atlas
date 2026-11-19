@@ -72,6 +72,7 @@ def test_live_run_records_mode_history_changes_and_runs_qa_lineage(
         "transform",
         "qa",
         "lineage",
+        "stores",
     ]
     assert log["steps"]["qa"]["report_status"] in {"pass", "warn"}
     assert (live_stubs / "status" / "lineage.json").is_file()

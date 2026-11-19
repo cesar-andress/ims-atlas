@@ -1,0 +1,42 @@
+# IMS Atlas — Caddy fragment for aiserv-server (vpn-server).
+# Merge into the existing atlas.aiserv.es server block; do not commit secrets here.
+#
+# Prerequisites:
+#   - auth.aiserv.es already reverse_proxy to Authelia on 10.204.0.3:9091
+#   - IMS Atlas nginx on 10.204.0.3:8121 (deploy/docker-compose.yml)
+#   - Authelia rule: domain atlas.aiserv.es, resources ^/datos-cerrados/.*$, group equipo, two_factor
+#
+# Docs: https://www.authelia.com/integration/proxies/caddy/
+
+# --- whoami (authenticate, then synthesize JSON from forward_auth headers) ---
+# Caddy passes Remote-* headers to the next handler after a successful forward_auth.
+# Place this route BEFORE the generic /datos-cerrados/* reverse_proxy if both exist.
+handle /datos-cerrados/whoami.json {
+	forward_auth 10.204.0.3:9091 {
+		uri /api/authz/forward-auth
+		copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
+	}
+	header Cache-Control "private, no-store"
+	header X-Robots-Tag "noindex, nofollow"
+	respond `{"username":"{http.request.header.Remote-User}","groups":"{http.request.header.Remote-Groups}","email":"{http.request.header.Remote-Email}","display_name":"{http.request.header.Remote-Name}"}` {
+		header Content-Type application/json
+	}
+}
+
+# --- cerrada store (team Parquet manifests and sidecars) ---
+@cerrado path /datos-cerrados/*
+handle @cerrado {
+	forward_auth 10.204.0.3:9091 {
+		uri /api/authz/forward-auth
+		copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
+	}
+	header Cache-Control "private, no-store"
+	header X-Robots-Tag "noindex, nofollow"
+	reverse_proxy 10.204.0.3:8121 {
+		header_up X-Atlas-Auth-User {http.request.header.Remote-User}
+		header_up X-Atlas-Auth-Groups {http.request.header.Remote-Groups}
+	}
+}
+
+# Optional: forward client IP for Authelia regulation / logs (tune trusted_proxies globally)
+# trusted_proxies 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16

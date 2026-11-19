@@ -1,0 +1,9 @@
+# TEST ONLY — e2e compose volume (not production users).
+users:
+  atlas_e2e_test:
+    disabled: false
+    displayname: "Atlas E2E Test"
+    password: "$argon2id$v=19$m=65536,t=3,p=4$d4BChQih4xiduTBZorENNg$wOtaD/Rwb/lCJitC0N2WzgrF7RnuwhZTjNsLoFllxGc"
+    email: e2e-test@example.invalid
+    groups:
+      - equipo

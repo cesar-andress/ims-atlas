@@ -4,6 +4,7 @@ import { version as APP_VERSION } from "@ims-atlas/core";
 import { AppNav } from "./AppNav";
 import { AppUpdateBanner } from "./AppUpdateBanner";
 import { PermalinkLink } from "./PermalinkLink";
+import { AccessMenu } from "./AccessMenu";
 import { UpdatesNewsPill } from "./UpdatesNewsPill";
 import { dataConfig } from "../dataConfig";
 import { useAnalysis } from "../state/useAnalysis";
@@ -40,6 +41,7 @@ export function AppHeader() {
       <AppNav />
       <UpdatesNewsPill />
       <div className="controls">
+        <AccessMenu />
         <label>
           {t("language")}{" "}
           <select
@@ -81,6 +83,7 @@ export function AppFooter() {
         <a href={BACKTEST_URL} rel="noopener noreferrer" target="_blank">
           {t("footerBacktest")}
         </a>
+        <a href="/privacidad">{t("nav.privacy")}</a>
       </nav>
     </footer>
   );

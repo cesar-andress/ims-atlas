@@ -1,0 +1,9 @@
+{
+  "access_mode": "CERRADO",
+  "admin_mailto": "mailto:cesar.andres@unir.net",
+  "auth": {
+    "portal_url": "https://auth.aiserv.es",
+    "whoami_path": "/datos-cerrados/whoami.json",
+    "cerrada_base_path": "/datos-cerrados"
+  }
+}

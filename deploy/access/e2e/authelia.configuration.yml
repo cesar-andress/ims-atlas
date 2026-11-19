@@ -1,0 +1,69 @@
+# TEST ONLY — local access e2e stack (insecure inline secrets).
+# Requires /etc/hosts: 127.0.0.1 atlas.e2e.local auth.atlas.e2e.local
+theme: auto
+default_2fa_method: totp
+
+server:
+  address: "tcp://0.0.0.0:9091/"
+  endpoints:
+    authz:
+      forward-auth:
+        implementation: "ForwardAuth"
+
+log:
+  level: warn
+
+totp:
+  issuer: "IMS Atlas"
+  period: 30
+
+authentication_backend:
+  file:
+    path: /config/users_database.yml
+    watch: true
+    password:
+      algorithm: argon2
+      argon2:
+        variant: argon2id
+        iterations: 3
+        parallelism: 4
+        memory: 65536
+
+access_control:
+  default_policy: deny
+  rules:
+    - domain: "atlas.e2e.local"
+      policy: one_factor
+      subject:
+        - "group:equipo"
+      resources:
+        - "^/datos-cerrados/.*$"
+
+session:
+  name: authelia_session
+  secret: e2e_insecure_session_secret_replace_in_production
+  expiration: 1h
+  inactivity: 30m
+  cookies:
+    - domain: "atlas.e2e.local"
+      authelia_url: "https://auth.atlas.e2e.local"
+      default_redirection_url: "https://atlas.e2e.local/datos-cerrados/manifest.json"
+      name: authelia_session
+
+regulation:
+  max_retries: 3
+  find_time: 2m
+  ban_time: 15m
+
+storage:
+  encryption_key: e2e_insecure_storage_encryption_key_32_chars_min
+  local:
+    path: /config/db.sqlite3
+
+notifier:
+  filesystem:
+    filename: /config/notification.txt
+
+identity_validation:
+  reset_password:
+    jwt_secret: e2e_insecure_reset_jwt_secret

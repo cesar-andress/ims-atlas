@@ -1,5 +1,7 @@
 import { useMemo } from "react";
+import { AccessBadge } from "../../components/AccessBadge";
 import { TransparencyShell } from "../../components/TransparencyShell";
+import { resolveSourceStore, type StoreKind } from "../../auth/accessStore";
 import { VerifyDatumPanel } from "../../components/VerifyDatumPanel";
 import {
   loadSources,
@@ -55,7 +57,12 @@ export function DataVariable() {
     const cadenceBySource = Object.fromEntries(
       sources.sources.map((s) => [s.id, s.update_cadence ?? null]),
     );
-    return { rows: vars.variables, cadenceBySource, isFixture: vars.is_fixture };
+    return {
+      rows: vars.variables,
+      cadenceBySource,
+      sources,
+      isFixture: vars.is_fixture,
+    };
   }, []);
   const rows = data?.rows;
 
@@ -65,6 +72,20 @@ export function DataVariable() {
     if (!id) return rows[0] ?? null;
     return rows.find((v) => v.id === id) ?? null;
   }, [rows, config.focusVariable]);
+
+  const variableStore = useMemo((): StoreKind => {
+    if (!selected || !data) return "cerrada";
+    const ids = selected.source_ids ?? [];
+    if (ids.length === 0) return "cerrada";
+    const byId = Object.fromEntries(data.sources.sources.map((s) => [s.id, s]));
+    let rank = 0;
+    for (const sid of ids) {
+      const src = byId[sid];
+      const store = resolveSourceStore(src?.store ?? null, src?.rights ?? null);
+      if (store === "cerrada") rank = 1;
+    }
+    return rank >= 1 ? "cerrada" : "abierta";
+  }, [selected, data]);
 
   const selectedCadence = useMemo(() => {
     if (!selected || !data?.cadenceBySource) return null;
@@ -108,6 +129,15 @@ export function DataVariable() {
 
           {selected ? (
             <div data-testid="variable-detail" data-variable-id={selected.id}>
+              <div className="variable-access-header">
+                <AccessBadge
+                  kind="variable"
+                  store={variableStore}
+                  downloadAllowed={selected.download_allowed ?? null}
+                  gateIncluded={selected.gate?.included ?? null}
+                  gateDecision={selected.gate?.decision ?? null}
+                />
+              </div>
               <dl className="status-grid">
                 <dt>ID</dt>
                 <dd data-from-json="id">{selected.id}</dd>

@@ -10,6 +10,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from imsatlas_etl.access import AccessMode, access_mode_from_deployment, source_store
 from imsatlas_etl.pipeline.changes import (
     append_history,
     history_entry,
@@ -21,8 +22,10 @@ from imsatlas_etl.pipeline.extract import run_extract
 from imsatlas_etl.pipeline.io_paths import PIPELINE_SOURCES, runs_dir
 from imsatlas_etl.pipeline.lineage import write_lineage
 from imsatlas_etl.pipeline.qa import run_qa
+from imsatlas_etl.pipeline.stores import write_stores
 from imsatlas_etl.pipeline.transform import run_transform
 from imsatlas_etl.pipeline.validate import run_validate
+from imsatlas_etl.sources import sources_by_id
 
 
 def _now_iso() -> str:
@@ -47,6 +50,25 @@ def _record_run_changes(
     return record_changes(run_id, mode=mode, results=extracted, root=root)
 
 
+def _sources_for_access_mode(
+    requested: list[str] | None,
+    access_mode: AccessMode,
+) -> list[str]:
+    base = list(requested) if requested else list(PIPELINE_SOURCES)
+    if access_mode == "CERRADO":
+        return base
+    try:
+        registry = sources_by_id()
+    except FileNotFoundError:
+        # ATLAS_ROOT test worlds may omit catalog/; cannot filter abierta.
+        return base
+    return [
+        sid
+        for sid in base
+        if source_store((registry.get(sid) or {}).get("rights")) == "abierta"
+    ]
+
+
 def run_pipeline(
     *,
     steps: list[str] | None = None,
@@ -54,6 +76,7 @@ def run_pipeline(
     fixture_root: Path | None = None,
     root: Path | None = None,
     force: bool = False,
+    access_mode: AccessMode | str | None = None,
 ) -> dict[str, Any]:
     """
     Run selected pipeline steps in DAG order.
@@ -62,23 +85,36 @@ def run_pipeline(
     Default steps: check, extract, validate, transform (fixture) and, in live
     mode, additionally qa and lineage. A QA block does not raise: the log
     status becomes ``qa_blocked`` so callers can map it to an exit code.
+
+    ``access_mode`` ABIERTO runs only abierta sources; CERRADO runs all.
+    After a full transform, curated tables are split into data/store/*.
     """
-    order = ["check", "extract", "validate", "transform", "qa", "lineage"]
+    order = ["check", "extract", "validate", "transform", "qa", "lineage", "stores"]
     mode = "fixture" if fixture_root is not None else "live"
+    resolved_mode = (
+        access_mode_from_deployment(override=str(access_mode))
+        if access_mode is not None
+        else access_mode_from_deployment(root=root)
+    )
     for step in steps or []:
         if step not in order:
             raise ValueError(f"unknown step {step!r}; expected one of {order}")
     if steps is None:
-        effective = order if mode == "live" else order[:4]
+        effective = (
+            ["check", "extract", "validate", "transform", "qa", "lineage", "stores"]
+            if mode == "live"
+            else ["check", "extract", "validate", "transform", "stores"]
+        )
     else:
         effective = [s for s in order if s in steps]
 
-    selected_sources = list(sources) if sources else list(PIPELINE_SOURCES)
+    selected_sources = _sources_for_access_mode(sources, resolved_mode)
     run_id = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:8]
     log: dict[str, Any] = {
         "run_id": run_id,
         "started_at": _now_iso(),
         "sources": selected_sources,
+        "access_mode": resolved_mode,
         "mode": mode,
         "is_fixture": mode == "fixture",
         "fixture_mode": fixture_root is not None,
@@ -189,6 +225,20 @@ def run_pipeline(
                 log["steps"]["lineage"] = {
                     "status": "ok",
                     "duration_s": round(dur, 4),
+                }
+        if "stores" in effective:
+            transform_ok = log["steps"].get("transform", {}).get("status") == "ok"
+            if not transform_ok:
+                log["steps"]["stores"] = {
+                    "status": "skipped",
+                    "reason": "stores require a successful transform",
+                }
+            else:
+                stores_report, dur = _timed(lambda: write_stores(root=root))
+                log["steps"]["stores"] = {
+                    "status": "ok",
+                    "duration_s": round(dur, 4),
+                    "stores": stores_report.get("stores"),
                 }
         qa_blocked = log["steps"].get("qa", {}).get("status") == "block"
         log["status"] = "qa_blocked" if qa_blocked else "ok"

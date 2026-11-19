@@ -46,6 +46,8 @@
         "share_alike": "unknown",
         "use_research": "unknown"
       },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
       "terms_url": "https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets",
       "update_cadence": "annual",
       "version_detection": "WDI release year / API meta lastupdated"
@@ -91,6 +93,8 @@
         "share_alike": "unknown",
         "use_research": "unknown"
       },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
       "terms_url": "https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets",
       "update_cadence": "annual",
       "version_detection": "WGI release year"
@@ -136,6 +140,8 @@
         "share_alike": "unknown",
         "use_research": "unknown"
       },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
       "terms_url": "https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets",
       "update_cadence": "biennial",
       "version_detection": "LPI survey wave year"
@@ -181,6 +187,8 @@
         "share_alike": "unknown",
         "use_research": "unknown"
       },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
       "terms_url": "https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele.asp",
       "update_cadence": "annual",
       "version_detection": "BACI HS version + year in release filename"
@@ -226,6 +234,8 @@
         "share_alike": "unknown",
         "use_research": "unknown"
       },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
       "terms_url": "https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele.asp",
       "update_cadence": "irregular",
       "version_detection": "Gravity dataset version string"
@@ -271,6 +281,8 @@
         "share_alike": "unknown",
         "use_research": "unknown"
       },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
       "terms_url": "https://wits.worldbank.org/WITS/WITS/Restricted/Login.aspx",
       "update_cadence": "annual",
       "version_detection": "TRAINS / WITS release metadata"
@@ -316,6 +328,8 @@
         "share_alike": "unknown",
         "use_research": "unknown"
       },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
       "terms_url": "https://geerthofstede.com/research-and-vsm/dimension-data-matrix/",
       "update_cadence": "static",
       "version_detection": "file version / publication date on page"
@@ -361,6 +375,8 @@
         "share_alike": "unknown",
         "use_research": "unknown"
       },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
       "terms_url": "https://www.itu.int/en/terms-of-use/Pages/default.aspx",
       "update_cadence": "annual",
       "version_detection": "ITU DataHub release year"
@@ -406,6 +422,8 @@
         "share_alike": "unknown",
         "use_research": "unknown"
       },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
       "terms_url": "https://www.ef.com/wwen/epi/",
       "update_cadence": "annual",
       "version_detection": "EF EPI edition year (from release filename / landing)"
@@ -451,6 +469,8 @@
         "share_alike": "unknown",
         "use_research": "unknown"
       },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
       "terms_url": "https://odin.opendatawatch.com/",
       "update_cadence": "biennial",
       "version_detection": "ODIN edition year"
@@ -496,6 +516,8 @@
         "share_alike": "unknown",
         "use_research": "unknown"
       },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
       "terms_url": "https://thegedi.org/",
       "update_cadence": "irregular",
       "version_detection": "GEDI / GEI release year"
@@ -541,6 +563,8 @@
         "share_alike": "unknown",
         "use_research": "unknown"
       },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
       "terms_url": "https://www.wipo.int/en/web/copyright",
       "update_cadence": "annual",
       "version_detection": "GII edition year"
@@ -586,6 +610,8 @@
         "share_alike": "unknown",
         "use_research": "unknown"
       },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
       "terms_url": "https://www.startupblink.com/",
       "update_cadence": "annual",
       "version_detection": "ranking year"
@@ -631,6 +657,8 @@
         "share_alike": "unknown",
         "use_research": "unknown"
       },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
       "terms_url": "https://epi.yale.edu/",
       "update_cadence": "biennial",
       "version_detection": "EPI edition year"

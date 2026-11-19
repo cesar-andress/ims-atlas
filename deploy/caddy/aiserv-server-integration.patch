@@ -1,0 +1,14 @@
+--- a/caddy/Caddyfile
++++ b/caddy/Caddyfile
+@@
+ # IMS Atlas — apply manually on aiserv-server after review.
+ # This patch is illustrative; line numbers differ on the live Caddyfile.
++# Source: ims-atlas deploy/caddy/atlas-datos-cerrados.snippet
+ #
+ # 1. Inside the atlas.aiserv.es site block, import or paste handles from the snippet.
+ # 2. Ensure auth.aiserv.es block still reverse_proxies to 10.204.0.3:9091.
+ # 3. Run ./scripts/deploy-caddy.sh on vpn-server.
+ 
++# Example import (if snippets live under /etc/caddy/ims-atlas/):
++# import /etc/caddy/ims-atlas/atlas-datos-cerrados.snippet
++

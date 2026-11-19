@@ -11,6 +11,9 @@ export function Docs() {
   return (
     <PageShell testId="docs-view" titleKey="nav.docs" className="docs-page">
       <p className="muted">{t("docsIntro")}</p>
+      <p className="small">
+        <a href="/privacidad">{t("nav.privacy")}</a>
+      </p>
       <nav className="docs-toc" aria-label={t("docsToc")} data-testid="docs-toc">
         {SECTIONS.map((id) => (
           <a key={id} href={`#docs-${id}`}>

@@ -1,0 +1,193 @@
+#!/usr/bin/env bash
+# Manage Authelia file users for IMS Atlas (host paths outside git).
+set -euo pipefail
+
+AUTHELIA_CONTAINER="${AUTHELIA_CONTAINER:-authelia}"
+AUTHELIA_DATA_DIR="${AUTHELIA_DATA_DIR:-/opt/services/authelia}"
+USERS_FILE="${USERS_FILE:-${AUTHELIA_DATA_DIR}/users_database.yml}"
+AUTHELIA_IMAGE="${AUTHELIA_IMAGE:-authelia/authelia:latest}"
+DEFAULT_GROUP="${DEFAULT_GROUP:-equipo}"
+
+usage() {
+  cat <<'EOF'
+Usage:
+  atlas-user add    <username> <display_name> <email> [password]
+  atlas-user disable <username>
+  atlas-user enable  <username>
+  atlas-user remove  <username>
+  atlas-user reset   <username> [password]
+
+Environment:
+  AUTHELIA_DATA_DIR   Base dir (default: /opt/services/authelia)
+  USERS_FILE          Users YAML (default: $AUTHELIA_DATA_DIR/users_database.yml)
+  AUTHELIA_CONTAINER  Running container for hash via exec (default: authelia)
+  AUTHELIA_IMAGE      Fallback image for hash (default: authelia/authelia:latest)
+  DEFAULT_GROUP       Group for new users (default: equipo)
+
+Requires: python3 with PyYAML (python3-yaml / pip install pyyaml).
+EOF
+}
+
+need_python() {
+  if ! python3 -c 'import yaml' 2>/dev/null; then
+    echo "atlas-user: install PyYAML (e.g. apt install python3-yaml)" >&2
+    exit 1
+  fi
+}
+
+hash_password() {
+  local pw="$1"
+  local digest=""
+  if docker ps --format '{{.Names}}' 2>/dev/null | grep -qx "$AUTHELIA_CONTAINER"; then
+    digest="$(docker exec "$AUTHELIA_CONTAINER" authelia crypto hash generate argon2 --password "$pw" 2>/dev/null \
+      | awk -F': ' '/^Digest:/ {print $2; exit}')"
+  fi
+  if [[ -z "$digest" ]]; then
+    digest="$(docker run --rm "$AUTHELIA_IMAGE" authelia crypto hash generate argon2 --password "$pw" 2>/dev/null \
+      | awk -F': ' '/^Digest:/ {print $2; exit}')"
+  fi
+  if [[ -z "$digest" ]]; then
+    echo "atlas-user: failed to generate argon2 hash (is Docker available?)" >&2
+    exit 1
+  fi
+  printf '%s' "$digest"
+}
+
+read_password() {
+  local pw="${1:-}"
+  if [[ -n "$pw" ]]; then
+    printf '%s' "$pw"
+    return
+  fi
+  if [[ -t 0 ]]; then
+    read -r -s -p "Password: " pw
+    echo >&2
+    read -r -s -p "Confirm: " pw2
+    echo >&2
+    if [[ "$pw" != "$pw2" ]]; then
+      echo "atlas-user: passwords do not match" >&2
+      exit 1
+    fi
+    printf '%s' "$pw"
+    return
+  fi
+  echo "atlas-user: password required as argument when stdin is not a tty" >&2
+  exit 1
+}
+
+py_edit() {
+  need_python
+  USERS_FILE="$USERS_FILE" python3 - "$@" <<'PY'
+import os
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+import yaml
+
+path = Path(os.environ["USERS_FILE"])
+op = sys.argv[1]
+user = sys.argv[2]
+
+data = {"users": {}}
+if path.exists():
+    with path.open(encoding="utf-8") as f:
+        data = yaml.safe_load(f) or {}
+data.setdefault("users", {})
+
+users = data["users"]
+
+def save():
+    path.parent.mkdir(parents=True, exist_ok=True)
+    backup = path.with_suffix(path.suffix + f".bak-{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}")
+    if path.exists():
+        backup.write_text(path.read_text(encoding="utf-8"), encoding="utf-8")
+    header = "# Managed by deploy/access/atlas-user — do not commit.\n"
+    with path.open("w", encoding="utf-8") as f:
+        f.write(header)
+        yaml.safe_dump(data, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
+
+if op == "disable":
+    if user not in users:
+        sys.exit(f"user {user!r} not found")
+    users[user]["disabled"] = True
+    save()
+elif op == "enable":
+    if user not in users:
+        sys.exit(f"user {user!r} not found")
+    users[user]["disabled"] = False
+    save()
+elif op == "remove":
+    if user not in users:
+        sys.exit(f"user {user!r} not found")
+    del users[user]
+    save()
+elif op in ("add", "reset"):
+  if op == "add" and user in users:
+      sys.exit(f"user {user!r} already exists (use reset)")
+  digest = sys.argv[3]
+  if op == "add":
+      display = sys.argv[4]
+      email = sys.argv[5]
+      users[user] = {
+          "disabled": False,
+          "displayname": display,
+          "password": digest,
+          "email": email,
+          "groups": [os.environ.get("DEFAULT_GROUP", "equipo")],
+      }
+  else:
+      if user not in users:
+          sys.exit(f"user {user!r} not found")
+      users[user]["password"] = digest
+      users[user]["disabled"] = False
+  save()
+else:
+    sys.exit(f"unknown op {op!r}")
+PY
+}
+
+main() {
+  local cmd="${1:-}"
+  if [[ -z "$cmd" ]]; then
+    usage
+    exit 1
+  fi
+  case "$cmd" in
+    -h|--help|help)
+      usage
+      exit 0
+      ;;
+    add)
+      [[ $# -ge 4 ]] || { usage; exit 1; }
+      local user="$2" display="$3" email="$4"
+      local pw
+      pw="$(read_password "${5:-}")"
+      local digest
+      digest="$(hash_password "$pw")"
+      DEFAULT_GROUP="$DEFAULT_GROUP" py_edit add "$user" "$digest" "$display" "$email"
+      echo "atlas-user: added $user -> $USERS_FILE"
+      ;;
+    reset)
+      [[ $# -ge 2 ]] || { usage; exit 1; }
+      local user="$2"
+      local pw
+      pw="$(read_password "${3:-}")"
+      local digest
+      digest="$(hash_password "$pw")"
+      py_edit reset "$user" "$digest"
+      echo "atlas-user: reset password for $user"
+      ;;
+    disable|enable|remove)
+      [[ $# -ge 2 ]] || { usage; exit 1; }
+      py_edit "$cmd" "$2"
+      echo "atlas-user: $cmd $2 ok"
+      ;;
+    *)
+      usage
+      exit 1
+      ;;
+  esac
+}
+
+main "$@"

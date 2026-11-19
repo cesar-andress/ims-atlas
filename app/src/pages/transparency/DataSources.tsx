@@ -1,3 +1,4 @@
+import { AccessBadge } from "../../components/AccessBadge";
 import { CopyUrlButton } from "../../components/CopyUrlButton";
 import { FixtureStatusBanner } from "../../components/FixtureStatusBanner";
 import { TransparencyShell } from "../../components/TransparencyShell";
@@ -30,6 +31,7 @@ export function DataSources() {
               <thead>
                 <tr>
                   <th>ID</th>
+                  <th>{t("transparencyAccess")}</th>
                   <th>{t("transparencyPublisher")}</th>
                   <th>{t("transparencyLicence")}</th>
                   <th>{t("transparencyCadence")}</th>
@@ -54,6 +56,13 @@ export function DataSources() {
                   return (
                     <tr key={s.id} data-source-id={s.id}>
                       <td data-from-json="id">{s.id}</td>
+                      <td>
+                        <AccessBadge
+                          kind="source"
+                          store={s.store ?? null}
+                          rights={rights}
+                        />
+                      </td>
                       <td data-from-json="publisher">{displayCell(s.publisher)}</td>
                       <td data-from-json="licence_id">
                         {displayCell(rights.licence_id)}

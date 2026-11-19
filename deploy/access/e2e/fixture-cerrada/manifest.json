@@ -1,0 +1,6 @@
+{
+  "store": "cerrada",
+  "access_mode": "CERRADO",
+  "note": "TEST ONLY fixture for deploy/docker-compose.access-e2e.yml",
+  "files": {}
+}

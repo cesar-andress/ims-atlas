@@ -74,6 +74,9 @@ const DataUpdates = lazy(() =>
     default: m.DataUpdates,
   })),
 );
+const Privacy = lazy(() =>
+  import("./pages/Privacy").then((m) => ({ default: m.Privacy })),
+);
 
 function RouteFallback() {
   const { t } = useTranslation();
@@ -123,6 +126,7 @@ function AppShell() {
           <Route path="/data/pipeline" element={<DataPipeline />} />
           <Route path="/data/releases" element={<DataReleases />} />
           <Route path="/data/updates" element={<DataUpdates />} />
+          <Route path="/privacidad" element={<Privacy />} />
         </Routes>
       </Suspense>
     </AppShellFrame>

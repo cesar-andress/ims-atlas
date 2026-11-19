@@ -19,6 +19,7 @@ export const navEn = {
   data_updates: "Updates",
   factors: "Factors",
   compare: "Compare",
+  privacy: "Privacy",
 } as const;
 
 export const navEs = {
@@ -42,4 +43,5 @@ export const navEs = {
   data_updates: "Novedades",
   factors: "Factores",
   compare: "Comparar",
+  privacy: "Privacidad",
 } as const;

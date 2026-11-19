@@ -68,6 +68,31 @@ def test_public_tree_has_no_byod_variable_values(subdir: str) -> None:
     )
 
 
+@pytest.mark.parametrize("subdir", ["app/public", "app/dist"])
+def test_public_tree_has_no_cerrada_store_payloads(subdir: str) -> None:
+    """ABIERTO static build must never ship cerrada store artefacts."""
+    root = repo_root() / subdir
+    if not root.is_dir():
+        pytest.skip(f"{subdir} not present")
+    # Path strings for /datos-cerrados/whoami.json are public config; forbid
+    # embedding the on-disk cerrada store layout or its parquet payloads.
+    forbidden = ("data/store/cerrada", "store/cerrada/country_year")
+    hits: list[str] = []
+    for path in root.rglob("*"):
+        if not path.is_file():
+            continue
+        if "store/cerrada" in path.as_posix():
+            hits.append(f"{path.relative_to(repo_root())}: path under store/cerrada")
+            continue
+        if path.suffix.lower() not in {".json", ".js", ".html", ".map", ".txt", ".md"}:
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for needle in forbidden:
+            if needle in text:
+                hits.append(f"{path.relative_to(repo_root())}: {needle}")
+    assert hits == [], "cerrada store payload in ABIERTO tree:\n" + "\n".join(hits)
+
+
 def test_public_col_hs64_demo_has_no_byod_raw_block() -> None:
     """Pending demo stub must not embed BYOD raw value keys."""
     path = repo_root() / "app/public/meta/col_hs64_demo.json"

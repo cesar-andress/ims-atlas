@@ -48,6 +48,41 @@ export const en = {
   permalinkState: "Permalink config",
   loading: "Loading…",
   navMore: "More",
+  access: {
+    login: "Sign in",
+    logout: "Sign out",
+    requestAccess: "Request access",
+    teamBadge: "Team access",
+    sessionExpired: "Your session has expired.",
+    dismissToast: "Dismiss",
+    badgeAbierta: "Open",
+    badgeCerrada: "Closed",
+    catalogTeamOnly: "Available with team access",
+  },
+  privacy: {
+    intro:
+      "How closed-data sign-in works, what the identity portal stores, and how to request deletion.",
+    autheliaTitle: "Identity portal (Authelia)",
+    autheliaBody:
+      "Team login for closed data is handled by Authelia at auth.aiserv.es. The portal stores only what is needed to authenticate users and audit access.",
+    store: {
+      username: "Username (sign-in identifier)",
+      name: "Display name",
+      email: "Contact email",
+      passwordHash: "Hashed password (never stored in plain text)",
+      totp: "TOTP shared secret when two-factor authentication is enabled",
+      loginTimestamps: "Login and session timestamps for security audit",
+    },
+    whoTitle: "Who can access this data",
+    whoBody:
+      "Administrative access to Authelia user records on this deployment is limited to César Andrés (site operator).",
+    deletionTitle: "Deletion requests",
+    deletionBody: "To request deletion of your Authelia account data, email",
+    deletionLink: "the site administrator",
+    analyticsTitle: "Analytics",
+    analyticsBody:
+      "This app does not run third-party analytics or behavioural tracking in the browser.",
+  },
   transparencyIntro:
     "Freshness, QA and last pipeline run — values loaded from status/*.json only.",
   transparencyNav: "Transparency pages",
@@ -133,6 +168,7 @@ export const en = {
   transparencyLastRunStatus: "Last run status",
   transparencyNSources: "Sources",
   transparencyNVariables: "Variables",
+  transparencyAccess: "Access store",
   transparencyPublisher: "Publisher",
   transparencyLicence: "Licence",
   transparencyCadence: "Cadence",

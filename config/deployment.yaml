@@ -1,7 +1,15 @@
-# Human deployment context for atlas.aiserv.es (SPEC §10.2).
+# Human deployment context for atlas.aiserv.es (SPEC §10.2 / §13).
 # commercial_context=true is conservative: the site is hosted by a company.
 commercial_context: true
 site: atlas.aiserv.es
+# AISERV host runs CERRADO (all sources). Third parties reproduce with ABIERTO
+# (abierta store only): atlas-etl run --access-mode ABIERTO
+access_mode: CERRADO
+admin_mailto: mailto:cesar.andres@unir.net
+auth:
+  portal_url: https://auth.aiserv.es
+  whoami_path: /datos-cerrados/whoami.json
+  cerrada_base_path: /datos-cerrados
 notes: >
   Hosted by AISERV SYSTEMS SLU. Treat redistribution rules as commercial-context
   until a human explicitly sets commercial_context=false.
