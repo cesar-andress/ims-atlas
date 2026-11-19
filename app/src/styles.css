@@ -944,6 +944,12 @@ main:has(.builder) {
   margin: 0.75rem 0 1.25rem;
 }
 
+.transparency-nav a.active {
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 .status-grid {
   display: grid;
   grid-template-columns: minmax(10rem, 16rem) 1fr;

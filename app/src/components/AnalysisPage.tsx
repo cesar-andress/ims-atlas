@@ -1,27 +1,28 @@
 import type { ReactNode } from "react";
 import { useTranslation } from "../i18n";
+import type { AnalysisModelError } from "../ranking/analysisError";
+import type { RankingViewModel } from "../ranking/rankingEngine";
 import { useAnalysis } from "../state/useAnalysis";
 import { COL_HS64_PRESET } from "../state/schema";
 import { isAnalysisReady } from "../state/views";
 import { AnalysisSummary } from "./AnalysisSummary";
 import { AnalysisTabs } from "./AnalysisTabs";
 import { PermalinkLink } from "./PermalinkLink";
-import type { RankingViewModel } from "../ranking/rankingEngine";
 
 type Props = {
   testId: string;
   titleKey: string;
   intro?: string | undefined;
   model: RankingViewModel | null;
-  error: string | null;
+  error: AnalysisModelError | null;
   /** Extra controls rendered under the context line when a model is ready. */
   controls?: ReactNode;
   children: (model: RankingViewModel) => ReactNode;
 };
 
 /**
- * Shared view shell for Ranking / Matrix / Market map:
- * title, analysis context, loading/error/empty gates, then content.
+ * Shared view shell for analysis workspace pages:
+ * title, tabs, context, loading/error/empty gates, then content.
  */
 export function AnalysisPage({
   testId,
@@ -36,6 +37,7 @@ export function AnalysisPage({
   const { config, replaceConfig } = useAnalysis();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
   const ready = isAnalysisReady(config);
+  const pending = error?.kind === "pending";
 
   return (
     <section
@@ -55,34 +57,25 @@ export function AnalysisPage({
 
       {controls}
 
-      {error ? (
-        <div
-          className={
-            error.includes("DATA_RELEASE_PENDING") ||
-            error.toLowerCase().includes("release pending")
-              ? "analysis-empty"
-              : "error"
-          }
-          role="alert"
-          data-testid={
-            error.includes("DATA_RELEASE_PENDING") ||
-            error.toLowerCase().includes("release pending")
-              ? "data-release-pending"
-              : "analysis-error"
-          }
-        >
-          <p>
-            {error.includes("DATA_RELEASE_PENDING") ||
-            error.toLowerCase().includes("release pending")
-              ? t("dataReleasePending")
-              : error}
+      {pending ? (
+        <div className="analysis-empty" role="alert" data-testid="data-release-pending">
+          <p>{t("dataReleasePending")}</p>
+          {error.message ? <p className="muted small">{error.message}</p> : null}
+          <p className="analysis-actions">
+            <PermalinkLink view="status">{t("nav.status")}</PermalinkLink>
+            {" · "}
+            <PermalinkLink view="catalog">{t("nav.catalog")}</PermalinkLink>
+            {" · "}
+            <PermalinkLink view="byod">{t("nav.byod")}</PermalinkLink>
+            {" · "}
+            <PermalinkLink view="data_releases">{t("nav.data_releases")}</PermalinkLink>
           </p>
-          {(error.includes("DATA_RELEASE_PENDING") ||
-            error.toLowerCase().includes("release pending")) && (
-            <p className="muted small">
-              {error.replace(/^DATA_RELEASE_PENDING:\s*/, "")}
-            </p>
-          )}
+        </div>
+      ) : null}
+
+      {error && error.kind === "error" ? (
+        <div className="error" role="alert" data-testid="analysis-error">
+          <p>{error.message}</p>
         </div>
       ) : null}
 
@@ -105,6 +98,8 @@ export function AnalysisPage({
               {t("presetColHs64")}
             </button>{" "}
             <PermalinkLink view="builder">{t("nav.builder")}</PermalinkLink>
+            {" · "}
+            <PermalinkLink view="status">{t("nav.status")}</PermalinkLink>
           </p>
         </div>
       ) : null}

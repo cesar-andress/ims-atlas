@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useAnalysis } from "../state/useAnalysis";
 import { isAnalysisReady } from "../state/views";
+import { analysisErrorFromUnknown, type AnalysisModelError } from "./analysisError";
 import { getCachedRanking } from "./rankingCache";
 import type { RankingRequest, RankingViewModel } from "./rankingEngine";
 
@@ -24,12 +25,12 @@ function rankingRequestKey(req: RankingRequest): string {
 /** Shared ranking model for Ranking / Matrix / Market map views. */
 export function useRankingModel(): {
   model: RankingViewModel | null;
-  error: string | null;
+  error: AnalysisModelError | null;
   loading: boolean;
 } {
   const { config } = useAnalysis();
   const [model, setModel] = useState<RankingViewModel | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<AnalysisModelError | null>(null);
   const [loading, setLoading] = useState(false);
   const ready = isAnalysisReady(config);
 
@@ -88,13 +89,7 @@ export function useRankingModel(): {
       .catch((err: unknown) => {
         if (!cancelled) {
           setModel(null);
-          const msg =
-            err instanceof Error
-              ? err.name === "DemoPanelPendingError"
-                ? `DATA_RELEASE_PENDING: ${err.message}`
-                : err.message
-              : String(err);
-          setError(msg);
+          setError(analysisErrorFromUnknown(err));
           setLoading(false);
         }
       });

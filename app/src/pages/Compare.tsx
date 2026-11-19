@@ -1,11 +1,7 @@
 import { lazy, Suspense, useMemo, useRef } from "react";
-import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
-import {
-  downloadChartPng,
-  downloadChartSvg,
-  downloadText,
-} from "../cite/exportDownload";
+import { ChartExportBar } from "../components/ChartExportBar";
+import { useTranslation } from "../i18n";
 import { useRankingModel } from "../ranking/useRankingModel";
 import type { RankingViewModel } from "../ranking/rankingEngine";
 
@@ -14,6 +10,23 @@ const Top10Chart = lazy(() =>
 );
 
 type ChartHandle = { getDataURL: (opts: object) => string };
+
+type SeriesRow = { name: string; value: number };
+type ComboRow = { name: string; total: number; factor: number };
+
+function csvBody(rows: SeriesRow[] | ComboRow[], mode: "value" | "combo"): string {
+  if (mode === "combo") {
+    const combo = rows as ComboRow[];
+    return (
+      [
+        "iso3,total,factor",
+        ...combo.map((r) => `${r.name},${r.total},${r.factor}`),
+      ].join("\n") + "\n"
+    );
+  }
+  const simple = rows as SeriesRow[];
+  return ["iso3,value", ...simple.map((r) => `${r.name},${r.value}`)].join("\n") + "\n";
+}
 
 function CompareBody({ model }: { model: RankingViewModel }) {
   const { t } = useTranslation();
@@ -61,48 +74,17 @@ function CompareBody({ model }: { model: RankingViewModel }) {
     [model, factorKey],
   );
 
-  function exportCsv(
-    filename: string,
-    rows: { name: string; value?: number; total?: number; factor?: number }[],
-  ) {
-    const hasCombo = rows.some((r) => r.total !== undefined);
-    const lines = hasCombo
-      ? ["iso3,total,factor", ...rows.map((r) => `${r.name},${r.total},${r.factor}`)]
-      : ["iso3,value", ...rows.map((r) => `${r.name},${r.value}`)];
-    downloadText(filename, lines.join("\n") + "\n", "text/csv");
-  }
-
   return (
     <div className="compare-grid" data-testid="compare-charts">
       <section data-testid="compare-total">
         <h2>{t("parityTop10Total")}</h2>
-        <div className="export-row">
-          <button
-            type="button"
-            data-testid="export-total-png"
-            onClick={() =>
-              totalRef.current && downloadChartPng(totalRef.current, "top10-total.png")
-            }
-          >
-            PNG
-          </button>
-          <button
-            type="button"
-            data-testid="export-total-svg"
-            onClick={() =>
-              totalRef.current && downloadChartSvg(totalRef.current, "top10-total.svg")
-            }
-          >
-            SVG
-          </button>
-          <button
-            type="button"
-            data-testid="export-total-csv"
-            onClick={() => exportCsv("top10-total.csv", topTotal)}
-          >
-            CSV
-          </button>
-        </div>
+        <ChartExportBar
+          testIdPrefix="total"
+          chartRef={totalRef}
+          pngName="top10-total.png"
+          svgName="top10-total.svg"
+          csv={{ filename: "top10-total.csv", body: csvBody(topTotal, "value") }}
+        />
         <Suspense fallback={<p className="muted">{t("loading")}</p>}>
           <Top10Chart
             title={t("parityTop10Total")}
@@ -118,35 +100,13 @@ function CompareBody({ model }: { model: RankingViewModel }) {
         <h2>
           {t("parityTop10Factor")}: {factorKey}
         </h2>
-        <div className="export-row">
-          <button
-            type="button"
-            data-testid="export-factor-png"
-            onClick={() =>
-              factorRef.current &&
-              downloadChartPng(factorRef.current, "top10-factor.png")
-            }
-          >
-            PNG
-          </button>
-          <button
-            type="button"
-            data-testid="export-factor-svg"
-            onClick={() =>
-              factorRef.current &&
-              downloadChartSvg(factorRef.current, "top10-factor.svg")
-            }
-          >
-            SVG
-          </button>
-          <button
-            type="button"
-            data-testid="export-factor-csv"
-            onClick={() => exportCsv("top10-factor.csv", topFactor)}
-          >
-            CSV
-          </button>
-        </div>
+        <ChartExportBar
+          testIdPrefix="factor"
+          chartRef={factorRef}
+          pngName="top10-factor.png"
+          svgName="top10-factor.svg"
+          csv={{ filename: "top10-factor.csv", body: csvBody(topFactor, "value") }}
+        />
         <Suspense fallback={<p className="muted">{t("loading")}</p>}>
           <Top10Chart
             title={`${t("parityTop10Factor")} (${factorKey})`}
@@ -160,33 +120,13 @@ function CompareBody({ model }: { model: RankingViewModel }) {
 
       <section data-testid="compare-combo">
         <h2>{t("parityTop10Combo")}</h2>
-        <div className="export-row">
-          <button
-            type="button"
-            data-testid="export-combo-png"
-            onClick={() =>
-              comboRef.current && downloadChartPng(comboRef.current, "top10-combo.png")
-            }
-          >
-            PNG
-          </button>
-          <button
-            type="button"
-            data-testid="export-combo-svg"
-            onClick={() =>
-              comboRef.current && downloadChartSvg(comboRef.current, "top10-combo.svg")
-            }
-          >
-            SVG
-          </button>
-          <button
-            type="button"
-            data-testid="export-combo-csv"
-            onClick={() => exportCsv("top10-combo.csv", topCombo)}
-          >
-            CSV
-          </button>
-        </div>
+        <ChartExportBar
+          testIdPrefix="combo"
+          chartRef={comboRef}
+          pngName="top10-combo.png"
+          svgName="top10-combo.svg"
+          csv={{ filename: "top10-combo.csv", body: csvBody(topCombo, "combo") }}
+        />
         <Suspense fallback={<p className="muted">{t("loading")}</p>}>
           <Top10Chart
             title={t("parityTop10Combo")}

@@ -122,7 +122,7 @@ const es = {
   builderIntro:
     "Configura origen, producto, año, candidatos, variables y pesos en el panel izquierdo.",
   builderHint:
-    "Hasta que haya datos redistribuibles verificados, el ranking usa el panel demo COL HS64 2023 (golden imsfe).",
+    "La publicación de datos pública está vacía (cero variables redistribuibles verificadas). Cargar el preset COL · HS64 · 2023 abre el workspace en estado pendiente hasta que haya panel real; use Catálogo, Estado o BYOD mientras tanto.",
   presetColHs64: "Cargar COL · HS64 · 2023 · IMSFE",
   openRanking: "Abrir ranking →",
   hs4Manual: "escribe un código de 4–6 dígitos en HS",

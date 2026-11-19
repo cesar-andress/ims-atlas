@@ -56,7 +56,11 @@ def test_byte_identical_rebuild_and_zenodo(tmp_path: Path) -> None:
 
 def test_config_data_json_matches_default_version() -> None:
     cfg = json.loads((repo_root() / "config" / "data.json").read_text(encoding="utf-8"))
-    current = (repo_root() / "data/release/public/CURRENT").read_text(encoding="utf-8").strip()
+    current = (
+        (repo_root() / "data/release/public/CURRENT")
+        .read_text(encoding="utf-8")
+        .strip()
+    )
     assert current.startswith("v")
     assert cfg["release_version"] == current.removeprefix("v")
     assert cfg["release_base_path"] == "/data"

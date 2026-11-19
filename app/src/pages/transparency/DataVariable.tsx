@@ -1,14 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "../../i18n";
-import { PageShell } from "../../components/PageShell";
-import { PermalinkLink } from "../../components/PermalinkLink";
+import { TransparencyShell } from "../../components/TransparencyShell";
+import { displayCell } from "../../formatDisplay";
 import { useAnalysis } from "../../state/useAnalysis";
 import { loadVariables, type TransparencyVariable } from "../../data/transparency";
-
-function str(v: unknown): string {
-  if (v === null || v === undefined || v === "") return "—";
-  return String(v);
-}
 
 function varLabel(v: TransparencyVariable, lang: "en" | "es"): string {
   const name = v.name;
@@ -46,14 +41,11 @@ export function DataVariable() {
   }, [rows, config.focusVariable]);
 
   return (
-    <PageShell testId="data-variable-view" titleKey="nav.data_variable">
-      <p className="muted">{t("transparencyVariableIntro")}</p>
-      <nav className="transparency-nav" aria-label={t("transparencyNav")}>
-        <PermalinkLink view="status">{t("nav.status")}</PermalinkLink>
-        <PermalinkLink view="data_sources">{t("nav.data_sources")}</PermalinkLink>
-        <PermalinkLink view="data_pipeline">{t("nav.data_pipeline")}</PermalinkLink>
-        <PermalinkLink view="data_releases">{t("nav.data_releases")}</PermalinkLink>
-      </nav>
+    <TransparencyShell
+      testId="data-variable-view"
+      titleKey="nav.data_variable"
+      introKey="transparencyVariableIntro"
+    >
       {error ? <p className="error">{error}</p> : null}
       {!rows ? (
         <p className="muted">{t("loading")}</p>
@@ -85,24 +77,28 @@ export function DataVariable() {
                 <dt>ID</dt>
                 <dd data-from-json="id">{selected.id}</dd>
                 <dt>{t("transparencyFactor")}</dt>
-                <dd data-from-json="factor">{str(selected.factor)}</dd>
+                <dd data-from-json="factor">{displayCell(selected.factor)}</dd>
                 <dt>{t("transparencyDirection")}</dt>
-                <dd data-from-json="direction">{str(selected.direction)}</dd>
+                <dd data-from-json="direction">{displayCell(selected.direction)}</dd>
                 <dt>{t("transparencyStatus")}</dt>
-                <dd data-from-json="status">{str(selected.status)}</dd>
+                <dd data-from-json="status">{displayCell(selected.status)}</dd>
                 <dt>{t("transparencyRedistributable")}</dt>
                 <dd data-from-json="redistributable">
-                  {str(selected.redistributable)}
+                  {displayCell(selected.redistributable)}
                 </dd>
                 <dt>{t("transparencyGate")}</dt>
-                <dd data-from-json="gate.decision">{str(selected.gate?.decision)}</dd>
+                <dd data-from-json="gate.decision">
+                  {displayCell(selected.gate?.decision)}
+                </dd>
                 <dt>{t("transparencyIncluded")}</dt>
-                <dd data-from-json="gate.included">{str(selected.gate?.included)}</dd>
+                <dd data-from-json="gate.included">
+                  {displayCell(selected.gate?.included)}
+                </dd>
                 <dt>{t("transparencyCitation")}</dt>
-                <dd data-from-json="citation">{str(selected.citation)}</dd>
+                <dd data-from-json="citation">{displayCell(selected.citation)}</dd>
                 <dt>{t("transparencyDownload")}</dt>
                 <dd data-from-json="download_allowed">
-                  {str(selected.download_allowed)}
+                  {displayCell(selected.download_allowed)}
                 </dd>
               </dl>
 
@@ -161,6 +157,6 @@ export function DataVariable() {
           )}
         </div>
       )}
-    </PageShell>
+    </TransparencyShell>
   );
 }

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "../../i18n";
-import { PageShell } from "../../components/PageShell";
-import { PermalinkLink } from "../../components/PermalinkLink";
+import { TransparencyShell } from "../../components/TransparencyShell";
 import {
   loadFreshness,
   loadIndex,
@@ -43,13 +42,11 @@ export function DataStatus() {
   }, []);
 
   return (
-    <PageShell testId="data-status-view" titleKey="nav.status">
-      <p className="muted">{t("transparencyIntro")}</p>
-      <nav className="transparency-nav" aria-label={t("transparencyNav")}>
-        <PermalinkLink view="data_sources">{t("nav.data_sources")}</PermalinkLink>
-        <PermalinkLink view="data_pipeline">{t("nav.data_pipeline")}</PermalinkLink>
-        <PermalinkLink view="data_releases">{t("nav.data_releases")}</PermalinkLink>
-      </nav>
+    <TransparencyShell
+      testId="data-status-view"
+      titleKey="nav.status"
+      introKey="transparencyIntro"
+    >
       {error ? <p className="error">{error}</p> : null}
       {!index || !qa || !freshness || !run ? (
         <p className="muted">{t("loading")}</p>
@@ -81,6 +78,6 @@ export function DataStatus() {
           <dd data-from-json="n_variables">{String(index.n_variables)}</dd>
         </dl>
       )}
-    </PageShell>
+    </TransparencyShell>
   );
 }

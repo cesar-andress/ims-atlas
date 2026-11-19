@@ -2,6 +2,7 @@ import { lazy, Suspense, useMemo } from "react";
 import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
 import { formatScore } from "../format";
+import { analysisErrorMessage } from "../ranking/analysisError";
 import { useRankingModel } from "../ranking/useRankingModel";
 import { useSmaaModel } from "../ranking/useSmaaModel";
 
@@ -18,7 +19,8 @@ export function Uncertainty() {
   const { t } = useTranslation();
   const { model, error: rankError, loading: rankLoading } = useRankingModel();
   const { smaaModel, error: smaaError, loading: smaaLoading } = useSmaaModel(model);
-  const combinedError = rankError ?? smaaError;
+  const combinedError =
+    rankError ?? (smaaError ? analysisErrorMessage(smaaError) : null);
   const loading = rankLoading || smaaLoading;
 
   const topRows = useMemo(() => {

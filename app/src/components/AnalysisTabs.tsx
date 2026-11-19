@@ -4,6 +4,7 @@ import { useAnalysis } from "../state/useAnalysis";
 import type { ViewId } from "../state/schema";
 
 const TABS: readonly ViewId[] = [
+  "builder",
   "ranking",
   "factors",
   "compare",

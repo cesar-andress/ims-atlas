@@ -121,7 +121,7 @@ export const en = {
   builderIntro:
     "Configure origin, product, year, candidates, variables and weights in the left panel.",
   builderHint:
-    "Until redistributable release data ships, rankings use the COL HS64 2023 demo panel (imsfe golden).",
+    "The public data release is empty (zero verified redistributable variables). Loading the COL · HS64 · 2023 preset opens the analysis workspace with a pending-release state until a real panel ships; use Catalog, Status or BYOD meanwhile.",
   presetColHs64: "Load COL · HS64 · 2023 · IMSFE",
   openRanking: "Open ranking →",
   hs4Manual: "type a 4–6 digit code in HS",

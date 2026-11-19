@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
-import { PageShell } from "../components/PageShell";
 import { listByodVariables } from "../byod/byodStore";
 import {
   apaCitation,
@@ -16,14 +15,12 @@ import { downloadText, rankingToCsv } from "../cite/exportDownload";
 import { useRankingModel } from "../ranking/useRankingModel";
 import { useAnalysis } from "../state/useAnalysis";
 import { configToSearch, pathForView } from "../state/urlState";
-import { isAnalysisReady } from "../state/views";
 import { version as APP_VERSION } from "@ims-atlas/core";
 import { dataConfig } from "../dataConfig";
 
 export function CiteExport() {
   const { t } = useTranslation();
   const { config } = useAnalysis();
-  const ready = isAnalysisReady(config);
   const { model, error } = useRankingModel();
   const [hash, setHash] = useState<string>("");
   const byodIds = listByodVariables().map((v) => v.id);
@@ -60,14 +57,6 @@ export function CiteExport() {
   const bib = bibtexCitation(citeInput);
   const ris = risCitation(citeInput);
   const py = pythonReproduceSnippet(citeInput);
-
-  if (!ready) {
-    return (
-      <PageShell testId="cite-view" titleKey="nav.cite">
-        <p className="muted">{t("analysisNeedConfig")}</p>
-      </PageShell>
-    );
-  }
 
   return (
     <AnalysisPage

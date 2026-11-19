@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "../../i18n";
-import { PageShell } from "../../components/PageShell";
-import { PermalinkLink } from "../../components/PermalinkLink";
+import { TransparencyShell } from "../../components/TransparencyShell";
 import { loadLatestRun, loadLineage } from "../../data/transparency";
 
 type Edge = { from: string; to: string };
@@ -58,13 +57,11 @@ export function DataPipeline() {
   }, [edges]);
 
   return (
-    <PageShell testId="data-pipeline-view" titleKey="nav.data_pipeline">
-      <p className="muted">{t("transparencyPipelineIntro")}</p>
-      <nav className="transparency-nav" aria-label={t("transparencyNav")}>
-        <PermalinkLink view="status">{t("nav.status")}</PermalinkLink>
-        <PermalinkLink view="data_sources">{t("nav.data_sources")}</PermalinkLink>
-        <PermalinkLink view="data_releases">{t("nav.data_releases")}</PermalinkLink>
-      </nav>
+    <TransparencyShell
+      testId="data-pipeline-view"
+      titleKey="nav.data_pipeline"
+      introKey="transparencyPipelineIntro"
+    >
       {error ? <p className="error">{error}</p> : null}
       {!edges || !run ? (
         <p className="muted">{t("loading")}</p>
@@ -147,6 +144,6 @@ export function DataPipeline() {
           </section>
         </>
       )}
-    </PageShell>
+    </TransparencyShell>
   );
 }

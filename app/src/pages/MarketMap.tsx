@@ -3,6 +3,7 @@ import { useTranslation } from "../i18n";
 import type { MarketLayoutResult } from "@ims-atlas/core";
 import { AnalysisPage } from "../components/AnalysisPage";
 import { MarketMapCanvas, type MapMode } from "../components/MarketMapCanvas";
+import { analysisErrorMessage } from "../ranking/analysisError";
 import { useRankingModel } from "../ranking/useRankingModel";
 import { useStrategicMatrix } from "../ranking/useStrategicMatrix";
 import { useAnalysis } from "../state/useAnalysis";
@@ -79,7 +80,8 @@ export function MarketMap() {
     return Object.fromEntries(matrix.points.map((p) => [p.iso3, p.quadrant]));
   }, [matrix]);
 
-  const combinedError = error ?? layoutError;
+  const combinedError =
+    error ?? (layoutError ? analysisErrorMessage(layoutError) : null);
 
   return (
     <AnalysisPage

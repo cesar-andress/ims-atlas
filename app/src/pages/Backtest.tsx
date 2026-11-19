@@ -3,6 +3,7 @@ import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
 import { formatScore } from "../format";
 import { loadT4Fixture, type T4Fixture } from "../data/loadT4Fixture";
+import { analysisErrorMessage } from "../ranking/analysisError";
 import { useRankingModel } from "../ranking/useRankingModel";
 import { useAnalysis } from "../state/useAnalysis";
 import { scoreBlock, spearmanCorr } from "@ims-atlas/core";
@@ -105,7 +106,7 @@ export function Backtest() {
       titleKey="nav.backtest"
       intro={t("backtestIntro")}
       model={model}
-      error={error ?? fixtureError}
+      error={error ?? (fixtureError ? analysisErrorMessage(fixtureError) : null)}
       controls={
         <div className="matrix-controls" data-testid="backtest-controls">
           <label>

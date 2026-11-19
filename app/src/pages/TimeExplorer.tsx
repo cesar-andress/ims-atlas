@@ -9,8 +9,9 @@ import {
 } from "react";
 import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
-import { downloadChartPng, downloadChartSvg } from "../cite/exportDownload";
+import { ChartExportBar } from "../components/ChartExportBar";
 import { loadRankYearsFixture, type RankYearsFixture } from "../data/loadRankYears";
+import { analysisErrorMessage } from "../ranking/analysisError";
 import { useRankingModel } from "../ranking/useRankingModel";
 import type { BumpSeries } from "../components/BumpChart";
 import type * as echarts from "echarts/core";
@@ -82,36 +83,25 @@ export function TimeExplorer() {
     return { years, series, tableRows };
   }, [fixture, model]);
 
+  const pageError = error ?? (fixtureError ? analysisErrorMessage(fixtureError) : null);
+
   return (
     <AnalysisPage
       testId="time-view"
       titleKey="nav.time"
       intro={t("timeIntro")}
       model={model}
-      error={error ?? fixtureError}
+      error={pageError}
       controls={
         fixture ? (
           <div className="matrix-controls" data-testid="time-controls">
-            <button
-              type="button"
-              data-testid="export-bump-png"
-              onClick={() => {
-                if (chartRef.current)
-                  downloadChartPng(chartRef.current, "ims-atlas-bump.png");
-              }}
-            >
-              PNG
-            </button>
-            <button
-              type="button"
-              data-testid="export-bump-svg"
-              onClick={() => {
-                if (chartRef.current)
-                  downloadChartSvg(chartRef.current, "ims-atlas-bump.svg");
-              }}
-            >
-              SVG
-            </button>
+            <ChartExportBar
+              testIdPrefix="bump"
+              chartRef={chartRef}
+              pngName="ims-atlas-bump.png"
+              svgName="ims-atlas-bump.svg"
+              className="export-row"
+            />
           </div>
         ) : null
       }

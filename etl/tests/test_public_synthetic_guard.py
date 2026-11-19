@@ -23,7 +23,8 @@ def _scan_tree(root: Path) -> list[str]:
             continue
         name = path.name
         if name.startswith("phase8_col_hs64"):
-            hits.append(f"{path.relative_to(repo_root())}: legacy synthetic panel filename")
+            rel = path.relative_to(repo_root())
+            hits.append(f"{rel}: legacy synthetic panel filename")
             continue
         if path.suffix.lower() not in {
             ".json",

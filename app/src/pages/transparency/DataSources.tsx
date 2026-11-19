@@ -1,13 +1,8 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "../../i18n";
-import { PageShell } from "../../components/PageShell";
-import { PermalinkLink } from "../../components/PermalinkLink";
+import { TransparencyShell } from "../../components/TransparencyShell";
 import { loadSources, type TransparencySource } from "../../data/transparency";
-
-function str(v: unknown): string {
-  if (v === null || v === undefined || v === "") return "—";
-  return String(v);
-}
+import { displayCell } from "../../formatDisplay";
 
 export function DataSources() {
   const { t } = useTranslation();
@@ -29,13 +24,11 @@ export function DataSources() {
   }, []);
 
   return (
-    <PageShell testId="data-sources-view" titleKey="nav.data_sources">
-      <p className="muted">{t("transparencySourcesIntro")}</p>
-      <nav className="transparency-nav" aria-label={t("transparencyNav")}>
-        <PermalinkLink view="status">{t("nav.status")}</PermalinkLink>
-        <PermalinkLink view="data_pipeline">{t("nav.data_pipeline")}</PermalinkLink>
-        <PermalinkLink view="data_releases">{t("nav.data_releases")}</PermalinkLink>
-      </nav>
+    <TransparencyShell
+      testId="data-sources-view"
+      titleKey="nav.data_sources"
+      introKey="transparencySourcesIntro"
+    >
       {error ? <p className="error">{error}</p> : null}
       {!rows ? (
         <p className="muted">{t("loading")}</p>
@@ -63,18 +56,24 @@ export function DataSources() {
                 return (
                   <tr key={s.id} data-source-id={s.id}>
                     <td data-from-json="id">{s.id}</td>
-                    <td data-from-json="publisher">{str(s.publisher)}</td>
-                    <td data-from-json="licence_id">{str(rights.licence_id)}</td>
-                    <td data-from-json="update_cadence">{str(s.update_cadence)}</td>
-                    <td data-from-json="checked_at">{str(fr.checked_at)}</td>
+                    <td data-from-json="publisher">{displayCell(s.publisher)}</td>
+                    <td data-from-json="licence_id">
+                      {displayCell(rights.licence_id)}
+                    </td>
+                    <td data-from-json="update_cadence">
+                      {displayCell(s.update_cadence)}
+                    </td>
+                    <td data-from-json="checked_at">{displayCell(fr.checked_at)}</td>
                     <td data-from-json="upstream_changed_at">
-                      {str(fr.upstream_changed_at)}
+                      {displayCell(fr.upstream_changed_at)}
                     </td>
                     <td data-from-json="ingested_version">
-                      {str(fr.ingested_version)}
+                      {displayCell(fr.ingested_version)}
                     </td>
-                    <td data-from-json="release_version">{str(s.release_version)}</td>
-                    <td data-from-json="stale">{str(fr.stale)}</td>
+                    <td data-from-json="release_version">
+                      {displayCell(s.release_version)}
+                    </td>
+                    <td data-from-json="stale">{displayCell(fr.stale)}</td>
                     <td>
                       {s.landing_url ? (
                         <a
@@ -107,6 +106,6 @@ export function DataSources() {
           </table>
         </div>
       )}
-    </PageShell>
+    </TransparencyShell>
   );
 }

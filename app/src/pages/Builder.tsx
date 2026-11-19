@@ -1,7 +1,8 @@
-import { useTranslation } from "../i18n";
 import { AnalysisSummary } from "../components/AnalysisSummary";
+import { AnalysisTabs } from "../components/AnalysisTabs";
 import { PageShell } from "../components/PageShell";
 import { PermalinkLink } from "../components/PermalinkLink";
+import { useTranslation } from "../i18n";
 import { useAnalysis } from "../state/useAnalysis";
 import { COL_HS64_PRESET } from "../state/schema";
 
@@ -16,6 +17,7 @@ export function Builder() {
       titleKey="nav.builder"
       className="builder analysis-page"
     >
+      <AnalysisTabs />
       <p>{t("builderIntro")}</p>
       <AnalysisSummary />
       <p className="note">{t("builderHint")}</p>
@@ -42,6 +44,10 @@ export function Builder() {
         >
           {t("openRanking")}
         </PermalinkLink>
+        {" · "}
+        <PermalinkLink view="status">{t("nav.status")}</PermalinkLink>
+        {" · "}
+        <PermalinkLink view="catalog">{t("nav.catalog")}</PermalinkLink>
       </p>
     </PageShell>
   );
