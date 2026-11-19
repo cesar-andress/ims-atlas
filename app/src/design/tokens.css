@@ -1,0 +1,75 @@
+/* GUI-0 design tokens (light / dark). Criterion = Okabe–Ito. */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:root,
+[data-theme="light"] {
+  --ground: #f4f6f8;
+  --surface: #ffffff;
+  --border: #e2e8f0;
+  --ink: #0f172a;
+  --ink-2: #475569;
+  --ink-3: #64748b;
+  --primary: #0f766e;
+  --primary-ink: #0f5f58;
+  --bg: var(--ground);
+  --fg: var(--ink);
+  --muted: var(--ink-2);
+  --accent: var(--primary);
+  --radius-card: 14px;
+  --radius-btn: 9px;
+  --radius-chip: 999px;
+  --page-pad: 24px;
+  --gap: 20px;
+  --max-content: 1440px;
+  --header-h: 64px;
+
+  --crit-cost: #0072b2;
+  --crit-logi: #e69f00;
+  --crit-comm: #009e73;
+  --crit-econ: #cc79a7;
+  --crit-poli: #56b4e9;
+  --crit-cult: #d55e00;
+
+  --q1-bg: #d1fae5;
+  --q1-fg: #065f46;
+  --q1-dot: #059669;
+  --q4-bg: #ede9fe;
+  --q4-fg: #5b21b6;
+  --q4-dot: #7c3aed;
+  --q2-bg: #fef3c7;
+  --q2-fg: #92400e;
+  --q2-dot: #d97706;
+  --q3-bg: #e2e8f0;
+  --q3-fg: #334155;
+  --q3-dot: #64748b;
+  --q-missing-bg: #fee2e2;
+  --q-missing-fg: #991b1b;
+
+  --notice-bg: #fef3c7;
+  --notice-fg: #92400e;
+  --select-bg: #ccfbf1;
+  --select-bar: #0f766e;
+}
+
+[data-theme="dark"] {
+  --ground: #0b1220;
+  --surface: #111827;
+  --border: #1f2937;
+  --ink: #f8fafc;
+  --ink-2: #cbd5e1;
+  --ink-3: #94a3b8;
+  --primary: #2dd4bf;
+  --primary-ink: #99f6e4;
+  --bg: var(--ground);
+  --fg: var(--ink);
+  --muted: var(--ink-2);
+  --accent: var(--primary);
+  --notice-bg: #422006;
+  --notice-fg: #fde68a;
+  --select-bg: #134e4a;
+  --select-bar: #2dd4bf;
+}
+
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+}

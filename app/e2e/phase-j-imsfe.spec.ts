@@ -24,7 +24,10 @@ test.describe("Phase J IMSFE faithful UI", () => {
         lang: "en",
       })}`,
     );
-    await expect(page.getByTestId("matrix-mode")).toHaveValue("imsfe_eoc");
+    await expect(page.getByTestId("matrix-mode")).toHaveAttribute(
+      "data-mode",
+      "imsfe_eoc",
+    );
     await expect(page.getByTestId("imsfe-eoc-legend")).toContainText("GLOBAL LEADERS");
     await expect(page.getByTestId("matrix-authors-note")).toBeVisible();
   });

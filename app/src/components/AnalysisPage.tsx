@@ -26,6 +26,11 @@ type Props = {
    * branch on `model` inside children.
    */
   allowWithoutModel?: boolean;
+  /**
+   * `results` = GUI-0 mockup shell: no second tab row, no method-id line,
+   * no page title (dashboard header owns chrome).
+   */
+  chrome?: "default" | "results";
   children: (model: RankingViewModel | null) => ReactNode;
 };
 
@@ -41,6 +46,7 @@ export function AnalysisPage({
   error,
   controls,
   allowWithoutModel = false,
+  chrome = "default",
   children,
 }: Props) {
   const { t, i18n } = useTranslation();
@@ -49,6 +55,7 @@ export function AnalysisPage({
   const ready = isAnalysisReady(config);
   const pending = error?.kind === "pending";
   const hardError = error?.kind === "error";
+  const resultsChrome = chrome === "results";
 
   // Hard errors must not leave stale model UI (e.g. map spinner forever).
   const showModelBody = ready && Boolean(model) && !hardError;
@@ -58,23 +65,52 @@ export function AnalysisPage({
 
   return (
     <section
-      className="analysis-page"
+      className={`analysis-page${resultsChrome ? " analysis-page-results" : ""}`}
       data-testid={testId}
-      aria-labelledby={`${testId}-title`}
+      {...(resultsChrome
+        ? { "data-chrome": "results" }
+        : { "aria-labelledby": `${testId}-title` })}
     >
-      <header className="analysis-page-header">
-        <div className="analysis-title-row">
-          <h1 id={`${testId}-title`}>{t(titleKey)}</h1>
-          <HelpButton />
+      {resultsChrome && !showModelBody ? (
+        <div className="results-chrome-fallback" data-testid="results-chrome-shell">
+          <div className="results-header-actions">
+            <HelpButton />
+            <PermalinkLink
+              view="builder"
+              className="btn btn-secondary"
+              data-testid="change-analysis"
+            >
+              {t("changeAnalysis")}
+            </PermalinkLink>
+          </div>
+          <ProductContextBanner />
+          <nav
+            className="results-study-nav"
+            data-testid="analysis-tabs"
+            aria-label="Studies"
+          >
+            <PermalinkLink view="ranking">{t("nav.ranking")}</PermalinkLink>
+            <PermalinkLink view="matrix">{t("nav.matrix")}</PermalinkLink>
+            <PermalinkLink view="map">{t("nav.map")}</PermalinkLink>
+            <PermalinkLink view="compare">{t("nav.compare")}</PermalinkLink>
+            <PermalinkLink view="uncertainty">{t("nav.uncertainty")}</PermalinkLink>
+          </nav>
         </div>
-        {intro ? <p className="muted">{intro}</p> : null}
-        <AnalysisTabs />
-        <ProductContextBanner />
-        <p className="analysis-context muted small" data-testid="analysis-context">
-          {config.weightScheme ?? "expert_mean"} · {config.mcdm ?? "wsm"} ·{" "}
-          {config.normalization ?? "minmax"}
-        </p>
-      </header>
+      ) : resultsChrome ? null : (
+        <header className="analysis-page-header">
+          <div className="analysis-title-row">
+            <h1 id={`${testId}-title`}>{t(titleKey)}</h1>
+            <HelpButton />
+          </div>
+          {intro ? <p className="muted">{intro}</p> : null}
+          <AnalysisTabs />
+          <ProductContextBanner />
+          <p className="analysis-context muted small" data-testid="analysis-context">
+            {config.weightScheme ?? "expert_mean"} · {config.mcdm ?? "wsm"} ·{" "}
+            {config.normalization ?? "minmax"}
+          </p>
+        </header>
+      )}
 
       {pending ? <PendingReleaseNotice detail={error.message} /> : null}
 
@@ -113,8 +149,8 @@ export function AnalysisPage({
 
       {showModelBody || showFallbackBody ? (
         <>
-          {controls}
-          {model && model.warnings.length > 0 ? (
+          {resultsChrome ? null : controls}
+          {!resultsChrome && model && model.warnings.length > 0 ? (
             <ul className="warnings" data-testid="ranking-warnings">
               {model.warnings.map((w) => (
                 <li key={w}>{w}</li>

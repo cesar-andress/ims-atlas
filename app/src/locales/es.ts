@@ -25,6 +25,7 @@ const es = {
     "La demo pública excluye las variables BYOD TARIF y CULT (redistributable: false). Cargue sus valores en BYOD, o use el fixture privado de e2e para el ranking completo del artículo.",
   demoByodExcludedShort: "Demo sin TARIF/CULT (BYOD)",
   mainNav: "Principal",
+  changeAnalysis: "Cambiar análisis",
   configPanel: "Configuración",
   origin: "Origen",
   year: "Año",

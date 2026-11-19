@@ -31,11 +31,11 @@ test.describe("Phase X export surfaces", () => {
 
   test("ranking table has ExportMenu", async ({ page }) => {
     await page.goto(`/ranking?c=${encodeConfig({ ...COL, view: "ranking" })}`);
-    await expect(page.getByTestId("export-menu-ranking")).toBeVisible({
+    await expect(page.getByTestId("export-menu-results")).toBeVisible({
       timeout: 20_000,
     });
-    await expect(page.getByTestId("export-ranking-csv")).toBeVisible();
-    await expect(page.getByTestId("export-ranking-xlsx")).toBeVisible();
+    await expect(page.getByTestId("export-results-csv")).toBeVisible();
+    await expect(page.getByTestId("export-results-xlsx")).toBeVisible();
   });
 
   test("map export menu present", async ({ page }) => {

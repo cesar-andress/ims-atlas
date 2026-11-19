@@ -134,7 +134,12 @@ function RouteFallback() {
 
 function AppShell() {
   const { config } = useAnalysis();
-  const showConfig = isAnalysisView(config.view);
+  // GUI-0 simplicity: no permanent config on read-only result screens.
+  const showConfig =
+    isAnalysisView(config.view) &&
+    (config.view === "builder" ||
+      config.view === "norm_lab" ||
+      config.view === "project_variables");
 
   useEffect(() => {
     scheduleIdle(() => prefetchCriticalRoutes());

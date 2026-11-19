@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./App";
 import { I18nProvider } from "./i18n";
+import "./design/tokens.css";
 import "./styles.css";
 import { applyTheme, readStoredTheme } from "./theme";
 

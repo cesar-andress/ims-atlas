@@ -14,6 +14,10 @@ All notable changes to IMS Atlas are documented in this file.
 - L→F gap pass: ExportMenu on remaining tables (SQL, paper T4, coverage, status,
   releases, pipeline, variable coverage) and chart export for SMAA/tornado/matrix
   scatter; Compare chart surfaces marked; `docs/prompts-l-f-status.md`.
+- GUI-0: results dashboard (KPI cards, LineUp-style ranking, why panel, IMSFE×EOC
+  matrix, next steps), design tokens, Okabe–Ito criterion colours, Jose quadrant
+  copy from workbook; ranking is read-only (0 editable inputs); config panel only
+  on builder / norm lab / project variables.
 - Phase N content: expanded Docs (getting started, non-experts, researchers, IMSFE
   workflow, projects, sources, cite), contextual `?` help drawer, `/paper` T4 tables
   with permalinks, and `/changelog` generated from `CHANGELOG.md`.

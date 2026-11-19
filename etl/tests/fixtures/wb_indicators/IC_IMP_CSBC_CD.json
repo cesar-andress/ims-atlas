@@ -1,0 +1,12 @@
+{
+  "endpoint": "https://api.worldbank.org/v2/indicator/IC.IMP.CSBC.CD?format=json",
+  "id": "IC.IMP.CSBC.CD",
+  "name": "World Bank indicator IC.IMP.CSBC.CD",
+  "source": {
+    "id": "2",
+    "value": "World Development Indicators"
+  },
+  "sourceNote": "Recorded fixture for offline tests (Phase 1-fix).",
+  "sourceOrganization": "World Bank",
+  "unit": ""
+}

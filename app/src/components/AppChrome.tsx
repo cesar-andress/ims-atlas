@@ -147,11 +147,9 @@ export function AppShellFrame({
       <div className={`workspace ${showConfig ? "with-config" : ""}`}>
         {showConfig ? configSlot : null}
         <main id="main-content" tabIndex={-1}>
-          {showConfig ? (
-            <p className="mobile-readonly-banner" data-testid="mobile-readonly">
-              {t("mobileReadOnly")}
-            </p>
-          ) : null}
+          <p className="mobile-readonly-banner" data-testid="mobile-readonly">
+            {t("mobileReadOnly")}
+          </p>
           {children}
         </main>
       </div>

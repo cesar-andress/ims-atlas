@@ -1,9 +1,5 @@
 import { useRef } from "react";
-import {
-  IMSFE_EOC_QUADRANTS,
-  type AxisMode,
-  type ImsfeEocQuadrant,
-} from "@ims-atlas/core";
+import { IMSFE_EOC_QUADRANTS, type ImsfeEocQuadrant } from "@ims-atlas/core";
 import { AnalysisPage } from "../components/AnalysisPage";
 import { ExportMenu } from "../components/ExportMenu";
 import { StrategicScatter } from "../components/StrategicScatter";
@@ -24,10 +20,9 @@ function quadrantLabel(q: ImsfeEocQuadrant, lang: string | undefined): string {
 export function Matrix() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
-  const { config, setConfig } = useAnalysis();
+  const { config } = useAnalysis();
   const { selectIso, isSelected } = useCompareSelection();
   const { model, error } = useRankingModel();
-  const cutoff: AxisMode = config.matrixCutoff === "fixed" ? "fixed" : "median";
   const mode = config.matrixMode === "imsfe_eoc" ? "imsfe_eoc" : "attractiveness_fit";
   const matrix = useStrategicMatrix(mode === "attractiveness_fit" ? model : null);
   const eocMatrix = useImsfeEocMatrix(mode === "imsfe_eoc" ? model : null);
@@ -41,66 +36,18 @@ export function Matrix() {
       model={model}
       error={error}
       allowWithoutModel
-      controls={
-        <div className="matrix-controls" data-testid="matrix-controls">
-          <label>
-            {t("matrixMode")}
-            <select
-              data-testid="matrix-mode"
-              value={mode}
-              onChange={(e) =>
-                setConfig({
-                  matrixMode: e.target.value as "attractiveness_fit" | "imsfe_eoc",
-                })
-              }
-            >
-              <option value="attractiveness_fit">{t("matrixModeAttractFit")}</option>
-              <option value="imsfe_eoc">{t("matrixModeImsfeEoc")}</option>
-            </select>
-          </label>
-          <label>
-            {t("matrixCutoff")}
-            <select
-              value={cutoff}
-              onChange={(e) =>
-                setConfig({
-                  matrixCutoff: e.target.value as AxisMode,
-                })
-              }
-            >
-              <option value="median">{t("cutoffMedian")}</option>
-              <option value="fixed">{t("cutoffFixed")}</option>
-            </select>
-          </label>
-          {cutoff === "fixed" ? (
-            <>
-              <label>
-                {mode === "imsfe_eoc" ? "IMSFE" : "A"}
-                <input
-                  type="number"
-                  step={0.05}
-                  value={config.matrixCutA ?? 0.5}
-                  onChange={(e) => setConfig({ matrixCutA: Number(e.target.value) })}
-                />
-              </label>
-              <label>
-                {mode === "imsfe_eoc" ? "EOC" : "Fit"}
-                <input
-                  type="number"
-                  step={0.05}
-                  value={config.matrixCutF ?? 0.5}
-                  onChange={(e) => setConfig({ matrixCutF: Number(e.target.value) })}
-                />
-              </label>
-            </>
-          ) : null}
-        </div>
-      }
     >
       {() => {
         if (mode === "imsfe_eoc") {
           return (
             <>
+              <p
+                className="muted small"
+                data-testid="matrix-mode"
+                data-mode="imsfe_eoc"
+              >
+                {t("matrixModeImsfeEoc")}
+              </p>
               <p className="muted small" data-testid="matrix-authors-note">
                 {t("matrixAuthorsNote")}
               </p>

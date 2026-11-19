@@ -1,0 +1,12 @@
+{
+  "endpoint": "https://api.worldbank.org/v2/indicator/IS.SHP.GOOD.TU?format=json",
+  "id": "IS.SHP.GOOD.TU",
+  "name": "World Bank indicator IS.SHP.GOOD.TU",
+  "source": {
+    "id": "2",
+    "value": "World Development Indicators"
+  },
+  "sourceNote": "Recorded fixture for offline tests (Phase 1-fix).",
+  "sourceOrganization": "World Bank",
+  "unit": ""
+}

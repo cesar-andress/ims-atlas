@@ -106,13 +106,14 @@ test.describe("SPEC §11 parity with app-sme", () => {
     await expect(page.getByTestId("ranking-table")).toBeVisible({
       timeout: 15_000,
     });
-    const rows = page.locator("[data-testid=ranking-table] tbody tr");
+    await page.getByTestId("results-show-all").click();
+    const rows = page.locator("[data-testid=ranking-table] > li");
     await expect(rows).toHaveCount(60);
 
     const downloadPromise = page.waitForEvent("download");
-    await page.getByTestId("export-ranking-csv").click();
+    await page.getByTestId("export-results-csv").click();
     const download = await downloadPromise;
-    expect(download.suggestedFilename()).toMatch(/ranking\.csv/);
+    expect(download.suggestedFilename()).toMatch(/\.csv$/);
     const path = await download.path();
     expect(path).toBeTruthy();
     const csv = readFileSync(path!, "utf8");

@@ -54,8 +54,9 @@ test.describe("COL HS64 2023 IMSFE ranking", () => {
     await expect(page.getByTestId("ranking-view")).toBeVisible({ timeout: 15_000 });
     await expect(page.getByTestId("ranking-table")).toBeVisible({ timeout: 15_000 });
 
+    await expect(page.getByTestId("results-dashboard")).toBeVisible();
     const top = golden.block.ranking_expert[0]!;
-    const topRow = page.locator(`tr[data-iso3="${top.iso3}"]`);
+    const topRow = page.getByTestId(`rank-row-${top.iso3}`);
     await expect(topRow).toHaveAttribute("data-rank", "1");
     const scoreAttr = await page
       .getByTestId(`score-${top.iso3}`)
@@ -65,21 +66,21 @@ test.describe("COL HS64 2023 IMSFE ranking", () => {
 
     for (const i of [1, 2]) {
       const exp = golden.block.ranking_expert[i]!;
-      await expect(page.locator(`tr[data-iso3="${exp.iso3}"]`)).toHaveAttribute(
+      await expect(page.getByTestId(`rank-row-${exp.iso3}`)).toHaveAttribute(
         "data-rank",
         String(exp.rank),
       );
     }
 
-    await expect(page.getByTestId("map-licence")).toBeVisible();
-    await expect(page.getByTestId("world-choropleth")).toBeVisible();
-
-    const elapsedText = await page.getByTestId("ranking-elapsed").innerText();
-    const ms = Number(elapsedText.replace(/[^\d.]/g, ""));
-    expect(ms).toBeLessThan(100);
+    // Editable controls on the results screen must stay at 0 (GUI-0).
+    const editable = await page
+      .getByTestId("results-dashboard")
+      .locator("input, select, textarea")
+      .count();
+    expect(editable).toBe(0);
 
     await page.reload();
-    await expect(page.locator(`tr[data-iso3="${top.iso3}"]`)).toHaveAttribute(
+    await expect(page.getByTestId(`rank-row-${top.iso3}`)).toHaveAttribute(
       "data-rank",
       "1",
       { timeout: 15_000 },

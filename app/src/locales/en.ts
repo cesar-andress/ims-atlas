@@ -25,6 +25,7 @@ export const en = {
     "Public demo excludes BYOD variables TARIF and CULT (redistributable: false). Upload your own values under BYOD, or use the private e2e fixture for the full paper ranking.",
   demoByodExcludedShort: "Demo without TARIF/CULT (BYOD)",
   mainNav: "Main",
+  changeAnalysis: "Change analysis",
   configPanel: "Analysis config",
   origin: "Origin",
   year: "Year",

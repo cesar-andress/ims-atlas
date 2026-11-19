@@ -56,9 +56,11 @@ test.describe("Phase 12-fix synthetic demo gate", () => {
     await expect(page.getByTestId("ranking-table")).toBeVisible({
       timeout: 15_000,
     });
+    const showAll = page.getByTestId("results-show-all");
+    if (await showAll.isVisible()) await showAll.click();
     const ranks: Record<string, string> = {};
     for (const iso of focus) {
-      const row = page.locator(`tr[data-iso3="${iso}"]`);
+      const row = page.getByTestId(`rank-row-${iso}`);
       await expect(row).toBeVisible();
       ranks[iso] = (await row.getAttribute("data-rank"))!;
     }
