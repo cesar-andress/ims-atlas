@@ -11,6 +11,11 @@ dependencies = [
   "pyyaml>=6.0",
   "pydantic>=2.6",
   "jsonschema>=4.23",
+  "pandas>=3.1.1",
+  "pyarrow>=26.0.1",
+  "pandera>=0.36.0",
+  "requests>=2.34.2",
+  "numpy>=1.26",
 ]
 
 [project.optional-dependencies]

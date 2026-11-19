@@ -2,11 +2,18 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 
 def repo_root() -> Path:
-    """Return the ims-atlas repository root (parent of etl/)."""
+    """Return the ims-atlas repository root (parent of etl/).
+
+    Override with ATLAS_ROOT for isolated pipeline tests.
+    """
+    override = os.environ.get("ATLAS_ROOT")
+    if override:
+        return Path(override).resolve()
     return Path(__file__).resolve().parents[3]
 
 

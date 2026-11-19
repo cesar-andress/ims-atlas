@@ -158,10 +158,160 @@ def rights_verify_cmd(
     )
 
 
+def _parse_sources(raw: str | None) -> list[str] | None:
+    if raw is None or raw.strip() == "" or raw.strip() == "all":
+        return None
+    return [part.strip() for part in raw.split(",") if part.strip()]
+
+
+@app.command("check")
+def check_cmd(
+    source: Annotated[
+        str | None,
+        typer.Option("--source", help="Comma-separated source ids, or all"),
+    ] = None,
+    fixture_root: Annotated[
+        str | None,
+        typer.Option(
+            "--fixture-root",
+            help="Offline fixtures directory (no network)",
+        ),
+    ] = None,
+    force: Annotated[bool, typer.Option("--force")] = False,
+) -> None:
+    """Probe upstream versions -> status/freshness.json."""
+    from pathlib import Path
+
+    from imsatlas_etl.pipeline.check import run_check
+
+    rows = run_check(
+        sources=_parse_sources(source),
+        fixture_root=Path(fixture_root) if fixture_root else None,
+        force=force,
+    )
+    stale = sum(1 for r in rows if r.get("stale"))
+    typer.echo(
+        f"atlas-etl {__version__}: check ok ({len(rows)} sources, {stale} stale)",
+    )
+
+
+@app.command("extract")
+def extract_cmd(
+    source: Annotated[
+        str | None,
+        typer.Option("--source", help="Comma-separated source ids, or all"),
+    ] = None,
+    fixture_root: Annotated[
+        str | None,
+        typer.Option("--fixture-root", help="Offline fixtures directory"),
+    ] = None,
+    force: Annotated[bool, typer.Option("--force")] = False,
+) -> None:
+    """Download/copy into data/raw/<source>/<version>/."""
+    from pathlib import Path
+
+    from imsatlas_etl.pipeline.extract import run_extract
+
+    if fixture_root is None:
+        typer.secho(
+            "extract currently requires --fixture-root (live zip/API extract Phase 2+)",
+            fg=typer.colors.RED,
+            err=True,
+        )
+        raise typer.Exit(code=1)
+    results = run_extract(
+        sources=_parse_sources(source),
+        fixture_root=Path(fixture_root),
+        force=force,
+    )
+    typer.echo(f"atlas-etl {__version__}: extract ok ({len(results)} sources)")
+
+
+@app.command("validate")
+def validate_cmd(
+    source: Annotated[
+        str | None,
+        typer.Option("--source", help="Comma-separated source ids, or all"),
+    ] = None,
+    force: Annotated[bool, typer.Option("--force")] = False,
+) -> None:
+    """Validate raw tables against pandera contracts."""
+    from imsatlas_etl.pipeline.validate import run_validate
+
+    try:
+        results = run_validate(sources=_parse_sources(source), force=force)
+    except ValueError as exc:
+        typer.secho(str(exc), fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=1) from exc
+    typer.echo(f"atlas-etl {__version__}: validate ok ({len(results)} sources)")
+
+
+@app.command("transform")
+def transform_cmd(
+    force: Annotated[bool, typer.Option("--force")] = False,
+) -> None:
+    """Build curated country/bilateral/trade tables."""
+    from imsatlas_etl.pipeline.transform import run_transform
+
+    result = run_transform(force=force)
+    counts = result["row_counts"]
+    typer.echo(
+        f"atlas-etl {__version__}: transform ok "
+        f"(country_year={counts['country_year']}, "
+        f"bilateral_year={counts['bilateral_year']}, "
+        f"trade_hs6={counts['trade_hs6']})",
+    )
+
+
+@app.command("run")
+def run_cmd(
+    source: Annotated[
+        str | None,
+        typer.Option("--source", help="Comma-separated source ids, or all"),
+    ] = None,
+    fixture_root: Annotated[
+        str | None,
+        typer.Option("--fixture-root", help="Offline fixtures directory"),
+    ] = None,
+    force: Annotated[bool, typer.Option("--force")] = False,
+) -> None:
+    """Run check -> extract -> validate -> transform (DAG)."""
+    from pathlib import Path
+
+    from imsatlas_etl.pipeline.runner import run_pipeline
+
+    if fixture_root is None:
+        typer.secho(
+            "run currently requires --fixture-root for extract",
+            fg=typer.colors.RED,
+            err=True,
+        )
+        raise typer.Exit(code=1)
+    try:
+        log = run_pipeline(
+            sources=_parse_sources(source),
+            fixture_root=Path(fixture_root),
+            force=force,
+        )
+    except Exception as exc:
+        typer.secho(str(exc), fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=1) from exc
+    counts = log.get("steps", {}).get("transform", {}).get("row_counts", {})
+    typer.echo(
+        f"atlas-etl {__version__}: run ok id={log['run_id']} rows={counts}",
+    )
+
+
 @app.command("build")
-def build() -> None:
-    """Build intermediate tables from sources (implemented in later phases)."""
-    typer.echo(f"atlas-etl {__version__}: build scaffold — Phase 2+")
+def build(
+    fixture_root: Annotated[
+        str | None,
+        typer.Option("--fixture-root", help="Offline fixtures directory"),
+    ] = None,
+    force: Annotated[bool, typer.Option("--force")] = False,
+) -> None:
+    """Alias for `run` (full DAG)."""
+    run_cmd(source=None, fixture_root=fixture_root, force=force)
 
 
 @app.command("release")
@@ -171,9 +321,9 @@ def release(
         typer.Option("--version", help="Release version under data/release/"),
     ] = "0.1.0",
 ) -> None:
-    """Write a versioned data release (implemented in Phase 4)."""
+    """Write a versioned data release (implemented in Phase 2b/4)."""
     typer.echo(
-        f"atlas-etl {__version__}: release scaffold — Phase 4 (v{version})",
+        f"atlas-etl {__version__}: release scaffold — Phase 2b (v{version})",
     )
 
 

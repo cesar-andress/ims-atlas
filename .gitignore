@@ -23,8 +23,10 @@ __pycache__/
 
 # Data (raw and release stay local / Zenodo; not in git by default)
 data/raw/
+data/curated/
 data/release/
 data/local/
+status/
 .env
 .env.*
 

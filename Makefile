@@ -1,4 +1,4 @@
-.PHONY: setup lint test e2e build etl release-data catalog-port catalog-validate check-live rights-report dev cname pin-backtest typecheck
+.PHONY: setup lint test e2e build etl pipeline-fixture release-data catalog-port catalog-validate check-live rights-report dev cname pin-backtest typecheck
 
 NODE_VERSION := 20
 PNPM ?= pnpm
@@ -41,7 +41,10 @@ build:
 	$(PNPM) run build
 
 etl:
-	cd etl && $(UV) run atlas-etl build
+	cd etl && $(UV) run atlas-etl build --fixture-root tests/fixtures/mini_world --force
+
+pipeline-fixture:
+	cd etl && $(UV) run atlas-etl run --fixture-root tests/fixtures/mini_world --force
 
 catalog-port:
 	cd etl && $(UV) sync --extra backtest --group dev

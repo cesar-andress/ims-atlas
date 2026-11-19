@@ -8,12 +8,14 @@ is no backend and no accounts.
 
 ## Status
 
-Phase 1b (`v0.1.0`): variable catalog + source registry + licence gate. ETL pipeline
-(check/extract/validate/transform) and browser engine land in later phases.
+Phase 2 (`v0.1.0`): variable catalog, source registry, licence gate, and offline ETL
+pipeline (`check` → `extract` → `validate` → `transform`). Browser engine and public
+data release land in later phases.
 
 ```bash
 make catalog-validate   # variables.yaml + sources.yaml
 make rights-report      # writes catalog/RIGHTS.md (gate decisions)
+make pipeline-fixture   # offline mini-world DAG -> data/curated + status/
 ```
 
 Every source currently needs a human `atlas-etl rights-verify <SOURCE> --by "<name>"`
