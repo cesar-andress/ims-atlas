@@ -1,0 +1,66 @@
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Sync CNAME if domain configured
+        continue-on-error: true
+        run: make cname
+
+      - name: Choose Vite base
+        id: base
+        run: |
+          if [ -f app/public/CNAME ]; then
+            echo "base=/" >> "$GITHUB_OUTPUT"
+          else
+            echo "base=/ims-atlas/" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build app
+        env:
+          VITE_BASE: ${{ steps.base.outputs.base }}
+        run: |
+          pnpm --filter @ims-atlas/core build
+          pnpm --filter @ims-atlas/app build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: app/dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

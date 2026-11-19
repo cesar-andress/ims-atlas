@@ -1,0 +1,31 @@
+{
+  "name": "ims-atlas",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "IMS Atlas — open browser tool to build and backtest international market selection indices",
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20 <21"
+  },
+  "scripts": {
+    "lint": "pnpm -r --if-present lint && prettier --check .",
+    "lint:fix": "pnpm -r --if-present lint:fix && prettier --write .",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "test": "pnpm -r --if-present test",
+    "build": "pnpm --filter @ims-atlas/core build && pnpm --filter @ims-atlas/app build",
+    "dev": "pnpm --filter @ims-atlas/app dev"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.16",
+    "globals": "^15.14.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.2",
+    "vitest": "^2.1.8"
+  }
+}

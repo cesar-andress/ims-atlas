@@ -1,0 +1,8 @@
+dist
+node_modules
+coverage
+etl/.venv
+data
+pnpm-lock.yaml
+uv.lock
+*.md

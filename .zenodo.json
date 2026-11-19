@@ -1,0 +1,28 @@
+{
+  "upload_type": "software",
+  "title": "IMS Atlas: an open tool to build and backtest international market selection indices",
+  "description": "Browser-based open-source tool to build, compare, stress-test and backtest international market selection (IMS) indices on open data. Companion software to the ims-backtest reference engine.",
+  "license": "MIT",
+  "creators": [
+    {
+      "name": "Andrés, César",
+      "orcid": "0009-0001-8968-3404",
+      "affiliation": "Universidad Internacional de La Rioja"
+    }
+  ],
+  "keywords": [
+    "international market selection",
+    "multi-criteria decision analysis",
+    "backtesting",
+    "SMAA",
+    "reproducible research"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/cesar-andress/ims-backtest",
+      "relation": "isSupplementTo",
+      "resource_type": "software",
+      "scheme": "url"
+    }
+  ]
+}

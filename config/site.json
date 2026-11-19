@@ -1,0 +1,4 @@
+{
+  "domain": "UNKNOWN",
+  "comment": "Single source for the custom domain. Set domain to e.g. aiser.v.example so CNAME becomes atlas.<domain>. Run: make cname"
+}

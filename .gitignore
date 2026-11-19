@@ -1,0 +1,46 @@
+# Local-only project docs and agent config (never commit)
+SPEC.md
+PROMPTS.md
+.cursor/
+
+# Dependencies and build
+node_modules/
+dist/
+*.tsbuildinfo
+.turbo/
+.vite/
+
+# Python / uv
+.venv/
+etl/.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+.uv/
+
+# Data (raw and release stay local / Zenodo; not in git by default)
+data/raw/
+data/release/
+.env
+.env.*
+
+# Manuscript / office artefacts
+*.tex
+*.docx
+*.pdf
+!docs/**/*.pdf
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Coverage / test artefacts
+coverage/
+playwright-report/
+test-results/
+paper-figures/

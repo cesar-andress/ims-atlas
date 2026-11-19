@@ -1,0 +1,5 @@
+{
+  "repository": "https://github.com/cesar-andress/ims-backtest.git",
+  "tag": "UNKNOWN",
+  "comment": "Pin etl to a published git tag only (never a branch). Set tag then run: make pin-backtest"
+}
