@@ -362,19 +362,23 @@ def release_cmd(
     ] = True,
     force: Annotated[bool, typer.Option("--force")] = False,
 ) -> None:
-    """Build data/release/staging|public/vX.Y.Z from curated (gate-filtered)."""
-    from imsatlas_etl.pipeline.release import run_release
+    """Build SPEC §3 data/release/staging|public/vX.Y.Z (gate-filtered)."""
+    from imsatlas_etl.pipeline.release import run_release, write_zenodo_dataset_json
 
     try:
         result = run_release(version, staging=staging, force=force)
+        zenodo = write_zenodo_dataset_json(version=version)
     except (FileExistsError, FileNotFoundError, ValueError) as exc:
         typer.secho(str(exc), fg=typer.colors.RED, err=True)
         raise typer.Exit(code=1) from exc
+    sizes = result.get("size_bytes") or {}
     typer.echo(
         f"atlas-etl {__version__}: release v{result['version']} "
         f"staging={result['staging']} files={result['n_files']} "
-        f"included_vars={result['n_included_variables']} -> {result['path']}",
+        f"included_vars={result['n_included_variables']} "
+        f"bytes={sizes.get('total_bytes', 0)} -> {result['path']}",
     )
+    typer.echo(f"wrote {zenodo}")
 
 
 @app.command("promote")

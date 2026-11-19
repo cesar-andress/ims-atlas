@@ -13,6 +13,7 @@ const resources = {
       themeLight: "Light",
       themeDark: "Dark",
       statusNote: "In development — first public version coming soon",
+      dataRelease: "Data release",
       footerCredit:
         "Developed within the R&D&I project [project name/code] of AISERV SYSTEMS SLU (Madrid, Spain).",
       footerRepo: "GitHub repository",
@@ -30,6 +31,7 @@ const resources = {
       themeLight: "Claro",
       themeDark: "Oscuro",
       statusNote: "En desarrollo — la primera versión pública estará disponible pronto",
+      dataRelease: "Publicación de datos",
       footerCredit:
         "Developed within the R&D&I project [project name/code] of AISERV SYSTEMS SLU (Madrid, Spain).",
       footerRepo: "Repositorio en GitHub",

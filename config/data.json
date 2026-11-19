@@ -1,0 +1,5 @@
+{
+  "release_version": "0.1.0",
+  "release_base_path": "/data",
+  "comment": "App loads parquet/catalog from {release_base_path}/v{release_version}/ on the same origin."
+}

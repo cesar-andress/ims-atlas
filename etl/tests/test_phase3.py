@@ -64,10 +64,17 @@ def test_phase3_variables_and_coverage(phase3_root: Path) -> None:
 
 def test_release_strips_byod_variable_ids(phase3_root: Path) -> None:
     result = run_release("0.1.0", root=phase3_root, staging=True, force=True)
-    path = Path(result["path"]) / "variables_country_year.parquet"
-    assert path.is_file()
-    cols = set(pd.read_parquet(path).columns)
-    # All Phase 3 vars are non-ship under current gate → only iso3/year remain
-    assert "ITU_IDI" not in cols
-    assert "CO2PC" not in cols
-    assert "iso3" in cols and "year" in cols
+    root = Path(result["path"])
+    country = pd.read_parquet(root / "country_year.parquet")
+    assert list(country.columns) == [
+        "iso3",
+        "year",
+        "variable_id",
+        "value",
+        "flag_imputed",
+        "flag_locf",
+    ]
+    # Gate still BYOD → empty long table (no shipped variable_id values)
+    assert len(country) == 0
+    assert (root / "catalog.json").is_file()
+    assert (root / "trade" / "hs2=_empty" / "part.parquet").is_file()

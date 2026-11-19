@@ -1,0 +1,35 @@
+{
+  "creators": [
+    {
+      "affiliation": "Universidad Internacional de La Rioja",
+      "name": "Andr\u00e9s, C\u00e9sar",
+      "orcid": "0009-0001-8968-3404"
+    }
+  ],
+  "description": "Versioned open data release for IMS Atlas (country-year, bilateral-year, and trade tables). Only variables that pass the licence gate are included. Companion dataset to ims-atlas and ims-backtest.",
+  "keywords": [
+    "international market selection",
+    "open data",
+    "trade statistics",
+    "governance indicators"
+  ],
+  "license": "other-open",
+  "notes": "Per-source licences: baci:UNKNOWN; cepi_gravity:UNKNOWN; ef_epi:UNKNOWN; gedi:UNKNOWN; hofstede:UNKNOWN; itu_datahub:UNKNOWN; odin:UNKNOWN; startupblink:UNKNOWN; wipo_gii:UNKNOWN; wits_trains:UNKNOWN; worldbank_lpi:CC-BY-4.0; worldbank_wdi:CC-BY-4.0; worldbank_wgi:CC-BY-4.0; yale_epi:UNKNOWN",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/cesar-andress/ims-atlas",
+      "relation": "isSupplementTo",
+      "resource_type": "software",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://github.com/cesar-andress/ims-backtest",
+      "relation": "isSupplementTo",
+      "resource_type": "software",
+      "scheme": "url"
+    }
+  ],
+  "title": "IMS Atlas data release v0.1.0",
+  "upload_type": "dataset",
+  "version": "0.1.0"
+}

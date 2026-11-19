@@ -43,8 +43,9 @@ VITE_BASE=/ pnpm --filter @ims-atlas/app build
 docker compose -f deploy/docker-compose.yml up -d
 ```
 
-nginx serves `/status/*` (TTL 60s) and `/data/release/*` (immutable) from the
-host trees `status/` and `data/release/`.
+nginx serves `/status/*` (TTL 60s) and `/data/vX.Y.Z/*` (immutable SPEC §3
+release under `data/release/public/`) from the host trees `status/` and
+`data/release/`. Legacy `/data/release/*` remains available.
 
 Do **not** scp/rsync the app tree. Publish only via git push → git pull.
 
