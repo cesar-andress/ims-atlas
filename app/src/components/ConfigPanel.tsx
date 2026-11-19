@@ -4,8 +4,11 @@ import { hsCategoryTree, hsLabel, REGIONS, searchHs } from "../data/hsProducts";
 import { searchOrigins } from "../data/iso3Exporters";
 import { analysisErrorFromUnknown } from "../ranking/analysisError";
 import { loadDemoPanel, type DemoPanel } from "../ranking/demoPanel";
+import { prefetchRanking } from "../ranking/rankingCache";
+import { rankingRequestFromConfig } from "../ranking/rankingRequest";
 import { COL_HS64_PRESET } from "../state/schema";
 import { useAnalysis } from "../state/useAnalysis";
+import { isAnalysisReady } from "../state/views";
 import { PermalinkLink } from "./PermalinkLink";
 
 const FACTOR_ORDER = [
@@ -64,6 +67,26 @@ export function ConfigPanel() {
       cancelled = true;
     };
   }, []);
+
+  // Warm ranking cache as soon as the demo panel is available.
+  useEffect(() => {
+    if (panelStatus !== "ready" || !isAnalysisReady(config)) return;
+    prefetchRanking(rankingRequestFromConfig(config));
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- primitive ranking inputs only
+  }, [
+    panelStatus,
+    config.origin,
+    config.hs,
+    config.year,
+    config.region,
+    config.minImports,
+    config.variableIds,
+    config.normalization,
+    config.mcdm,
+    config.weightScheme,
+    config.missingThreshold,
+    config.factorWeights,
+  ]);
 
   // Keep local drafts in sync when permalink / preset changes config.
   useEffect(() => {

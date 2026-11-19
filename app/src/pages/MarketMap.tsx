@@ -4,7 +4,7 @@ import type { MarketLayoutResult } from "@ims-atlas/core";
 import { AnalysisPage } from "../components/AnalysisPage";
 import { MarketMapCanvas, type MapMode } from "../components/MarketMapCanvas";
 import { analysisErrorMessage } from "../ranking/analysisError";
-import { useRankingModel } from "../ranking/useRankingModel";
+import { useRankingModel } from "../ranking/useRankingModelApi";
 import { useStrategicMatrix } from "../ranking/useStrategicMatrix";
 import { useAnalysis } from "../state/useAnalysis";
 import { runMarketLayoutWorker } from "../workers/runWorker";

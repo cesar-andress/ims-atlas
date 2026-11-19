@@ -2,7 +2,7 @@ import { AnalysisPage } from "../components/AnalysisPage";
 import { AnalysisSummary } from "../components/AnalysisSummary";
 import { PermalinkLink } from "../components/PermalinkLink";
 import { useTranslation } from "../i18n";
-import { useRankingModel } from "../ranking/useRankingModel";
+import { useRankingModel } from "../ranking/useRankingModelApi";
 import { useAnalysis } from "../state/useAnalysis";
 import { COL_HS64_PRESET } from "../state/schema";
 

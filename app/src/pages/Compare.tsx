@@ -2,7 +2,7 @@ import { lazy, Suspense, useMemo, useRef } from "react";
 import { AnalysisPage } from "../components/AnalysisPage";
 import { ChartExportBar } from "../components/ChartExportBar";
 import { useTranslation } from "../i18n";
-import { useRankingModel } from "../ranking/useRankingModel";
+import { useRankingModel } from "../ranking/useRankingModelApi";
 import type { RankingViewModel } from "../ranking/rankingEngine";
 
 const Top10Chart = lazy(() =>

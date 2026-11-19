@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
 import { formatScore } from "../format";
-import { useRankingModel } from "../ranking/useRankingModel";
+import { useRankingModel } from "../ranking/useRankingModelApi";
 import type { RankingViewModel } from "../ranking/rankingEngine";
 import { useAnalysis } from "../state/useAnalysis";
 

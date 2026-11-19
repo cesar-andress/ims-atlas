@@ -12,7 +12,7 @@ import { AnalysisPage } from "../components/AnalysisPage";
 import { ChartExportBar } from "../components/ChartExportBar";
 import { loadRankYearsFixture, type RankYearsFixture } from "../data/loadRankYears";
 import { analysisErrorMessage } from "../ranking/analysisError";
-import { useRankingModel } from "../ranking/useRankingModel";
+import { useRankingModel } from "../ranking/useRankingModelApi";
 import type { BumpSeries } from "../components/BumpChart";
 import type * as echarts from "echarts/core";
 

@@ -4,7 +4,7 @@ import { AnalysisPage } from "../components/AnalysisPage";
 import { formatScore } from "../format";
 import { loadT4Fixture, type T4Fixture } from "../data/loadT4Fixture";
 import { analysisErrorMessage } from "../ranking/analysisError";
-import { useRankingModel } from "../ranking/useRankingModel";
+import { useRankingModel } from "../ranking/useRankingModelApi";
 import { useAnalysis } from "../state/useAnalysis";
 import { scoreBlock, spearmanCorr } from "@ims-atlas/core";
 

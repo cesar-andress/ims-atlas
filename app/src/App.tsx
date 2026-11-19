@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { AppShellFrame } from "./components/AppChrome";
 import { Home } from "./pages/Home";
+import { RankingModelProvider } from "./ranking/RankingModelContext";
 import { AnalysisProvider } from "./state/AnalysisContext";
 import { useAnalysis } from "./state/useAnalysis";
 import { isAnalysisView } from "./state/views";
@@ -119,7 +120,9 @@ function AppShell() {
 export function App() {
   return (
     <AnalysisProvider>
-      <AppShell />
+      <RankingModelProvider>
+        <AppShell />
+      </RankingModelProvider>
     </AnalysisProvider>
   );
 }

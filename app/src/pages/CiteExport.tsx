@@ -14,7 +14,7 @@ import { hashConfig } from "../cite/configHash";
 import { downloadText, rankingToCsv } from "../cite/exportDownload";
 import { dataConfig } from "../dataConfig";
 import { useTranslation } from "../i18n";
-import { useRankingModel } from "../ranking/useRankingModel";
+import { useRankingModel } from "../ranking/useRankingModelApi";
 import type { RankingViewModel } from "../ranking/rankingEngine";
 import { useAnalysis } from "../state/useAnalysis";
 import { configToSearch, pathForView } from "../state/urlState";

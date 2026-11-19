@@ -13,6 +13,7 @@ type Props = {
   children: ReactNode;
   "data-testid"?: string | undefined;
   onMouseEnter?: (() => void) | undefined;
+  onFocus?: (() => void) | undefined;
 };
 
 /** Single way to navigate while keeping (or replacing) analysis permalink state. */
@@ -23,6 +24,7 @@ export function PermalinkLink({
   className,
   children,
   onMouseEnter,
+  onFocus,
   "data-testid": testId,
 }: Props) {
   const { config } = useAnalysis();
@@ -41,6 +43,7 @@ export function PermalinkLink({
       className={className}
       data-testid={testId}
       onMouseEnter={onMouseEnter}
+      onFocus={onFocus}
     >
       {children}
     </Link>

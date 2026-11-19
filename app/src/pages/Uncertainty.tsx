@@ -3,7 +3,7 @@ import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
 import { formatScore } from "../format";
 import { analysisErrorMessage } from "../ranking/analysisError";
-import { useRankingModel } from "../ranking/useRankingModel";
+import { useRankingModel } from "../ranking/useRankingModelApi";
 import { useSmaaModel } from "../ranking/useSmaaModel";
 
 const RankAcceptabilityChart = lazy(() =>

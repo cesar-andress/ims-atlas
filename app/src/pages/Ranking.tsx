@@ -3,7 +3,7 @@ import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
 import { downloadText, rankingToCsv } from "../cite/exportDownload";
 import { formatScore } from "../format";
-import { useRankingModel } from "../ranking/useRankingModel";
+import { useRankingModel } from "../ranking/useRankingModelApi";
 import { useCompareSelection } from "../state/useCompareSelection";
 import type { RankingViewModel } from "../ranking/rankingEngine";
 

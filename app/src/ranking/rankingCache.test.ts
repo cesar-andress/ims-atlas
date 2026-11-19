@@ -32,14 +32,16 @@ describe("rankingCache", () => {
 
   it("reuses the same result for identical requests", async () => {
     const { computeRanking } = await import("./rankingEngine");
-    const { getCachedRanking } = await import("./rankingCache");
+    const { getCachedRanking, peekCachedRanking } = await import("./rankingCache");
     const req = {
       origin: "COL",
       hs: "64",
       year: 2023,
       weightScheme: "expert_mean" as const,
     };
+    expect(peekCachedRanking(req)).toBeNull();
     const a = await getCachedRanking(req);
+    expect(peekCachedRanking(req)).toBe(a);
     const b = await getCachedRanking(req);
     expect(a).toBe(b);
     expect(computeRanking).toHaveBeenCalledTimes(1);

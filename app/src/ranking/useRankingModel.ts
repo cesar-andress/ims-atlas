@@ -2,52 +2,27 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useAnalysis } from "../state/useAnalysis";
 import { isAnalysisReady } from "../state/views";
 import { analysisErrorFromUnknown, type AnalysisModelError } from "./analysisError";
-import { getCachedRanking } from "./rankingCache";
-import type { RankingRequest, RankingViewModel } from "./rankingEngine";
+import { getCachedRanking, peekCachedRanking } from "./rankingCache";
+import type { RankingViewModel } from "./rankingEngine";
+import { rankingRequestFromConfig, rankingRequestKey } from "./rankingRequest";
 
-/** Stable request fingerprint (avoids recompute when URL re-parses equal arrays). */
-function rankingRequestKey(req: RankingRequest): string {
-  return JSON.stringify({
-    origin: req.origin ?? null,
-    hs: req.hs ?? null,
-    year: req.year ?? null,
-    region: req.region ?? null,
-    minImports: req.minImports ?? null,
-    variableIds: req.variableIds ?? null,
-    normalization: req.normalization ?? null,
-    mcdm: req.mcdm ?? null,
-    weightScheme: req.weightScheme ?? null,
-    missingThreshold: req.missingThreshold ?? null,
-    factorWeights: req.factorWeights ?? null,
-  });
-}
+export { rankingRequestFromConfig, rankingRequestKey } from "./rankingRequest";
 
-/** Shared ranking model for Ranking / Matrix / Market map views. */
-export function useRankingModel(): {
+/**
+ * Ranking model state. Prefer RankingModelProvider so analysis route switches
+ * reuse one subscription instead of remounting N hooks.
+ */
+export function useRankingModelState(enabled = true): {
   model: RankingViewModel | null;
   error: AnalysisModelError | null;
   loading: boolean;
 } {
   const { config } = useAnalysis();
-  const [model, setModel] = useState<RankingViewModel | null>(null);
-  const [error, setError] = useState<AnalysisModelError | null>(null);
-  const [loading, setLoading] = useState(false);
-  const ready = isAnalysisReady(config);
+  const ready = isAnalysisReady(config) && enabled;
 
-  const request = useMemo<RankingRequest>(
-    () => ({
-      origin: config.origin,
-      hs: config.hs,
-      year: config.year,
-      region: config.region,
-      minImports: config.minImports,
-      variableIds: config.variableIds,
-      normalization: config.normalization,
-      mcdm: config.mcdm,
-      weightScheme: config.weightScheme,
-      missingThreshold: config.missingThreshold,
-      factorWeights: config.factorWeights,
-    }),
+  const request = useMemo(
+    () => rankingRequestFromConfig(config),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- primitive ranking inputs only
     [
       config.origin,
       config.hs,
@@ -67,6 +42,12 @@ export function useRankingModel(): {
   const requestRef = useRef(request);
   requestRef.current = request;
 
+  const [model, setModel] = useState<RankingViewModel | null>(() =>
+    ready ? peekCachedRanking(request) : null,
+  );
+  const [error, setError] = useState<AnalysisModelError | null>(null);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (!ready) {
       setModel(null);
@@ -75,11 +56,18 @@ export function useRankingModel(): {
       return;
     }
     let cancelled = false;
-    // Drop stale results immediately when the request fingerprint changes.
-    setModel(null);
-    setError(null);
+    const req = requestRef.current;
+    const peeked = peekCachedRanking(req);
+    if (peeked) {
+      setModel(peeked);
+      setError(null);
+      setLoading(false);
+      return;
+    }
+    // Stale-while-revalidate: keep previous model visible while recomputing.
     setLoading(true);
-    void getCachedRanking(requestRef.current)
+    setError(null);
+    void getCachedRanking(req)
       .then((m) => {
         if (!cancelled) {
           setModel(m);

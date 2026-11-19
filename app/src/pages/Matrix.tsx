@@ -2,7 +2,7 @@ import { useTranslation } from "../i18n";
 import type { AxisMode } from "@ims-atlas/core";
 import { AnalysisPage } from "../components/AnalysisPage";
 import { StrategicScatter } from "../components/StrategicScatter";
-import { useRankingModel } from "../ranking/useRankingModel";
+import { useRankingModel } from "../ranking/useRankingModelApi";
 import { useStrategicMatrix } from "../ranking/useStrategicMatrix";
 import { useAnalysis } from "../state/useAnalysis";
 import { useCompareSelection } from "../state/useCompareSelection";
