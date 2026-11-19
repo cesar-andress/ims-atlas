@@ -150,6 +150,8 @@ export { kMeans2d, type KMeansResult } from "./cluster.js";
 
 export {
   buildMarketLayout,
+  buildSimilarityEdges,
+  type MarketEdge,
   type MarketLayoutResult,
   type MarketNode,
 } from "./marketLayout.js";

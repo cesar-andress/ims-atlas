@@ -135,9 +135,15 @@ export const en = {
   fit: "Fit",
   quadrant: "Quadrant",
   mapIntro:
-    "VOSviewer-like layout: SMACOF MDS on normalised criteria profiles, seeded k-means clusters, zoom/pan.",
+    "VOSviewer-grade market map: network (similarity links), overlay (variable colour), and density (score-weighted heat). SMACOF layout is deterministic for a seed.",
   mapSeed: "Layout seed",
   mapColor: "Colour by",
+  mapMode: "Map mode",
+  mapModeNetwork: "Network",
+  mapModeOverlay: "Overlay",
+  mapModeDensity: "Density",
+  mapOverlayVar: "Overlay variable",
+  mapSearch: "Search / focus",
   colorCluster: "Cluster",
   colorQuadrant: "Quadrant",
   uncertaintyIntro:
@@ -218,6 +224,9 @@ export const en = {
       pliTitle: "Price level (ICP) replaces consumer price basket",
       pliBody:
         "PLI (PA.NUS.PRVT.PLI) is the open WB ICP/WDI price-level index used instead of a scraped consumer-price basket.",
+      mapTitle: "Market map (VOSviewer-grade)",
+      mapBody:
+        "Three modes share one deterministic SMACOF layout (seeded): network (cosine similarity links + clusters), overlay (colour by a chosen variable), and density (score-weighted heat). Search focuses a destination; PNG exports at 4×; SVG is vector.",
     },
     glossary: {
       ims: "International market selection: ranking foreign destinations for export or expansion.",

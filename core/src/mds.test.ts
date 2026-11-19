@@ -104,7 +104,10 @@ describe("market layout", () => {
       seed: 1,
     });
     expect(a.nodes).toEqual(b.nodes);
+    expect(a.edges).toEqual(b.edges);
     expect(a.nodes.every((n) => n.cluster >= 0 && n.cluster < 3)).toBe(true);
     expect(a.stressHistory.length).toBeGreaterThan(0);
+    expect(a.edges.length).toBeGreaterThan(0);
+    expect(a.edges.every((e) => e.weight >= 0 && e.weight <= 1)).toBe(true);
   });
 });

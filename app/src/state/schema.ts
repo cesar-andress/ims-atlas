@@ -65,6 +65,10 @@ export type AnalysisConfig = {
   clusterK?: number | undefined;
   mapSeed?: number | undefined;
   mapColor?: "cluster" | "quadrant" | undefined;
+  /** VOSviewer-style mode (SPEC §12). */
+  mapMode?: "network" | "overlay" | "density" | undefined;
+  /** Variable id for overlay colouring. */
+  mapOverlayVar?: string | undefined;
   backtestTarget?: "intensive" | "new_markets" | "growth" | undefined;
   backtestHorizon?: 1 | 3 | undefined;
   lang?: "en" | "es" | undefined;
@@ -224,6 +228,13 @@ export function parseAnalysisConfig(input: unknown): AnalysisConfig {
 
   const mapColor = asEnum(input.mapColor, ["cluster", "quadrant"] as const);
   if (mapColor) out.mapColor = mapColor;
+
+  const mapMode = asEnum(input.mapMode, ["network", "overlay", "density"] as const);
+  if (mapMode) out.mapMode = mapMode;
+
+  if (typeof input.mapOverlayVar === "string" && input.mapOverlayVar.trim()) {
+    out.mapOverlayVar = input.mapOverlayVar.trim().slice(0, 32);
+  }
 
   const backtestTarget = asEnum(input.backtestTarget, [
     "intensive",

@@ -1,75 +1,58 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { MarketNode } from "@ims-atlas/core";
+import type { MarketEdge, MarketNode } from "@ims-atlas/core";
+import { downloadDataUrl, downloadText } from "../cite/exportDownload";
+import {
+  CLUSTER_COLORS,
+  collideLabels,
+  makeSyntheticNodes,
+  paintMarketMapFrame,
+  sequentialColor,
+  type LabelPos,
+  type MapMode,
+} from "../map/marketMapPaint";
 
-const CLUSTER_COLORS = [
-  "#0b5f4a",
-  "#2a6f97",
-  "#b85c38",
-  "#6a4c93",
-  "#bc4749",
-  "#588157",
-  "#0077b6",
-  "#e9c46a",
-];
+export type { MapMode };
 
 type Props = {
   nodes: MarketNode[];
+  edges?: MarketEdge[];
+  mode: MapMode;
   colorMode: "cluster" | "quadrant";
+  overlayValues?: Record<string, number | null> | undefined;
   quadrants?: Record<string, number> | undefined;
   onSelect?: ((iso3: string) => void) | undefined;
   selected?: string | undefined;
+  focusQuery?: string | undefined;
 };
-
-type LabelPos = {
-  iso3: string;
-  x: number;
-  y: number;
-  lx: number;
-  ly: number;
-  r: number;
-};
-
-function collide(labels: LabelPos[], iterations = 40): LabelPos[] {
-  const out = labels.map((l) => ({ ...l }));
-  for (let iter = 0; iter < iterations; iter++) {
-    for (let i = 0; i < out.length; i++) {
-      for (let j = i + 1; j < out.length; j++) {
-        const a = out[i]!;
-        const b = out[j]!;
-        const dx = a.lx - b.lx;
-        const dy = a.ly - b.ly;
-        const dist = Math.sqrt(dx * dx + dy * dy) || 0.01;
-        const min = 14;
-        if (dist < min) {
-          const push = ((min - dist) / dist) * 0.5;
-          a.lx += dx * push;
-          a.ly += dy * push;
-          b.lx -= dx * push;
-          b.ly -= dy * push;
-        }
-      }
-    }
-  }
-  return out;
-}
 
 export function MarketMapCanvas({
   nodes,
+  edges = [],
+  mode,
   colorMode,
+  overlayValues,
   quadrants,
   onSelect,
   selected,
+  focusQuery = "",
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const svgRef = useRef<SVGSVGElement | null>(null);
   const [view, setView] = useState({ scale: 1, tx: 0, ty: 0 });
+  const [lastFrameMs, setLastFrameMs] = useState(0);
+  const [perf200Ms, setPerf200Ms] = useState<number | null>(null);
   const drag = useRef<{ x: number; y: number; tx: number; ty: number } | null>(null);
+
+  const focusSet = useMemo(() => {
+    const q = focusQuery.trim().toUpperCase();
+    if (!q) return undefined;
+    return new Set(nodes.filter((n) => n.iso3.includes(q)).map((n) => n.iso3));
+  }, [focusQuery, nodes]);
 
   const layout = useMemo(() => {
     const W = 800;
     const H = 560;
     if (nodes.length === 0) {
-      return { labels: [] as LabelPos[], scores: { min: 0, max: 1 }, W, H };
+      return { labels: [] as LabelPos[], W, H };
     }
     const xs = nodes.map((n) => n.x);
     const ys = nodes.map((n) => n.y);
@@ -83,7 +66,6 @@ export function MarketMapCanvas({
     const sMin = Math.min(...scores);
     const sMax = Math.max(...scores);
     const sSpan = sMax - sMin || 1;
-
     const pad = 48;
     const raw: LabelPos[] = nodes.map((n) => {
       const x = pad + ((n.x - minX) / spanX) * (W - 2 * pad);
@@ -91,7 +73,7 @@ export function MarketMapCanvas({
       const r = 6 + (18 * (n.score - sMin)) / sSpan;
       return { iso3: n.iso3, x, y, lx: x + r + 4, ly: y, r };
     });
-    return { labels: collide(raw), scores: { min: sMin, max: sMax }, W, H };
+    return { labels: collideLabels(raw), W, H };
   }, [nodes]);
 
   useEffect(() => {
@@ -105,78 +87,89 @@ export function MarketMapCanvas({
     canvas.style.width = `${layout.W}px`;
     canvas.style.height = `${layout.H}px`;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, layout.W, layout.H);
-    ctx.save();
-    ctx.translate(view.tx, view.ty);
-    ctx.scale(view.scale, view.scale);
+    const ms = paintMarketMapFrame(ctx, {
+      W: layout.W,
+      H: layout.H,
+      labels: layout.labels,
+      nodes,
+      edges,
+      mode,
+      colorMode,
+      view,
+      ...(overlayValues ? { overlayValues } : {}),
+      ...(quadrants ? { quadrants } : {}),
+      ...(selected ? { selected } : {}),
+      ...(focusSet ? { focusSet } : {}),
+    });
+    setLastFrameMs(ms);
+  }, [
+    layout,
+    nodes,
+    edges,
+    view,
+    mode,
+    colorMode,
+    overlayValues,
+    quadrants,
+    selected,
+    focusSet,
+  ]);
 
-    // Soft links between same-cluster neighbours (kNN-ish visual)
-    ctx.strokeStyle = "rgba(100,100,100,0.15)";
-    ctx.lineWidth = 1 / view.scale;
-    for (let i = 0; i < nodes.length; i++) {
-      let bestJ = -1;
-      let bestD = Infinity;
-      for (let j = 0; j < nodes.length; j++) {
-        if (i === j) continue;
-        if (nodes[i]!.cluster !== nodes[j]!.cluster) continue;
-        const dx = nodes[i]!.x - nodes[j]!.x;
-        const dy = nodes[i]!.y - nodes[j]!.y;
-        const d = dx * dx + dy * dy;
-        if (d < bestD) {
-          bestD = d;
-          bestJ = j;
-        }
-      }
-      if (bestJ < 0) continue;
-      const a = layout.labels.find((l) => l.iso3 === nodes[i]!.iso3);
-      const b = layout.labels.find((l) => l.iso3 === nodes[bestJ]!.iso3);
-      if (!a || !b) continue;
-      ctx.beginPath();
-      ctx.moveTo(a.x, a.y);
-      ctx.lineTo(b.x, b.y);
-      ctx.stroke();
-    }
+  useEffect(() => {
+    if (!focusSet || focusSet.size !== 1) return;
+    const only = [...focusSet][0]!;
+    const lab = layout.labels.find((l) => l.iso3 === only);
+    if (!lab) return;
+    const targetScale = 1.8;
+    setView({
+      scale: targetScale,
+      tx: layout.W / 2 - lab.x * targetScale,
+      ty: layout.H / 2 - lab.y * targetScale,
+    });
+  }, [focusQuery, layout.labels, layout.W, layout.H, focusSet]);
 
-    for (const lab of layout.labels) {
-      const node = nodes.find((n) => n.iso3 === lab.iso3)!;
-      const q = quadrants?.[node.iso3] ?? node.cluster;
-      const colorIdx =
-        colorMode === "quadrant" ? (q - 1) % CLUSTER_COLORS.length : node.cluster;
-      const color = CLUSTER_COLORS[colorIdx] ?? "#444";
-      ctx.beginPath();
-      ctx.fillStyle = color;
-      ctx.globalAlpha = selected && selected !== lab.iso3 ? 0.35 : 0.9;
-      ctx.arc(lab.x, lab.y, lab.r, 0, Math.PI * 2);
-      ctx.fill();
-      if (selected === lab.iso3) {
-        ctx.strokeStyle = "#111";
-        ctx.lineWidth = 2 / view.scale;
-        ctx.stroke();
-      }
-      ctx.globalAlpha = 1;
-      ctx.fillStyle = "#1a1a1a";
-      ctx.font = `${11 / view.scale}px "IBM Plex Sans", sans-serif`;
-      ctx.fillText(lab.iso3, lab.lx, lab.ly + 3);
-    }
-    ctx.restore();
-  }, [layout, nodes, view, colorMode, quadrants, selected]);
-
-  function exportPng() {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const a = document.createElement("a");
-    a.href = canvas.toDataURL("image/png");
-    a.download = "ims-atlas-market-map.png";
-    a.click();
+  function exportPng(scale = 4) {
+    const off = document.createElement("canvas");
+    off.width = layout.W * scale;
+    off.height = layout.H * scale;
+    const ctx = off.getContext("2d");
+    if (!ctx) return;
+    ctx.scale(scale, scale);
+    paintMarketMapFrame(ctx, {
+      W: layout.W,
+      H: layout.H,
+      labels: layout.labels,
+      nodes,
+      edges,
+      mode,
+      colorMode,
+      view: { scale: 1, tx: 0, ty: 0 },
+      ...(overlayValues ? { overlayValues } : {}),
+      ...(quadrants ? { quadrants } : {}),
+      ...(selected ? { selected } : {}),
+      ...(focusSet ? { focusSet } : {}),
+    });
+    downloadDataUrl("ims-atlas-market-map.png", off.toDataURL("image/png"));
   }
 
   function exportSvg() {
-    const W = layout.W ?? 800;
-    const H = layout.H ?? 560;
+    const W = layout.W;
+    const H = layout.H;
     const parts = [
       `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`,
       `<rect width="100%" height="100%" fill="#f7f7f5"/>`,
     ];
+    if (mode === "network") {
+      const byIso = new Map(layout.labels.map((l) => [l.iso3, l]));
+      for (const e of edges) {
+        const a = byIso.get(e.source);
+        const b = byIso.get(e.target);
+        if (!a || !b) continue;
+        parts.push(
+          `<line x1="${a.x.toFixed(2)}" y1="${a.y.toFixed(2)}" x2="${b.x.toFixed(2)}" y2="${b.y.toFixed(2)}" stroke="#555" stroke-opacity="${(0.1 + 0.4 * e.weight).toFixed(3)}" stroke-width="${(0.6 + 1.4 * e.weight).toFixed(2)}"/>`,
+        );
+      }
+    }
     for (const lab of layout.labels) {
       const node = nodes.find((n) => n.iso3 === lab.iso3)!;
       const q = quadrants?.[node.iso3] ?? node.cluster;
@@ -191,27 +184,77 @@ export function MarketMapCanvas({
       );
     }
     parts.push("</svg>");
-    const blob = new Blob([parts.join("")], { type: "image/svg+xml" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "ims-atlas-market-map.svg";
-    a.click();
-    URL.revokeObjectURL(url);
+    downloadText("ims-atlas-market-map.svg", parts.join(""), "image/svg+xml");
+  }
+
+  function runPerf200() {
+    const synth = makeSyntheticNodes(200, 7);
+    const W = 800;
+    const H = 560;
+    const xs = synth.map((n) => n.x);
+    const ys = synth.map((n) => n.y);
+    const minX = Math.min(...xs);
+    const maxX = Math.max(...xs);
+    const minY = Math.min(...ys);
+    const maxY = Math.max(...ys);
+    const spanX = maxX - minX || 1;
+    const spanY = maxY - minY || 1;
+    const scores = synth.map((n) => n.score);
+    const sMin = Math.min(...scores);
+    const sMax = Math.max(...scores);
+    const sSpan = sMax - sMin || 1;
+    const pad = 48;
+    const labels: LabelPos[] = synth.map((n) => {
+      const x = pad + ((n.x - minX) / spanX) * (W - 2 * pad);
+      const y = pad + (1 - (n.y - minY) / spanY) * (H - 2 * pad);
+      const r = 6 + (18 * (n.score - sMin)) / sSpan;
+      return { iso3: n.iso3, x, y, lx: x + r + 4, ly: y, r };
+    });
+    const off = document.createElement("canvas");
+    off.width = W;
+    off.height = H;
+    const ctx = off.getContext("2d");
+    if (!ctx) return;
+    const ms = paintMarketMapFrame(ctx, {
+      W,
+      H,
+      labels,
+      nodes: synth,
+      edges: [],
+      mode: "network",
+      colorMode: "cluster",
+      view: { scale: 1, tx: 0, ty: 0 },
+    });
+    setPerf200Ms(ms);
   }
 
   return (
-    <div className="market-map-wrap" data-testid="market-map">
+    <div className="market-map-wrap" data-testid="market-map" data-mode={mode}>
       <div className="market-map-toolbar">
-        <button type="button" data-testid="export-map-png" onClick={exportPng}>
-          PNG
+        <button type="button" data-testid="export-map-png" onClick={() => exportPng(4)}>
+          PNG 4×
         </button>
         <button type="button" data-testid="export-map-svg" onClick={exportSvg}>
           SVG
         </button>
-        <button type="button" onClick={() => setView({ scale: 1, tx: 0, ty: 0 })}>
+        <button
+          type="button"
+          data-testid="map-reset-view"
+          onClick={() => setView({ scale: 1, tx: 0, ty: 0 })}
+        >
           Reset
         </button>
+        <button type="button" data-testid="map-perf-200" onClick={runPerf200}>
+          Perf 200
+        </button>
+        <span className="muted small" data-testid="map-frame-ms">
+          {lastFrameMs.toFixed(2)} ms
+        </span>
+        {perf200Ms !== null ? (
+          <span className="muted small" data-testid="map-perf-ms">
+            {perf200Ms.toFixed(2)}
+          </span>
+        ) : null}
       </div>
       <canvas
         ref={canvasRef}
@@ -225,7 +268,12 @@ export function MarketMapCanvas({
           }));
         }}
         onPointerDown={(e) => {
-          drag.current = { x: e.clientX, y: e.clientY, tx: view.tx, ty: view.ty };
+          drag.current = {
+            x: e.clientX,
+            y: e.clientY,
+            tx: view.tx,
+            ty: view.ty,
+          };
           (e.target as HTMLCanvasElement).setPointerCapture(e.pointerId);
         }}
         onPointerMove={(e) => {
@@ -257,31 +305,56 @@ export function MarketMapCanvas({
           if (hit) onSelect(hit);
         }}
       />
-      <svg ref={svgRef} className="visually-hidden" aria-hidden />
       <ul className="map-legend" data-testid="map-legend">
-        {colorMode === "cluster"
-          ? Array.from(new Set(nodes.map((n) => n.cluster)))
-              .sort((a, b) => a - b)
-              .map((c) => (
-                <li key={c}>
-                  <span
-                    className="swatch"
-                    style={{ background: CLUSTER_COLORS[c % CLUSTER_COLORS.length] }}
-                  />
-                  Cluster {c + 1}
-                </li>
-              ))
-          : [1, 2, 3, 4].map((q) => (
-              <li key={q}>
+        {mode === "overlay" ? (
+          <li data-testid="legend-overlay">
+            Overlay (low → high)
+            <span
+              className="swatch"
+              style={{
+                background: `linear-gradient(90deg, ${sequentialColor(0)}, ${sequentialColor(1)})`,
+                width: 72,
+              }}
+            />
+          </li>
+        ) : mode === "density" ? (
+          <li data-testid="legend-density">
+            Density (score-weighted KDE)
+            <span
+              className="swatch"
+              style={{
+                background: `linear-gradient(90deg, ${sequentialColor(0)}, ${sequentialColor(1)})`,
+                width: 72,
+              }}
+            />
+          </li>
+        ) : colorMode === "cluster" ? (
+          Array.from(new Set(nodes.map((n) => n.cluster)))
+            .sort((a, b) => a - b)
+            .map((c) => (
+              <li key={c}>
                 <span
                   className="swatch"
                   style={{
-                    background: CLUSTER_COLORS[(q - 1) % CLUSTER_COLORS.length],
+                    background: CLUSTER_COLORS[c % CLUSTER_COLORS.length],
                   }}
                 />
-                Q{q}
+                Cluster {c + 1}
               </li>
-            ))}
+            ))
+        ) : (
+          [1, 2, 3, 4].map((q) => (
+            <li key={q}>
+              <span
+                className="swatch"
+                style={{
+                  background: CLUSTER_COLORS[(q - 1) % CLUSTER_COLORS.length],
+                }}
+              />
+              Q{q}
+            </li>
+          ))
+        )}
       </ul>
     </div>
   );

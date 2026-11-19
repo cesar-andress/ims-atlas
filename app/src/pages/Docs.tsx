@@ -61,6 +61,8 @@ export function Docs() {
         <p>{t("docs.methods.sustainabilityBody")}</p>
         <h3 data-testid="docs-pli">{t("docs.methods.pliTitle")}</h3>
         <p>{t("docs.methods.pliBody")}</p>
+        <h3 data-testid="docs-map">{t("docs.methods.mapTitle")}</h3>
+        <p>{t("docs.methods.mapBody")}</p>
       </section>
 
       <section

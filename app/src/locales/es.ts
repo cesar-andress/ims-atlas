@@ -136,9 +136,15 @@ const es = {
   fit: "Encaje",
   quadrant: "Cuadrante",
   mapIntro:
-    "Mapa tipo VOSviewer: MDS SMACOF sobre perfiles normalizados, k-means con semilla, zoom/pan.",
+    "Mapa de mercados tipo VOSviewer: red (enlaces de similitud), overlay (color por variable) y densidad (calor ponderado por score). El layout SMACOF es determinista con una semilla.",
   mapSeed: "Semilla",
   mapColor: "Color por",
+  mapMode: "Modo de mapa",
+  mapModeNetwork: "Red",
+  mapModeOverlay: "Overlay",
+  mapModeDensity: "Densidad",
+  mapOverlayVar: "Variable de overlay",
+  mapSearch: "Buscar / enfocar",
   colorCluster: "Clúster",
   colorQuadrant: "Cuadrante",
   uncertaintyIntro:
@@ -219,6 +225,9 @@ const es = {
       pliTitle: "Nivel de precios (ICP) sustituye la cesta de precios",
       pliBody:
         "PLI (PA.NUS.PRVT.PLI) es el índice abierto WB ICP/WDI usado en lugar de una cesta de precios scrapeada.",
+      mapTitle: "Mapa de mercados (nivel VOSviewer)",
+      mapBody:
+        "Tres modos comparten un layout SMACOF determinista (semilla): red (enlaces por similitud coseno + clústeres), overlay (color por variable) y densidad (calor ponderado por score). La búsqueda enfoca un destino; PNG a 4×; SVG vectorial.",
     },
     glossary: {
       ims: "Selección internacional de mercados: ordenar destinos para exportación o expansión.",
