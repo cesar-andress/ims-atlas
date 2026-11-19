@@ -1,0 +1,37 @@
+import type { ViewId } from "./schema";
+
+/** Primary workspace views (shown in the main nav). */
+export const PRIMARY_VIEWS: readonly ViewId[] = [
+  "home",
+  "catalog",
+  "builder",
+  "ranking",
+  "matrix",
+  "map",
+] as const;
+
+/** Later-phase stubs (collapsed under “More”). */
+export const SECONDARY_VIEWS: readonly ViewId[] = [
+  "uncertainty",
+  "backtest",
+  "time",
+  "cite",
+  "byod",
+  "docs",
+] as const;
+
+/** Views that share the analysis config panel + ranking model. */
+export const ANALYSIS_VIEWS: readonly ViewId[] = [
+  "builder",
+  "ranking",
+  "matrix",
+  "map",
+] as const;
+
+export function isAnalysisView(view: ViewId): boolean {
+  return (ANALYSIS_VIEWS as readonly string[]).includes(view);
+}
+
+export function isPrimaryView(view: ViewId): boolean {
+  return (PRIMARY_VIEWS as readonly string[]).includes(view);
+}

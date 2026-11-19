@@ -78,13 +78,15 @@ body {
 .main-nav {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 0.35rem 0.5rem;
   flex: 1 1 100%;
   order: 3;
   max-width: 100%;
 }
 
-.main-nav a {
+.main-nav a,
+.nav-more > summary {
   color: var(--muted);
   text-decoration: none;
   font-size: 0.82rem;
@@ -92,13 +94,50 @@ body {
   border-radius: 0.3rem;
   border: 1px solid transparent;
   max-width: 100%;
+  cursor: pointer;
+  list-style: none;
 }
 
 .main-nav a.active,
-.main-nav a:hover {
+.main-nav a:hover,
+.nav-more[open] > summary,
+.nav-more > summary:hover {
   color: var(--fg);
   border-color: var(--border);
   background: var(--bg);
+}
+
+.nav-more {
+  position: relative;
+}
+
+.nav-more > summary::-webkit-details-marker {
+  display: none;
+}
+
+.nav-more-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.5rem;
+  margin-top: 0.35rem;
+  width: 100%;
+}
+
+@media (min-width: 900px) {
+  .nav-more-panel {
+    position: absolute;
+    z-index: 20;
+    top: 100%;
+    left: 0;
+    margin-top: 0.25rem;
+    min-width: 11rem;
+    flex-direction: column;
+    padding: 0.4rem;
+    border: 1px solid var(--border);
+    border-radius: 0.35rem;
+    background: var(--surface);
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--fg) 12%, transparent);
+  }
 }
 
 .controls {
@@ -215,9 +254,58 @@ main {
 
 .hero h1,
 .catalog h1,
-.stub h1 {
+.stub h1,
+.analysis-page h1,
+.builder h1 {
   margin: 0 0 0.5rem;
   font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+}
+
+.home-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  margin: 1rem 0 1.5rem;
+  align-items: center;
+}
+
+.home-cta a {
+  color: var(--accent);
+}
+
+.cta-primary {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 1rem;
+  border-radius: 0.4rem;
+  background: var(--accent);
+  color: #fff !important;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.analysis-page-header {
+  margin-bottom: 0.5rem;
+}
+
+.analysis-context {
+  margin: 0.25rem 0 0.75rem;
+  font-size: 0.9rem;
+}
+
+.analysis-empty {
+  border: 1px dashed var(--border);
+  border-radius: 0.5rem;
+  padding: 1rem 1.1rem;
+  background: var(--surface);
+  margin: 0.75rem 0 1rem;
+}
+
+.analysis-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
 }
 
 .hero p,
@@ -607,10 +695,8 @@ main {
   margin: 0.5rem 0;
 }
 
-main:has(.ranking),
-main:has(.builder),
-main:has(.matrix),
-main:has(.market-map-page) {
+main:has(.analysis-page),
+main:has(.builder) {
   max-width: 96rem;
 }
 

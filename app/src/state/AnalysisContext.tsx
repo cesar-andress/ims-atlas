@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AnalysisContext, type AnalysisContextValue } from "./analysisContextBase";
 import { DEFAULT_CONFIG, type AnalysisConfig, type ViewId } from "./schema";
@@ -15,6 +22,10 @@ import {
   saveProjectToStorage,
 } from "./projectStore";
 
+/**
+ * Controller: analysis config is the model; URL (path + ?c=) is persistence.
+ * Updates use a ref snapshot so rapid patches do not clobber each other.
+ */
 export function AnalysisProvider({ children }: { children: ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
@@ -28,6 +39,8 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
       }
     );
   });
+  const configRef = useRef(config);
+  configRef.current = config;
 
   useEffect(() => {
     const view = viewFromPath(location.pathname);
@@ -49,7 +62,7 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
     }
   }, [location.search, location.pathname, navigate]);
 
-  const push = useCallback(
+  const commit = useCallback(
     (next: AnalysisConfig) => {
       setConfigState(next);
       navigate({
@@ -62,16 +75,16 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
 
   const setConfig = useCallback(
     (patch: Partial<AnalysisConfig>) => {
-      push({ ...config, ...patch, v: 1 });
+      commit({ ...configRef.current, ...patch, v: 1 });
     },
-    [config, push],
+    [commit],
   );
 
   const setView = useCallback(
     (view: ViewId) => {
-      push({ ...config, view, v: 1 });
+      commit({ ...configRef.current, view, v: 1 });
     },
-    [config, push],
+    [commit],
   );
 
   const value = useMemo<AnalysisContextValue>(
@@ -80,15 +93,14 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
       setConfig,
       setView,
       saveProject: (label) => {
-        saveProjectToStorage(config, label);
+        saveProjectToStorage(configRef.current, label);
       },
-      exportProject: () => exportProjectJson(config),
+      exportProject: () => exportProjectJson(configRef.current),
       importProject: (json) => {
-        const imported = importProjectJson(json);
-        push(imported);
+        commit(importProjectJson(json));
       },
     }),
-    [config, push, setConfig, setView],
+    [config, commit, setConfig, setView],
   );
 
   return <AnalysisContext.Provider value={value}>{children}</AnalysisContext.Provider>;

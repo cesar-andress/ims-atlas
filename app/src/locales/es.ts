@@ -38,6 +38,10 @@ const es = {
   catalogIntro: "Variables por factor con licencias y mapas de cobertura.",
   permalinkState: "Config del permalink",
   loading: "Cargando…",
+  navMore: "Más",
+  analysisNeedConfig:
+    "Define origen, producto (HS) y año en el panel, o carga el preset de demostración.",
+  homeStart: "Empezar en Builder",
   status: "Estado",
   coverage: "Cobertura",
   selectVariable: "Selecciona una variable",

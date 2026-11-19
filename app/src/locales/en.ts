@@ -38,6 +38,10 @@ export const en = {
   catalogIntro: "Variables by factor with licence badges and coverage heatmaps.",
   permalinkState: "Permalink config",
   loading: "Loading…",
+  navMore: "More",
+  analysisNeedConfig:
+    "Set origin, product (HS) and year in the config panel, or load the demo preset.",
+  homeStart: "Start in Builder",
   status: "Status",
   coverage: "Coverage",
   selectVariable: "Select a variable",

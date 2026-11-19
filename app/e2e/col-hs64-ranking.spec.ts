@@ -50,8 +50,10 @@ test.describe("COL HS64 2023 IMSFE ranking", () => {
     const top = golden.block.ranking_expert[0]!;
     const topRow = page.locator(`tr[data-iso3="${top.iso3}"]`);
     await expect(topRow).toHaveAttribute("data-rank", "1");
-    const scoreText = await page.getByTestId(`score-${top.iso3}`).innerText();
-    const score = Number(scoreText);
+    const scoreAttr = await page
+      .getByTestId(`score-${top.iso3}`)
+      .getAttribute("data-score");
+    const score = Number(scoreAttr);
     expect(Math.abs(score - top.score)).toBeLessThanOrEqual(1e-9);
 
     // Second and third ranks

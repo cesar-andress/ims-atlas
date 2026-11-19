@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "../i18n";
 import { dataConfig, releaseUrl } from "../dataConfig";
-import { useAnalysis } from "../state/useAnalysis";
-import { configToSearch } from "../state/urlState";
+import { configToSearch, pathForView } from "../state/urlState";
 import { COL_HS64_PRESET, type AnalysisConfig } from "../state/schema";
 
 const EXAMPLES: AnalysisConfig[] = [
@@ -26,7 +25,6 @@ const EXAMPLES: AnalysisConfig[] = [
 
 export function Home() {
   const { t } = useTranslation();
-  const { setConfig } = useAnalysis();
 
   return (
     <section className="hero" aria-labelledby="home-title">
@@ -37,16 +35,35 @@ export function Home() {
         {t("dataRelease")}:{" "}
         <a href={releaseUrl("manifest.json")}>v{dataConfig.release_version}</a>
       </p>
+      <div className="home-cta">
+        <Link
+          className="cta-primary"
+          to={{
+            pathname: pathForView("builder"),
+            search: configToSearch({ ...COL_HS64_PRESET, view: "builder" }),
+          }}
+          data-testid="home-start-builder"
+        >
+          {t("homeStart")}
+        </Link>
+        <Link
+          to={{
+            pathname: pathForView("ranking"),
+            search: configToSearch({ ...COL_HS64_PRESET, view: "ranking" }),
+          }}
+          data-testid="home-open-demo"
+        >
+          {t("presetColHs64")}
+        </Link>
+      </div>
       <h2>{t("examplePermalinks")}</h2>
       <ul className="permalink-list" data-testid="example-permalinks">
         {EXAMPLES.map((ex, i) => {
           const search = configToSearch(ex);
-          const path = ex.view === "home" ? "/" : `/${ex.view}`;
           return (
             <li key={i}>
               <Link
-                to={{ pathname: path, search }}
-                onClick={() => setConfig(ex)}
+                to={{ pathname: pathForView(ex.view), search }}
                 data-testid={`permalink-example-${i}`}
               >
                 {ex.origin}/{ex.year} → {ex.view}
@@ -55,11 +72,6 @@ export function Home() {
           );
         })}
       </ul>
-      <p>
-        <Link to="/catalog" onClick={() => setConfig({ view: "catalog" })}>
-          {t("nav.catalog")}
-        </Link>
-      </p>
     </section>
   );
 }

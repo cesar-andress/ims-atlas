@@ -1,10 +1,12 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
+import { AppNav } from "./components/AppNav";
 import { Home } from "./pages/Home";
 import { StubView } from "./pages/StubView";
 import { AnalysisProvider } from "./state/AnalysisContext";
 import { useAnalysis } from "./state/useAnalysis";
-import type { ViewId } from "./state/schema";
+import { isAnalysisView } from "./state/views";
+import { configToSearch } from "./state/urlState";
 import { ensureLanguage, useTranslation } from "./i18n";
 import { applyTheme, readStoredTheme, type ThemeMode } from "./theme";
 
@@ -30,21 +32,6 @@ const MarketMap = lazy(() =>
 const REPO_URL = "https://github.com/cesar-andress/ims-atlas";
 const BACKTEST_URL = "https://github.com/cesar-andress/ims-backtest";
 
-const NAV: ViewId[] = [
-  "home",
-  "catalog",
-  "builder",
-  "ranking",
-  "matrix",
-  "map",
-  "uncertainty",
-  "backtest",
-  "time",
-  "cite",
-  "byod",
-  "docs",
-];
-
 function RouteFallback() {
   const { t } = useTranslation();
   return (
@@ -56,7 +43,7 @@ function RouteFallback() {
 
 function AppShell() {
   const { t, i18n } = useTranslation();
-  const { config, setView, setConfig } = useAnalysis();
+  const { config, setConfig } = useAnalysis();
   const [theme, setTheme] = useState<ThemeMode>(() =>
     typeof document === "undefined" ? "light" : readStoredTheme(),
   );
@@ -72,34 +59,22 @@ function AppShell() {
     }
   }, [config.lang, i18n.language]);
 
-  const showConfig = config.view !== "home" && config.view !== "docs";
+  const showConfig = isAnalysisView(config.view);
 
   return (
     <div className="shell">
       <header className="topbar" data-testid="site-header">
         <div className="brand">
-          <Link to="/" onClick={() => setView("home")}>
+          <Link
+            to={{
+              pathname: "/",
+              search: configToSearch({ ...config, view: "home" }),
+            }}
+          >
             {t("appName")}
           </Link>
         </div>
-        <nav className="main-nav" aria-label={t("mainNav")} data-testid="main-nav">
-          {NAV.map((view) => (
-            <Link
-              key={view}
-              to={view === "home" ? "/" : `/${view}`}
-              className={config.view === view ? "active" : undefined}
-              onClick={() => setView(view)}
-              onMouseEnter={() => {
-                if (view === "ranking") void import("./pages/Ranking");
-                if (view === "matrix") void import("./pages/Matrix");
-                if (view === "map") void import("./pages/MarketMap");
-                if (view === "catalog") void import("./pages/Catalog");
-              }}
-            >
-              {t(`nav.${view}`)}
-            </Link>
-          ))}
-        </nav>
+        <AppNav />
         <div className="controls">
           <label>
             {t("language")}{" "}
