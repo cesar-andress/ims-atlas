@@ -13,10 +13,11 @@ export const PRIMARY_VIEWS: readonly ViewId[] = [
   "time",
   "cite",
   "byod",
+  "docs",
 ] as const;
 
-/** Later-phase stubs (collapsed under “More”). */
-export const SECONDARY_VIEWS: readonly ViewId[] = ["docs"] as const;
+/** Reserved for future secondary links (More menu). */
+export const SECONDARY_VIEWS: readonly ViewId[] = [] as const;
 
 /** Views that share the analysis config panel + ranking model. */
 export const ANALYSIS_VIEWS: readonly ViewId[] = [

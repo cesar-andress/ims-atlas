@@ -10,6 +10,12 @@ const PREFETCH: Partial<Record<ViewId, () => Promise<unknown>>> = {
   map: () => import("../pages/MarketMap"),
   catalog: () => import("../pages/Catalog"),
   builder: () => import("../pages/Builder"),
+  uncertainty: () => import("../pages/Uncertainty"),
+  backtest: () => import("../pages/Backtest"),
+  time: () => import("../pages/TimeExplorer"),
+  cite: () => import("../pages/CiteExport"),
+  byod: () => import("../pages/Byod"),
+  docs: () => import("../pages/Docs"),
 };
 
 function NavItem({ view }: { view: ViewId }) {
@@ -41,14 +47,16 @@ export function AppNav() {
       {PRIMARY_VIEWS.map((view) => (
         <NavItem key={view} view={view} />
       ))}
-      <details className="nav-more" {...(secondaryOpen ? { open: true } : {})}>
-        <summary>{t("navMore")}</summary>
-        <div className="nav-more-panel">
-          {SECONDARY_VIEWS.map((view) => (
-            <NavItem key={view} view={view} />
-          ))}
-        </div>
-      </details>
+      {SECONDARY_VIEWS.length > 0 ? (
+        <details className="nav-more" {...(secondaryOpen ? { open: true } : {})}>
+          <summary>{t("navMore")}</summary>
+          <div className="nav-more-panel">
+            {SECONDARY_VIEWS.map((view) => (
+              <NavItem key={view} view={view} />
+            ))}
+          </div>
+        </details>
+      ) : null}
     </nav>
   );
 }

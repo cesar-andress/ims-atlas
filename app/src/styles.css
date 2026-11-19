@@ -178,9 +178,99 @@ body {
 button:focus-visible,
 .controls select:focus-visible,
 a:focus-visible,
-input:focus-visible {
+input:focus-visible,
+select:focus-visible,
+summary:focus-visible,
+textarea:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: -3rem;
+  z-index: 1000;
+  padding: 0.5rem 0.75rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 0.35rem;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 0.75rem;
+}
+
+.mobile-readonly-banner {
+  display: none;
+  margin: 0.75rem 1rem 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 800px) {
+  .mobile-readonly-banner {
+    display: block;
+  }
+
+  .config-panel {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .config-panel-body input,
+  .config-panel-body select,
+  .config-panel-body button,
+  .config-panel-body .file-import {
+    pointer-events: none;
+    opacity: 0.55;
+  }
+
+  .table-scroll,
+  .heatmap-wrap {
+    max-width: 100%;
+  }
+
+  .ranking-layout,
+  .matrix-layout,
+  .analysis-page {
+    overflow-x: hidden;
+  }
+}
+
+.docs-page {
+  padding: 0 1rem 2rem;
+  max-width: 48rem;
+}
+
+.docs-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin: 0.75rem 0 1.25rem;
+}
+
+.docs-toc a {
+  color: var(--accent);
+}
+
+.docs-glossary dt {
+  font-weight: 700;
+  margin-top: 0.75rem;
+}
+
+.docs-glossary dd {
+  margin: 0.15rem 0 0;
+  color: var(--muted);
+}
+
+.docs-page code {
+  font-size: 0.9em;
 }
 
 .workspace {
@@ -390,10 +480,18 @@ main {
 
 .permalink-list {
   padding-left: 1.25rem;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .permalink-list a {
   color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.35rem 0.25rem;
 }
 
 .catalog-grid {

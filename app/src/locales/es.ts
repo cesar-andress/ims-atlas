@@ -116,6 +116,68 @@ const es = {
   byodEmpty: "Aún no hay variables BYOD.",
   byodRemove: "Quitar",
   byodClear: "Borrar todas",
+  docsIntro:
+    "Métodos, glosario, tutoriales breves y FAQ sobre lo que el backtest muestra y no muestra.",
+  docsToc: "Secciones de documentación",
+  skipToContent: "Saltar al contenido",
+  mobileReadOnly:
+    "En móvil la vista es de solo lectura: usa una pantalla más grande para editar la configuración.",
+  docs: {
+    section: {
+      methods: "Métodos",
+      glossary: "Glosario",
+      tutorials: "Tutoriales",
+      faq: "FAQ y limitaciones",
+    },
+    methods: {
+      p1: "IMS Atlas puntúa destinos con métodos multicriterio jerárquicos sobre indicadores país–año. Las features en t usan solo datos con year ≤ t.",
+      p2: "Los pesos pueden ser iguales, manuales, expert (medias IMSFE 2025), entropy o CRITIC. La agregación incluye WSM, TOPSIS, VIKOR y PROMETHEE II.",
+      normTitle: "Normalización",
+      normCost: "(criterios de coste usan 1 − x′ tras el escalado tipo beneficio).",
+      rankNorm:
+        "rangos medios en el conjunto de candidatos (mayor rango = mejor tras invertir dirección).",
+      aggTitle: "Agregación",
+      aggOthers:
+        "TOPSIS, VIKOR y PROMETHEE II están en el builder; SMAA muestre pesos alrededor del centro para WSM.",
+      missingTitle: "Datos faltantes",
+      missingBody:
+        "El conjunto de candidatos es fijo. Variables por encima del umbral de missing se excluyen (aviso visible). El resto usa imputación por mediana con flags. Se rechaza n < 20.",
+      smaaBody:
+        "Muestreo Dirichlet (o box) de pesos jerárquicos produce aceptabilidad de rangos, P(top-k) y pesos centrales. El tornado reescala un factor ±50% y reporta |Δrank| medio.",
+    },
+    glossary: {
+      ims: "Selección internacional de mercados: ordenar destinos para exportación o expansión.",
+      mcdm: "Decisión / análisis multicriterio (WSM, TOPSIS, VIKOR, PROMETHEE, …).",
+      ndcg: "Ganancia acumulada descontada normalizada en el corte k; usada en backtests walk-forward.",
+      smaa: "Análisis estocástico de aceptabilidad multicriterio: incertidumbre en pesos.",
+      byod: "Bring your own data: CSV solo en el navegador.",
+      hs: "Código de producto del Sistema Armonizado (HS2/HS4/HS6).",
+    },
+    tutorial: {
+      exporterTitle: "Para un exportador",
+      exporter1: "Carga el preset COL · HS64 · 2023 (o define origen, HS y año).",
+      exporter2: "Abre Ranking y la matriz estratégica; compara dos destinos.",
+      exporter3: "Usa Citar y exportar para permalink y CSV del ranking.",
+      researcherTitle: "Para un investigador",
+      researcher1: "Revisa Incertidumbre (SMAA) con semilla fija.",
+      researcher2: "Abre Backtest y lee NDCG@10 y lifts emparejados (fixture T4).",
+      researcher3: "Exporta el JSON de config y el snippet Python para ims-backtest.",
+      agencyTitle: "Para una agencia de exportación",
+      agency1: "Comparte un permalink para la misma configuración.",
+      agency2: "Documenta licencias en el catálogo antes de redistribuir releases.",
+      agency3: "Mantén BYOD local; no publiques series no redistribuibles.",
+    },
+    faq: {
+      q1: "¿Un buen backtest implica que el índice causa mejores exportaciones?",
+      a1: "No. El backtest mide acuerdo predictivo con flujos comerciales posteriores bajo un protocolo fijo. No estima el efecto causal de usar el índice.",
+      q2: "¿Qué encontró el paper compañero?",
+      a2: "En el protocolo T4 publicado, el WSM expert tiene NDCG@10 (intensive, k=1) ≈ 0.74 y no domina con claridad baselines como volumen de importación o gravity PPML dentro de los IC bootstrap. Úsalo como apoyo a la decisión, no como predictor demostrado.",
+      q3: "¿Por qué faltan variables en el release público?",
+      a3: "Solo se publican variables con licencia redistribuible y status verified. El resto es BYOD o local.",
+      q4: "¿Por qué Time explorer puede diferir del Ranking?",
+      a4: "El Ranking demo usa el golden phase-8; Time usa una serie multi-año imsfe. Ambos llevan procedencia; no se empalman en silencio.",
+    },
+  },
   nav: navEs,
 } as const;
 

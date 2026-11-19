@@ -51,7 +51,6 @@ export function AppHeader() {
         </label>
         <button
           type="button"
-          aria-label={t("theme")}
           onClick={() => setTheme((prev) => (prev === "light" ? "dark" : "light"))}
         >
           {theme === "light" ? t("themeDark") : t("themeLight")}
@@ -87,12 +86,23 @@ export function AppShellFrame({
   configSlot: ReactNode;
   children: ReactNode;
 }) {
+  const { t } = useTranslation();
   return (
     <div className="shell">
+      <a className="skip-link" href="#main-content">
+        {t("skipToContent")}
+      </a>
       <AppHeader />
       <div className={`workspace ${showConfig ? "with-config" : ""}`}>
         {showConfig ? configSlot : null}
-        <main>{children}</main>
+        <main id="main-content" tabIndex={-1}>
+          {showConfig ? (
+            <p className="mobile-readonly-banner" data-testid="mobile-readonly">
+              {t("mobileReadOnly")}
+            </p>
+          ) : null}
+          {children}
+        </main>
       </div>
       <AppFooter />
     </div>

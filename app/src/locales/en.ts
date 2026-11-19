@@ -116,5 +116,70 @@ export const en = {
   byodEmpty: "No BYOD variables yet.",
   byodRemove: "Remove",
   byodClear: "Clear all",
+  docsIntro:
+    "Methods, glossary, short tutorials, and FAQ on what the backtest does and does not show.",
+  docsToc: "Documentation sections",
+  skipToContent: "Skip to content",
+  mobileReadOnly:
+    "Mobile layout is read-only: open this page on a larger screen to edit the analysis config.",
+  docs: {
+    section: {
+      methods: "Methods",
+      glossary: "Glossary",
+      tutorials: "Tutorials",
+      faq: "FAQ and limitations",
+    },
+    methods: {
+      p1: "IMS Atlas scores destinations with hierarchical multi-criteria methods on country–year indicators. Time-t features use only data with year ≤ t.",
+      p2: "Weights may be equal, manual, expert (IMSFE 2025 means), entropy, or CRITIC. Aggregation includes WSM, TOPSIS, VIKOR, and PROMETHEE II.",
+      normTitle: "Normalisation",
+      normCost: "(cost criteria use 1 − x′ after benefit-style scaling).",
+      rankNorm:
+        "average ranks within the candidate set (higher rank number = better after direction flip).",
+      aggTitle: "Aggregation",
+      aggOthers:
+        "TOPSIS, VIKOR, and PROMETHEE II are available in the builder; SMAA samples weights around the chosen centre for WSM.",
+      missingTitle: "Missing data",
+      missingBody:
+        "The candidate set is fixed. Variables above the missingness threshold are dropped (visible warning). Remaining gaps use median imputation with per-cell flags. Scoring refuses fewer than 20 candidates.",
+      smaaBody:
+        "Dirichlet (or box) sampling of hierarchical weights yields rank acceptability, P(top-k), and central weights. Tornado plots rescale one factor weight by ±50% and report mean |Δrank|.",
+    },
+    glossary: {
+      ims: "International market selection: ranking foreign destinations for export or expansion.",
+      mcdm: "Multi-criteria decision making / analysis (WSM, TOPSIS, VIKOR, PROMETHEE, …).",
+      ndcg: "Normalised discounted cumulative gain at cutoff k; used in walk-forward backtests against trade outcomes.",
+      smaa: "Stochastic multicriteria acceptability analysis: uncertainty over weights.",
+      byod: "Bring your own data: CSV uploaded and processed only in the browser.",
+      hs: "Harmonised System product code (HS2/HS4/HS6 chapters).",
+    },
+    tutorial: {
+      exporterTitle: "For an exporter",
+      exporter1:
+        "Load the COL · HS64 · 2023 preset (or set your origin, HS, and year).",
+      exporter2: "Open Ranking and the strategic matrix; compare two destinations.",
+      exporter3: "Use Cite & export for a permalink and CSV of the ranking.",
+      researcherTitle: "For a researcher",
+      researcher1: "Inspect Uncertainty (SMAA) with a fixed seed for reproducibility.",
+      researcher2:
+        "Open Backtest and read NDCG@10 and paired lifts vs baselines (T4 fixture).",
+      researcher3: "Export the config JSON and the Python snippet for ims-backtest.",
+      agencyTitle: "For an export agency",
+      agency1: "Share a permalink so colleagues see the same analysis state.",
+      agency2:
+        "Document licences in the data catalog before redistributing any release files.",
+      agency3: "Keep BYOD uploads local; do not ship non-redistributable series.",
+    },
+    faq: {
+      q1: "Does a good backtest score mean the index causes better exports?",
+      a1: "No. The backtest measures predictive agreement with subsequent trade flows under a fixed protocol. It is not an estimate of causal effect of using the index.",
+      q2: "What did the companion research paper find?",
+      a2: "On the published T4 protocol, expert WSM NDCG@10 (intensive, k=1) is about 0.74 and does not clearly dominate simple baselines such as import volume or gravity PPML within bootstrap CIs. Treat IMS ranks as decision support, not proven predictors.",
+      q3: "Why are some variables missing from the public release?",
+      a3: "Only variables with redistributable licence and verified status may ship. Others are BYOD or local-only.",
+      q4: "Why can Time explorer ranks differ from the Ranking view?",
+      a4: "The demo Ranking panel uses the phase-8 golden export; Time uses a multi-year imsfe panel rank series. Both are labelled with provenance; they are not silently spliced.",
+    },
+  },
   nav: navEn,
 } as const;

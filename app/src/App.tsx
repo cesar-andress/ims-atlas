@@ -2,10 +2,9 @@ import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { AppShellFrame } from "./components/AppChrome";
 import { Home } from "./pages/Home";
-import { StubView } from "./pages/StubView";
 import { AnalysisProvider } from "./state/AnalysisContext";
 import { useAnalysis } from "./state/useAnalysis";
-import { isAnalysisView, SECONDARY_VIEWS } from "./state/views";
+import { isAnalysisView } from "./state/views";
 import { useTranslation } from "./i18n";
 
 const ConfigPanel = lazy(() =>
@@ -39,6 +38,7 @@ const CiteExport = lazy(() =>
   import("./pages/CiteExport").then((m) => ({ default: m.CiteExport })),
 );
 const Byod = lazy(() => import("./pages/Byod").then((m) => ({ default: m.Byod })));
+const Docs = lazy(() => import("./pages/Docs").then((m) => ({ default: m.Docs })));
 
 function RouteFallback() {
   const { t } = useTranslation();
@@ -75,9 +75,7 @@ function AppShell() {
           <Route path="/time" element={<TimeExplorer />} />
           <Route path="/cite" element={<CiteExport />} />
           <Route path="/byod" element={<Byod />} />
-          {SECONDARY_VIEWS.map((view) => (
-            <Route key={view} path={`/${view}`} element={<StubView view={view} />} />
-          ))}
+          <Route path="/docs" element={<Docs />} />
         </Routes>
       </Suspense>
     </AppShellFrame>
