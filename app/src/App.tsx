@@ -5,6 +5,8 @@ import { ConfigPanel } from "./components/ConfigPanel";
 import { Builder } from "./pages/Builder";
 import { Catalog } from "./pages/Catalog";
 import { Home } from "./pages/Home";
+import { MarketMap } from "./pages/MarketMap";
+import { Matrix } from "./pages/Matrix";
 import { Ranking } from "./pages/Ranking";
 import { StubView } from "./pages/StubView";
 import { AnalysisProvider } from "./state/AnalysisContext";
@@ -102,8 +104,8 @@ function AppShell() {
             <Route path="/catalog" element={<Catalog />} />
             <Route path="/builder" element={<Builder />} />
             <Route path="/ranking" element={<Ranking />} />
-            <Route path="/matrix" element={<StubView view="matrix" />} />
-            <Route path="/map" element={<StubView view="map" />} />
+            <Route path="/matrix" element={<Matrix />} />
+            <Route path="/map" element={<MarketMap />} />
             <Route path="/uncertainty" element={<StubView view="uncertainty" />} />
             <Route path="/backtest" element={<StubView view="backtest" />} />
             <Route path="/time" element={<StubView view="time" />} />

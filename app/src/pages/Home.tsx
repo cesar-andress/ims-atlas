@@ -18,13 +18,9 @@ const EXAMPLES: AnalysisConfig[] = [
     view: "ranking",
   },
   {
-    v: 1,
-    view: "builder",
-    origin: "COL",
-    year: 2023,
-    hs: "64",
-    weightScheme: "expert_mean",
-    missingThreshold: 0.2,
+    ...COL_HS64_PRESET,
+    view: "matrix",
+    matrixCutoff: "median",
   },
 ];
 

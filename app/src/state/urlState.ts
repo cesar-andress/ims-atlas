@@ -64,6 +64,12 @@ export function configToSearch(config: AnalysisConfig): string {
   }
   if (config.compareA) compact.compareA = config.compareA;
   if (config.compareB) compact.compareB = config.compareB;
+  if (config.matrixCutoff) compact.matrixCutoff = config.matrixCutoff;
+  if (config.matrixCutA !== undefined) compact.matrixCutA = config.matrixCutA;
+  if (config.matrixCutF !== undefined) compact.matrixCutF = config.matrixCutF;
+  if (config.clusterK !== undefined) compact.clusterK = config.clusterK;
+  if (config.mapSeed !== undefined) compact.mapSeed = config.mapSeed;
+  if (config.mapColor) compact.mapColor = config.mapColor;
   if (config.lang) compact.lang = config.lang;
   return `?${PARAM}=${encodeConfig(AnalysisConfigSchema.parse(compact))}`;
 }

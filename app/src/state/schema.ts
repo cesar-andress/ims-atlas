@@ -40,6 +40,14 @@ export const AnalysisConfigSchema = z.object({
   factorWeights: z.record(z.string(), z.number()).optional(),
   compareA: z.string().length(3).optional(),
   compareB: z.string().length(3).optional(),
+  /** Strategic matrix cut-off mode. */
+  matrixCutoff: z.enum(["median", "fixed"]).optional(),
+  matrixCutA: z.number().optional(),
+  matrixCutF: z.number().optional(),
+  /** Market-map k-means clusters and seed. */
+  clusterK: z.number().int().min(2).max(12).optional(),
+  mapSeed: z.number().int().optional(),
+  mapColor: z.enum(["cluster", "quadrant"]).optional(),
   lang: z.enum(["en", "es"]).optional(),
 });
 

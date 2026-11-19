@@ -129,3 +129,33 @@ export {
   type WorkerRequest,
   type WorkerResponse,
 } from "./workerProtocol.js";
+
+export {
+  centerAndOrient,
+  classicalMds2d,
+  kruskalStress,
+  layoutFromProfiles,
+  pairwiseDistances,
+  smacof2d,
+  type Point2,
+  type SmacofOptions,
+  type SmacofResult,
+} from "./mds.js";
+
+export { kMeans2d, type KMeansResult } from "./cluster.js";
+
+export {
+  buildMarketLayout,
+  type MarketLayoutResult,
+  type MarketNode,
+} from "./marketLayout.js";
+
+export {
+  IMSFE_ATTRACTIVENESS_FACTORS,
+  IMSFE_FIT_FACTORS,
+  buildStrategicMatrix,
+  quadrantOf,
+  type AxisMode,
+  type StrategicMatrixResult,
+  type StrategicPoint,
+} from "./strategic.js";

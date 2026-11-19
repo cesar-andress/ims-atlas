@@ -10,6 +10,7 @@ import {
   type BootstrapSummary,
   type PairedDelta,
 } from "./bootstrap.js";
+import { buildMarketLayout, type MarketLayoutResult } from "./marketLayout.js";
 import {
   runSmaaWsm,
   type SamplingMode,
@@ -49,13 +50,27 @@ export type BootstrapSummaryWorkerRequest = {
   seed: number;
 };
 
+export type MarketLayoutWorkerRequest = {
+  type: "market_layout";
+  id: string;
+  candidates: string[];
+  normalized: number[][];
+  ranking: { iso3: string; score: number; rank: number }[];
+  k: number;
+  seed: number;
+};
+
 export type WorkerRequest =
-  SmaaWorkerRequest | BootstrapPairedWorkerRequest | BootstrapSummaryWorkerRequest;
+  | SmaaWorkerRequest
+  | BootstrapPairedWorkerRequest
+  | BootstrapSummaryWorkerRequest
+  | MarketLayoutWorkerRequest;
 
 export type WorkerResponse =
   | { type: "smaa_wsm"; id: string; result: SmaaResult }
   | { type: "bootstrap_paired"; id: string; result: PairedDelta[] }
   | { type: "bootstrap_summary"; id: string; result: BootstrapSummary[] }
+  | { type: "market_layout"; id: string; result: MarketLayoutResult }
   | { type: "error"; id: string; message: string };
 
 /** Pure handler for a worker ``onmessage`` wrapper in the app. */
@@ -92,6 +107,16 @@ export function handleWorkerRequest(req: WorkerRequest): WorkerResponse {
         seed: req.seed,
       });
       return { type: "bootstrap_summary", id: req.id, result };
+    }
+    if (req.type === "market_layout") {
+      const result = buildMarketLayout({
+        candidates: req.candidates,
+        normalized: req.normalized,
+        ranking: req.ranking,
+        k: req.k,
+        seed: req.seed,
+      });
+      return { type: "market_layout", id: req.id, result };
     }
     return {
       type: "error",

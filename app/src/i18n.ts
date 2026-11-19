@@ -90,6 +90,20 @@ const resources = {
       imputed: "imputed",
       mapLicence:
         "Map boundaries: Natural Earth 110m (public domain). Loaded from Natural Earth Vector via jsDelivr.",
+      matrixIntro:
+        "IMSFE-style attractiveness × fit scatter. Bubble size tracks the index score; dashed lines are cut-offs.",
+      matrixCutoff: "Cut-offs",
+      cutoffMedian: "Median",
+      cutoffFixed: "Fixed",
+      attractiveness: "Attractiveness",
+      fit: "Fit",
+      quadrant: "Quadrant",
+      mapIntro:
+        "VOSviewer-like layout: SMACOF MDS on normalised criteria profiles, seeded k-means clusters, zoom/pan.",
+      mapSeed: "Layout seed",
+      mapColor: "Colour by",
+      colorCluster: "Cluster",
+      colorQuadrant: "Quadrant",
       nav: nav.en,
     },
   },
@@ -150,6 +164,20 @@ const resources = {
       imputed: "imputado",
       mapLicence:
         "Fronteras: Natural Earth 110m (dominio público). Cargado desde Natural Earth Vector vía jsDelivr.",
+      matrixIntro:
+        "Dispersión atractividad × encaje (estilo IMSFE). El tamaño sigue la puntuación; las líneas son cortes.",
+      matrixCutoff: "Cortes",
+      cutoffMedian: "Mediana",
+      cutoffFixed: "Fijos",
+      attractiveness: "Atractividad",
+      fit: "Encaje",
+      quadrant: "Cuadrante",
+      mapIntro:
+        "Mapa tipo VOSviewer: MDS SMACOF sobre perfiles normalizados, k-means con semilla, zoom/pan.",
+      mapSeed: "Semilla",
+      mapColor: "Color por",
+      colorCluster: "Clúster",
+      colorQuadrant: "Cuadrante",
       nav: nav.es,
     },
   },
