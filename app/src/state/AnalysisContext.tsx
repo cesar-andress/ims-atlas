@@ -11,6 +11,7 @@ import { AnalysisContext, type AnalysisContextValue } from "./analysisContextBas
 import { DEFAULT_CONFIG, type AnalysisConfig, type ViewId } from "./schema";
 import {
   configToSearch,
+  focusVariableFromPath,
   parseConfigFromSearch,
   pathForView,
   viewFromPath,
@@ -35,13 +36,19 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const [config, setConfigState] = useState<AnalysisConfig>(() => {
     const view = viewFromPath(location.pathname);
+    const focusVariable = focusVariableFromPath(location.pathname);
     if (location.search.includes("c=")) {
-      return { ...parseConfigFromSearch(location.search), view };
+      return {
+        ...parseConfigFromSearch(location.search),
+        view,
+        ...(focusVariable ? { focusVariable } : {}),
+      };
     }
     return (
       loadProjectFromStorage() ?? {
         ...DEFAULT_CONFIG,
         view,
+        ...(focusVariable ? { focusVariable } : {}),
       }
     );
   });
@@ -50,20 +57,42 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const view = viewFromPath(location.pathname);
+    const focusVariable = focusVariableFromPath(location.pathname);
 
     if (!location.search.includes("c=")) {
-      setConfigState((prev) => (prev.view === view ? prev : { ...prev, view }));
+      setConfigState((prev) => {
+        const next = {
+          ...prev,
+          view,
+          ...(focusVariable
+            ? { focusVariable }
+            : view === "data_variable"
+              ? {}
+              : { focusVariable: undefined }),
+        };
+        return sameConfig(prev, next) ? prev : next;
+      });
       return;
     }
 
     const parsed = parseConfigFromSearch(location.search);
-    const next = { ...parsed, view };
+    const next: AnalysisConfig = {
+      ...parsed,
+      view,
+      ...(focusVariable ? { focusVariable } : {}),
+    };
     setConfigState((prev) => (sameConfig(prev, next) ? prev : next));
 
     // Permalink said another view: keep path as source of truth and rewrite ?c=.
-    if (parsed.view !== view) {
+    if (
+      parsed.view !== view ||
+      (focusVariable && parsed.focusVariable !== focusVariable)
+    ) {
       navigate(
-        { pathname: pathForView(view), search: configToSearch(next) },
+        {
+          pathname: pathForView(view, next.focusVariable),
+          search: configToSearch(next),
+        },
         { replace: true },
       );
     }
@@ -74,7 +103,7 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
       if (sameConfig(configRef.current, next)) return;
       setConfigState(next);
       navigate({
-        pathname: pathForView(next.view),
+        pathname: pathForView(next.view, next.focusVariable),
         search: configToSearch(next),
       });
     },

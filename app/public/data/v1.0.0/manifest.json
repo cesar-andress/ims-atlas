@@ -1,0 +1,419 @@
+{
+  "budgets": {
+    "max_release_bytes": 838860800,
+    "max_single_file_bytes": 5242880
+  },
+  "created_at": "2026-11-19T19:29:09Z",
+  "files": [
+    {
+      "bytes": 3501,
+      "licence": "pipeline-curated",
+      "path": "bilateral_year.parquet",
+      "rows": 0,
+      "sha256": "b8055ba42312fca3c4210d6b2776da465034caff8447e215fe16ab1dac62439d"
+    },
+    {
+      "bytes": 3090,
+      "licence": "pipeline-curated",
+      "path": "country_year.parquet",
+      "rows": 0,
+      "sha256": "8d4e5ccba16c5950ccbff233b6740a7ca393c40139abd7e3a4308b0195f6cbc1"
+    },
+    {
+      "bytes": 2643,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=_empty/part.parquet",
+      "rows": 0,
+      "sha256": "55655a3f024c6f3f06d3f0fc12f99755b7a942abbe2256a65b354ca8119d6926"
+    }
+  ],
+  "n_included_variables": 0,
+  "promoted_at": "2026-11-19T19:29:32Z",
+  "promoted_by": "C\u00e9sar Andr\u00e9s",
+  "row_counts": {
+    "bilateral_year_rows": 0,
+    "country_year_rows": 0,
+    "trade_parts": 1,
+    "trade_rows": 0
+  },
+  "size_bytes": {
+    "largest_bytes": 3501,
+    "largest_path": "bilateral_year.parquet",
+    "total_bytes": 10770
+  },
+  "source_versions": {
+    "baci": "mini-2022",
+    "cepi_gravity": "mini-2022",
+    "ef_epi": "mini-2022",
+    "gedi": "mini-2022",
+    "hofstede": "mini-2022",
+    "itu_datahub": "mini-2022",
+    "odin": "mini-2022",
+    "startupblink": "mini-2022",
+    "wipo_gii": "mini-2022",
+    "wits_trains": "mini-2022",
+    "worldbank_lpi": "mini-2022",
+    "worldbank_wdi": "mini-2022",
+    "worldbank_wgi": "mini-2022",
+    "yale_epi": "mini-2022"
+  },
+  "spec": "SPEC \u00a73",
+  "staging": false,
+  "variables": [
+    {
+      "decision": "byod_only",
+      "id": "IMPV",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "baci"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "IMPC",
+      "included": false,
+      "reasons": [
+        "source[0]: unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "source[0]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256)",
+        "source[1]: unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "source[1]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "baci",
+        "worldbank_wdi"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "GRW",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "baci"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "GDPPC",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "worldbank_wdi"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "DIST",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "cepi_gravity"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "TARIF",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "wits_trains"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "FTA",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "cepi_gravity"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "LPI",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "worldbank_lpi"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "ASIASH",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "baci"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "HHI",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "baci"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "UVGAP",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "baci"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "CULT",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "hofstede"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "LANG",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "cepi_gravity"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "INFL",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "worldbank_wdi"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "UNEMP",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "worldbank_wdi"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "GOV",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "worldbank_wgi"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "EOC",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "worldbank_wdi"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "REEXP",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "baci"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "ITU_IDI",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "itu_datahub"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "EF_EPI",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "ef_epi"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "ODIN",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "odin"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "GEDI",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "gedi"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "GII",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "wipo_gii"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "STARTUPBLINK",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "startupblink"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "EPI",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "yale_epi"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "CO2PC",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "worldbank_wdi"
+      ]
+    },
+    {
+      "decision": "byod_only",
+      "id": "PLI",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "worldbank_wdi"
+      ]
+    }
+  ],
+  "version": "1.0.0"
+}

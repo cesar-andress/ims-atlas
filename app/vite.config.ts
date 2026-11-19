@@ -49,6 +49,7 @@ function compressAssets(): Plugin {
       }
       await gzipTree("geo");
       await gzipTree("meta");
+      await gzipTree("status");
     },
   };
 }

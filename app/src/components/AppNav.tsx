@@ -16,6 +16,11 @@ const PREFETCH: Partial<Record<ViewId, () => Promise<unknown>>> = {
   cite: () => import("../pages/CiteExport"),
   byod: () => import("../pages/Byod"),
   docs: () => import("../pages/Docs"),
+  status: () => import("../pages/transparency/DataStatus"),
+  data_sources: () => import("../pages/transparency/DataSources"),
+  data_variable: () => import("../pages/transparency/DataVariable"),
+  data_pipeline: () => import("../pages/transparency/DataPipeline"),
+  data_releases: () => import("../pages/transparency/DataReleases"),
 };
 
 function NavItem({ view }: { view: ViewId }) {

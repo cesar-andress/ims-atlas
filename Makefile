@@ -78,6 +78,9 @@ export-phase8-goldens:
 export-catalog-preview:
 	cd etl && $(UV) run atlas-etl export-catalog-preview
 
+export-transparency:
+	cd etl && $(UV) run atlas-etl export-transparency
+
 release-staging:
 	cd etl && $(UV) run atlas-etl release --version 1.0.0 --staging --force
 	cd etl && $(UV) run atlas-etl lineage

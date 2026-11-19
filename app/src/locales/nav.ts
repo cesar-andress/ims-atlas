@@ -11,6 +11,11 @@ export const navEn = {
   cite: "Cite & export",
   byod: "BYOD",
   docs: "Docs",
+  status: "Pipeline status",
+  data_sources: "Sources",
+  data_variable: "Variables",
+  data_pipeline: "Pipeline DAG",
+  data_releases: "Releases",
 } as const;
 
 export const navEs = {
@@ -26,4 +31,9 @@ export const navEs = {
   cite: "Citar y exportar",
   byod: "BYOD",
   docs: "Documentación",
+  status: "Estado del pipeline",
+  data_sources: "Fuentes",
+  data_variable: "Variables",
+  data_pipeline: "DAG del pipeline",
+  data_releases: "Publicaciones",
 } as const;

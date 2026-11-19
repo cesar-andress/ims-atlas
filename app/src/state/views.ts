@@ -16,8 +16,14 @@ export const PRIMARY_VIEWS: readonly ViewId[] = [
   "docs",
 ] as const;
 
-/** Reserved for future secondary links (More menu). */
-export const SECONDARY_VIEWS: readonly ViewId[] = [] as const;
+/** Transparency / pipeline views (SPEC §10.4) under More. */
+export const SECONDARY_VIEWS: readonly ViewId[] = [
+  "status",
+  "data_sources",
+  "data_variable",
+  "data_pipeline",
+  "data_releases",
+] as const;
 
 /** Views that share the analysis config panel + ranking model. */
 export const ANALYSIS_VIEWS: readonly ViewId[] = [

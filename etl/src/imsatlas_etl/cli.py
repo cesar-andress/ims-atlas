@@ -427,6 +427,23 @@ def phase3_report_cmd() -> None:
     typer.echo(f"atlas-etl {__version__}: wrote {path}")
 
 
+@app.command("export-transparency")
+def export_transparency_cmd() -> None:
+    """Sync status/*.json + release manifest into app/public for §10.4 views."""
+    from imsatlas_etl.export_transparency import write_transparency_bundle
+
+    try:
+        info = write_transparency_bundle()
+    except Exception as exc:  # noqa: BLE001
+        typer.secho(str(exc), fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=1) from exc
+    typer.echo(
+        f"atlas-etl {__version__}: transparency → {info['status_dir']} "
+        f"(release v{info['release_version']}, "
+        f"{info['n_sources']} sources, {info['n_variables']} variables)",
+    )
+
+
 @app.command("export-catalog-preview")
 def export_catalog_preview_cmd(
     out: Annotated[

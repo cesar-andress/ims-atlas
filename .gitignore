@@ -26,7 +26,8 @@ data/raw/
 data/curated/
 data/release/
 data/local/
-status/
+# Host ETL outputs (root). SPA mirrors live under app/public/status/.
+/status/
 .env
 .env.*
 

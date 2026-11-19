@@ -936,3 +936,60 @@ main:has(.builder) {
   overflow: hidden;
   clip: rect(0 0 0 0);
 }
+
+.transparency-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin: 0.75rem 0 1.25rem;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: minmax(10rem, 16rem) 1fr;
+  gap: 0.35rem 1rem;
+  margin: 0;
+}
+
+.status-grid dt {
+  margin: 0;
+  font-weight: 600;
+}
+
+.status-grid dd {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.9rem;
+  word-break: break-word;
+}
+
+.dag-nodes {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.dag-node {
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  padding: 0.2rem 0.45rem;
+  font-size: 0.75rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.dag-node.status-ok {
+  border-color: #2a7a4b;
+  background: color-mix(in srgb, #2a7a4b 12%, transparent);
+}
+
+.dag-node.status-warn {
+  border-color: #a15c00;
+  background: color-mix(in srgb, #a15c00 12%, transparent);
+}
+
+.dag-node.status-unknown {
+  opacity: 0.85;
+}

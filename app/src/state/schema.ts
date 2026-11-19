@@ -15,6 +15,11 @@ const VIEWS = [
   "cite",
   "byod",
   "docs",
+  "data_sources",
+  "data_variable",
+  "data_pipeline",
+  "data_releases",
+  "status",
 ] as const;
 
 export type ViewId = (typeof VIEWS)[number];
@@ -61,6 +66,8 @@ export type AnalysisConfig = {
   backtestTarget?: "intensive" | "new_markets" | "growth" | undefined;
   backtestHorizon?: 1 | 3 | undefined;
   lang?: "en" | "es" | undefined;
+  /** Variable id for /data/variables/:id transparency detail. */
+  focusVariable?: string | undefined;
 };
 
 export type ProjectFile = {
@@ -230,6 +237,13 @@ export function parseAnalysisConfig(input: unknown): AnalysisConfig {
 
   const lang = asEnum(input.lang, ["en", "es"] as const);
   if (lang) out.lang = lang;
+
+  if (
+    typeof input.focusVariable === "string" &&
+    /^[A-Za-z][A-Za-z0-9_]{0,31}$/.test(input.focusVariable)
+  ) {
+    out.focusVariable = input.focusVariable;
+  }
 
   return out;
 }

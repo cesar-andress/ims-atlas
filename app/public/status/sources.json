@@ -1,0 +1,623 @@
+{
+  "generated_from": "catalog/sources.yaml + status/freshness.json + release manifest",
+  "n_sources": 14,
+  "schema": "transparency-sources/v1",
+  "sources": [
+    {
+      "citation": "World Bank. World Development Indicators.",
+      "endpoints": [
+        {
+          "id": "indicator_json",
+          "method": "GET",
+          "notes": null,
+          "template": "https://api.worldbank.org/v2/country/all/indicator/{code}?format=json&per_page=20000"
+        }
+      ],
+      "freshness": {
+        "checked_at": "2026-11-19T11:47:26Z",
+        "ingested_version": "mini-2022",
+        "mode": "fixture",
+        "stale": false,
+        "upstream_changed_at": "2022-12-31",
+        "upstream_version": "mini-2022"
+      },
+      "id": "worldbank_wdi",
+      "landing_url": "https://databank.worldbank.org/source/world-development-indicators",
+      "licence_url": "https://datacatalog.worldbank.org/public-licenses",
+      "publisher": "World Bank",
+      "release_version": "mini-2022",
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "licence_id from World Bank public-licenses page; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets"
+        },
+        "licence_id": "CC-BY-4.0",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "terms_url": "https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets",
+      "update_cadence": "annual",
+      "version_detection": "WDI release year / API meta lastupdated"
+    },
+    {
+      "citation": "World Bank. Worldwide Governance Indicators.",
+      "endpoints": [
+        {
+          "id": "indicator_json",
+          "method": "GET",
+          "notes": null,
+          "template": "https://api.worldbank.org/v2/country/all/indicator/{code}?format=json&per_page=20000"
+        }
+      ],
+      "freshness": {
+        "checked_at": "2026-11-19T11:47:26Z",
+        "ingested_version": "mini-2022",
+        "mode": "fixture",
+        "stale": false,
+        "upstream_changed_at": "2022-12-31",
+        "upstream_version": "mini-2022"
+      },
+      "id": "worldbank_wgi",
+      "landing_url": "https://www.worldbank.org/en/publication/worldwide-governance-indicators",
+      "licence_url": "https://datacatalog.worldbank.org/public-licenses",
+      "publisher": "World Bank",
+      "release_version": "mini-2022",
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "licence_id from World Bank public-licenses page; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets"
+        },
+        "licence_id": "CC-BY-4.0",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "terms_url": "https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets",
+      "update_cadence": "annual",
+      "version_detection": "WGI release year"
+    },
+    {
+      "citation": "World Bank. Logistics Performance Index.",
+      "endpoints": [
+        {
+          "id": "indicator_json",
+          "method": "GET",
+          "notes": null,
+          "template": "https://api.worldbank.org/v2/country/all/indicator/{code}?format=json&per_page=20000"
+        }
+      ],
+      "freshness": {
+        "checked_at": "2026-11-19T11:47:26Z",
+        "ingested_version": "mini-2022",
+        "mode": "fixture",
+        "stale": false,
+        "upstream_changed_at": "2022-12-31",
+        "upstream_version": "mini-2022"
+      },
+      "id": "worldbank_lpi",
+      "landing_url": "https://lpi.worldbank.org/",
+      "licence_url": "https://datacatalog.worldbank.org/public-licenses",
+      "publisher": "World Bank",
+      "release_version": "mini-2022",
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "licence_id from World Bank public-licenses page; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets"
+        },
+        "licence_id": "CC-BY-4.0",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "terms_url": "https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets",
+      "update_cadence": "biennial",
+      "version_detection": "LPI survey wave year"
+    },
+    {
+      "citation": "Gaulier, G. & Zignago, S. BACI: International Trade Database at the Product-Level.",
+      "endpoints": [
+        {
+          "id": "zip_download",
+          "method": "GET",
+          "notes": "Exact path depends on BACI release; do not invent download URLs.",
+          "template": "https://www.cepii.fr/DATA_DOWNLOADS/BACI/{version}/"
+        }
+      ],
+      "freshness": {
+        "checked_at": "2026-11-19T11:47:26Z",
+        "ingested_version": "mini-2022",
+        "mode": "fixture",
+        "stale": false,
+        "upstream_changed_at": "2022-12-31",
+        "upstream_version": "mini-2022"
+      },
+      "id": "baci",
+      "landing_url": "https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37",
+      "licence_url": "UNKNOWN",
+      "publisher": "CEPII",
+      "release_version": "mini-2022",
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "licence not confirmed from opened page; human rights check required",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele.asp"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "terms_url": "https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele.asp",
+      "update_cadence": "annual",
+      "version_detection": "BACI HS version + year in release filename"
+    },
+    {
+      "citation": "Conte, M., Cotterlaz, P. & Mayer, T. The CEPII Gravity database.",
+      "endpoints": [
+        {
+          "id": "zip_download",
+          "method": "GET",
+          "notes": "Exact path depends on Gravity release.",
+          "template": "https://www.cepii.fr/DATA_DOWNLOADS/Gravity/{version}/"
+        }
+      ],
+      "freshness": {
+        "checked_at": "2026-11-19T11:47:26Z",
+        "ingested_version": "mini-2022",
+        "mode": "fixture",
+        "stale": false,
+        "upstream_changed_at": "2022-12-31",
+        "upstream_version": "mini-2022"
+      },
+      "id": "cepi_gravity",
+      "landing_url": "https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=8",
+      "licence_url": "UNKNOWN",
+      "publisher": "CEPII",
+      "release_version": "mini-2022",
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "licence not confirmed; human rights check required",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele.asp"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "terms_url": "https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele.asp",
+      "update_cadence": "irregular",
+      "version_detection": "Gravity dataset version string"
+    },
+    {
+      "citation": "World Bank / UNCTAD. World Integrated Trade Solution (WITS).",
+      "endpoints": [
+        {
+          "id": "api",
+          "method": "GET",
+          "notes": "Registration may be required; do not scrape against ToS.",
+          "template": "https://wits.worldbank.org/API/V1/SDMX/V21/rest/"
+        }
+      ],
+      "freshness": {
+        "checked_at": "2026-11-19T11:47:26Z",
+        "ingested_version": "mini-2022",
+        "mode": "fixture",
+        "stale": false,
+        "upstream_changed_at": "2022-12-31",
+        "upstream_version": "mini-2022"
+      },
+      "id": "wits_trains",
+      "landing_url": "https://wits.worldbank.org/",
+      "licence_url": "UNKNOWN",
+      "publisher": "World Bank / UNCTAD (WITS)",
+      "release_version": "mini-2022",
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "terms/licence not human-verified; likely BYOD until confirmed",
+          "snapshot_sha256": null,
+          "terms_url": "https://wits.worldbank.org/WITS/WITS/Restricted/Login.aspx"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "terms_url": "https://wits.worldbank.org/WITS/WITS/Restricted/Login.aspx",
+      "update_cadence": "annual",
+      "version_detection": "TRAINS / WITS release metadata"
+    },
+    {
+      "citation": "Hofstede, G. Dimension data matrix.",
+      "endpoints": [
+        {
+          "id": "csv_matrix",
+          "method": "GET",
+          "notes": "Download link on page; verify licence before shipping.",
+          "template": "https://geerthofstede.com/research-and-vsm/dimension-data-matrix/"
+        }
+      ],
+      "freshness": {
+        "checked_at": "2026-11-19T11:47:26Z",
+        "ingested_version": "mini-2022",
+        "mode": "fixture",
+        "stale": false,
+        "upstream_changed_at": "2022-12-31",
+        "upstream_version": "mini-2022"
+      },
+      "id": "hofstede",
+      "landing_url": "https://geerthofstede.com/research-and-vsm/dimension-data-matrix/",
+      "licence_url": "UNKNOWN",
+      "publisher": "Geert Hofstede / related publishers",
+      "release_version": "mini-2022",
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://geerthofstede.com/research-and-vsm/dimension-data-matrix/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "terms_url": "https://geerthofstede.com/research-and-vsm/dimension-data-matrix/",
+      "update_cadence": "static",
+      "version_detection": "file version / publication date on page"
+    },
+    {
+      "citation": "ITU. DataHub.",
+      "endpoints": [
+        {
+          "id": "indicator",
+          "method": "GET",
+          "notes": "Endpoint templates TBD after human ToS review.",
+          "template": "https://datahub.itu.int/"
+        }
+      ],
+      "freshness": {
+        "checked_at": "2026-11-19T11:47:26Z",
+        "ingested_version": "mini-2022",
+        "mode": "fixture",
+        "stale": false,
+        "upstream_changed_at": "2022-12-31",
+        "upstream_version": "mini-2022"
+      },
+      "id": "itu_datahub",
+      "landing_url": "https://datahub.itu.int/",
+      "licence_url": "UNKNOWN",
+      "publisher": "International Telecommunication Union",
+      "release_version": "mini-2022",
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.itu.int/en/terms-of-use/Pages/default.aspx"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "terms_url": "https://www.itu.int/en/terms-of-use/Pages/default.aspx",
+      "update_cadence": "annual",
+      "version_detection": "ITU DataHub release year"
+    },
+    {
+      "citation": "Fraser Institute. Economic Freedom of the World.",
+      "endpoints": [
+        {
+          "id": "dataset",
+          "method": "GET",
+          "notes": null,
+          "template": "https://www.fraserinstitute.org/economic-freedom/dataset"
+        }
+      ],
+      "freshness": {
+        "checked_at": "2026-11-19T11:47:26Z",
+        "ingested_version": "mini-2022",
+        "mode": "fixture",
+        "stale": false,
+        "upstream_changed_at": "2022-12-31",
+        "upstream_version": "mini-2022"
+      },
+      "id": "ef_epi",
+      "landing_url": "https://www.fraserinstitute.org/economic-freedom",
+      "licence_url": "UNKNOWN",
+      "publisher": "Fraser Institute",
+      "release_version": "mini-2022",
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.fraserinstitute.org/terms-use"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "terms_url": "https://www.fraserinstitute.org/terms-use",
+      "update_cadence": "annual",
+      "version_detection": "Economic Freedom of the World edition year"
+    },
+    {
+      "citation": "Open Data Watch. Open Data Inventory (ODIN).",
+      "endpoints": [
+        {
+          "id": "scores",
+          "method": "GET",
+          "notes": "Exact API/download after human rights check.",
+          "template": "https://odin.opendatawatch.com/"
+        }
+      ],
+      "freshness": {
+        "checked_at": "2026-11-19T11:47:26Z",
+        "ingested_version": "mini-2022",
+        "mode": "fixture",
+        "stale": false,
+        "upstream_changed_at": "2022-12-31",
+        "upstream_version": "mini-2022"
+      },
+      "id": "odin",
+      "landing_url": "https://odin.opendatawatch.com/",
+      "licence_url": "UNKNOWN",
+      "publisher": "Open Data Watch",
+      "release_version": "mini-2022",
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://odin.opendatawatch.com/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "terms_url": "https://odin.opendatawatch.com/",
+      "update_cadence": "biennial",
+      "version_detection": "ODIN edition year"
+    },
+    {
+      "citation": "GEDI. Global Entrepreneurship Index.",
+      "endpoints": [
+        {
+          "id": "index",
+          "method": "GET",
+          "notes": null,
+          "template": "https://thegedi.org/"
+        }
+      ],
+      "freshness": {
+        "checked_at": "2026-11-19T11:47:26Z",
+        "ingested_version": "mini-2022",
+        "mode": "fixture",
+        "stale": false,
+        "upstream_changed_at": "2022-12-31",
+        "upstream_version": "mini-2022"
+      },
+      "id": "gedi",
+      "landing_url": "https://thegedi.org/",
+      "licence_url": "UNKNOWN",
+      "publisher": "Global Entrepreneurship and Development Institute",
+      "release_version": "mini-2022",
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "rights not human-verified; likely BYOD",
+          "snapshot_sha256": null,
+          "terms_url": "https://thegedi.org/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "terms_url": "https://thegedi.org/",
+      "update_cadence": "irregular",
+      "version_detection": "GEDI / GEI release year"
+    },
+    {
+      "citation": "WIPO. Global Innovation Index.",
+      "endpoints": [
+        {
+          "id": "report_data",
+          "method": "GET",
+          "notes": null,
+          "template": "https://www.wipo.int/global_innovation_index/en/"
+        }
+      ],
+      "freshness": {
+        "checked_at": "2026-11-19T11:47:26Z",
+        "ingested_version": "mini-2022",
+        "mode": "fixture",
+        "stale": false,
+        "upstream_changed_at": "2022-12-31",
+        "upstream_version": "mini-2022"
+      },
+      "id": "wipo_gii",
+      "landing_url": "https://www.wipo.int/global_innovation_index/",
+      "licence_url": "UNKNOWN",
+      "publisher": "World Intellectual Property Organization",
+      "release_version": "mini-2022",
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.wipo.int/en/web/copyright"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "terms_url": "https://www.wipo.int/en/web/copyright",
+      "update_cadence": "annual",
+      "version_detection": "GII edition year"
+    },
+    {
+      "citation": "StartupBlink. Global Startup Ecosystem Index.",
+      "endpoints": [
+        {
+          "id": "ranking",
+          "method": "GET",
+          "notes": null,
+          "template": "https://www.startupblink.com/startup-ecosystem-ranking"
+        }
+      ],
+      "freshness": {
+        "checked_at": "2026-11-19T11:47:26Z",
+        "ingested_version": "mini-2022",
+        "mode": "fixture",
+        "stale": false,
+        "upstream_changed_at": "2022-12-31",
+        "upstream_version": "mini-2022"
+      },
+      "id": "startupblink",
+      "landing_url": "https://www.startupblink.com/",
+      "licence_url": "UNKNOWN",
+      "publisher": "StartupBlink",
+      "release_version": "mini-2022",
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "rights not human-verified; likely BYOD",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.startupblink.com/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "terms_url": "https://www.startupblink.com/",
+      "update_cadence": "annual",
+      "version_detection": "ranking year"
+    },
+    {
+      "citation": "Yale Center for Environmental Law & Policy. Environmental Performance Index.",
+      "endpoints": [
+        {
+          "id": "scores",
+          "method": "GET",
+          "notes": null,
+          "template": "https://epi.yale.edu/"
+        }
+      ],
+      "freshness": {
+        "checked_at": "2026-11-19T11:47:26Z",
+        "ingested_version": "mini-2022",
+        "mode": "fixture",
+        "stale": false,
+        "upstream_changed_at": "2022-12-31",
+        "upstream_version": "mini-2022"
+      },
+      "id": "yale_epi",
+      "landing_url": "https://epi.yale.edu/",
+      "licence_url": "UNKNOWN",
+      "publisher": "Yale Center for Environmental Law & Policy",
+      "release_version": "mini-2022",
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://epi.yale.edu/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "terms_url": "https://epi.yale.edu/",
+      "update_cadence": "biennial",
+      "version_detection": "EPI edition year"
+    }
+  ]
+}

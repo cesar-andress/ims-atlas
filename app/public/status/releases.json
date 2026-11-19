@@ -1,0 +1,25 @@
+{
+  "current": "1.0.0",
+  "releases": [
+    {
+      "created_at": "2026-11-19T19:29:09Z",
+      "manifest_path": "/data/v1.0.0/manifest.json",
+      "n_included_variables": 0,
+      "promoted_at": "2026-11-19T19:29:32Z",
+      "promoted_by": "C\u00e9sar Andr\u00e9s",
+      "row_counts": {
+        "bilateral_year_rows": 0,
+        "country_year_rows": 0,
+        "trade_parts": 1,
+        "trade_rows": 0
+      },
+      "size_bytes": {
+        "largest_bytes": 3501,
+        "largest_path": "bilateral_year.parquet",
+        "total_bytes": 10770
+      },
+      "version": "1.0.0"
+    }
+  ],
+  "schema": "transparency-releases/v1"
+}

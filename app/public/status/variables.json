@@ -1,0 +1,1154 @@
+{
+  "generated_from": "catalog/variables.yaml + release manifest + status/coverage",
+  "n_variables": 27,
+  "schema": "transparency-variables/v1",
+  "variables": [
+    {
+      "byod_only": null,
+      "citation": "Gaulier, G. and Zignago, S. (2010). BACI: International Trade Database at the Product-Level. The 1994-2007 Version. CEPII Working Paper 2010-23.",
+      "coverage": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "demand",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "IMPV",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "baci"
+        ]
+      },
+      "id": "IMPV",
+      "name": {
+        "en": "HS chapter imports (USD)",
+        "es": "Importaciones del cap\u00edtulo HS (USD)"
+      },
+      "redistributable": true,
+      "source_ids": [
+        "baci"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": null,
+      "citation": "BACI (CEPII) import values combined with World Bank population (SP.POP.TOTL). BACI: Gaulier & Zignago (2010); WDI: World Bank.",
+      "coverage": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "demand",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "IMPC",
+        "included": false,
+        "reasons": [
+          "source[0]: unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "source[0]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256)",
+          "source[1]: unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "source[1]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "baci",
+          "worldbank_wdi"
+        ]
+      },
+      "id": "IMPC",
+      "name": {
+        "en": "HS chapter imports per capita",
+        "es": "Importaciones del cap\u00edtulo HS per c\u00e1pita"
+      },
+      "redistributable": true,
+      "source_ids": [
+        "baci",
+        "worldbank_wdi"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": null,
+      "citation": "Derived from CEPII BACI (Gaulier & Zignago, 2010), HS chapter imports.",
+      "coverage": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "demand",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "GRW",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "baci"
+        ]
+      },
+      "id": "GRW",
+      "name": {
+        "en": "HS chapter import growth (3-year CAGR)",
+        "es": "Crecimiento de importaciones del cap\u00edtulo HS (CAGR 3 a\u00f1os)"
+      },
+      "redistributable": true,
+      "source_ids": [
+        "baci"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": null,
+      "citation": "World Bank. World Development Indicators. NY.GDP.PCAP.PP.KD.",
+      "coverage": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "demand",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "GDPPC",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "worldbank_wdi"
+        ]
+      },
+      "id": "GDPPC",
+      "name": {
+        "en": "GDP per capita PPP",
+        "es": "PIB per c\u00e1pita PPA"
+      },
+      "redistributable": true,
+      "source_ids": [
+        "worldbank_wdi"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": null,
+      "citation": "Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database. CEPII Working Paper 2022-05.",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "cost_access",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "DIST",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "cepi_gravity"
+        ]
+      },
+      "id": "DIST",
+      "name": {
+        "en": "Population-weighted distance",
+        "es": "Distancia ponderada por poblaci\u00f3n"
+      },
+      "redistributable": true,
+      "source_ids": [
+        "cepi_gravity"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "World Bank / UNCTAD WITS-TRAINS applied preferential tariff (AHS).",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "cost_access",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "TARIF",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "wits_trains"
+        ]
+      },
+      "id": "TARIF",
+      "name": {
+        "en": "Applied preferential tariff (AHS), origin to destination",
+        "es": "Arancel preferencial aplicado (AHS), origen a destino"
+      },
+      "redistributable": false,
+      "source_ids": [
+        "wits_trains"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": null,
+      "citation": "Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database. CEPII Working Paper 2022-05.",
+      "coverage": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "cost_access",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "FTA",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "cepi_gravity"
+        ]
+      },
+      "id": "FTA",
+      "name": {
+        "en": "Preferential trade agreement in force",
+        "es": "Acuerdo comercial preferencial en vigor"
+      },
+      "redistributable": true,
+      "source_ids": [
+        "cepi_gravity"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": null,
+      "citation": "World Bank. Logistics Performance Index. LP.LPI.OVRL.XQ.",
+      "coverage": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "logistics",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "LPI",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "worldbank_lpi"
+        ]
+      },
+      "id": "LPI",
+      "name": {
+        "en": "Logistics Performance Index (overall)",
+        "es": "\u00cdndice de desempe\u00f1o log\u00edstico (global)"
+      },
+      "redistributable": true,
+      "source_ids": [
+        "worldbank_lpi"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": null,
+      "citation": "Derived from CEPII BACI (Gaulier & Zignago, 2010).",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "competition",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "ASIASH",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "baci"
+        ]
+      },
+      "id": "ASIASH",
+      "name": {
+        "en": "China+Vietnam share of destination HS imports",
+        "es": "Cuota China+Vietnam en importaciones HS del destino"
+      },
+      "redistributable": true,
+      "source_ids": [
+        "baci"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": null,
+      "citation": "Derived from CEPII BACI (Gaulier & Zignago, 2010).",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "competition",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "HHI",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "baci"
+        ]
+      },
+      "id": "HHI",
+      "name": {
+        "en": "Supplier concentration (HHI) in destination HS imports",
+        "es": "Concentraci\u00f3n de proveedores (HHI) en importaciones HS"
+      },
+      "redistributable": true,
+      "source_ids": [
+        "baci"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": null,
+      "citation": "Derived from CEPII BACI (Gaulier & Zignago, 2010).",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "product_fit",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "UVGAP",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "baci"
+        ]
+      },
+      "id": "UVGAP",
+      "name": {
+        "en": "Absolute log unit-value gap (destination imports vs origin exports)",
+        "es": "Brecha absoluta de valor unitario en log"
+      },
+      "redistributable": true,
+      "source_ids": [
+        "baci"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Hofstede dimension scores (6 dimensions). geerthofstede.com dimension data matrix; cultural distance via Kogut-Singh.",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "product_fit",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "CULT",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "hofstede"
+        ]
+      },
+      "id": "CULT",
+      "name": {
+        "en": "Cultural distance (Kogut-Singh, Hofstede 6 dimensions)",
+        "es": "Distancia cultural (Kogut-Singh, Hofstede 6 dimensiones)"
+      },
+      "redistributable": false,
+      "source_ids": [
+        "hofstede"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": null,
+      "citation": "Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database. CEPII Working Paper 2022-05.",
+      "coverage": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "product_fit",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "LANG",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "cepi_gravity"
+        ]
+      },
+      "id": "LANG",
+      "name": {
+        "en": "Common official language",
+        "es": "Idioma oficial com\u00fan"
+      },
+      "redistributable": true,
+      "source_ids": [
+        "cepi_gravity"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": null,
+      "citation": "World Bank. World Development Indicators. FP.CPI.TOTL.ZG.",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "macro_risk",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "INFL",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "worldbank_wdi"
+        ]
+      },
+      "id": "INFL",
+      "name": {
+        "en": "Inflation deviation from 2 percent",
+        "es": "Desviaci\u00f3n de la inflaci\u00f3n respecto al 2 por ciento"
+      },
+      "redistributable": true,
+      "source_ids": [
+        "worldbank_wdi"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": null,
+      "citation": "World Bank. World Development Indicators. SL.UEM.TOTL.ZS.",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "macro_risk",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "UNEMP",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "worldbank_wdi"
+        ]
+      },
+      "id": "UNEMP",
+      "name": {
+        "en": "Unemployment rate",
+        "es": "Tasa de desempleo"
+      },
+      "redistributable": true,
+      "source_ids": [
+        "worldbank_wdi"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": null,
+      "citation": "World Bank. Worldwide Governance Indicators (mean of six estimate series).",
+      "coverage": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "institutional",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "GOV",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "worldbank_wgi"
+        ]
+      },
+      "id": "GOV",
+      "name": {
+        "en": "Mean Worldwide Governance Indicators",
+        "es": "Media de Worldwide Governance Indicators"
+      },
+      "redistributable": true,
+      "source_ids": [
+        "worldbank_wgi"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": null,
+      "citation": "World Bank. World Development Indicators. NE.TRD.GNFS.ZS.",
+      "coverage": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "openness",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "EOC",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "worldbank_wdi"
+        ]
+      },
+      "id": "EOC",
+      "name": {
+        "en": "External Opening Coefficient (trade/GDP)",
+        "es": "Coeficiente de apertura externa (comercio/PIB)"
+      },
+      "redistributable": true,
+      "source_ids": [
+        "worldbank_wdi"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": null,
+      "citation": "Derived from CEPII BACI (Gaulier & Zignago, 2010).",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "openness",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "REEXP",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "baci"
+        ]
+      },
+      "id": "REEXP",
+      "name": {
+        "en": "Re-export intensity (chapter X_j / M_j)",
+        "es": "Intensidad de reexportaci\u00f3n (cap\u00edtulo X_j / M_j)"
+      },
+      "redistributable": true,
+      "source_ids": [
+        "baci"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "International Telecommunication Union. ICT Development Index / ITU DataHub.",
+      "coverage": {
+        "CHL": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        },
+        "ESP": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        },
+        "MEX": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        }
+      },
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "communication",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "ITU_IDI",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "itu_datahub"
+        ]
+      },
+      "id": "ITU_IDI",
+      "name": {
+        "en": "ICT Development Index",
+        "es": "\u00cdndice de desarrollo de las TIC"
+      },
+      "redistributable": false,
+      "source_ids": [
+        "itu_datahub"
+      ],
+      "status": "draft",
+      "years": [
+        2023,
+        2026
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "EF Education First. EF English Proficiency Index.",
+      "coverage": {
+        "CHL": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        },
+        "ESP": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        },
+        "MEX": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        }
+      },
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "communication",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "EF_EPI",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "ef_epi"
+        ]
+      },
+      "id": "EF_EPI",
+      "name": {
+        "en": "EF English Proficiency Index",
+        "es": "\u00cdndice de dominio del ingl\u00e9s EF"
+      },
+      "redistributable": false,
+      "source_ids": [
+        "ef_epi"
+      ],
+      "status": "draft",
+      "years": [
+        2011,
+        2026
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Open Data Watch. Open Data Inventory (ODIN).",
+      "coverage": {
+        "CHL": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        },
+        "ESP": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        },
+        "MEX": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        }
+      },
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "communication",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "ODIN",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "odin"
+        ]
+      },
+      "id": "ODIN",
+      "name": {
+        "en": "Open Data Inventory overall score",
+        "es": "Puntuaci\u00f3n global Open Data Inventory"
+      },
+      "redistributable": false,
+      "source_ids": [
+        "odin"
+      ],
+      "status": "draft",
+      "years": [
+        2015,
+        2024
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "The GEDI Institute. Global Entrepreneurship Index (GEI).",
+      "coverage": {
+        "CHL": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        },
+        "ESP": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        },
+        "MEX": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        }
+      },
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "entrepreneurship",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "GEDI",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "gedi"
+        ]
+      },
+      "id": "GEDI",
+      "name": {
+        "en": "Global Entrepreneurship Index",
+        "es": "\u00cdndice global de emprendimiento (GEDI)"
+      },
+      "redistributable": false,
+      "source_ids": [
+        "gedi"
+      ],
+      "status": "draft",
+      "years": [
+        2006,
+        2019
+      ]
+    },
+    {
+      "byod_only": null,
+      "citation": "World Intellectual Property Organization (WIPO). Global Innovation Index.",
+      "coverage": {
+        "CHL": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        },
+        "ESP": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        },
+        "MEX": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        }
+      },
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "entrepreneurship",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "GII",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "wipo_gii"
+        ]
+      },
+      "id": "GII",
+      "name": {
+        "en": "Global Innovation Index",
+        "es": "\u00cdndice global de innovaci\u00f3n"
+      },
+      "redistributable": true,
+      "source_ids": [
+        "wipo_gii"
+      ],
+      "status": "draft",
+      "years": [
+        2013,
+        2026
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "StartupBlink. Global Startup Ecosystem Index.",
+      "coverage": {
+        "CHL": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        },
+        "ESP": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        },
+        "MEX": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        }
+      },
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "entrepreneurship",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "STARTUPBLINK",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "startupblink"
+        ]
+      },
+      "id": "STARTUPBLINK",
+      "name": {
+        "en": "Global Startup Ecosystem Index",
+        "es": "\u00cdndice global de ecosistemas startup"
+      },
+      "redistributable": false,
+      "source_ids": [
+        "startupblink"
+      ],
+      "status": "draft",
+      "years": [
+        2020,
+        2026
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Wendling, Z. A., Emerson, J. W., Esty, D. C., de Sherbinin, A., Block, S., et al. (2026). 2026 Environmental Performance Index. Yale Center for Environmental Law & Policy.",
+      "coverage": {
+        "CHL": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        },
+        "ESP": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        },
+        "MEX": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        }
+      },
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "sustainability",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "EPI",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "yale_epi"
+        ]
+      },
+      "id": "EPI",
+      "name": {
+        "en": "Environmental Performance Index",
+        "es": "\u00cdndice de desempe\u00f1o ambiental"
+      },
+      "redistributable": false,
+      "source_ids": [
+        "yale_epi"
+      ],
+      "status": "draft",
+      "years": [
+        2006,
+        2026
+      ]
+    },
+    {
+      "byod_only": null,
+      "citation": "World Bank. World Development Indicators. EN.GHG.CO2.PC.CE.AR5 (CO2 emissions excluding LULUCF per capita).",
+      "coverage": {
+        "CHL": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        },
+        "ESP": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        },
+        "MEX": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        }
+      },
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "sustainability",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "CO2PC",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "worldbank_wdi"
+        ]
+      },
+      "id": "CO2PC",
+      "name": {
+        "en": "CO2 emissions excluding LULUCF per capita (t CO2e/capita)",
+        "es": "Emisiones de CO2 excl. UTCUTS per c\u00e1pita (t CO2e/c\u00e1pita)"
+      },
+      "redistributable": true,
+      "source_ids": [
+        "worldbank_wdi"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": null,
+      "citation": "World Bank. World Development Indicators / ICP. PA.NUS.PRVT.PLI.",
+      "coverage": {
+        "CHL": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        },
+        "ESP": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        },
+        "MEX": {
+          "2020": 1,
+          "2021": 1,
+          "2022": 1
+        }
+      },
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "cost_access",
+      "formula": null,
+      "gate": {
+        "decision": "byod_only",
+        "id": "PLI",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "worldbank_wdi"
+        ]
+      },
+      "id": "PLI",
+      "name": {
+        "en": "Price level index (households and NPISHs final consumption)",
+        "es": "\u00cdndice de nivel de precios (consumo final hogares y NPSH)"
+      },
+      "redistributable": true,
+      "source_ids": [
+        "worldbank_wdi"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    }
+  ]
+}

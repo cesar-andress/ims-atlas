@@ -1,0 +1,131 @@
+{
+  "generated_at": "2026-11-19T11:47:26Z",
+  "sources": [
+    {
+      "checked_at": "2026-11-19T11:47:26Z",
+      "ingested_version": "mini-2022",
+      "mode": "fixture",
+      "source": "worldbank_wdi",
+      "stale": false,
+      "upstream_changed_at": "2022-12-31",
+      "upstream_version": "mini-2022"
+    },
+    {
+      "checked_at": "2026-11-19T11:47:26Z",
+      "ingested_version": "mini-2022",
+      "mode": "fixture",
+      "source": "worldbank_wgi",
+      "stale": false,
+      "upstream_changed_at": "2022-12-31",
+      "upstream_version": "mini-2022"
+    },
+    {
+      "checked_at": "2026-11-19T11:47:26Z",
+      "ingested_version": "mini-2022",
+      "mode": "fixture",
+      "source": "worldbank_lpi",
+      "stale": false,
+      "upstream_changed_at": "2022-12-31",
+      "upstream_version": "mini-2022"
+    },
+    {
+      "checked_at": "2026-11-19T11:47:26Z",
+      "ingested_version": "mini-2022",
+      "mode": "fixture",
+      "source": "baci",
+      "stale": false,
+      "upstream_changed_at": "2022-12-31",
+      "upstream_version": "mini-2022"
+    },
+    {
+      "checked_at": "2026-11-19T11:47:26Z",
+      "ingested_version": "mini-2022",
+      "mode": "fixture",
+      "source": "cepi_gravity",
+      "stale": false,
+      "upstream_changed_at": "2022-12-31",
+      "upstream_version": "mini-2022"
+    },
+    {
+      "checked_at": "2026-11-19T11:47:26Z",
+      "ingested_version": "mini-2022",
+      "mode": "fixture",
+      "source": "wits_trains",
+      "stale": false,
+      "upstream_changed_at": "2022-12-31",
+      "upstream_version": "mini-2022"
+    },
+    {
+      "checked_at": "2026-11-19T11:47:26Z",
+      "ingested_version": "mini-2022",
+      "mode": "fixture",
+      "source": "hofstede",
+      "stale": false,
+      "upstream_changed_at": "2022-12-31",
+      "upstream_version": "mini-2022"
+    },
+    {
+      "checked_at": "2026-11-19T11:47:26Z",
+      "ingested_version": "mini-2022",
+      "mode": "fixture",
+      "source": "itu_datahub",
+      "stale": false,
+      "upstream_changed_at": "2022-12-31",
+      "upstream_version": "mini-2022"
+    },
+    {
+      "checked_at": "2026-11-19T11:47:26Z",
+      "ingested_version": "mini-2022",
+      "mode": "fixture",
+      "source": "ef_epi",
+      "stale": false,
+      "upstream_changed_at": "2022-12-31",
+      "upstream_version": "mini-2022"
+    },
+    {
+      "checked_at": "2026-11-19T11:47:26Z",
+      "ingested_version": "mini-2022",
+      "mode": "fixture",
+      "source": "odin",
+      "stale": false,
+      "upstream_changed_at": "2022-12-31",
+      "upstream_version": "mini-2022"
+    },
+    {
+      "checked_at": "2026-11-19T11:47:26Z",
+      "ingested_version": "mini-2022",
+      "mode": "fixture",
+      "source": "gedi",
+      "stale": false,
+      "upstream_changed_at": "2022-12-31",
+      "upstream_version": "mini-2022"
+    },
+    {
+      "checked_at": "2026-11-19T11:47:26Z",
+      "ingested_version": "mini-2022",
+      "mode": "fixture",
+      "source": "wipo_gii",
+      "stale": false,
+      "upstream_changed_at": "2022-12-31",
+      "upstream_version": "mini-2022"
+    },
+    {
+      "checked_at": "2026-11-19T11:47:26Z",
+      "ingested_version": "mini-2022",
+      "mode": "fixture",
+      "source": "startupblink",
+      "stale": false,
+      "upstream_changed_at": "2022-12-31",
+      "upstream_version": "mini-2022"
+    },
+    {
+      "checked_at": "2026-11-19T11:47:26Z",
+      "ingested_version": "mini-2022",
+      "mode": "fixture",
+      "source": "yale_epi",
+      "stale": false,
+      "upstream_changed_at": "2022-12-31",
+      "upstream_version": "mini-2022"
+    }
+  ]
+}

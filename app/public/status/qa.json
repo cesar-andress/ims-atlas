@@ -1,0 +1,13 @@
+{
+  "config": {
+    "coverage_drop_block_pct": 25.0,
+    "coverage_drop_warn_pct": 10.0,
+    "yoy_jump_block_pct": 200.0,
+    "yoy_jump_warn_pct": 50.0
+  },
+  "findings": [],
+  "generated_at": "2026-11-19T11:47:28Z",
+  "n_block": 0,
+  "n_warn": 0,
+  "status": "pass"
+}

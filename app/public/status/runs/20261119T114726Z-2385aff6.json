@@ -1,0 +1,209 @@
+{
+  "ended_at": "2026-11-19T11:47:27Z",
+  "fixture_mode": true,
+  "force": true,
+  "run_id": "20261119T114726Z-2385aff6",
+  "sources": [
+    "worldbank_wdi",
+    "worldbank_wgi",
+    "worldbank_lpi",
+    "baci",
+    "cepi_gravity",
+    "wits_trains",
+    "hofstede",
+    "itu_datahub",
+    "ef_epi",
+    "odin",
+    "gedi",
+    "wipo_gii",
+    "startupblink",
+    "yale_epi"
+  ],
+  "started_at": "2026-11-19T11:47:26Z",
+  "status": "ok",
+  "steps": {
+    "check": {
+      "duration_s": 0.0009,
+      "n_sources": 14,
+      "status": "ok"
+    },
+    "extract": {
+      "duration_s": 0.0061,
+      "results": [
+        {
+          "skipped": false,
+          "source": "worldbank_wdi",
+          "version": "mini-2022"
+        },
+        {
+          "skipped": false,
+          "source": "worldbank_wgi",
+          "version": "mini-2022"
+        },
+        {
+          "skipped": false,
+          "source": "worldbank_lpi",
+          "version": "mini-2022"
+        },
+        {
+          "skipped": false,
+          "source": "baci",
+          "version": "mini-2022"
+        },
+        {
+          "skipped": false,
+          "source": "cepi_gravity",
+          "version": "mini-2022"
+        },
+        {
+          "skipped": false,
+          "source": "wits_trains",
+          "version": "mini-2022"
+        },
+        {
+          "skipped": false,
+          "source": "hofstede",
+          "version": "mini-2022"
+        },
+        {
+          "skipped": false,
+          "source": "itu_datahub",
+          "version": "mini-2022"
+        },
+        {
+          "skipped": false,
+          "source": "ef_epi",
+          "version": "mini-2022"
+        },
+        {
+          "skipped": false,
+          "source": "odin",
+          "version": "mini-2022"
+        },
+        {
+          "skipped": false,
+          "source": "gedi",
+          "version": "mini-2022"
+        },
+        {
+          "skipped": false,
+          "source": "wipo_gii",
+          "version": "mini-2022"
+        },
+        {
+          "skipped": false,
+          "source": "startupblink",
+          "version": "mini-2022"
+        },
+        {
+          "skipped": false,
+          "source": "yale_epi",
+          "version": "mini-2022"
+        }
+      ],
+      "status": "ok"
+    },
+    "transform": {
+      "duration_s": 0.0444,
+      "row_counts": {
+        "bilateral_year": 18,
+        "country_year": 9,
+        "trade_hs2": 36,
+        "trade_hs4": 36,
+        "trade_hs6": 36,
+        "variables_country_year": 9
+      },
+      "status": "ok"
+    },
+    "validate": {
+      "duration_s": 0.0773,
+      "results": [
+        {
+          "ok": true,
+          "rows": 36,
+          "source": "worldbank_wdi",
+          "version": "mini-2022"
+        },
+        {
+          "ok": true,
+          "rows": 27,
+          "source": "worldbank_wgi",
+          "version": "mini-2022"
+        },
+        {
+          "ok": true,
+          "rows": 9,
+          "source": "worldbank_lpi",
+          "version": "mini-2022"
+        },
+        {
+          "ok": true,
+          "rows": 36,
+          "source": "baci",
+          "version": "mini-2022"
+        },
+        {
+          "ok": true,
+          "rows": 18,
+          "source": "cepi_gravity",
+          "version": "mini-2022"
+        },
+        {
+          "ok": true,
+          "rows": 36,
+          "source": "wits_trains",
+          "version": "mini-2022"
+        },
+        {
+          "ok": true,
+          "rows": 3,
+          "source": "hofstede",
+          "version": "mini-2022"
+        },
+        {
+          "ok": true,
+          "rows": 9,
+          "source": "itu_datahub",
+          "version": "mini-2022"
+        },
+        {
+          "ok": true,
+          "rows": 9,
+          "source": "ef_epi",
+          "version": "mini-2022"
+        },
+        {
+          "ok": true,
+          "rows": 9,
+          "source": "odin",
+          "version": "mini-2022"
+        },
+        {
+          "ok": true,
+          "rows": 9,
+          "source": "gedi",
+          "version": "mini-2022"
+        },
+        {
+          "ok": true,
+          "rows": 9,
+          "source": "wipo_gii",
+          "version": "mini-2022"
+        },
+        {
+          "ok": true,
+          "rows": 9,
+          "source": "startupblink",
+          "version": "mini-2022"
+        },
+        {
+          "ok": true,
+          "rows": 9,
+          "source": "yale_epi",
+          "version": "mini-2022"
+        }
+      ],
+      "status": "ok"
+    }
+  }
+}

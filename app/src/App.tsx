@@ -39,6 +39,27 @@ const CiteExport = lazy(() =>
 );
 const Byod = lazy(() => import("./pages/Byod").then((m) => ({ default: m.Byod })));
 const Docs = lazy(() => import("./pages/Docs").then((m) => ({ default: m.Docs })));
+const DataStatus = lazy(() =>
+  import("./pages/transparency/DataStatus").then((m) => ({ default: m.DataStatus })),
+);
+const DataSources = lazy(() =>
+  import("./pages/transparency/DataSources").then((m) => ({ default: m.DataSources })),
+);
+const DataVariable = lazy(() =>
+  import("./pages/transparency/DataVariable").then((m) => ({
+    default: m.DataVariable,
+  })),
+);
+const DataPipeline = lazy(() =>
+  import("./pages/transparency/DataPipeline").then((m) => ({
+    default: m.DataPipeline,
+  })),
+);
+const DataReleases = lazy(() =>
+  import("./pages/transparency/DataReleases").then((m) => ({
+    default: m.DataReleases,
+  })),
+);
 
 function RouteFallback() {
   const { t } = useTranslation();
@@ -76,6 +97,11 @@ function AppShell() {
           <Route path="/cite" element={<CiteExport />} />
           <Route path="/byod" element={<Byod />} />
           <Route path="/docs" element={<Docs />} />
+          <Route path="/status" element={<DataStatus />} />
+          <Route path="/data/sources" element={<DataSources />} />
+          <Route path="/data/variables/:id" element={<DataVariable />} />
+          <Route path="/data/pipeline" element={<DataPipeline />} />
+          <Route path="/data/releases" element={<DataReleases />} />
         </Routes>
       </Suspense>
     </AppShellFrame>

@@ -34,7 +34,10 @@ export function PermalinkLink({
   };
   return (
     <Link
-      to={{ pathname: pathForView(view), search: configToSearch(next) }}
+      to={{
+        pathname: pathForView(view, next.focusVariable),
+        search: configToSearch(next),
+      }}
       className={className}
       data-testid={testId}
       onMouseEnter={onMouseEnter}

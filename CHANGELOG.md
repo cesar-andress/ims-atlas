@@ -4,6 +4,12 @@ All notable changes to IMS Atlas are documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Phase 7b transparency views: `/status`, `/data/sources`, `/data/variables/:id`,
+  `/data/pipeline`, `/data/releases` (values from `status/*.json` + release
+  manifest via `atlas-etl export-transparency`).
+
 ### Fixed
 
 - Public demo panel no longer ships BYOD raw values for TARIF/CULT; full panel
@@ -11,6 +17,7 @@ All notable changes to IMS Atlas are documented in this file.
   redistributable:false / byod_only value keys in `app/public` and `app/dist`.
 - Permalink `lang=es` applies on first paint; P(top-k) table sorts by P(top-10);
   Spanish footer credit string.
+- nginx serves versioned release files under `/data/v…` so SPA `/data/*` routes work.
 
 ## [1.0.0] — 2026-11-19
 

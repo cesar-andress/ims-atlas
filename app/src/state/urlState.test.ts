@@ -3,7 +3,9 @@ import {
   configToSearch,
   decodeConfig,
   encodeConfig,
+  focusVariableFromPath,
   parseConfigFromSearch,
+  pathForView,
   viewFromPath,
 } from "./urlState";
 import type { AnalysisConfig } from "./schema";
@@ -38,5 +40,10 @@ describe("urlState", () => {
     expect(viewFromPath("/")).toBe("home");
     expect(viewFromPath("/catalog")).toBe("catalog");
     expect(viewFromPath("/nope")).toBe("home");
+    expect(viewFromPath("/status")).toBe("status");
+    expect(viewFromPath("/data/sources")).toBe("data_sources");
+    expect(viewFromPath("/data/variables/IMPV")).toBe("data_variable");
+    expect(focusVariableFromPath("/data/variables/IMPV")).toBe("IMPV");
+    expect(pathForView("data_variable", "IMPV")).toBe("/data/variables/IMPV");
   });
 });
