@@ -13,10 +13,17 @@ import {
 import { hashConfig } from "../cite/configHash";
 import { downloadText, rankingToCsv } from "../cite/exportDownload";
 import { dataConfig } from "../dataConfig";
+import {
+  buildAnalysisReportPdf,
+  buildFullAnalysisXlsx,
+  buildFullAnalysisZip,
+  buildImsfeWorkbookXlsx,
+} from "../export/fullAnalysis";
 import { useTranslation } from "../i18n";
 import { useRankingModel } from "../ranking/useRankingModelApi";
 import type { RankingViewModel } from "../ranking/rankingEngine";
 import { useAnalysis } from "../state/useAnalysis";
+import { downloadBlob } from "../state/projectExport";
 import { configToSearch, pathForView } from "../state/urlState";
 
 function CiteBody({
@@ -95,21 +102,106 @@ function CiteBody({
       </button>
 
       <h2>{t("exports")}</h2>
-      <div className="export-row">
+      <div className="export-row" data-testid="cite-export-actions">
         {model ? (
-          <button
-            type="button"
-            data-testid="export-ranking-csv"
-            onClick={() =>
-              downloadText(
-                "ims-atlas-ranking.csv",
-                rankingToCsv(model.ranking),
-                "text/csv",
-              )
-            }
-          >
-            CSV ranking
-          </button>
+          <>
+            <button
+              type="button"
+              data-testid="export-ranking-csv"
+              onClick={() =>
+                downloadText(
+                  "ims-atlas-ranking.csv",
+                  rankingToCsv(model.ranking),
+                  "text/csv",
+                )
+              }
+            >
+              CSV ranking
+            </button>
+            <button
+              type="button"
+              data-testid="export-full-xlsx"
+              onClick={() => {
+                const blob = buildFullAnalysisXlsx({
+                  title: `IMS Atlas ${config.origin ?? ""} HS${config.hs ?? ""} ${config.year ?? ""}`,
+                  ...(config.origin ? { origin: config.origin } : {}),
+                  ...(config.hs ? { hs: config.hs } : {}),
+                  ...(config.year != null ? { year: config.year } : {}),
+                  methodPlain: `${config.normalization ?? ""} / ${config.mcdm ?? ""} / ${config.weightScheme ?? ""}`,
+                  releaseId: dataConfig.release_version,
+                  permalink,
+                  ranking: model.ranking,
+                  factorScores: model.factorScores,
+                  coverageNotes: [`imputed cells: ${model.prepared.nImputedCells}`],
+                  sources: ["See /data/sources"],
+                });
+                downloadBlob(blob, "ims-atlas-full-analysis.xlsx");
+              }}
+            >
+              {t("exportFullAnalysis")}
+            </button>
+            <button
+              type="button"
+              data-testid="export-full-zip"
+              onClick={() => {
+                const blob = buildFullAnalysisZip({
+                  title: `IMS Atlas ${config.origin ?? ""} HS${config.hs ?? ""}`,
+                  ...(config.origin ? { origin: config.origin } : {}),
+                  ...(config.hs ? { hs: config.hs } : {}),
+                  ...(config.year != null ? { year: config.year } : {}),
+                  methodPlain: `${config.normalization ?? ""} / ${config.mcdm ?? ""}`,
+                  releaseId: dataConfig.release_version,
+                  ranking: model.ranking,
+                  factorScores: model.factorScores,
+                });
+                downloadBlob(blob, "ims-atlas-analysis.zip");
+              }}
+            >
+              {t("exportFullZip")}
+            </button>
+            <button
+              type="button"
+              data-testid="export-pdf-report"
+              onClick={() => {
+                const blob = buildAnalysisReportPdf({
+                  title: `IMS Atlas ${config.origin ?? ""} HS${config.hs ?? ""} ${config.year ?? ""}`,
+                  ...(config.origin ? { origin: config.origin } : {}),
+                  ...(config.hs ? { hs: config.hs } : {}),
+                  ...(config.year != null ? { year: config.year } : {}),
+                  methodPlain: `${config.normalization ?? ""} / ${config.mcdm ?? ""} / ${config.weightScheme ?? ""}`,
+                  releaseId: dataConfig.release_version,
+                  ranking: model.ranking,
+                  topWhy: model.ranking.slice(0, 5).map((r) => ({
+                    iso3: r.iso3,
+                    reason: `rank ${r.rank}, score ${r.score.toFixed(3)}`,
+                  })),
+                  coverageNotes: [`imputed cells: ${model.prepared.nImputedCells}`],
+                });
+                downloadBlob(blob, "ims-atlas-report.pdf");
+              }}
+            >
+              {t("exportPdfReport")}
+            </button>
+            <button
+              type="button"
+              data-testid="export-imsfe-book"
+              onClick={() => {
+                const blob = buildImsfeWorkbookXlsx({
+                  title: `IMSFE ${config.origin ?? ""} HS${config.hs ?? ""}`,
+                  ...(config.origin ? { origin: config.origin } : {}),
+                  ...(config.hs ? { hs: config.hs } : {}),
+                  ...(config.year != null ? { year: config.year } : {}),
+                  methodPlain: "IMSFE Baena & Cano",
+                  releaseId: dataConfig.release_version,
+                  ranking: model.ranking,
+                  factorScores: model.factorScores,
+                });
+                downloadBlob(blob, "ims-atlas-imsfe-book.xlsx");
+              }}
+            >
+              {t("exportImsfeBook")}
+            </button>
+          </>
         ) : null}
         <button
           type="button"

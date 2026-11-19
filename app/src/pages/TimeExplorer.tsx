@@ -116,6 +116,11 @@ export function TimeExplorer() {
               chartRef={chartRef}
               pngName="ims-atlas-bump.png"
               svgName="ims-atlas-bump.svg"
+              title="IMS Atlas bump chart"
+              csv={{
+                filename: "ims-atlas-bump.csv",
+                body: tableRows.map((r) => r.join(",")).join("\n") + "\n",
+              }}
               className="export-row"
             />
           </div>

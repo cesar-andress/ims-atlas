@@ -103,7 +103,8 @@ test.describe("Phase V VOSviewer-grade map", () => {
     await expect(page.getByTestId("market-map-canvas")).toBeVisible({
       timeout: 20_000,
     });
-    await expect(page.getByTestId("market-map")).toHaveScreenshot(
+    // Canvas only: toolbar export chrome must not shift the visual baseline.
+    await expect(page.getByTestId("market-map-canvas")).toHaveScreenshot(
       "vosviewer-network.png",
       {
         maxDiffPixels: 400,

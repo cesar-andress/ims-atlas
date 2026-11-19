@@ -1,9 +1,5 @@
 import type { RefObject } from "react";
-import {
-  downloadChartPng,
-  downloadChartSvg,
-  downloadText,
-} from "../cite/exportDownload";
+import { ExportMenu } from "./ExportMenu";
 
 type ChartHandle = { getDataURL: (opts: object) => string };
 
@@ -16,50 +12,40 @@ type Props = {
   /** When set, shows a CSV button that downloads this text. */
   csv?: { filename: string; body: string };
   className?: string;
+  title?: string;
+  subtitle?: string;
 };
 
-/** Shared PNG / SVG / optional CSV export controls for chart views. */
+/** @deprecated Prefer ExportMenu; kept as a thin wrapper for existing call sites. */
 export function ChartExportBar({
   testIdPrefix,
   chartRef,
-  pngName,
-  svgName,
   csv,
   className = "export-row",
+  title,
+  subtitle,
 }: Props) {
+  const tableRows = csv
+    ? csv.body
+        .trimEnd()
+        .split("\n")
+        .map((line) => line.split(","))
+    : undefined;
+
   return (
-    <div className={className} data-testid={`${testIdPrefix}-exports`}>
-      {chartRef && pngName ? (
-        <button
-          type="button"
-          data-testid={`export-${testIdPrefix}-png`}
-          onClick={() => {
-            if (chartRef.current) downloadChartPng(chartRef.current, pngName);
-          }}
-        >
-          PNG
-        </button>
-      ) : null}
-      {chartRef && svgName ? (
-        <button
-          type="button"
-          data-testid={`export-${testIdPrefix}-svg`}
-          onClick={() => {
-            if (chartRef.current) downloadChartSvg(chartRef.current, svgName);
-          }}
-        >
-          SVG
-        </button>
-      ) : null}
-      {csv ? (
-        <button
-          type="button"
-          data-testid={`export-${testIdPrefix}-csv`}
-          onClick={() => downloadText(csv.filename, csv.body, "text/csv")}
-        >
-          CSV
-        </button>
-      ) : null}
-    </div>
+    <ExportMenu
+      testIdPrefix={testIdPrefix}
+      kind={chartRef ? "chart" : "table"}
+      title={title ?? testIdPrefix}
+      {...(subtitle ? { subtitle } : {})}
+      {...(chartRef ? { chartRef } : {})}
+      {...(tableRows
+        ? {
+            tableRows,
+            ...(csv?.filename ? { csvFilename: csv.filename } : {}),
+          }
+        : {})}
+      className={className}
+    />
   );
 }

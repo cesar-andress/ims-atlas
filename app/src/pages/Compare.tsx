@@ -76,13 +76,14 @@ function CompareBody({ model }: { model: RankingViewModel }) {
 
   return (
     <div className="compare-grid" data-testid="compare-charts">
-      <section data-testid="compare-total">
+      <section data-testid="compare-total" data-export-surface="chart">
         <h2>{t("parityTop10Total")}</h2>
         <ChartExportBar
           testIdPrefix="total"
           chartRef={totalRef}
           pngName="top10-total.png"
           svgName="top10-total.svg"
+          title={t("parityTop10Total")}
           csv={{ filename: "top10-total.csv", body: csvBody(topTotal, "value") }}
         />
         <Suspense fallback={<p className="muted">{t("loading")}</p>}>

@@ -152,6 +152,11 @@ export const en = {
   permalinkState: "Permalink config",
   loading: "Loading…",
   navMore: "More",
+  exportMenu: "Export",
+  exportFullAnalysis: "Export full analysis (XLSX)",
+  exportFullZip: "Export charts ZIP",
+  exportPdfReport: "PDF report",
+  exportImsfeBook: "Export as IMSFE workbook",
   access: {
     login: "Sign in",
     logout: "Sign out",

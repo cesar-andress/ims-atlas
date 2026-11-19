@@ -1,7 +1,8 @@
 import { lazy, Suspense, useMemo, useState } from "react";
 import { AnalysisPage } from "../components/AnalysisPage";
 import { VerifyDatumPanel } from "../components/VerifyDatumPanel";
-import { downloadText, rankingToCsv } from "../cite/exportDownload";
+import { rankingToCsv } from "../cite/exportDownload";
+import { ExportMenu } from "../components/ExportMenu";
 import { formatScore } from "../format";
 import { useTranslation } from "../i18n";
 import { useRankingModel } from "../ranking/useRankingModelApi";
@@ -85,23 +86,22 @@ function RankingBody({ model }: { model: RankingViewModel }) {
             {t("demoByodExcluded")}
           </p>
         ) : null}
-        <button
-          type="button"
-          data-testid="export-ranking-csv"
-          onClick={() =>
-            downloadText(
-              "ranking.csv",
-              rankingToCsv(model.ranking, model.factorScores),
-              "text/csv",
-            )
-          }
-        >
-          CSV
-        </button>
+        <ExportMenu
+          testIdPrefix="ranking"
+          kind="table"
+          title={`Ranking ${config.origin ?? ""} HS${config.hs ?? ""} ${config.year ?? ""}`}
+          subtitle={`${config.normalization ?? ""} · ${config.mcdm ?? ""}`}
+          tableRows={rankingToCsv(model.ranking, model.factorScores)
+            .trimEnd()
+            .split("\n")
+            .map((line) => line.split(","))}
+          csvFilename="ranking.csv"
+          xlsxFilename="ranking.xlsx"
+        />
       </div>
 
       <div className="ranking-layout">
-        <div className="ranking-table-wrap">
+        <div className="ranking-table-wrap" data-export-surface="table">
           <table className="ranking-table" data-testid="ranking-table">
             <thead>
               <tr>

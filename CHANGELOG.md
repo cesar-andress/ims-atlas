@@ -6,6 +6,9 @@ All notable changes to IMS Atlas are documented in this file.
 
 ### Added
 
+- Phase X exports: shared `ExportMenu` (PNG 1×/2×/4×, SVG, PDF, CSV, XLSX with LEEME
+  sheet), Atlas credit in image metadata/SVG, licence gate helpers, full-analysis
+  XLSX/ZIP, PDF report, and IMSFE workbook export from Cite & export.
 - Phase E data explorer: global search (`/` in header), `/explore` table with filters
   and URL state, “My variables” basket, country profile, correlation/scatter analysis,
   and expert read-only SQL console (DuckDB-WASM).

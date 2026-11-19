@@ -1196,11 +1196,19 @@ main:has(.builder) {
   gap: 1.5rem;
 }
 
-.export-row {
+.export-row,
+.export-menu {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
+}
+
+.export-menu-label {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-right: 0.25rem;
 }
 
 .verify-datum {

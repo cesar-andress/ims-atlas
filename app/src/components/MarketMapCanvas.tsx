@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { MarketEdge, MarketNode } from "@ims-atlas/core";
 import { downloadDataUrl, downloadText } from "../cite/exportDownload";
+import { dataConfig } from "../dataConfig";
+import { composeChartPng, wrapSvgWithCredit } from "../export/imageExport";
 import {
   CLUSTER_COLORS,
   collideLabels,
@@ -149,7 +151,16 @@ export function MarketMapCanvas({
       ...(selected ? { selected } : {}),
       ...(focusSet ? { focusSet } : {}),
     });
-    downloadDataUrl("ims-atlas-market-map.png", off.toDataURL("image/png"));
+    const raw = off.toDataURL("image/png");
+    void composeChartPng(
+      raw,
+      {
+        title: "IMS Atlas market map",
+        releaseId: dataConfig.release_version,
+        extraCredit: "basemap / layout © IMS Atlas",
+      },
+      scale as 1 | 2 | 4,
+    ).then((url) => downloadDataUrl("ims-atlas-market-map.png", url));
   }
 
   function exportSvg() {
@@ -184,7 +195,12 @@ export function MarketMapCanvas({
       );
     }
     parts.push("</svg>");
-    downloadText("ims-atlas-market-map.svg", parts.join(""), "image/svg+xml");
+    const credited = wrapSvgWithCredit(parts.join(""), {
+      title: "IMS Atlas market map",
+      releaseId: dataConfig.release_version,
+      extraCredit: "basemap / layout © IMS Atlas",
+    });
+    downloadText("ims-atlas-market-map.svg", credited, "image/svg+xml");
   }
 
   function runPerf200() {
@@ -229,8 +245,17 @@ export function MarketMapCanvas({
   }
 
   return (
-    <div className="market-map-wrap" data-testid="market-map" data-mode={mode}>
-      <div className="market-map-toolbar">
+    <div
+      className="market-map-wrap"
+      data-testid="market-map"
+      data-mode={mode}
+      data-export-surface="chart"
+    >
+      <div
+        className="market-map-toolbar export-menu"
+        data-testid="export-menu-map"
+        data-exportable="chart"
+      >
         <button type="button" data-testid="export-map-png" onClick={() => exportPng(4)}>
           PNG 4×
         </button>

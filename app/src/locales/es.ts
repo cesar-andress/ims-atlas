@@ -155,6 +155,11 @@ const es = {
   permalinkState: "Config del permalink",
   loading: "Cargando…",
   navMore: "Más",
+  exportMenu: "Exportar",
+  exportFullAnalysis: "Exportar análisis completo (XLSX)",
+  exportFullZip: "Exportar ZIP de gráficos",
+  exportPdfReport: "Informe PDF",
+  exportImsfeBook: "Exportar como libro IMSFE",
   access: {
     login: "Entrar",
     logout: "Salir",
