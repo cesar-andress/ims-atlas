@@ -1,6 +1,7 @@
 import { lazy, Suspense, useMemo, useState } from "react";
 import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
+import { downloadText, rankingToCsv } from "../cite/exportDownload";
 import { formatScore } from "../format";
 import { useRankingModel } from "../ranking/useRankingModel";
 import { useAnalysis } from "../state/useAnalysis";
@@ -85,6 +86,19 @@ function RankingBody({ model }: { model: RankingViewModel }) {
             {t("demoByodExcluded")}
           </p>
         ) : null}
+        <button
+          type="button"
+          data-testid="export-ranking-csv"
+          onClick={() =>
+            downloadText(
+              "ranking.csv",
+              rankingToCsv(model.ranking, model.factorScores),
+              "text/csv",
+            )
+          }
+        >
+          CSV
+        </button>
       </div>
 
       <div className="ranking-layout">

@@ -42,9 +42,11 @@ _FACTORS = [
     "macro_risk",
     "institutional",
     "openness_legacy",
+    "sustainability",
 ]
 
 # Compact IMS-like variable set for the browser demo / E2E.
+# Includes open redistributable series used for SPEC §11 parity (FTA, CO2PC, PLI).
 _VARS: list[tuple[str, str, str]] = [
     ("IMPV", "demand", "benefit"),
     ("IMPC", "demand", "benefit"),
@@ -52,6 +54,8 @@ _VARS: list[tuple[str, str, str]] = [
     ("GDPPC", "demand", "benefit"),
     ("DIST", "cost_access", "cost"),
     ("TARIF", "cost_access", "cost"),
+    ("FTA", "cost_access", "benefit"),
+    ("PLI", "cost_access", "cost"),
     ("LPI", "logistics", "benefit"),
     ("HHI", "competition", "cost"),
     ("CULT", "product_fit", "cost"),
@@ -60,24 +64,46 @@ _VARS: list[tuple[str, str, str]] = [
     ("UNEMP", "macro_risk", "cost"),
     ("GOV", "institutional", "benefit"),
     ("EOC", "openness_legacy", "benefit"),
+    ("CO2PC", "sustainability", "cost"),
 ]
 
 
+def _variable(vid: str, factor: str, direction: str) -> VariableConfig:
+    """Build a VariableConfig, including atlas-only factors (e.g. sustainability).
+
+    imsfe v0.2.0 FactorId omits sustainability; model_construct bypasses the
+    pydantic literal so SPEC §11 demo variables can still be scored.
+    """
+    return VariableConfig.model_construct(
+        id=vid,
+        name=vid,
+        factor=factor,
+        direction=direction,
+        source="synthetic",
+        code=vid,
+        transform="none",
+        origin_specific=False,
+        unit="",
+        notes="",
+    )
+
+
+def _variables_config(
+    variables: list[VariableConfig],
+    *,
+    factors: list[str] | None = None,
+) -> VariablesConfig:
+    present = sorted({str(v.factor) for v in variables})
+    ordered = [f for f in (factors or _FACTORS) if f in present]
+    for f in present:
+        if f not in ordered:
+            ordered.append(f)
+    return VariablesConfig.model_construct(factors=ordered, variables=variables)
+
+
 def _variables() -> VariablesConfig:
-    variables = [
-        VariableConfig(
-            id=vid,
-            name=vid,
-            factor=factor,  # type: ignore[arg-type]
-            direction=direction,  # type: ignore[arg-type]
-            source="synthetic",
-            code=vid,
-            transform="none",
-            origin_specific=False,
-        )
-        for vid, factor, direction in _VARS
-    ]
-    return VariablesConfig(factors=list(_FACTORS), variables=variables)  # type: ignore[arg-type]
+    variables = [_variable(vid, factor, direction) for vid, factor, direction in _VARS]
+    return _variables_config(variables)
 
 
 def _settings(policy: MissingDataSettings) -> Settings:
@@ -231,7 +257,7 @@ def build_col_hs64_block(*, seed: int = 64_2023) -> dict[str, Any]:
     used = prep.used_variables
     used_dirs = {c: directions[c] for c in used}
     subset_vars = [v for v in variables.variables if v.id in used]
-    subset = VariablesConfig(factors=list(_FACTORS), variables=subset_vars)  # type: ignore[arg-type]
+    subset = _variables_config(subset_vars)
 
     w_equal = weights_equal(subset)
     w_expert = expert_weights_like_core(subset)
@@ -386,20 +412,11 @@ def _ranking_from_raw(
     used = prep.used_variables
     used_dirs = {c: directions[c] for c in used}
     subset_vars = [
-        VariableConfig(
-            id=v["id"],
-            name=v["id"],
-            factor=v["factor"],  # type: ignore[arg-type]
-            direction=v["direction"],  # type: ignore[arg-type]
-            source="synthetic",
-            code=v["id"],
-            transform="none",
-            origin_specific=False,
-        )
+        _variable(v["id"], v["factor"], v["direction"])
         for v in variables
         if v["id"] in used
     ]
-    subset = VariablesConfig(factors=list(_FACTORS), variables=subset_vars)  # type: ignore[arg-type]
+    subset = _variables_config(subset_vars)
     w_expert = expert_weights_like_core(subset)
     normalized = normalize_matrix(prep.matrix, used_dirs, "minmax")  # type: ignore[arg-type]
     scores = mcdm_score(

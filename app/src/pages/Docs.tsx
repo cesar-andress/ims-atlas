@@ -53,6 +53,14 @@ export function Docs() {
         <p>{t("docs.methods.missingBody")}</p>
         <h3>SMAA</h3>
         <p>{t("docs.methods.smaaBody")}</p>
+        <h3 data-testid="docs-transport">{t("docs.methods.transportTitle")}</h3>
+        <p>{t("docs.methods.transportBody")}</p>
+        <h3 data-testid="docs-sustainability">
+          {t("docs.methods.sustainabilityTitle")}
+        </h3>
+        <p>{t("docs.methods.sustainabilityBody")}</p>
+        <h3 data-testid="docs-pli">{t("docs.methods.pliTitle")}</h3>
+        <p>{t("docs.methods.pliBody")}</p>
       </section>
 
       <section

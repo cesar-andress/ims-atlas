@@ -1,8 +1,10 @@
-/** HS2 chapter catalogue (names for search). HS4 can be typed manually. */
+/** HS2/HS4 catalogue for search + category tree (names for UI; codes are HS). */
 
 export type HsProduct = {
   code: string;
   name: { en: string; es: string };
+  /** Parent HS2 when this is an HS4 leaf. */
+  parent?: string;
 };
 
 /** Common HS2 chapters used in IMS demos; full list is searchable by code. */
@@ -36,6 +38,60 @@ export const HS2_PRODUCTS: HsProduct[] = [
   { code: "87", name: { en: "Vehicles", es: "Vehículos" } },
   { code: "90", name: { en: "Optical / medical", es: "Óptica / médicos" } },
 ];
+
+/** Illustrative HS4 leaves under common chapters (for category tree / name search). */
+export const HS4_PRODUCTS: HsProduct[] = [
+  { code: "6401", parent: "64", name: { en: "Waterproof footwear", es: "Calzado impermeable" } },
+  { code: "6402", parent: "64", name: { en: "Other footwear, rubber/plastics", es: "Otro calzado caucho/plástico" } },
+  { code: "6403", parent: "64", name: { en: "Footwear with leather uppers", es: "Calzado con corte de cuero" } },
+  { code: "6404", parent: "64", name: { en: "Footwear with textile uppers", es: "Calzado con corte textil" } },
+  { code: "6405", parent: "64", name: { en: "Other footwear", es: "Otro calzado" } },
+  { code: "6406", parent: "64", name: { en: "Parts of footwear", es: "Partes de calzado" } },
+  { code: "8471", parent: "84", name: { en: "Automatic data processing machines", es: "Máquinas de procesamiento de datos" } },
+  { code: "8481", parent: "84", name: { en: "Taps, cocks, valves", es: "Grifos, válvulas" } },
+  { code: "8501", parent: "85", name: { en: "Electric motors and generators", es: "Motores y generadores eléctricos" } },
+  { code: "8517", parent: "85", name: { en: "Telephone sets / networks", es: "Teléfonos / redes" } },
+  { code: "8703", parent: "87", name: { en: "Motor cars", es: "Automóviles" } },
+  { code: "8708", parent: "87", name: { en: "Parts for motor vehicles", es: "Partes de vehículos" } },
+  { code: "3004", parent: "30", name: { en: "Medicaments in measured doses", es: "Medicamentos en dosis" } },
+  { code: "2204", parent: "22", name: { en: "Wine of fresh grapes", es: "Vino de uvas frescas" } },
+];
+
+/** Illustrative HS6 leaves (parent = HS4). */
+export const HS6_PRODUCTS: HsProduct[] = [
+  {
+    code: "640399",
+    parent: "6403",
+    name: {
+      en: "Other footwear with leather uppers",
+      es: "Otro calzado con corte de cuero",
+    },
+  },
+  {
+    code: "640411",
+    parent: "6404",
+    name: {
+      en: "Sports footwear with textile uppers",
+      es: "Calzado deportivo con corte textil",
+    },
+  },
+];
+
+export const ALL_HS_PRODUCTS: HsProduct[] = [
+  ...HS2_PRODUCTS,
+  ...HS4_PRODUCTS,
+  ...HS6_PRODUCTS,
+];
+
+export type HsTreeNode = HsProduct & { children: HsProduct[] };
+
+/** HS2 → HS4 tree; HS6 codes are available via search. */
+export function hsCategoryTree(): HsTreeNode[] {
+  return HS2_PRODUCTS.map((ch) => ({
+    ...ch,
+    children: HS4_PRODUCTS.filter((p) => p.parent === ch.code),
+  }));
+}
 
 export const REGIONS: { id: string; name: { en: string; es: string } }[] = [
   { id: "world", name: { en: "World (demo set)", es: "Mundo (demo)" } },
@@ -98,8 +154,8 @@ const REGION_ISO: Record<string, string[]> = {
 
 export function searchHs(query: string, lang: "en" | "es"): HsProduct[] {
   const q = query.trim().toLowerCase();
-  if (!q) return HS2_PRODUCTS;
-  return HS2_PRODUCTS.filter(
+  if (!q) return ALL_HS_PRODUCTS;
+  return ALL_HS_PRODUCTS.filter(
     (p) =>
       p.code.includes(q) ||
       p.name.en.toLowerCase().includes(q) ||
@@ -109,9 +165,11 @@ export function searchHs(query: string, lang: "en" | "es"): HsProduct[] {
 }
 
 export function hsLabel(code: string, lang: "en" | "es"): string {
-  const hit = HS2_PRODUCTS.find((p) => p.code === code || code.startsWith(p.code));
+  const exact = ALL_HS_PRODUCTS.find((p) => p.code === code);
+  if (exact) return `${exact.code} — ${exact.name[lang]}`;
+  const hit = HS2_PRODUCTS.find((p) => code.startsWith(p.code));
   if (!hit) return code;
-  return `${hit.code} — ${hit.name[lang]}`;
+  return `${code} (${hit.name[lang]})`;
 }
 
 export function filterByRegion(iso3: string[], region: string | undefined): string[] {

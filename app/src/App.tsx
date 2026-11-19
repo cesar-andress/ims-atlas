@@ -39,6 +39,12 @@ const CiteExport = lazy(() =>
 );
 const Byod = lazy(() => import("./pages/Byod").then((m) => ({ default: m.Byod })));
 const Docs = lazy(() => import("./pages/Docs").then((m) => ({ default: m.Docs })));
+const Factors = lazy(() =>
+  import("./pages/Factors").then((m) => ({ default: m.Factors })),
+);
+const Compare = lazy(() =>
+  import("./pages/Compare").then((m) => ({ default: m.Compare })),
+);
 const DataStatus = lazy(() =>
   import("./pages/transparency/DataStatus").then((m) => ({ default: m.DataStatus })),
 );
@@ -97,6 +103,8 @@ function AppShell() {
           <Route path="/cite" element={<CiteExport />} />
           <Route path="/byod" element={<Byod />} />
           <Route path="/docs" element={<Docs />} />
+          <Route path="/factors" element={<Factors />} />
+          <Route path="/compare" element={<Compare />} />
           <Route path="/status" element={<DataStatus />} />
           <Route path="/data/sources" element={<DataSources />} />
           <Route path="/data/variables/:id" element={<DataVariable />} />

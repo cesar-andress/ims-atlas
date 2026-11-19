@@ -5,6 +5,8 @@ import type { ViewId } from "../state/schema";
 
 const TABS: readonly ViewId[] = [
   "ranking",
+  "factors",
+  "compare",
   "matrix",
   "map",
   "uncertainty",

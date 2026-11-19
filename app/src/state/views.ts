@@ -14,6 +14,8 @@ export const PRIMARY_VIEWS: readonly ViewId[] = [
   "cite",
   "byod",
   "docs",
+  "factors",
+  "compare",
 ] as const;
 
 /** Transparency / pipeline views (SPEC §10.4) under More. */
@@ -35,6 +37,8 @@ export const ANALYSIS_VIEWS: readonly ViewId[] = [
   "backtest",
   "time",
   "cite",
+  "factors",
+  "compare",
 ] as const;
 
 export function isAnalysisView(view: ViewId): boolean {

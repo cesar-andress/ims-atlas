@@ -20,6 +20,8 @@ const VIEWS = [
   "data_pipeline",
   "data_releases",
   "status",
+  "factors",
+  "compare",
 ] as const;
 
 export type ViewId = (typeof VIEWS)[number];

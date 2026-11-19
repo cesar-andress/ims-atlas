@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "../i18n";
-import { hsLabel, REGIONS, searchHs } from "../data/hsProducts";
+import { hsCategoryTree, hsLabel, REGIONS, searchHs } from "../data/hsProducts";
+import { searchOrigins } from "../data/iso3Exporters";
 import { loadDemoPanel, type DemoPanel } from "../ranking/demoPanel";
 import { COL_HS64_PRESET } from "../state/schema";
 import { useAnalysis } from "../state/useAnalysis";
@@ -14,6 +15,7 @@ const FACTOR_ORDER = [
   "macro_risk",
   "institutional",
   "openness_legacy",
+  "sustainability",
 ] as const;
 
 export function ConfigPanel() {
@@ -54,6 +56,11 @@ export function ConfigPanel() {
   }, [config.year]);
 
   const hsHits = useMemo(() => searchHs(hsQuery, lang), [hsQuery, lang]);
+  const originHits = useMemo(
+    () => searchOrigins(originDraft).slice(0, 12),
+    [originDraft],
+  );
+  const hsTree = useMemo(() => hsCategoryTree(), []);
 
   const selectedVars = useMemo(() => {
     if (!panel) return new Set<string>();
@@ -97,6 +104,7 @@ export function ConfigPanel() {
               value={originDraft}
               maxLength={3}
               placeholder="COL"
+              list="origin-iso3-list"
               data-testid="origin-input"
               onChange={(e) => setOriginDraft(e.target.value.toUpperCase().slice(0, 3))}
               onBlur={() =>
@@ -106,19 +114,45 @@ export function ConfigPanel() {
               }
             />
           </label>
+          <datalist id="origin-iso3-list">
+            {originHits.map((c) => (
+              <option key={c} value={c} />
+            ))}
+          </datalist>
+          <p className="muted small" data-testid="origin-count">
+            {t("originPool")}: {searchOrigins("").length}
+          </p>
+          {originHits.length > 0 && originDraft.length > 0 ? (
+            <ul className="hs-hits" data-testid="origin-hits">
+              {originHits.map((c) => (
+                <li key={c}>
+                  <button
+                    type="button"
+                    className={config.origin === c ? "active" : undefined}
+                    onClick={() => {
+                      setOriginDraft(c);
+                      setConfig({ origin: c });
+                    }}
+                  >
+                    {c}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : null}
 
           <label>
             {t("product")}
             <input
               value={hsQuery}
-              placeholder="64 / Footwear"
+              placeholder="64 / Footwear / 6403"
               data-testid="hs-search"
               onChange={(e) => setHsQuery(e.target.value)}
             />
           </label>
           {hsHits.length > 0 ? (
             <ul className="hs-hits" data-testid="hs-hits">
-              {hsHits.slice(0, 8).map((p) => (
+              {hsHits.slice(0, 10).map((p) => (
                 <li key={p.code}>
                   <button
                     type="button"
@@ -135,13 +169,45 @@ export function ConfigPanel() {
               ))}
             </ul>
           ) : null}
-          {config.hs && config.hs.length > 2 ? (
-            <p className="muted small">
-              HS4: {config.hs} ({t("hs4Manual")})
-            </p>
-          ) : null}
+          <details className="hs-tree" data-testid="hs-category-tree">
+            <summary>{t("hsCategoryTree")}</summary>
+            <ul>
+              {hsTree.map((node) => (
+                <li key={node.code}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setConfig({ hs: node.code });
+                      setHsQuery(node.code);
+                      setHsDraft(node.code);
+                    }}
+                  >
+                    {node.code} — {node.name[lang]}
+                  </button>
+                  {node.children.length > 0 ? (
+                    <ul>
+                      {node.children.map((ch) => (
+                        <li key={ch.code}>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setConfig({ hs: ch.code });
+                              setHsQuery(ch.code);
+                              setHsDraft(ch.code);
+                            }}
+                          >
+                            {ch.code} — {ch.name[lang]}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          </details>
           <label>
-            HS
+            HS2/HS4/HS6
             <input
               value={hsDraft}
               maxLength={6}
@@ -210,13 +276,21 @@ export function ConfigPanel() {
                 const vars = panel.variables.filter((v) => v.factor === factor);
                 if (vars.length === 0) return null;
                 return (
-                  <div key={factor} className="factor-vars">
+                  <div
+                    key={factor}
+                    className="factor-vars"
+                    data-testid={`factor-group-${factor}`}
+                  >
                     <strong>{factor}</strong>
                     {vars.map((v) => {
                       const cov = panel.coveragePct[v.id] ?? 0;
                       const checked = selectedVars.has(v.id);
                       return (
-                        <label key={v.id} className="var-check">
+                        <label
+                          key={v.id}
+                          className="var-check"
+                          data-testid={`var-${v.id}`}
+                        >
                           <input
                             type="checkbox"
                             checked={checked}

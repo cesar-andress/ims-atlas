@@ -94,6 +94,15 @@ export const en = {
   transparencyPromotedBy: "Promoted by",
   transparencyIncludedVars: "Included variables",
   transparencyManifest: "Manifest summary",
+  originPool: "Selectable ISO3 origins",
+  hsCategoryTree: "HS category tree",
+  parityRaw: "Raw",
+  parityNormalised: "Normalised",
+  parityWeight: "Weight",
+  parityImputed: "Imputed",
+  parityTop10Total: "Top 10 by total score",
+  parityTop10Factor: "Top 10 by factor",
+  parityTop10Combo: "Top 10 combo (total + factor)",
 
   analysisViews: "Analysis views",
   analysisNeedConfig:
@@ -200,6 +209,15 @@ export const en = {
         "The candidate set is fixed. Variables above the missingness threshold are dropped (visible warning). Remaining gaps use median imputation with per-cell flags. Scoring refuses fewer than 20 candidates.",
       smaaBody:
         "Dirichlet (or box) sampling of hierarchical weights yields rank acceptability, P(top-k), and central weights. Tornado plots rescale one factor weight by ±50% and report mean |Δrank|.",
+      transportTitle: "Transport / access cost from origin",
+      transportBody:
+        "cost_access combines DIST (CEPII population-weighted distance), FTA (preferential agreement), and PLI (WB ICP price level). TARIF (WITS) is BYOD-only until redistribution rights are verified. No scraped freight rates are used; logistics intensity uses open LPI.",
+      sustainabilityTitle: "Sustainability (open sources)",
+      sustainabilityBody:
+        "The sustainability factor currently uses CO2PC (World Bank WDI, redistributable). EPI remains BYOD (non-redistributable). No proprietary scraped baskets.",
+      pliTitle: "Price level (ICP) replaces consumer price basket",
+      pliBody:
+        "PLI (PA.NUS.PRVT.PLI) is the open WB ICP/WDI price-level index used instead of a scraped consumer-price basket.",
     },
     glossary: {
       ims: "International market selection: ranking foreign destinations for export or expansion.",

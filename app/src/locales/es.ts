@@ -95,6 +95,15 @@ const es = {
   transparencyPromotedBy: "Promovido por",
   transparencyIncludedVars: "Variables incluidas",
   transparencyManifest: "Resumen del manifiesto",
+  originPool: "Orígenes ISO3 seleccionables",
+  hsCategoryTree: "Árbol de categorías HS",
+  parityRaw: "Crudo",
+  parityNormalised: "Normalizado",
+  parityWeight: "Peso",
+  parityImputed: "Imputado",
+  parityTop10Total: "Top 10 por puntuación total",
+  parityTop10Factor: "Top 10 por factor",
+  parityTop10Combo: "Top 10 combo (total + factor)",
 
   analysisViews: "Vistas de análisis",
   analysisNeedConfig:
@@ -201,6 +210,15 @@ const es = {
         "El conjunto de candidatos es fijo. Variables por encima del umbral de missing se excluyen (aviso visible). El resto usa imputación por mediana con flags. Se rechaza n < 20.",
       smaaBody:
         "Muestreo Dirichlet (o box) de pesos jerárquicos produce aceptabilidad de rangos, P(top-k) y pesos centrales. El tornado reescala un factor ±50% y reporta |Δrank| medio.",
+      transportTitle: "Coste de transporte / acceso desde el origen",
+      transportBody:
+        "cost_access combina DIST (distancia CEPII ponderada por población), FTA (acuerdo preferencial) y PLI (nivel de precios WB ICP). TARIF (WITS) es solo BYOD hasta verificar redistribución. No se usan fletes scrapeados; la logística usa LPI abierto.",
+      sustainabilityTitle: "Sostenibilidad (fuentes abiertas)",
+      sustainabilityBody:
+        "El factor sustainability usa CO2PC (WDI del Banco Mundial, redistribuible). EPI sigue siendo BYOD. Sin cestas scrapeadas propietarias.",
+      pliTitle: "Nivel de precios (ICP) sustituye la cesta de precios",
+      pliBody:
+        "PLI (PA.NUS.PRVT.PLI) es el índice abierto WB ICP/WDI usado en lugar de una cesta de precios scrapeada.",
     },
     glossary: {
       ims: "Selección internacional de mercados: ordenar destinos para exportación o expansión.",

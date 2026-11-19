@@ -40,10 +40,19 @@ export function downloadChartSvg(
 
 export function rankingToCsv(
   rows: { iso3: string; score: number; rank: number }[],
+  factorScores?: Record<string, Record<string, number>>,
 ): string {
-  const lines = ["iso3,rank,score"];
+  const factorKeys = factorScores
+    ? [...new Set(Object.values(factorScores).flatMap((m) => Object.keys(m)))].sort()
+    : [];
+  const header = ["iso3", "rank", "score", ...factorKeys];
+  const lines = [header.join(",")];
   for (const r of rows) {
-    lines.push(`${r.iso3},${r.rank},${r.score}`);
+    const cols = [r.iso3, String(r.rank), String(r.score)];
+    for (const f of factorKeys) {
+      cols.push(String(factorScores?.[r.iso3]?.[f] ?? ""));
+    }
+    lines.push(cols.join(","));
   }
   return lines.join("\n") + "\n";
 }

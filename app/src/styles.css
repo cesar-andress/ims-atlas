@@ -993,3 +993,35 @@ main:has(.builder) {
 .dag-node.status-unknown {
   opacity: 0.85;
 }
+
+.hs-tree {
+  margin: 0.5rem 0 0.75rem;
+  font-size: 0.85rem;
+}
+
+.hs-tree ul {
+  margin: 0.25rem 0 0.25rem 0.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+.hs-tree button {
+  background: none;
+  border: none;
+  color: var(--link, #0b57d0);
+  cursor: pointer;
+  padding: 0.1rem 0;
+  text-align: left;
+}
+
+.compare-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.export-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}

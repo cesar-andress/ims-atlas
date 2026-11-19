@@ -86,6 +86,20 @@ test.describe("COL HS64 2023 IMSFE ranking", () => {
   test("public demo fixture has no TARIF/CULT and shows BYOD note", async ({
     page,
   }) => {
+    const publicDemo = JSON.parse(
+      readFileSync(join(here, "../public/meta/phase8_col_hs64.json"), "utf8"),
+    ) as {
+      block: {
+        variables: { id: string }[];
+        ranking_expert: { iso3: string; rank: number }[];
+      };
+    };
+    const ids = new Set(publicDemo.block.variables.map((v) => v.id));
+    expect(ids.has("TARIF")).toBe(false);
+    expect(ids.has("CULT")).toBe(false);
+    expect(ids.has("PLI")).toBe(true);
+    expect(ids.has("CO2PC")).toBe(true);
+
     const config = {
       v: 1,
       view: "ranking",
@@ -101,8 +115,16 @@ test.describe("COL HS64 2023 IMSFE ranking", () => {
     await page.goto(`/ranking?c=${encodeConfig(config)}`);
     await expect(page.getByTestId("ranking-view")).toBeVisible({ timeout: 15_000 });
     await expect(page.getByTestId("demo-byod-note")).toBeVisible();
-    await expect(page.locator(`tr[data-iso3="POL"]`)).toHaveAttribute("data-rank", "1");
-    await expect(page.locator(`tr[data-iso3="NLD"]`)).toHaveAttribute("data-rank", "2");
+    const top = publicDemo.block.ranking_expert[0]!;
+    const second = publicDemo.block.ranking_expert[1]!;
+    await expect(page.locator(`tr[data-iso3="${top.iso3}"]`)).toHaveAttribute(
+      "data-rank",
+      "1",
+    );
+    await expect(page.locator(`tr[data-iso3="${second.iso3}"]`)).toHaveAttribute(
+      "data-rank",
+      "2",
+    );
   });
 
   test("permalink lang=es applies Spanish chrome", async ({ page }) => {
