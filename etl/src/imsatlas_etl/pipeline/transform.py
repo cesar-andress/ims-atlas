@@ -10,7 +10,13 @@ import pandas as pd
 
 from imsatlas_etl.connectors import baci, gravity, hofstede, wits
 from imsatlas_etl.connectors import worldbank as wb
-from imsatlas_etl.pipeline.io_paths import curated_dir, freshness_path, raw_source_dir
+from imsatlas_etl.pipeline.io_paths import (
+    curated_dir,
+    freshness_path,
+    raw_source_dir,
+    status_root,
+)
+from imsatlas_etl.pipeline.product_metrics import write_curated_product_metrics
 from imsatlas_etl.pipeline.variables_build import write_variables_country_year
 
 
@@ -131,6 +137,37 @@ def run_transform(
     trades = build_trade_tables(root=root)
 
     variables = write_variables_country_year(root=root)
+    # Population for IMPC when WDI SP.POP.TOTL is in the country panel.
+    population = None
+    if "SP.POP.TOTL" in country.columns:
+        population = (
+            country[["iso3", "year", "SP.POP.TOTL"]]
+            .rename(columns={"SP.POP.TOTL": "value"})
+            .dropna()
+        )
+    product = write_curated_product_metrics(
+        trades["trade_hs6"],
+        root=root,
+        population=population,
+    )
+    chapters_path = status_root(root=root) / "hs_chapters.json"
+    chapters_path.parent.mkdir(parents=True, exist_ok=True)
+    chapters_path.write_text(
+        json.dumps(
+            {
+                "schema": "hs-chapters/v1",
+                "hs_nomenclature": "HS2017",
+                "country_product_rows": product["rows"],
+                "bytes_by_hs2": product["partitions"].get("bytes_by_hs2", {}),
+                "rows_by_hs2": product["partitions"].get("rows_by_hs2", {}),
+                "budget_max_single_file_bytes": 5_242_880,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     counts = {
         "country_year": _write_parquet(country, out_dir / "country_year.parquet"),
         "bilateral_year": _write_parquet(
@@ -144,9 +181,11 @@ def run_transform(
             out_dir / "trade_hs6",
         ),
         "variables_country_year": variables["rows"],
+        "country_product": product["rows"],
     }
     return {
         "curated_dir": str(out_dir),
         "row_counts": counts,
         "variables_meta": variables["meta"],
+        "product_partitions": product["partitions"],
     }

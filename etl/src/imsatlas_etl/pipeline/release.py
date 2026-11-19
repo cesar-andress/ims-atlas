@@ -152,6 +152,17 @@ def _write_catalog_json(dest: Path, included_ids: set[str]) -> None:
         "factors": catalog.get("factors", []),
         "variables": shipped,
         "n_variables": len(shipped),
+        # Phase H: one HS nomenclature per release (BACI HS revision used upstream).
+        "hs_nomenclature": {
+            "revision": "HS2017",
+            "note": (
+                "Product codes in trade/ and country_product/ follow the HS revision "
+                "of the BACI extract pinned for this release. Codes that changed "
+                "across revisions are not remapped; treat cross-revision time series "
+                "with care."
+            ),
+            "concordance": "none",
+        },
     }
     (dest / "catalog.json").write_text(
         json.dumps(payload, indent=2, sort_keys=True) + "\n",
@@ -187,6 +198,11 @@ def _write_licenses_md(dest: Path, gates: list[dict[str, Any]]) -> None:
 
 
 def _write_readme(dest: Path, version: str, counts: dict[str, Any]) -> None:
+    n_cy = counts.get("country_year_rows", 0)
+    n_bi = counts.get("bilateral_year_rows", 0)
+    n_tr = counts.get("trade_rows", 0)
+    n_cp = counts.get("country_product_rows", 0)
+    n_pr = counts.get("provenance_rows", 0)
     text = f"""# IMS Atlas data release v{version}
 
 ## Cite
@@ -198,12 +214,13 @@ Companion engine: [ims-backtest](https://github.com/cesar-andress/ims-backtest).
 
 | Path | Description | Rows |
 | --- | --- | ---: |
-| `country_year.parquet` | Long country panel | {counts.get("country_year_rows", 0)} |
-| `bilateral_year.parquet` | Long bilateral | {counts.get("bilateral_year_rows", 0)} |
-| `trade/hs2=*/part.parquet` | Trade by HS2 | {counts.get("trade_rows", 0)} |
-| `provenance.parquet` | One row per release cell | {counts.get("provenance_rows", 0)} |
+| `country_year.parquet` | Long country panel | {n_cy} |
+| `bilateral_year.parquet` | Long bilateral | {n_bi} |
+| `trade/hs2=*/part.parquet` | Trade by HS2 | {n_tr} |
+| `country_product/hs2=*/` | Product metrics by HS2 | {n_cp} |
+| `provenance.parquet` | One row per release cell | {n_pr} |
 | `provenance.jsonl` | Same rows as JSON lines (tiny releases only) | |
-| `catalog.json` | Shipped variables only | |
+| `catalog.json` | Shipped variables + HS nomenclature | |
 | `manifest.json` | Hashes, versions, gate decisions, signature status | |
 | `SHA256SUMS` | `sha256sum` digests of every other file | |
 | `LICENSES.md` | Licences for shipped vars | |

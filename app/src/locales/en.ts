@@ -226,6 +226,15 @@ export const en = {
     "The public data release is empty (zero verified redistributable variables). Loading the COL · HS64 · 2023 preset opens the analysis workspace with a pending-release state until a real panel ships; use Catalog, Status or BYOD meanwhile.",
   presetColHs64: "Load COL · HS64 · 2023 · IMSFE",
   openRanking: "Open ranking →",
+  builderNeedProduct:
+    "Set origin, product (HS) and year in the config panel to open ranking.",
+  productContext: "Analysis product",
+  backtestOtherProduct: "Backtest paper numbers are for COL · HS 64 · 2023 only.",
+  timeOtherProduct:
+    "Multi-year rank trajectories are published for COL · HS 64 · 2023 only.",
+  homeExamplesIntro:
+    "Examples open the builder with that product context. Rankings appear when the release includes redistributable data for that origin, HS and year.",
+  illustrativeImporters: "Illustrative top importers: {list}",
   hs4Manual: "type a 4–6 digit code in HS",
   rerankMs: "Re-rank time",
   rank: "Rank",

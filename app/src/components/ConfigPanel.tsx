@@ -1,6 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "../i18n";
-import { hsCategoryTree, hsLabel, REGIONS, searchHs } from "../data/hsProducts";
+import {
+  hsCategoryTree,
+  hsLabel,
+  REGIONS,
+  searchHs,
+  topImporterHints,
+} from "../data/hsProducts";
 import { searchOrigins } from "../data/iso3Exporters";
 import { analysisErrorFromUnknown } from "../ranking/analysisError";
 import { loadDemoPanel, type DemoPanel } from "../ranking/demoPanel";
@@ -101,6 +107,11 @@ export function ConfigPanel() {
   }, [config.year]);
 
   const hsHits = useMemo(() => searchHs(hsQuery, lang), [hsQuery, lang]);
+  const importerHintIsos = useMemo(() => {
+    const code = config.hs ?? hsQuery.trim();
+    if (!code) return [];
+    return topImporterHints(code);
+  }, [config.hs, hsQuery]);
   const originHits = useMemo(
     () => searchOrigins(originDraft).slice(0, 12),
     [originDraft],
@@ -243,6 +254,14 @@ export function ConfigPanel() {
                 </li>
               ))}
             </ul>
+          ) : null}
+          {importerHintIsos.length > 0 ? (
+            <p className="muted small" data-testid="hs-importer-hints">
+              {t("illustrativeImporters").replaceAll(
+                "{list}",
+                importerHintIsos.join(", "),
+              )}
+            </p>
           ) : null}
           <details className="hs-tree" data-testid="hs-category-tree">
             <summary>{t("hsCategoryTree")}</summary>

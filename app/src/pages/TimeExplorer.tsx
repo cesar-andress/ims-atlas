@@ -12,7 +12,9 @@ import { AnalysisPage } from "../components/AnalysisPage";
 import { ChartExportBar } from "../components/ChartExportBar";
 import { loadRankYearsFixture, type RankYearsFixture } from "../data/loadRankYears";
 import { analysisErrorMessage } from "../ranking/analysisError";
+import { isColHs64Preset } from "../ranking/demoPanel";
 import { useRankingModel } from "../ranking/useRankingModelApi";
+import { useAnalysis } from "../state/useAnalysis";
 import type { BumpSeries } from "../components/BumpChart";
 import type * as echarts from "echarts/core";
 
@@ -22,12 +24,23 @@ const BumpChart = lazy(() =>
 
 export function TimeExplorer() {
   const { t } = useTranslation();
+  const { config } = useAnalysis();
   const { model, error } = useRankingModel();
   const [fixture, setFixture] = useState<RankYearsFixture | null>(null);
   const [fixtureError, setFixtureError] = useState<string | null>(null);
   const chartRef = useRef<echarts.ECharts | null>(null);
+  const paperPreset = isColHs64Preset({
+    ...(config.origin !== undefined ? { origin: config.origin } : {}),
+    ...(config.hs !== undefined ? { hs: config.hs } : {}),
+    ...(config.year !== undefined ? { year: config.year } : {}),
+  });
 
   useEffect(() => {
+    if (!paperPreset) {
+      setFixture(null);
+      setFixtureError(null);
+      return;
+    }
     let cancelled = false;
     void loadRankYearsFixture()
       .then((f) => {
@@ -41,7 +54,7 @@ export function TimeExplorer() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [paperPreset]);
 
   const onReady = useCallback((chart: echarts.ECharts) => {
     chartRef.current = chart;
@@ -110,7 +123,11 @@ export function TimeExplorer() {
       }
     >
       {() =>
-        fixture ? (
+        !paperPreset ? (
+          <p className="muted small" data-testid="time-other-product">
+            {t("timeOtherProduct")}
+          </p>
+        ) : fixture ? (
           <div data-testid="time-body">
             <p className="muted small" data-testid="time-provenance">
               {fixture.source}

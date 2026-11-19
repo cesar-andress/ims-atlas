@@ -9,6 +9,7 @@ import { AnalysisSummary } from "./AnalysisSummary";
 import { AnalysisTabs } from "./AnalysisTabs";
 import { PendingReleaseNotice } from "./PendingReleaseNotice";
 import { PermalinkLink } from "./PermalinkLink";
+import { ProductContextBanner } from "./ProductContextBanner";
 
 type Props = {
   testId: string;
@@ -64,9 +65,10 @@ export function AnalysisPage({
         <h1 id={`${testId}-title`}>{t(titleKey)}</h1>
         {intro ? <p className="muted">{intro}</p> : null}
         <AnalysisTabs />
-        <p className="analysis-context muted" data-testid="analysis-context">
-          {config.origin ?? "—"} / HS{config.hs ?? "—"} / {config.year ?? "—"} ·{" "}
-          {config.weightScheme ?? "expert_mean"} · {config.mcdm ?? "wsm"}
+        <ProductContextBanner />
+        <p className="analysis-context muted small" data-testid="analysis-context">
+          {config.weightScheme ?? "expert_mean"} · {config.mcdm ?? "wsm"} ·{" "}
+          {config.normalization ?? "minmax"}
         </p>
       </header>
 

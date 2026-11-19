@@ -228,6 +228,16 @@ const es = {
     "La publicación de datos pública está vacía (cero variables redistribuibles verificadas). Cargar el preset COL · HS64 · 2023 abre el workspace en estado pendiente hasta que haya panel real; use Catálogo, Estado o BYOD mientras tanto.",
   presetColHs64: "Cargar COL · HS64 · 2023 · IMSFE",
   openRanking: "Abrir ranking →",
+  builderNeedProduct:
+    "Define origen, producto (HS) y año en el panel para abrir el ranking.",
+  productContext: "Producto del análisis",
+  backtestOtherProduct:
+    "Las cifras de backtest del artículo son solo para COL · HS 64 · 2023.",
+  timeOtherProduct:
+    "Las trayectorias multi-año están publicadas solo para COL · HS 64 · 2023.",
+  homeExamplesIntro:
+    "Los ejemplos abren el builder con ese contexto de producto. El ranking aparece cuando la publicación incluya datos redistribuibles para ese origen, HS y año.",
+  illustrativeImporters: "Importadores principales (ilustrativo): {list}",
   hs4Manual: "escribe un código de 4–6 dígitos en HS",
   rerankMs: "Tiempo de re-ranking",
   rank: "Puesto",

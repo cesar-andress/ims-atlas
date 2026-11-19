@@ -13,6 +13,13 @@ export type AtlasDataClient = {
   init(): Promise<void>;
   /** Register release parquet tables (HTTP range-capable when hosted). */
   loadRelease(opts?: { basePath?: string }): Promise<void>;
+  /** Trade rows for one HS2 chapter (`trade/hs2=…/part.parquet`). No-op if missing. */
+  loadTradeChapter(hs2: string, opts?: { basePath?: string }): Promise<boolean>;
+  /** Country–product panel slice for one HS2 chapter. No-op if missing. */
+  loadCountryProductChapter(
+    hs2: string,
+    opts?: { basePath?: string },
+  ): Promise<boolean>;
   queryCountryYear(opts?: {
     variableIds?: string[];
     year?: number;
@@ -37,6 +44,19 @@ export function createDuckDbClient(): AtlasDataClient {
   let db: AsyncDuckDB | null = null;
   let conn: AsyncDuckDBConnection | null = null;
   let releaseLoaded = false;
+  const loadedTradeHs2 = new Set<string>();
+  const loadedCountryProductHs2 = new Set<string>();
+
+  async function registerParquetTable(
+    table: string,
+    url: string,
+  ): Promise<void> {
+    if (!conn) throw new Error("DuckDB not initialised");
+    await conn.query(`
+      CREATE OR REPLACE TABLE ${table} AS
+      SELECT * FROM read_parquet('${url.replace(/'/g, "''")}');
+    `);
+  }
 
   return {
     getStatus: () => status,
@@ -89,6 +109,36 @@ export function createDuckDbClient(): AtlasDataClient {
         status = "error";
         error = err instanceof Error ? err.message : String(err);
         throw err;
+      }
+    },
+    async loadTradeChapter(hs2, opts) {
+      if (!conn) await this.init();
+      if (!conn) throw new Error("DuckDB not initialised");
+      const key = hs2.padStart(2, "0").slice(0, 2);
+      if (loadedTradeHs2.has(key)) return true;
+      const base = opts?.basePath ?? releaseUrl();
+      const url = `${base}/trade/hs2=${key}/part.parquet`;
+      try {
+        await registerParquetTable(`trade_hs2_${key}`, url);
+        loadedTradeHs2.add(key);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    async loadCountryProductChapter(hs2, opts) {
+      if (!conn) await this.init();
+      if (!conn) throw new Error("DuckDB not initialised");
+      const key = hs2.padStart(2, "0").slice(0, 2);
+      if (loadedCountryProductHs2.has(key)) return true;
+      const base = opts?.basePath ?? releaseUrl();
+      const url = `${base}/country_product/hs2=${key}/part.parquet`;
+      try {
+        await registerParquetTable(`country_product_hs2_${key}`, url);
+        loadedCountryProductHs2.add(key);
+        return true;
+      } catch {
+        return false;
       }
     },
     async queryCountryYear(opts = {}) {
@@ -145,6 +195,12 @@ export function createMemoryDataClient(
     },
     async loadRelease() {
       status = "ready";
+    },
+    async loadTradeChapter() {
+      return false;
+    },
+    async loadCountryProductChapter() {
+      return false;
     },
     async queryCountryYear(opts = {}) {
       let out = rows;

@@ -159,6 +159,36 @@ def write_trade_partitions(frame: pd.DataFrame, dest: Path) -> list[Path]:
     return written
 
 
+def write_country_product_partitions(
+    *,
+    root: Path | None,
+    dest: Path,
+    included_ids: set[str],
+) -> dict[str, Any]:
+    """Copy curated country_product partitions filtered by included variable ids."""
+    from imsatlas_etl.pipeline.product_metrics import write_product_metrics_partitioned
+
+    src = curated_dir(root=root) / "country_product.parquet"
+    out = dest / "country_product"
+    if not source_shippable("baci") or not src.is_file():
+        empty = pd.DataFrame(
+            columns=[
+                "iso3",
+                "year",
+                "hs_code",
+                "hs_level",
+                "hs2",
+                "variable_id",
+                "value",
+            ],
+        )
+        return write_product_metrics_partitioned(empty, out)
+    frame = pd.read_parquet(src)
+    if included_ids:
+        frame = frame[frame["variable_id"].isin(included_ids)]
+    return write_product_metrics_partitioned(frame, out)
+
+
 def write_spec3_tables(
     dest: Path,
     *,
@@ -175,10 +205,18 @@ def write_spec3_tables(
     country.to_parquet(country_path, index=False)
     bilateral.to_parquet(bilateral_path, index=False)
     trade_paths = write_trade_partitions(trade, dest / "trade")
+    product_meta = write_country_product_partitions(
+        root=root,
+        dest=dest,
+        included_ids=included_ids,
+    )
 
     return {
         "country_year_rows": int(len(country)),
         "bilateral_year_rows": int(len(bilateral)),
         "trade_rows": int(len(trade)),
         "trade_parts": len(trade_paths),
+        "country_product_rows": int(product_meta.get("rows", 0)),
+        "country_product_parts": int(product_meta.get("parts", 0)),
+        "country_product_bytes_by_hs2": product_meta.get("bytes_by_hs2", {}),
     }

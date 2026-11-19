@@ -29,4 +29,11 @@ describe("memory data client", () => {
     expect(rows).toHaveLength(1);
     expect(rows[0]?.iso3).toBe("COL");
   });
+
+  it("chapter loaders are stubbed", async () => {
+    const client = createMemoryDataClient();
+    await client.init();
+    await expect(client.loadTradeChapter("64")).resolves.toBe(false);
+    await expect(client.loadCountryProductChapter("15")).resolves.toBe(false);
+  });
 });

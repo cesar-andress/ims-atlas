@@ -51,8 +51,17 @@ export const HS4_PRODUCTS: HsProduct[] = [
   { code: "8481", parent: "84", name: { en: "Taps, cocks, valves", es: "Grifos, válvulas" } },
   { code: "8501", parent: "85", name: { en: "Electric motors and generators", es: "Motores y generadores eléctricos" } },
   { code: "8517", parent: "85", name: { en: "Telephone sets / networks", es: "Teléfonos / redes" } },
+  { code: "8701", parent: "87", name: { en: "Tractors", es: "Tractores" } },
+  { code: "8702", parent: "87", name: { en: "Buses and coaches", es: "Autobuses" } },
   { code: "8703", parent: "87", name: { en: "Motor cars", es: "Automóviles" } },
+  { code: "8704", parent: "87", name: { en: "Goods vehicles", es: "Vehículos de carga" } },
   { code: "8708", parent: "87", name: { en: "Parts for motor vehicles", es: "Partes de vehículos" } },
+  { code: "8414", parent: "84", name: { en: "Air / vacuum pumps", es: "Bombas de aire / vacío" } },
+  { code: "8421", parent: "84", name: { en: "Centrifuges, filters", es: "Centrifugadoras, filtros" } },
+  { code: "8431", parent: "84", name: { en: "Parts for lifting machinery", es: "Partes para maquinaria de elevación" } },
+  { code: "1507", parent: "15", name: { en: "Soya-bean oil", es: "Aceite de soja" } },
+  { code: "1509", parent: "15", name: { en: "Olive oil", es: "Aceite de oliva" } },
+  { code: "1512", parent: "15", name: { en: "Sunflower / safflower oil", es: "Aceite de girasol / cártamo" } },
   { code: "3004", parent: "30", name: { en: "Medicaments in measured doses", es: "Medicamentos en dosis" } },
   { code: "2204", parent: "22", name: { en: "Wine of fresh grapes", es: "Vino de uvas frescas" } },
 ];
@@ -73,6 +82,22 @@ export const HS6_PRODUCTS: HsProduct[] = [
     name: {
       en: "Sports footwear with textile uppers",
       es: "Calzado deportivo con corte textil",
+    },
+  },
+  {
+    code: "150910",
+    parent: "1509",
+    name: {
+      en: "Virgin olive oil",
+      es: "Aceite de oliva virgen",
+    },
+  },
+  {
+    code: "150990",
+    parent: "1509",
+    name: {
+      en: "Other olive oil",
+      es: "Otros aceites de oliva",
     },
   },
 ];
@@ -177,4 +202,26 @@ export function filterByRegion(iso3: string[], region: string | undefined): stri
   const allow = new Set(REGION_ISO[region] ?? []);
   if (allow.size === 0) return iso3;
   return iso3.filter((c) => allow.has(c));
+}
+
+/** HS2 prefix for any HS code length. */
+export function hs2Of(code: string): string {
+  const digits = code.replace(/\D/g, "");
+  return digits.slice(0, 2);
+}
+
+/**
+ * Illustrative top importer ISO3 hints for search UX (not live aggregates).
+ * Keyed by HS2 chapter until release ships trade roll-ups.
+ */
+const TOP_IMPORTER_HINTS: Record<string, string[]> = {
+  "15": ["USA", "DEU", "ITA", "FRA", "GBR"],
+  "64": ["USA", "DEU", "FRA", "GBR", "ITA", "ESP", "CHN"],
+  "84": ["USA", "DEU", "CHN", "JPN", "MEX", "KOR"],
+  "87": ["USA", "DEU", "CHN", "MEX", "CAN", "JPN"],
+};
+
+export function topImporterHints(hsCode: string): string[] {
+  const hs2 = hs2Of(hsCode);
+  return TOP_IMPORTER_HINTS[hs2] ?? [];
 }

@@ -5,12 +5,14 @@ import { useTranslation } from "../i18n";
 import { useRankingModel } from "../ranking/useRankingModelApi";
 import { useAnalysis } from "../state/useAnalysis";
 import { COL_HS64_PRESET } from "../state/schema";
+import { isAnalysisReady } from "../state/views";
 
 export function Builder() {
   const { t, i18n } = useTranslation();
   const { config, replaceConfig } = useAnalysis();
   const { model, error } = useRankingModel();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
+  const rankingReady = isAnalysisReady(config);
 
   return (
     <AnalysisPage
@@ -35,21 +37,27 @@ export function Builder() {
             >
               {t("presetColHs64")}
             </button>{" "}
-            <PermalinkLink
-              view="ranking"
-              patch={{
-                origin: config.origin ?? "COL",
-                hs: config.hs ?? "64",
-                year: config.year ?? 2023,
-                weightScheme: config.weightScheme ?? "expert_mean",
-                normalization: config.normalization ?? "minmax",
-                mcdm: config.mcdm ?? "wsm",
-                missingThreshold: config.missingThreshold ?? 0.2,
-              }}
-              data-testid="builder-to-ranking"
-            >
-              {t("openRanking")}
-            </PermalinkLink>
+            {rankingReady ? (
+              <PermalinkLink
+                view="ranking"
+                patch={{
+                  origin: config.origin,
+                  hs: config.hs,
+                  year: config.year,
+                  weightScheme: config.weightScheme ?? "expert_mean",
+                  normalization: config.normalization ?? "minmax",
+                  mcdm: config.mcdm ?? "wsm",
+                  missingThreshold: config.missingThreshold ?? 0.2,
+                }}
+                data-testid="builder-to-ranking"
+              >
+                {t("openRanking")}
+              </PermalinkLink>
+            ) : (
+              <span className="muted" data-testid="builder-ranking-blocked">
+                {t("builderNeedProduct")}
+              </span>
+            )}
             {" · "}
             <PermalinkLink view="status">{t("nav.status")}</PermalinkLink>
             {" · "}

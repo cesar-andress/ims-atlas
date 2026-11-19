@@ -68,6 +68,8 @@ export function risCitation(input: CiteInputs): string {
 }
 
 export function pythonReproduceSnippet(input: CiteInputs): string {
+  const hsChapter = input.hs ?? "";
+  const origin = input.origin ?? "";
   return `# Reproduce with ims-backtest / imsfe (config hash ${input.configHash})
 # Software DOI: ${SOFTWARE_DOI}  |  Data DOI: ${DATA_DOI}
 from imsfe.run_experiments import score_origin_year
@@ -75,7 +77,7 @@ from imsfe.config import load_variables
 import pandas as pd
 
 panel = pd.read_parquet("panel_ijt.parquet")  # local / release path
-g = panel[(panel.iso3_o == "${input.origin ?? "COL"}") & (panel.year == ${input.year ?? 2023}) & (panel.hs_chapter == "${input.hs ?? "64"}")]
+g = panel[(panel.iso3_o == "${origin || "ORIGIN"}") & (panel.year == ${input.year !== undefined ? input.year : "YEAR"}) & (panel.hs_chapter == "${hsChapter || "HS"}")]
 scored = score_origin_year(
     g,
     variables=load_variables(),

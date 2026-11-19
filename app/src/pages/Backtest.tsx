@@ -5,6 +5,7 @@ import { formatScore } from "../format";
 import { loadT4Fixture, type T4Fixture } from "../data/loadT4Fixture";
 import { analysisErrorMessage } from "../ranking/analysisError";
 import { useRankingModel } from "../ranking/useRankingModelApi";
+import { isColHs64Preset } from "../ranking/demoPanel";
 import { useAnalysis } from "../state/useAnalysis";
 import { scoreBlock, spearmanCorr } from "@ims-atlas/core";
 
@@ -99,6 +100,11 @@ export function Backtest() {
   const loo = useMemo(() => (model ? leaveOneOutSpearman(model) : []), [model]);
 
   const colRow = fixture?.col_hs64.find((r) => r.horizon_k === horizon);
+  const paperPreset = isColHs64Preset({
+    ...(config.origin !== undefined ? { origin: config.origin } : {}),
+    ...(config.hs !== undefined ? { hs: config.hs } : {}),
+    ...(config.year !== undefined ? { year: config.year } : {}),
+  });
 
   return (
     <AnalysisPage
@@ -193,13 +199,17 @@ export function Backtest() {
               </table>
             </div>
 
-            {colRow ? (
+            {paperPreset && colRow ? (
               <p className="muted" data-testid="col-hs64-ndcg">
                 COL · HS64 · horizon {colRow.horizon_k}: mean NDCG@10 ={" "}
                 <span data-mean={String(colRow.mean_ndcg_at_10)}>
                   {formatScore(colRow.mean_ndcg_at_10)}
                 </span>{" "}
                 (n={colRow.n_blocks}, A1 origin_horizon)
+              </p>
+            ) : !paperPreset ? (
+              <p className="muted small" data-testid="backtest-other-product">
+                {t("backtestOtherProduct")}
               </p>
             ) : null}
 
