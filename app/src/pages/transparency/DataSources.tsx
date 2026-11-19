@@ -1,5 +1,6 @@
 import { AccessBadge } from "../../components/AccessBadge";
 import { CopyUrlButton } from "../../components/CopyUrlButton";
+import { ExportMenu } from "../../components/ExportMenu";
 import { FixtureStatusBanner } from "../../components/FixtureStatusBanner";
 import { TransparencyShell } from "../../components/TransparencyShell";
 import { loadSources } from "../../data/transparency";
@@ -26,7 +27,34 @@ export function DataSources() {
             isFixture={Boolean(data.is_fixture)}
             message={data.fixture_banner ?? null}
           />
-          <div className="table-scroll">
+          <div className="table-scroll" data-export-surface="table">
+            <ExportMenu
+              testIdPrefix="sources"
+              kind="table"
+              title="Data sources"
+              tableRows={[
+                [
+                  "id",
+                  "publisher",
+                  "licence_id",
+                  "cadence",
+                  "checked_at",
+                  "release_version",
+                ],
+                ...data.sources.map((s) => {
+                  const fr = s.freshness ?? {};
+                  const rights = s.rights ?? {};
+                  return [
+                    s.id,
+                    String(s.publisher ?? ""),
+                    String(rights.licence_id ?? ""),
+                    String(s.update_cadence ?? ""),
+                    String(fr.checked_at ?? ""),
+                    String(s.release_version ?? ""),
+                  ];
+                }),
+              ]}
+            />
             <table data-testid="sources-table">
               <thead>
                 <tr>

@@ -1,6 +1,7 @@
 import { lazy, Suspense, useMemo } from "react";
 import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
+import { ExportMenu } from "../components/ExportMenu";
 import { formatScore } from "../format";
 import { analysisErrorMessage } from "../ranking/analysisError";
 import { useRankingModel } from "../ranking/useRankingModelApi";
@@ -76,7 +77,21 @@ export function Uncertainty() {
                 </Suspense>
 
                 <h2>{t("pTopKTable")}</h2>
-                <div className="table-scroll">
+                <div className="table-scroll" data-export-surface="table">
+                  <ExportMenu
+                    testIdPrefix="ptop"
+                    kind="table"
+                    title="P(top-k)"
+                    tableRows={[
+                      ["iso3", "p_top1", "p_top5", "p_top10"],
+                      ...topRows.map((row) => [
+                        row.iso3,
+                        String(row.p1),
+                        String(row.p5),
+                        String(row.p10),
+                      ]),
+                    ]}
+                  />
                   <table data-testid="ptop-table">
                     <thead>
                       <tr>
@@ -113,26 +128,39 @@ export function Uncertainty() {
                 <Suspense fallback={<p className="muted">{t("loading")}</p>}>
                   <TornadoChart bars={smaaModel.tornado} />
                 </Suspense>
-                <table data-testid="tornado-table" className="small">
-                  <thead>
-                    <tr>
-                      <th>Factor</th>
-                      <th>−50%</th>
-                      <th>+50%</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {smaaModel.tornado
-                      .filter((b) => b.level === "factor")
-                      .map((b) => (
-                        <tr key={b.id} data-factor={b.id}>
-                          <td>{b.id}</td>
-                          <td>{formatScore(b.lowDelta)}</td>
-                          <td>{formatScore(b.highDelta)}</td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
+                <div data-export-surface="table">
+                  <ExportMenu
+                    testIdPrefix="tornado"
+                    kind="table"
+                    title="Tornado factor sensitivity"
+                    tableRows={[
+                      ["factor", "delta_minus_50", "delta_plus_50"],
+                      ...smaaModel.tornado
+                        .filter((b) => b.level === "factor")
+                        .map((b) => [b.id, String(b.lowDelta), String(b.highDelta)]),
+                    ]}
+                  />
+                  <table data-testid="tornado-table" className="small">
+                    <thead>
+                      <tr>
+                        <th>Factor</th>
+                        <th>−50%</th>
+                        <th>+50%</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {smaaModel.tornado
+                        .filter((b) => b.level === "factor")
+                        .map((b) => (
+                          <tr key={b.id} data-factor={b.id}>
+                            <td>{b.id}</td>
+                            <td>{formatScore(b.lowDelta)}</td>
+                            <td>{formatScore(b.highDelta)}</td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
               </>
             )}
           </div>

@@ -5,6 +5,7 @@ import {
   spearmanCorr,
 } from "@ims-atlas/core";
 import { PageShell } from "../components/PageShell";
+import { ExportMenu } from "../components/ExportMenu";
 import { PermalinkLink } from "../components/PermalinkLink";
 import { loadCatalogPreview } from "../data/catalogLoader";
 import type { CatalogVariable } from "../data/types";
@@ -117,7 +118,24 @@ export function ExploreAnalysis() {
         {corr.cols.length < 2 ? (
           <p className="muted">{t("exploreCorrNeed")}</p>
         ) : (
-          <div className="corr-scroll">
+          <div className="corr-scroll" data-export-surface="table">
+            <ExportMenu
+              testIdPrefix="explore-corr"
+              kind="table"
+              title="Explore correlation"
+              tableRows={[
+                ["", ...corr.cols],
+                ...corr.cols.map((row, i) => [
+                  row,
+                  ...corr.cols.map((col, j) => {
+                    const v = corr.mat[i]?.[j];
+                    return typeof v === "number" && Number.isFinite(v)
+                      ? v.toFixed(4)
+                      : "";
+                  }),
+                ]),
+              ]}
+            />
             <table data-testid="explore-corr-table">
               <thead>
                 <tr>

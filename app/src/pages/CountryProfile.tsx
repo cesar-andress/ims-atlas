@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { PageShell } from "../components/PageShell";
+import { ExportMenu } from "../components/ExportMenu";
 import { PermalinkLink } from "../components/PermalinkLink";
 import { loadCatalogPreview } from "../data/catalogLoader";
 import { ISO3_EXPORTERS } from "../data/iso3Exporters";
@@ -73,38 +74,56 @@ export function CountryProfile() {
         {iso} · {year}
       </p>
       <p className="muted small">{t("countryPercentileNote")}</p>
-      <table data-testid="country-table">
-        <thead>
-          <tr>
-            <th>{t("variables")}</th>
-            <th>factor</th>
-            <th>{t("parityRaw")}</th>
-            <th>{t("countryPercentile")}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((r) => (
-            <tr key={r.id}>
-              <td>
-                <PermalinkLink view="data_variable" patch={{ focusVariable: r.id }}>
-                  {r.id}
-                </PermalinkLink>
-              </td>
-              <td>{r.factor}</td>
-              <td>
-                {r.value === null || r.value === undefined
-                  ? t("exploreMissing")
-                  : String(r.value)}
-              </td>
-              <td>
-                {r.percentile === null
-                  ? "—"
-                  : `${(r.percentile * 100).toFixed(0)}% (n=${r.nPeers})`}
-              </td>
+      <div data-export-surface="table">
+        <ExportMenu
+          testIdPrefix="country"
+          kind="table"
+          title={`Country ${iso} ${year}`}
+          tableRows={[
+            ["variable_id", "factor", "value", "percentile"],
+            ...rows.map((r) => [
+              r.id,
+              r.factor,
+              r.value === null || r.value === undefined ? "" : String(r.value),
+              r.percentile === null || r.percentile === undefined
+                ? ""
+                : String(r.percentile),
+            ]),
+          ]}
+        />
+        <table data-testid="country-table">
+          <thead>
+            <tr>
+              <th>{t("variables")}</th>
+              <th>factor</th>
+              <th>{t("parityRaw")}</th>
+              <th>{t("countryPercentile")}</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.id}>
+                <td>
+                  <PermalinkLink view="data_variable" patch={{ focusVariable: r.id }}>
+                    {r.id}
+                  </PermalinkLink>
+                </td>
+                <td>{r.factor}</td>
+                <td>
+                  {r.value === null || r.value === undefined
+                    ? t("exploreMissing")
+                    : String(r.value)}
+                </td>
+                <td>
+                  {r.percentile === null
+                    ? "—"
+                    : `${(r.percentile * 100).toFixed(0)}% (n=${r.nPeers})`}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <p className="small">
         <PermalinkLink view="time" patch={{ compareA: iso }}>
           {t("countryRankHistory")}

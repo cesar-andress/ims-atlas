@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
+import { ExportMenu } from "../components/ExportMenu";
 import { formatScore } from "../format";
 import { loadT4Fixture, type T4Fixture } from "../data/loadT4Fixture";
 import { analysisErrorMessage } from "../ranking/analysisError";
@@ -174,7 +175,22 @@ export function Backtest() {
                 {focalNdgc.n_blocks}
               </p>
             ) : null}
-            <div className="table-scroll">
+            <div className="table-scroll" data-export-surface="table">
+              <ExportMenu
+                testIdPrefix="t4-metrics"
+                kind="table"
+                title="T4 NDCG@10 metrics"
+                tableRows={[
+                  ["method", "ndcg10", "ci_low", "ci_high", "n"],
+                  ...metricRows.map((r) => [
+                    r.method,
+                    String(r.mean),
+                    String(r.ci95_low),
+                    String(r.ci95_high),
+                    String(r.n_blocks),
+                  ]),
+                ]}
+              />
               <table data-testid="t4-metrics-table">
                 <thead>
                   <tr>
@@ -214,7 +230,21 @@ export function Backtest() {
             ) : null}
 
             <h2>{t("pairedLift")}</h2>
-            <div className="table-scroll">
+            <div className="table-scroll" data-export-surface="table">
+              <ExportMenu
+                testIdPrefix="t4-lift"
+                kind="table"
+                title="T4 paired lift"
+                tableRows={[
+                  ["baseline", "delta_mean", "ci_low", "ci_high"],
+                  ...liftRows.map((r) => [
+                    r.baseline,
+                    String(r.delta_mean),
+                    String(r.ci95_low),
+                    String(r.ci95_high),
+                  ]),
+                ]}
+              />
               <table data-testid="t4-lift-table">
                 <thead>
                   <tr>
@@ -241,7 +271,21 @@ export function Backtest() {
 
             <h2>{t("variableValue")}</h2>
             <p className="muted small">{t("variableValueHint")}</p>
-            <div className="table-scroll">
+            <div className="table-scroll" data-export-surface="table">
+              <ExportMenu
+                testIdPrefix="t6-ablation"
+                kind="table"
+                title="T6 ablation"
+                tableRows={[
+                  ["contrast", "delta_ndcg10", "ci_low", "ci_high"],
+                  ...fixture.ablation.map((r) => [
+                    r.contrast,
+                    String(r.delta_mean),
+                    String(r.ci95_low),
+                    String(r.ci95_high),
+                  ]),
+                ]}
+              />
               <table data-testid="t6-ablation-table">
                 <thead>
                   <tr>
@@ -269,7 +313,16 @@ export function Backtest() {
             <h3>{t("looRankSensitivity")}</h3>
             <p className="muted small">{t("looHint")}</p>
             {model ? (
-              <div className="table-scroll">
+              <div className="table-scroll" data-export-surface="table">
+                <ExportMenu
+                  testIdPrefix="loo"
+                  kind="table"
+                  title="Leave-one-out Spearman"
+                  tableRows={[
+                    ["variable_dropped", "spearman"],
+                    ...loo.map((r) => [r.variable, String(r.spearman)]),
+                  ]}
+                />
                 <table data-testid="loo-table">
                   <thead>
                     <tr>

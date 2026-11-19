@@ -21,9 +21,10 @@ Severity: Critical / High fixed in this phase where feasible; Medium/Low logged.
 | Bundle growth unchecked | `make bundle-budgets` after build. |
 | Footer missing Atlas credit line | Added `footer-atlas-credit`. |
 
-## Medium (not blocking Phase F)
+## Medium
 
-- Remaining tables (Backtest, Uncertainty, NormLab, Explore, transparency) still lack ExportMenu on every surface — extend in a follow-up.
+- ~~Remaining tables without ExportMenu~~ — follow-up: Backtest, Uncertainty, NormLab,
+  Explore, Explore analysis, Country, Sources now have ExportMenu.
 - Chart PDF export is a text companion PDF, not an embedded bitmap.
 - Public `status/*` is fixture-flagged (`is_fixture: true`); live ETL still a human ops step.
 - Some third-party landing pages may return 403 to bots; recorded in link report, not treated as core failures.

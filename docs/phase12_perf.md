@@ -7,10 +7,10 @@ after skip-link, mobile read-only, touch-target, and theme-label fixes.
 
 | Category | Score |
 |----------|------:|
-| Performance | **100** |
+| Performance | **99** (re-measured 2026-11-19 Phase F follow-up) |
 | Accessibility | **100** |
 
-SPEC §7 target: both ≥ 90.
+SPEC §7 target: both ≥ 90. Prior Phase 12 run was 100/100.
 
 Re-run:
 

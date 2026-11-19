@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { PageShell } from "../components/PageShell";
+import { ExportMenu } from "../components/ExportMenu";
 import { VariableBasket } from "../components/VariableBasket";
 import { addToBasket } from "../state/variableBasket";
 import { loadCatalogPreview } from "../data/catalogLoader";
@@ -254,7 +255,23 @@ export function Explore() {
         {filtered.length === 0 ? ` — ${t("exploreEmptyRelease")}` : ""}
       </p>
 
-      <div className="explore-table-wrap">
+      <div className="explore-table-wrap" data-export-surface="table">
+        <ExportMenu
+          testIdPrefix="explore"
+          kind="table"
+          title="Explore table"
+          tableRows={[
+            ["variable_id", "factor", "source", "iso3", "year", "value"],
+            ...filtered.map((r) => [
+              r.variableId,
+              r.factor,
+              r.source,
+              r.iso3,
+              String(r.year),
+              r.value === null ? "" : String(r.value),
+            ]),
+          ]}
+        />
         <table data-testid="explore-table">
           <thead>
             <tr>

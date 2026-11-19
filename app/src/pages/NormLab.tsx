@@ -14,6 +14,7 @@ import {
   type YearPooling,
 } from "@ims-atlas/core";
 import { AnalysisPage } from "../components/AnalysisPage";
+import { ExportMenu } from "../components/ExportMenu";
 import { PermalinkLink } from "../components/PermalinkLink";
 import { useTranslation } from "../i18n";
 import type { RankingViewModel } from "../ranking/rankingEngine";
@@ -349,7 +350,17 @@ function NormLabBody({ model }: { model: RankingViewModel }) {
         </p>
       ) : null}
 
-      <div className="norm-lab-tables">
+      <div className="norm-lab-tables" data-export-surface="table">
+        <ExportMenu
+          testIdPrefix="norm-lab-extremes"
+          kind="table"
+          title="Norm lab top/bottom"
+          tableRows={[
+            ["group", "iso3", "value"],
+            ...topBottomA.top.map((r) => ["top", r.iso3, r.value.toFixed(4)]),
+            ...topBottomA.bottom.map((r) => ["bottom", r.iso3, r.value.toFixed(4)]),
+          ]}
+        />
         <section>
           <h2>{t("normLabTop5")}</h2>
           <table data-testid="norm-lab-top5">
@@ -398,26 +409,47 @@ function NormLabBody({ model }: { model: RankingViewModel }) {
           {" · "}
           {t("normLabTop10Overlap")} = {(compare.top10Overlap * 10).toFixed(0)}/10
         </p>
-        <table data-testid="norm-lab-rank-delta">
-          <thead>
-            <tr>
-              <th>ISO3</th>
-              <th>A ({scaleA})</th>
-              <th>B ({scaleB})</th>
-              <th>Δ</th>
-            </tr>
-          </thead>
-          <tbody>
-            {compare.rows.slice(0, 15).map((r) => (
-              <tr key={r.iso3} className={r.delta !== 0 ? "norm-lab-delta" : undefined}>
-                <td>{r.iso3}</td>
-                <td>{r.rankA}</td>
-                <td>{r.rankB}</td>
-                <td>{r.delta > 0 ? `+${r.delta}` : r.delta}</td>
+        <div data-export-surface="table">
+          <ExportMenu
+            testIdPrefix="norm-lab-delta"
+            kind="table"
+            title="Norm lab rank delta"
+            tableRows={[
+              ["iso3", `rank_A_${scaleA}`, `rank_B_${scaleB}`, "delta"],
+              ...compare.rows
+                .slice(0, 15)
+                .map((r) => [
+                  r.iso3,
+                  String(r.rankA),
+                  String(r.rankB),
+                  String(r.delta),
+                ]),
+            ]}
+          />
+          <table data-testid="norm-lab-rank-delta">
+            <thead>
+              <tr>
+                <th>ISO3</th>
+                <th>A ({scaleA})</th>
+                <th>B ({scaleB})</th>
+                <th>Δ</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {compare.rows.slice(0, 15).map((r) => (
+                <tr
+                  key={r.iso3}
+                  className={r.delta !== 0 ? "norm-lab-delta" : undefined}
+                >
+                  <td>{r.iso3}</td>
+                  <td>{r.rankA}</td>
+                  <td>{r.rankB}</td>
+                  <td>{r.delta > 0 ? `+${r.delta}` : r.delta}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section data-testid="norm-lab-corr">
