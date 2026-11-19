@@ -236,6 +236,72 @@ export function ConfigPanel() {
             {t("orderByWeight")}
           </label>
 
+          <details className="mt-2" data-testid="advanced-method-options">
+            <summary>{t("advancedMethodOptions")}</summary>
+            <label>
+              {t("zeroPolicy")}
+              <select
+                data-testid="zero-policy"
+                value={config.zeroPolicy ?? "epsilon"}
+                onChange={(e) =>
+                  setConfig({
+                    zeroPolicy: e.target.value as
+                      "epsilon" | "minmax" | "rank" | "offset_ratio",
+                  })
+                }
+              >
+                <option value="epsilon">{t("zeroPolicyEpsilon")}</option>
+                <option value="minmax">{t("zeroPolicyMinmax")}</option>
+                <option value="rank">{t("zeroPolicyRank")}</option>
+                <option value="offset_ratio">{t("zeroPolicyOffset")}</option>
+              </select>
+            </label>
+            {(config.zeroPolicy ?? "epsilon") === "epsilon" ? (
+              <label>
+                {t("zeroEpsilon")}
+                <input
+                  type="number"
+                  step="any"
+                  min={0}
+                  data-testid="zero-epsilon"
+                  value={config.zeroEpsilon ?? 0.1}
+                  onChange={(e) => setConfig({ zeroEpsilon: Number(e.target.value) })}
+                />
+              </label>
+            ) : null}
+            {config.zeroPolicy === "offset_ratio" ? (
+              <label>
+                {t("zeroOffsetC")}
+                <input
+                  type="number"
+                  step="any"
+                  min={0}
+                  data-testid="zero-offset-c"
+                  value={config.zeroOffsetC ?? 1}
+                  onChange={(e) => setConfig({ zeroOffsetC: Number(e.target.value) })}
+                />
+              </label>
+            ) : null}
+            <label>
+              {t("culturalDistanceKind")}
+              <select
+                data-testid="cultural-distance-kind"
+                value={config.culturalDistanceKind ?? "sum_of_sums"}
+                onChange={(e) =>
+                  setConfig({
+                    culturalDistanceKind: e.target.value as
+                      "sum_of_sums" | "sum_abs_diff" | "kogut_singh",
+                  })
+                }
+              >
+                <option value="sum_of_sums">{t("cultureSumOfSums")}</option>
+                <option value="sum_abs_diff">{t("cultureSumAbs")}</option>
+                <option value="kogut_singh">{t("cultureKogutSingh")}</option>
+              </select>
+            </label>
+            <p className="muted small">{t("culturalDistanceHint")}</p>
+          </details>
+
           <label>
             {t("preselectMode")}
             <select

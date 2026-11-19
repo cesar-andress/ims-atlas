@@ -66,3 +66,28 @@ export {
   oneAtATimeWinnerThresholds,
   type WinnerThreshold,
 } from "./winnerSensitivity.js";
+
+export {
+  applyZeroPolicy,
+  countRankChanges,
+  culturalDistanceByKind,
+  detectDuplicateNumericRows,
+  detectNearBinaryScaled,
+  eocPercent,
+  messageFor,
+  rankingTableConsistent,
+  scaleCostWithPolicy,
+  suggestIso3,
+  warnAggregatedRespondents,
+  warnDiscontinuedSeries,
+  warnEocDefinition,
+  warnImpNonPositive,
+  warnOutOfPlausibleRange,
+  warnSumOfSumsZeroDistance,
+  warnWeightsRenormalised,
+  type CulturalDistanceKind,
+  type EocSeriesUnits,
+  type Lang,
+  type MethodWarning,
+  type ZeroPolicy,
+} from "./methodChecks.js";

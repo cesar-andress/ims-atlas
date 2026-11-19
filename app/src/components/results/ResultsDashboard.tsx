@@ -1,5 +1,9 @@
 import { useMemo, useState } from "react";
-import { IMSFE_EOC_QUADRANTS, type ImsfeEocQuadrant } from "@ims-atlas/core";
+import {
+  IMSFE_EOC_QUADRANTS,
+  messageFor,
+  type ImsfeEocQuadrant,
+} from "@ims-atlas/core";
 import { ExportMenu } from "../ExportMenu";
 import { HelpButton } from "../HelpButton";
 import { PermalinkLink } from "../PermalinkLink";
@@ -19,6 +23,7 @@ import {
 import { quadrantCopy } from "../../design/quadrantCopy";
 import { rankingToCsv } from "../../cite/exportDownload";
 import { useTranslation } from "../../i18n";
+import { collectMethodWarnings } from "../../imsfe/collectMethodWarnings";
 import { useImsfeEocMatrix } from "../../ranking/useImsfeEocMatrix";
 import type { RankingViewModel } from "../../ranking/rankingEngine";
 import { useAnalysis } from "../../state/useAnalysis";
@@ -78,6 +83,7 @@ export function ResultsDashboard({ model }: Props) {
   const { config, activeProject } = useAnalysis();
   const { compareA, selectIso } = useCompareSelection();
   const eoc = useImsfeEocMatrix(model);
+  const methodWarnings = useMemo(() => collectMethodWarnings(config), [config]);
   const [showAll, setShowAll] = useState(false);
 
   const criteria = useMemo(() => criterionList(model), [model]);
@@ -266,18 +272,32 @@ export function ResultsDashboard({ model }: Props) {
               : "IMSFE and openness above the median"}
           </p>
         </article>
-        <article className="results-card kpi">
+        <article className="results-card kpi" data-testid="data-quality-card">
           <h2>{lang === "es" ? "Calidad de datos" : "Data quality"}</h2>
           <p className="kpi-title font-tabular">
-            {model.warnings.length + (missingEoc.length > 0 ? 1 : 0)}
+            {model.warnings.length +
+              methodWarnings.length +
+              (missingEoc.length > 0 ? 1 : 0)}
           </p>
           <p className="muted small">
             {missingEoc.length > 0
               ? lang === "es"
                 ? `${missingEoc[0]} sin coeficiente de apertura`
                 : `${missingEoc[0]} missing openness coefficient`
-              : (model.warnings[0] ?? (lang === "es" ? "Sin avisos" : "No warnings"))}
+              : methodWarnings[0]
+                ? messageFor(methodWarnings[0], lang)
+                : (model.warnings[0] ?? (lang === "es" ? "Sin avisos" : "No warnings"))}
           </p>
+          {methodWarnings.length > 0 ? (
+            <ul
+              className="muted small mt-2 list-disc pl-4 text-left"
+              data-testid="method-warnings-list"
+            >
+              {methodWarnings.slice(0, 5).map((w) => (
+                <li key={w.code}>{messageFor(w, lang)}</li>
+              ))}
+            </ul>
+          ) : null}
         </article>
       </div>
 

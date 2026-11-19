@@ -101,6 +101,12 @@ export type AnalysisConfig = {
     "imsfe_2025" | "imsfem_2025_olive" | "smi_2018" | "smi_2020" | undefined;
   /** Display criteria/variables ordered by weight (Orden definitivo); scores unchanged. */
   orderByWeight?: boolean | undefined;
+  /** Phase A3: cost zero policy for IMP variables. */
+  zeroPolicy?: "epsilon" | "minmax" | "rank" | "offset_ratio" | undefined;
+  zeroEpsilon?: number | undefined;
+  zeroOffsetC?: number | undefined;
+  /** Phase A3: cultural distance definition. */
+  culturalDistanceKind?: "sum_of_sums" | "sum_abs_diff" | "kogut_singh" | undefined;
   preselectMode?: "top_n" | "cumulative_share" | undefined;
   preselectTopN?: number | undefined;
   preselectCumShare?: number | undefined;
@@ -325,6 +331,26 @@ export function parseAnalysisConfig(input: unknown): AnalysisConfig {
   if (typeof input.orderByWeight === "boolean") {
     out.orderByWeight = input.orderByWeight;
   }
+
+  const zeroPolicy = asEnum(input.zeroPolicy, [
+    "epsilon",
+    "minmax",
+    "rank",
+    "offset_ratio",
+  ] as const);
+  if (zeroPolicy) out.zeroPolicy = zeroPolicy;
+  const zeroEpsilon = asFiniteNumber(input.zeroEpsilon);
+  if (zeroEpsilon !== undefined && zeroEpsilon > 0) out.zeroEpsilon = zeroEpsilon;
+  const zeroOffsetC = asFiniteNumber(input.zeroOffsetC);
+  if (zeroOffsetC !== undefined && zeroOffsetC >= 0) {
+    out.zeroOffsetC = zeroOffsetC;
+  }
+  const culturalDistanceKind = asEnum(input.culturalDistanceKind, [
+    "sum_of_sums",
+    "sum_abs_diff",
+    "kogut_singh",
+  ] as const);
+  if (culturalDistanceKind) out.culturalDistanceKind = culturalDistanceKind;
 
   const preselectMode = asEnum(input.preselectMode, [
     "top_n",

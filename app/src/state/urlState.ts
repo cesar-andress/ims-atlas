@@ -81,6 +81,12 @@ export function configToSearch(config: AnalysisConfig): string {
   if (config.orderByWeight !== undefined) {
     compact.orderByWeight = config.orderByWeight;
   }
+  if (config.zeroPolicy) compact.zeroPolicy = config.zeroPolicy;
+  if (config.zeroEpsilon !== undefined) compact.zeroEpsilon = config.zeroEpsilon;
+  if (config.zeroOffsetC !== undefined) compact.zeroOffsetC = config.zeroOffsetC;
+  if (config.culturalDistanceKind) {
+    compact.culturalDistanceKind = config.culturalDistanceKind;
+  }
   if (config.preselectMode) compact.preselectMode = config.preselectMode;
   if (config.preselectTopN !== undefined) {
     compact.preselectTopN = config.preselectTopN;
