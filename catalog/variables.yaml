@@ -666,3 +666,423 @@ variables:
   status: draft
   source_ids:
   - worldbank_wdi
+
+# Phase J — IMSFE 2025 Jose codes (status: draft; licence gate BYOD until verified)
+- id: PPAD
+  name:
+    en: Product Price at Destination (PPAD)
+    es: Precio del producto en destino (PPAD)
+  factor: cost_access
+  level: country
+  direction: benefit
+  transform: none
+  unit: USD
+  source: baci
+  citation: Phase J IMSFE 2025 draft mapping. Jose code; open candidate UVGAP/BACI unit values. licence to verify.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: Jose code; open candidate UVGAP/BACI unit values. licence to verify.
+  status: draft
+  source_ids:
+  - baci
+- id: INTC
+  name:
+    en: International Transport Costs (INTC)
+    es: Costes de transporte internacional (INTC)
+  factor: cost_access
+  level: country
+  direction: cost
+  transform: none
+  unit: USD
+  source: freight_manual
+  citation: Phase J IMSFE 2025 draft mapping. Workbook freight tools; BYOD; licence UNKNOWN.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: Workbook freight tools; BYOD; licence UNKNOWN.
+  status: draft
+  source_ids:
+  - freight_manual
+- id: CIBC
+  name:
+    en: Cost to Import Border Compliance (CIBC)
+    es: Coste de cumplimiento fronterizo a la importación (CIBC)
+  factor: cost_access
+  level: country
+  direction: cost
+  transform: none
+  unit: USD
+  source: worldbank_wdi
+  citation: Phase J IMSFE 2025 draft mapping. Doing Business IC.IMP.CSBC.CD archived; flag archived series.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: Doing Business IC.IMP.CSBC.CD archived; flag archived series.
+  status: draft
+  code: IC.IMP.CSBC.CD
+  source_ids:
+  - worldbank_wdi
+- id: LPIN
+  name:
+    en: Logistics Performance Index (LPIN)
+    es: Índice de desempeño logístico (LPIN)
+  factor: logistics
+  level: country
+  direction: benefit
+  transform: none
+  unit: index
+  source: worldbank_lpi
+  citation: Phase J IMSFE 2025 draft mapping. Alias of catalog LPI / LP.LPI.OVRL.XQ.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: Alias of catalog LPI / LP.LPI.OVRL.XQ.
+  status: draft
+  code: LP.LPI.OVRL.XQ
+  source_ids:
+  - worldbank_lpi
+- id: CPTR
+  name:
+    en: Container Port Traffic (CPTR)
+    es: Tráfico de contenedores portuarios (CPTR)
+  factor: logistics
+  level: country
+  direction: benefit
+  transform: none
+  unit: TEU
+  source: worldbank_wdi
+  citation: Phase J IMSFE 2025 draft mapping. WDI IS.SHP.GOOD.TU candidate.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: WDI IS.SHP.GOOD.TU candidate.
+  status: draft
+  code: IS.SHP.GOOD.TU
+  source_ids:
+  - worldbank_wdi
+- id: ITTT
+  name:
+    en: International Transport Transit Time (ITTT)
+    es: Tiempo de tránsito internacional (ITTT)
+  factor: logistics
+  level: country
+  direction: cost
+  transform: none
+  unit: days
+  source: freight_manual
+  citation: Phase J IMSFE 2025 draft mapping. Sea-distances style BYOD; licence UNKNOWN.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: Sea-distances style BYOD; licence UNKNOWN.
+  status: draft
+  source_ids:
+  - freight_manual
+- id: CUTA
+  name:
+    en: Customs Tariffs (CUTA)
+    es: Aranceles aduaneros (CUTA)
+  factor: competition
+  level: country
+  direction: cost
+  transform: none
+  unit: percent
+  source: wits_trains
+  citation: Phase J IMSFE 2025 draft mapping. Jose code; open candidate TARIF/WITS; often BYOD.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: Jose code; open candidate TARIF/WITS; often BYOD.
+  status: draft
+  source_ids:
+  - wits_trains
+- id: CCTI
+  name:
+    en: Country Contribution to Interventions (CCTI)
+    es: Contribución a intervenciones comerciales (CCTI)
+  factor: competition
+  level: country
+  direction: cost
+  transform: none
+  unit: count
+  source: global_trade_alert
+  citation: Phase J IMSFE 2025 draft mapping. Global Trade Alert; BYOD; licence UNKNOWN.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: Global Trade Alert; BYOD; licence UNKNOWN.
+  status: draft
+  source_ids:
+  - global_trade_alert
+- id: IOEF
+  name:
+    en: Index of Economic Freedom (IOEF)
+    es: Índice de libertad económica (IOEF)
+  factor: competition
+  level: country
+  direction: benefit
+  transform: none
+  unit: index
+  source: heritage_ief
+  citation: Phase J IMSFE 2025 draft mapping. Heritage IEF; BYOD; licence UNKNOWN.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: Heritage IEF; BYOD; licence UNKNOWN.
+  status: draft
+  source_ids:
+  - heritage_ief
+- id: CLI
+  name:
+    en: Cost of Living Index (CLI)
+    es: Índice de coste de vida (CLI)
+  factor: macro_risk
+  level: country
+  direction: benefit
+  transform: none
+  unit: index
+  source: worldbank_wdi
+  citation: Phase J IMSFE 2025 draft mapping. Jose code; open candidate PLI (ICP).
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: Jose code; open candidate PLI (ICP).
+  status: draft
+  code: PA.NUS.PRVT.PLI
+  source_ids:
+  - worldbank_wdi
+- id: INAN
+  name:
+    en: Inflation Annual (INAN)
+    es: Inflación anual (INAN)
+  factor: macro_risk
+  level: country
+  direction: cost
+  transform: none
+  unit: percent
+  source: worldbank_wdi
+  citation: Phase J IMSFE 2025 draft mapping. Jose code; open candidate INFL.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: Jose code; open candidate INFL.
+  status: draft
+  source_ids:
+  - worldbank_wdi
+- id: UNRA
+  name:
+    en: Unemployment Rate (UNRA)
+    es: Tasa de desempleo (UNRA)
+  factor: macro_risk
+  level: country
+  direction: cost
+  transform: none
+  unit: percent
+  source: worldbank_wdi
+  citation: Phase J IMSFE 2025 draft mapping. Jose code; open candidate UNEMP.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: Jose code; open candidate UNEMP.
+  status: draft
+  source_ids:
+  - worldbank_wdi
+- id: FSIN
+  name:
+    en: Fragile States Index (FSIN)
+    es: Índice de estados frágiles (FSIN)
+  factor: institutional
+  level: country
+  direction: cost
+  transform: none
+  unit: index
+  source: fragile_states_index
+  citation: Phase J IMSFE 2025 draft mapping. BYOD; licence UNKNOWN.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: BYOD; licence UNKNOWN.
+  status: draft
+  source_ids:
+  - fragile_states_index
+- id: INRI
+  name:
+    en: INFORM Risk (INRI)
+    es: Riesgo INFORM (INRI)
+  factor: institutional
+  level: country
+  direction: cost
+  transform: none
+  unit: index
+  source: inform_risk
+  citation: Phase J IMSFE 2025 draft mapping. BYOD; licence UNKNOWN.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: BYOD; licence UNKNOWN.
+  status: draft
+  source_ids:
+  - inform_risk
+- id: DEIN
+  name:
+    en: Democracy Index (DEIN)
+    es: Índice de democracia (DEIN)
+  factor: institutional
+  level: country
+  direction: benefit
+  transform: none
+  unit: index
+  source: eiu_democracy
+  citation: Phase J IMSFE 2025 draft mapping. EIU proprietary; BYOD; licence UNKNOWN.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: EIU proprietary; BYOD; licence UNKNOWN.
+  status: draft
+  source_ids:
+  - eiu_democracy
+- id: GLIN
+  name:
+    en: Globalization Index (GLIN)
+    es: Índice de globalización (GLIN)
+  factor: product_fit
+  level: country
+  direction: benefit
+  transform: none
+  unit: index
+  source: kof_globalisation
+  citation: Phase J IMSFE 2025 draft mapping. KOF; BYOD; licence UNKNOWN.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: KOF; BYOD; licence UNKNOWN.
+  status: draft
+  source_ids:
+  - kof_globalisation
+- id: CPIN
+  name:
+    en: Corruption Perceptions Index (CPIN)
+    es: Índice de percepción de la corrupción (CPIN)
+  factor: product_fit
+  level: country
+  direction: benefit
+  transform: none
+  unit: index
+  source: transparency_cpi
+  citation: Phase J IMSFE 2025 draft mapping. Transparency CPI; BYOD; licence UNKNOWN.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: Transparency CPI; BYOD; licence UNKNOWN.
+  status: draft
+  source_ids:
+  - transparency_cpi
+- id: CUDI
+  name:
+    en: Cultural Difference (CUDI)
+    es: Diferencia cultural (CUDI)
+  factor: product_fit
+  level: country
+  direction: cost
+  transform: none
+  unit: index
+  source: hofstede
+  citation: Phase J IMSFE 2025 draft mapping. Sum of |origin−dest| Hofstede dims; same family as CULT.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: Sum of |origin−dest| Hofstede dims; same family as CULT.
+  status: draft
+  source_ids:
+  - hofstede

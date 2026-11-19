@@ -22,6 +22,14 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 | wipo_gii | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
 | startupblink | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
 | yale_epi | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| heritage_ief | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| fragile_states_index | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| inform_risk | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| eiu_democracy | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| kof_globalisation | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| transparency_cpi | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| global_trade_alert | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| freight_manual | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
 
 ## Variables (gate)
 
@@ -54,6 +62,24 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 | EPI | yale_epi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
 | CO2PC | worldbank_wdi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
 | PLI | worldbank_wdi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| PPAD | baci | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| INTC | freight_manual | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| CIBC | worldbank_wdi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| LPIN | worldbank_lpi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| CPTR | worldbank_wdi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| ITTT | freight_manual | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| CUTA | wits_trains | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| CCTI | global_trade_alert | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| IOEF | heritage_ief | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| CLI | worldbank_wdi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| INAN | worldbank_wdi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| UNRA | worldbank_wdi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| FSIN | fragile_states_index | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| INRI | inform_risk | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| DEIN | eiu_democracy | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| GLIN | kof_globalisation | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| CPIN | transparency_cpi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| CUDI | hofstede | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
 
 ## Needs human rights check
 
@@ -71,3 +97,11 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 - `wipo_gii`
 - `startupblink`
 - `yale_epi`
+- `heritage_ief`
+- `fragile_states_index`
+- `inform_risk`
+- `eiu_democracy`
+- `kof_globalisation`
+- `transparency_cpi`
+- `global_trade_alert`
+- `freight_manual`

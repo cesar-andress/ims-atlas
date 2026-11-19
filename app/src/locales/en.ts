@@ -245,12 +245,25 @@ export const en = {
     "Map boundaries: Natural Earth 110m (public domain), slimmed and served with this app.",
   matrixIntro:
     "IMSFE-style attractiveness × fit scatter. Bubble size tracks the index score; dashed lines are cut-offs.",
+  matrixIntroEoc:
+    "IMSFE × external opening (EOC) matrix. Quadrant names from Baena & Cano.",
+  matrixMode: "Matrix type",
+  matrixModeAttractFit: "Attractiveness × fit",
+  matrixModeImsfeEoc: "IMSFE × openness (EOC)",
+  matrixAuthorsNote: "Authors' wording (Baena & Cano).",
+  matrixEocPending:
+    "EOC is not in the published panel yet; quadrant labels are still available.",
   matrixCutoff: "Cut-offs",
   cutoffMedian: "Median",
   cutoffFixed: "Fixed",
   attractiveness: "Attractiveness",
   fit: "Fit",
   quadrant: "Quadrant",
+  presetImsfeBaenaCano: "IMSFE (Baena & Cano)",
+  methodFamily: "Method family",
+  preselectMode: "Pre-selection",
+  preselectTopN: "Top N importers",
+  preselectCumShare: "Cumulative share",
   mapIntro:
     "VOSviewer-grade market map: network (similarity links), overlay (variable colour), and density (score-weighted heat). SMACOF layout is deterministic for a seed.",
   mapSeed: "Layout seed",

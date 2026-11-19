@@ -30,6 +30,8 @@ export type {
 
 export {
   normalizeColumn,
+  normalizeDmp,
+  normalizeImp,
   normalizeLogMinmax,
   normalizeMatrix,
   normalizeMinmax,
@@ -37,6 +39,41 @@ export {
   normalizeRatioLegacy,
   normalizeZscore,
 } from "./normalize.js";
+
+export {
+  IMSFE_2025_DIRECTION,
+  IMSFE_2025_SOURCE_NOTES,
+  IMSFE_2025_STRUCTURE,
+  IMSFE_EOC_QUADRANTS,
+  METHOD_FAMILIES,
+  aggregateExpertMeans,
+  aggregatePairwiseGeometric,
+  ahpFromPairwise,
+  anonymizeExpertLabels,
+  buildImsfeEocMatrix,
+  culturalDistance,
+  eocQuadrantOf,
+  globalAhPWeights,
+  normalizeEocRatio,
+  oneAtATimeWinnerThresholds,
+  preselectMarkets,
+  summarizeNumeric,
+  validateUnitWeights,
+  type AhpResult,
+  type ExpertResponse,
+  type FilterEffect,
+  type HofstedeScores,
+  type ImsfeEocMatrixResult,
+  type ImsfeEocPoint,
+  type ImsfeEocQuadrant,
+  type ImportRow,
+  type MethodFamilyId,
+  type MethodFamilySpec,
+  type PreselectMode,
+  type PreselectionResult,
+  type WeightStatsSummary,
+  type WinnerThreshold,
+} from "./imsfe/index.js";
 
 export {
   DEFAULT_MISSING_POLICY,

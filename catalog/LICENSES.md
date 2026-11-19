@@ -31,3 +31,21 @@ Generated from `catalog/variables.yaml` + `catalog/sources.yaml`. Do not edit by
 | EPI | yale_epi | UNKNOWN | no (BYOD) | Wendling, Z. A., Emerson, J. W., Esty, D. C., de Sherbinin, A., Block, S., et al. (2026). 2026 Environmental Performance Index. Yale Center for Environmental Law & Policy. |
 | CO2PC | worldbank_wdi | CC-BY-4.0 | yes | World Bank. World Development Indicators. EN.GHG.CO2.PC.CE.AR5 (CO2 emissions excluding LULUCF per capita). |
 | PLI | worldbank_wdi | CC-BY-4.0 | yes | World Bank. World Development Indicators / ICP. PA.NUS.PRVT.PLI. |
+| PPAD | baci | UNKNOWN | no (BYOD) | Phase J IMSFE 2025 draft mapping. Jose code; open candidate UVGAP/BACI unit values. licence to verify. |
+| INTC | freight_manual | UNKNOWN | no (BYOD) | Phase J IMSFE 2025 draft mapping. Workbook freight tools; BYOD; licence UNKNOWN. |
+| CIBC | worldbank_wdi | CC-BY-4.0 | no (BYOD) | Phase J IMSFE 2025 draft mapping. Doing Business IC.IMP.CSBC.CD archived; flag archived series. |
+| LPIN | worldbank_lpi | CC-BY-4.0 | no (BYOD) | Phase J IMSFE 2025 draft mapping. Alias of catalog LPI / LP.LPI.OVRL.XQ. |
+| CPTR | worldbank_wdi | CC-BY-4.0 | no (BYOD) | Phase J IMSFE 2025 draft mapping. WDI IS.SHP.GOOD.TU candidate. |
+| ITTT | freight_manual | UNKNOWN | no (BYOD) | Phase J IMSFE 2025 draft mapping. Sea-distances style BYOD; licence UNKNOWN. |
+| CUTA | wits_trains | UNKNOWN | no (BYOD) | Phase J IMSFE 2025 draft mapping. Jose code; open candidate TARIF/WITS; often BYOD. |
+| CCTI | global_trade_alert | UNKNOWN | no (BYOD) | Phase J IMSFE 2025 draft mapping. Global Trade Alert; BYOD; licence UNKNOWN. |
+| IOEF | heritage_ief | UNKNOWN | no (BYOD) | Phase J IMSFE 2025 draft mapping. Heritage IEF; BYOD; licence UNKNOWN. |
+| CLI | worldbank_wdi | CC-BY-4.0 | no (BYOD) | Phase J IMSFE 2025 draft mapping. Jose code; open candidate PLI (ICP). |
+| INAN | worldbank_wdi | CC-BY-4.0 | no (BYOD) | Phase J IMSFE 2025 draft mapping. Jose code; open candidate INFL. |
+| UNRA | worldbank_wdi | CC-BY-4.0 | no (BYOD) | Phase J IMSFE 2025 draft mapping. Jose code; open candidate UNEMP. |
+| FSIN | fragile_states_index | UNKNOWN | no (BYOD) | Phase J IMSFE 2025 draft mapping. BYOD; licence UNKNOWN. |
+| INRI | inform_risk | UNKNOWN | no (BYOD) | Phase J IMSFE 2025 draft mapping. BYOD; licence UNKNOWN. |
+| DEIN | eiu_democracy | UNKNOWN | no (BYOD) | Phase J IMSFE 2025 draft mapping. EIU proprietary; BYOD; licence UNKNOWN. |
+| GLIN | kof_globalisation | UNKNOWN | no (BYOD) | Phase J IMSFE 2025 draft mapping. KOF; BYOD; licence UNKNOWN. |
+| CPIN | transparency_cpi | UNKNOWN | no (BYOD) | Phase J IMSFE 2025 draft mapping. Transparency CPI; BYOD; licence UNKNOWN. |
+| CUDI | hofstede | UNKNOWN | no (BYOD) | Phase J IMSFE 2025 draft mapping. Sum of \|origin−dest\| Hofstede dims; same family as CULT. |

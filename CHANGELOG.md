@@ -6,6 +6,12 @@ All notable changes to IMS Atlas are documented in this file.
 
 ### Added
 
+- Phase J IMSFE faithful mode: pre-selection funnel, DMP/IMP aliases, AHP,
+  expert-survey aggregation (Expert 1..n), cultural distance, IMSFE×EOC
+  quadrants (Baena & Cano wording), one-at-a-time winner sensitivity, method
+  family presets (IMSFE 2025 / SMI 2018 / SMI 2020+), Jose-code catalog drafts,
+  workbook weight extractor (`IMSFE_WORKBOOK_PATH`), and Tablas/Standardization
+  discrepancy note (`docs/imsfe-tablas-discrepancy.md`).
 - Phase R dual release audiences: `atlas-etl release --audience public|internal`,
   staging under `data/release/staging[/internal]/vX.Y.Z`, promote with
   `--audience`, and `status/release_report_vX.Y.Z.md`. Public stays empty until

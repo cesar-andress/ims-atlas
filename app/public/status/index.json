@@ -7,8 +7,8 @@
   "latest_run_status": "ok",
   "n_history_runs": 2,
   "n_lineage_edges": 154,
-  "n_sources": 14,
-  "n_variables": 27,
+  "n_sources": 22,
+  "n_variables": 45,
   "paths": {
     "freshness": "/status/freshness.json",
     "history": "/status/history.json",

@@ -2,7 +2,7 @@
   "fixture_banner": "Fixture pipeline artefact (mini_world test data). Not a live ingest and not a production data release.",
   "generated_from": "catalog/variables.yaml + release manifest + status/coverage",
   "is_fixture": true,
-  "n_variables": 27,
+  "n_variables": 45,
   "schema": "transparency-variables/v1",
   "variables": [
     {
@@ -1280,6 +1280,528 @@
       "redistributable": true,
       "source_ids": [
         "worldbank_wdi"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase J IMSFE 2025 draft mapping. Jose code; open candidate UVGAP/BACI unit values. licence to verify.",
+      "coverage": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "cost_access",
+      "formula": null,
+      "gate": null,
+      "id": "PPAD",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
+      "name": {
+        "en": "Product Price at Destination (PPAD)",
+        "es": "Precio del producto en destino (PPAD)"
+      },
+      "new_cells_since_previous": null,
+      "redistributable": false,
+      "source_ids": [
+        "baci"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase J IMSFE 2025 draft mapping. Workbook freight tools; BYOD; licence UNKNOWN.",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "cost_access",
+      "formula": null,
+      "gate": null,
+      "id": "INTC",
+      "last_checked": null,
+      "last_ingested": null,
+      "last_upstream_change": null,
+      "name": {
+        "en": "International Transport Costs (INTC)",
+        "es": "Costes de transporte internacional (INTC)"
+      },
+      "new_cells_since_previous": null,
+      "redistributable": false,
+      "source_ids": [
+        "freight_manual"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase J IMSFE 2025 draft mapping. Doing Business IC.IMP.CSBC.CD archived; flag archived series.",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "cost_access",
+      "formula": null,
+      "gate": null,
+      "id": "CIBC",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_upstream_change": "2026-11-11",
+      "name": {
+        "en": "Cost to Import Border Compliance (CIBC)",
+        "es": "Coste de cumplimiento fronterizo a la importaci\u00f3n (CIBC)"
+      },
+      "new_cells_since_previous": 0,
+      "redistributable": false,
+      "source_ids": [
+        "worldbank_wdi"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase J IMSFE 2025 draft mapping. Alias of catalog LPI / LP.LPI.OVRL.XQ.",
+      "coverage": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "logistics",
+      "formula": null,
+      "gate": null,
+      "id": "LPIN",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_upstream_change": "2026-11-11",
+      "name": {
+        "en": "Logistics Performance Index (LPIN)",
+        "es": "\u00cdndice de desempe\u00f1o log\u00edstico (LPIN)"
+      },
+      "new_cells_since_previous": 1068,
+      "redistributable": false,
+      "source_ids": [
+        "worldbank_lpi"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase J IMSFE 2025 draft mapping. WDI IS.SHP.GOOD.TU candidate.",
+      "coverage": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "logistics",
+      "formula": null,
+      "gate": null,
+      "id": "CPTR",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_upstream_change": "2026-11-11",
+      "name": {
+        "en": "Container Port Traffic (CPTR)",
+        "es": "Tr\u00e1fico de contenedores portuarios (CPTR)"
+      },
+      "new_cells_since_previous": 0,
+      "redistributable": false,
+      "source_ids": [
+        "worldbank_wdi"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase J IMSFE 2025 draft mapping. Sea-distances style BYOD; licence UNKNOWN.",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "logistics",
+      "formula": null,
+      "gate": null,
+      "id": "ITTT",
+      "last_checked": null,
+      "last_ingested": null,
+      "last_upstream_change": null,
+      "name": {
+        "en": "International Transport Transit Time (ITTT)",
+        "es": "Tiempo de tr\u00e1nsito internacional (ITTT)"
+      },
+      "new_cells_since_previous": null,
+      "redistributable": false,
+      "source_ids": [
+        "freight_manual"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase J IMSFE 2025 draft mapping. Jose code; open candidate TARIF/WITS; often BYOD.",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "competition",
+      "formula": null,
+      "gate": null,
+      "id": "CUTA",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
+      "name": {
+        "en": "Customs Tariffs (CUTA)",
+        "es": "Aranceles aduaneros (CUTA)"
+      },
+      "new_cells_since_previous": null,
+      "redistributable": false,
+      "source_ids": [
+        "wits_trains"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase J IMSFE 2025 draft mapping. Global Trade Alert; BYOD; licence UNKNOWN.",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "competition",
+      "formula": null,
+      "gate": null,
+      "id": "CCTI",
+      "last_checked": null,
+      "last_ingested": null,
+      "last_upstream_change": null,
+      "name": {
+        "en": "Country Contribution to Interventions (CCTI)",
+        "es": "Contribuci\u00f3n a intervenciones comerciales (CCTI)"
+      },
+      "new_cells_since_previous": null,
+      "redistributable": false,
+      "source_ids": [
+        "global_trade_alert"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase J IMSFE 2025 draft mapping. Heritage IEF; BYOD; licence UNKNOWN.",
+      "coverage": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "competition",
+      "formula": null,
+      "gate": null,
+      "id": "IOEF",
+      "last_checked": null,
+      "last_ingested": null,
+      "last_upstream_change": null,
+      "name": {
+        "en": "Index of Economic Freedom (IOEF)",
+        "es": "\u00cdndice de libertad econ\u00f3mica (IOEF)"
+      },
+      "new_cells_since_previous": null,
+      "redistributable": false,
+      "source_ids": [
+        "heritage_ief"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase J IMSFE 2025 draft mapping. Jose code; open candidate PLI (ICP).",
+      "coverage": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "macro_risk",
+      "formula": null,
+      "gate": null,
+      "id": "CLI",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_upstream_change": "2026-11-11",
+      "name": {
+        "en": "Cost of Living Index (CLI)",
+        "es": "\u00cdndice de coste de vida (CLI)"
+      },
+      "new_cells_since_previous": 6320,
+      "redistributable": false,
+      "source_ids": [
+        "worldbank_wdi"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase J IMSFE 2025 draft mapping. Jose code; open candidate INFL.",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "macro_risk",
+      "formula": null,
+      "gate": null,
+      "id": "INAN",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_upstream_change": "2026-11-11",
+      "name": {
+        "en": "Inflation Annual (INAN)",
+        "es": "Inflaci\u00f3n anual (INAN)"
+      },
+      "new_cells_since_previous": null,
+      "redistributable": false,
+      "source_ids": [
+        "worldbank_wdi"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase J IMSFE 2025 draft mapping. Jose code; open candidate UNEMP.",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "macro_risk",
+      "formula": null,
+      "gate": null,
+      "id": "UNRA",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_upstream_change": "2026-11-11",
+      "name": {
+        "en": "Unemployment Rate (UNRA)",
+        "es": "Tasa de desempleo (UNRA)"
+      },
+      "new_cells_since_previous": null,
+      "redistributable": false,
+      "source_ids": [
+        "worldbank_wdi"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase J IMSFE 2025 draft mapping. BYOD; licence UNKNOWN.",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "institutional",
+      "formula": null,
+      "gate": null,
+      "id": "FSIN",
+      "last_checked": null,
+      "last_ingested": null,
+      "last_upstream_change": null,
+      "name": {
+        "en": "Fragile States Index (FSIN)",
+        "es": "\u00cdndice de estados fr\u00e1giles (FSIN)"
+      },
+      "new_cells_since_previous": null,
+      "redistributable": false,
+      "source_ids": [
+        "fragile_states_index"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase J IMSFE 2025 draft mapping. BYOD; licence UNKNOWN.",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "institutional",
+      "formula": null,
+      "gate": null,
+      "id": "INRI",
+      "last_checked": null,
+      "last_ingested": null,
+      "last_upstream_change": null,
+      "name": {
+        "en": "INFORM Risk (INRI)",
+        "es": "Riesgo INFORM (INRI)"
+      },
+      "new_cells_since_previous": null,
+      "redistributable": false,
+      "source_ids": [
+        "inform_risk"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase J IMSFE 2025 draft mapping. EIU proprietary; BYOD; licence UNKNOWN.",
+      "coverage": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "institutional",
+      "formula": null,
+      "gate": null,
+      "id": "DEIN",
+      "last_checked": null,
+      "last_ingested": null,
+      "last_upstream_change": null,
+      "name": {
+        "en": "Democracy Index (DEIN)",
+        "es": "\u00cdndice de democracia (DEIN)"
+      },
+      "new_cells_since_previous": null,
+      "redistributable": false,
+      "source_ids": [
+        "eiu_democracy"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase J IMSFE 2025 draft mapping. KOF; BYOD; licence UNKNOWN.",
+      "coverage": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "product_fit",
+      "formula": null,
+      "gate": null,
+      "id": "GLIN",
+      "last_checked": null,
+      "last_ingested": null,
+      "last_upstream_change": null,
+      "name": {
+        "en": "Globalization Index (GLIN)",
+        "es": "\u00cdndice de globalizaci\u00f3n (GLIN)"
+      },
+      "new_cells_since_previous": null,
+      "redistributable": false,
+      "source_ids": [
+        "kof_globalisation"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase J IMSFE 2025 draft mapping. Transparency CPI; BYOD; licence UNKNOWN.",
+      "coverage": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "product_fit",
+      "formula": null,
+      "gate": null,
+      "id": "CPIN",
+      "last_checked": null,
+      "last_ingested": null,
+      "last_upstream_change": null,
+      "name": {
+        "en": "Corruption Perceptions Index (CPIN)",
+        "es": "\u00cdndice de percepci\u00f3n de la corrupci\u00f3n (CPIN)"
+      },
+      "new_cells_since_previous": null,
+      "redistributable": false,
+      "source_ids": [
+        "transparency_cpi"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase J IMSFE 2025 draft mapping. Sum of |origin\u2212dest| Hofstede dims; same family as CULT.",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "product_fit",
+      "formula": null,
+      "gate": null,
+      "id": "CUDI",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
+      "name": {
+        "en": "Cultural Difference (CUDI)",
+        "es": "Diferencia cultural (CUDI)"
+      },
+      "new_cells_since_previous": null,
+      "redistributable": false,
+      "source_ids": [
+        "hofstede"
       ],
       "status": "draft",
       "years": [

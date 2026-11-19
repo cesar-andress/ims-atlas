@@ -248,12 +248,25 @@ const es = {
     "Fronteras: Natural Earth 110m (dominio público), versión reducida servida con esta app.",
   matrixIntro:
     "Dispersión atractividad × encaje (estilo IMSFE). El tamaño sigue la puntuación; las líneas son cortes.",
+  matrixIntroEoc:
+    "Matriz IMSFE × apertura comercial (EOC). Nombres de cuadrante de Baena & Cano.",
+  matrixMode: "Tipo de matriz",
+  matrixModeAttractFit: "Atractividad × encaje",
+  matrixModeImsfeEoc: "IMSFE × apertura (EOC)",
+  matrixAuthorsNote: "Texto de los autores (Baena & Cano).",
+  matrixEocPending:
+    "Falta la variable EOC en el panel publicado; la leyenda de cuadrantes sí está disponible.",
   matrixCutoff: "Cortes",
   cutoffMedian: "Mediana",
   cutoffFixed: "Fijos",
   attractiveness: "Atractividad",
   fit: "Encaje",
   quadrant: "Cuadrante",
+  presetImsfeBaenaCano: "IMSFE (Baena & Cano)",
+  methodFamily: "Familia de método",
+  preselectMode: "Preselección",
+  preselectTopN: "Top N importadores",
+  preselectCumShare: "Cuota acumulada",
   mapIntro:
     "Mapa de mercados tipo VOSviewer: red (enlaces de similitud), overlay (color por variable) y densidad (calor ponderado por score). El layout SMACOF es determinista con una semilla.",
   mapSeed: "Semilla",

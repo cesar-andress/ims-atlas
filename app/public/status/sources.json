@@ -2,7 +2,7 @@
   "fixture_banner": "Fixture pipeline artefact (mini_world test data). Not a live ingest and not a production data release.",
   "generated_from": "catalog/sources.yaml + status/freshness.json + release manifest",
   "is_fixture": true,
-  "n_sources": 14,
+  "n_sources": 22,
   "schema": "transparency-sources/v1",
   "sources": [
     {
@@ -662,6 +662,382 @@
       "terms_url": "https://epi.yale.edu/",
       "update_cadence": "biennial",
       "version_detection": "EPI edition year"
+    },
+    {
+      "citation": "The Heritage Foundation. Index of Economic Freedom.",
+      "endpoints": [
+        {
+          "id": "country_scores",
+          "method": "GET",
+          "notes": "IMSFE IOEF. Manual/BYOD until licence verified.",
+          "template": "https://www.heritage.org/index/pages/all-country-scores"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "heritage_ief",
+      "landing_url": "https://www.heritage.org/index/",
+      "licence_url": "UNKNOWN",
+      "publisher": "The Heritage Foundation",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase J candidate; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.heritage.org/index/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.heritage.org/index/",
+      "update_cadence": "annual",
+      "version_detection": "index year on page"
+    },
+    {
+      "citation": "Fund for Peace. Fragile States Index.",
+      "endpoints": [
+        {
+          "id": "global_data",
+          "method": "GET",
+          "notes": "IMSFE FSIN. Manual/BYOD until licence verified.",
+          "template": "https://fragilestatesindex.org/global-data/"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "fragile_states_index",
+      "landing_url": "https://fragilestatesindex.org/",
+      "licence_url": "UNKNOWN",
+      "publisher": "The Fund for Peace",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase J candidate; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://fragilestatesindex.org/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://fragilestatesindex.org/",
+      "update_cadence": "annual",
+      "version_detection": "release year"
+    },
+    {
+      "citation": "European Commission. INFORM Risk Index.",
+      "endpoints": [
+        {
+          "id": "index",
+          "method": "GET",
+          "notes": "IMSFE INRI. Manual/BYOD until licence verified.",
+          "template": "https://drmkc.jrc.ec.europa.eu/inform-index"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "inform_risk",
+      "landing_url": "https://drmkc.jrc.ec.europa.eu/inform-index",
+      "licence_url": "UNKNOWN",
+      "publisher": "European Commission DRMKC",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase J candidate; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://drmkc.jrc.ec.europa.eu/inform-index"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://drmkc.jrc.ec.europa.eu/inform-index",
+      "update_cadence": "annual",
+      "version_detection": "INFORM release"
+    },
+    {
+      "citation": "Economist Intelligence Unit. Democracy Index.",
+      "endpoints": [
+        {
+          "id": "report",
+          "method": "GET",
+          "notes": "IMSFE DEIN. Proprietary; BYOD.",
+          "template": "https://www.eiu.com/n/campaigns/democracy-index-2023/"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "eiu_democracy",
+      "landing_url": "https://www.eiu.com/n/campaigns/democracy-index-2023/",
+      "licence_url": "UNKNOWN",
+      "publisher": "Economist Intelligence Unit",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase J candidate; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.eiu.com/n/campaigns/democracy-index-2023/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.eiu.com/n/campaigns/democracy-index-2023/",
+      "update_cadence": "annual",
+      "version_detection": "report year"
+    },
+    {
+      "citation": "KOF Swiss Economic Institute. Globalisation Index.",
+      "endpoints": [
+        {
+          "id": "index",
+          "method": "GET",
+          "notes": "IMSFE GLIN. Manual/BYOD until licence verified.",
+          "template": "https://kof.ethz.ch/en/forecasts-and-indicators/indicators/kof-globalisation-index.html"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "kof_globalisation",
+      "landing_url": "https://kof.ethz.ch/en/forecasts-and-indicators/indicators/kof-globalisation-index.html",
+      "licence_url": "UNKNOWN",
+      "publisher": "KOF Swiss Economic Institute",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase J candidate; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://kof.ethz.ch/en/forecasts-and-indicators/indicators/kof-globalisation-index.html"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://kof.ethz.ch/en/forecasts-and-indicators/indicators/kof-globalisation-index.html",
+      "update_cadence": "annual",
+      "version_detection": "KOF release"
+    },
+    {
+      "citation": "Transparency International. Corruption Perceptions Index.",
+      "endpoints": [
+        {
+          "id": "cpi",
+          "method": "GET",
+          "notes": "IMSFE CPIN. Manual/BYOD until licence verified.",
+          "template": "https://www.transparency.org/en/cpi/2023"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "transparency_cpi",
+      "landing_url": "https://www.transparency.org/en/cpi",
+      "licence_url": "UNKNOWN",
+      "publisher": "Transparency International",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase J candidate; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.transparency.org/en/cpi"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.transparency.org/en/cpi",
+      "update_cadence": "annual",
+      "version_detection": "CPI year"
+    },
+    {
+      "citation": "Global Trade Alert.",
+      "endpoints": [
+        {
+          "id": "interventions",
+          "method": "GET",
+          "notes": "IMSFE CCTI. Manual/BYOD until licence verified.",
+          "template": "https://globaltradealert.org/threads"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "global_trade_alert",
+      "landing_url": "https://globaltradealert.org/",
+      "licence_url": "UNKNOWN",
+      "publisher": "Global Trade Alert",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase J candidate; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://globaltradealert.org/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://globaltradealert.org/",
+      "update_cadence": "irregular",
+      "version_detection": "site update"
+    },
+    {
+      "citation": "Freight rate tools cited in IMSFE workbook (manual BYOD).",
+      "endpoints": [
+        {
+          "id": "manual",
+          "method": "GET",
+          "notes": "IMSFE INTC/ITTT. Manual BYOD; no scrape.",
+          "template": "https://www.icontainers.com/"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "freight_manual",
+      "landing_url": "https://www.icontainers.com/",
+      "licence_url": "UNKNOWN",
+      "publisher": "Multiple freight rate tools (workbook refs)",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase J BYOD freight/transit; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.icontainers.com/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.icontainers.com/",
+      "update_cadence": "irregular",
+      "version_detection": "user upload date"
     }
   ]
 }

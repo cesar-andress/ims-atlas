@@ -12,7 +12,7 @@ import { analysisErrorFromUnknown } from "../ranking/analysisError";
 import { loadDemoPanel, type DemoPanel } from "../ranking/demoPanel";
 import { prefetchRanking } from "../ranking/rankingCache";
 import { rankingRequestFromConfig } from "../ranking/rankingRequest";
-import { COL_HS64_PRESET } from "../state/schema";
+import { COL_HS64_PRESET, IMSFE_BAENA_CANO_PRESET } from "../state/schema";
 import { useAnalysis } from "../state/useAnalysis";
 import { isAnalysisReady } from "../state/views";
 import { PermalinkLink } from "./PermalinkLink";
@@ -183,6 +183,85 @@ export function ConfigPanel() {
           >
             {t("presetColHs64")}
           </button>
+          <button
+            type="button"
+            data-testid="apply-imsfe-baena-cano"
+            onClick={() =>
+              replaceConfig({
+                ...IMSFE_BAENA_CANO_PRESET,
+                view: config.view,
+                lang,
+              })
+            }
+          >
+            {t("presetImsfeBaenaCano")}
+          </button>
+
+          <label>
+            {t("methodFamily")}
+            <select
+              data-testid="method-family"
+              value={config.methodFamily ?? "imsfe_2025"}
+              onChange={(e) =>
+                setConfig({
+                  methodFamily: e.target.value as
+                    "imsfe_2025" | "smi_2018" | "smi_2020",
+                  normalization:
+                    e.target.value === "smi_2018"
+                      ? "ratio_legacy"
+                      : (config.normalization ?? "ratio_legacy"),
+                })
+              }
+            >
+              <option value="imsfe_2025">IMSFE 2025 (6×3, 0–10)</option>
+              <option value="smi_2018">SMI 2018 (4×11, 0–5)</option>
+              <option value="smi_2020">SMI 2020+ (5×23, AHP)</option>
+            </select>
+          </label>
+
+          <label>
+            {t("preselectMode")}
+            <select
+              data-testid="preselect-mode"
+              value={config.preselectMode ?? "top_n"}
+              onChange={(e) =>
+                setConfig({
+                  preselectMode: e.target.value as "top_n" | "cumulative_share",
+                })
+              }
+            >
+              <option value="top_n">Top N</option>
+              <option value="cumulative_share">Cumulative share</option>
+            </select>
+          </label>
+          {(config.preselectMode ?? "top_n") === "top_n" ? (
+            <label>
+              {t("preselectTopN")}
+              <input
+                type="number"
+                min={1}
+                max={250}
+                data-testid="preselect-top-n"
+                value={config.preselectTopN ?? 30}
+                onChange={(e) => setConfig({ preselectTopN: Number(e.target.value) })}
+              />
+            </label>
+          ) : (
+            <label>
+              {t("preselectCumShare")}
+              <input
+                type="number"
+                min={0.05}
+                max={1}
+                step={0.05}
+                data-testid="preselect-cum-share"
+                value={config.preselectCumShare ?? 0.8}
+                onChange={(e) =>
+                  setConfig({ preselectCumShare: Number(e.target.value) })
+                }
+              />
+            </label>
+          )}
 
           <label>
             {t("origin")}

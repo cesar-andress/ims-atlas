@@ -67,6 +67,15 @@ export function configToSearch(config: AnalysisConfig): string {
   if (config.matrixCutoff) compact.matrixCutoff = config.matrixCutoff;
   if (config.matrixCutA !== undefined) compact.matrixCutA = config.matrixCutA;
   if (config.matrixCutF !== undefined) compact.matrixCutF = config.matrixCutF;
+  if (config.matrixMode) compact.matrixMode = config.matrixMode;
+  if (config.methodFamily) compact.methodFamily = config.methodFamily;
+  if (config.preselectMode) compact.preselectMode = config.preselectMode;
+  if (config.preselectTopN !== undefined) {
+    compact.preselectTopN = config.preselectTopN;
+  }
+  if (config.preselectCumShare !== undefined) {
+    compact.preselectCumShare = config.preselectCumShare;
+  }
   if (config.clusterK !== undefined) compact.clusterK = config.clusterK;
   if (config.mapSeed !== undefined) compact.mapSeed = config.mapSeed;
   if (config.mapColor) compact.mapColor = config.mapColor;

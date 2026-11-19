@@ -8,23 +8,48 @@ import type { Direction, NormalizationId } from "./types.js";
 
 const CONSTANT_MID_10 = 5.0;
 
+/**
+ * IMSFE ratio standardisation (DMP / IMP).
+ * DMP (benefit): scaleMax * x / max; IMP (cost): scaleMax * min / x
+ * (non-positive cost → NaN). ``scaleMax`` is 10 for IMSFE 2025, 5 for SMI 2018.
+ */
 export function normalizeRatioLegacy(
   series: readonly (number | null)[],
   direction: Direction,
+  scaleMax = 10,
 ): number[] {
   const vals = series.map((x) => (isFiniteNumber(x) ? x : Number.NaN));
+  const scale = scaleMax > 0 ? scaleMax : 10;
   if (direction === "benefit") {
     const finite = finiteValues(vals);
     const vmax = finite.length ? Math.max(...finite) : Number.NaN;
     if (!Number.isFinite(vmax) || vmax === 0) {
       return vals.map(() => 0);
     }
-    return vals.map((v) => (Number.isFinite(v) ? (v / vmax) * 10 : Number.NaN));
+    return vals.map((v) => (Number.isFinite(v) ? (v / vmax) * scale : Number.NaN));
   }
   const pos = vals.filter((v) => Number.isFinite(v) && v > 0) as number[];
   if (pos.length === 0) return vals.map(() => Number.NaN);
   const vmin = Math.min(...pos);
-  return vals.map((v) => (Number.isFinite(v) && v > 0 ? (vmin / v) * 10 : Number.NaN));
+  return vals.map((v) =>
+    Number.isFinite(v) && v > 0 ? (vmin / v) * scale : Number.NaN,
+  );
+}
+
+/** Jose's name for benefit ratio (directamente proporcional). */
+export function normalizeDmp(
+  series: readonly (number | null)[],
+  scaleMax = 10,
+): number[] {
+  return normalizeRatioLegacy(series, "benefit", scaleMax);
+}
+
+/** Jose's name for cost ratio (inversamente proporcional). */
+export function normalizeImp(
+  series: readonly (number | null)[],
+  scaleMax = 10,
+): number[] {
+  return normalizeRatioLegacy(series, "cost", scaleMax);
 }
 
 export function normalizeMinmax(

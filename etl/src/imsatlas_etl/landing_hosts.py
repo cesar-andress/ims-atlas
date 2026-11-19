@@ -21,6 +21,15 @@ LANDING_HOST_ALLOWLIST: dict[str, frozenset[str]] = {
     "wipo_gii": frozenset({"www.wipo.int"}),
     "startupblink": frozenset({"www.startupblink.com"}),
     "yale_epi": frozenset({"epi.yale.edu"}),
+    # Phase J IMSFE workbook candidates (licence UNKNOWN until human verify)
+    "heritage_ief": frozenset({"www.heritage.org"}),
+    "fragile_states_index": frozenset({"fragilestatesindex.org"}),
+    "inform_risk": frozenset({"drmkc.jrc.ec.europa.eu"}),
+    "eiu_democracy": frozenset({"www.eiu.com"}),
+    "kof_globalisation": frozenset({"kof.ethz.ch"}),
+    "transparency_cpi": frozenset({"www.transparency.org"}),
+    "global_trade_alert": frozenset({"globaltradealert.org"}),
+    "freight_manual": frozenset({"www.icontainers.com"}),
 }
 
 

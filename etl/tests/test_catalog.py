@@ -123,5 +123,6 @@ def test_port_from_pinned_imsfe_matches_committed_ids() -> None:
     committed = load_catalog()
     built_ids = [v["id"] for v in built["variables"]]
     committed_ids = [v["id"] for v in committed["variables"]]
-    assert built_ids == committed_ids
+    # Pinned imsfe port remains the prefix; Phase J may append Jose-code drafts.
+    assert committed_ids[: len(built_ids)] == built_ids
     assert (repo_root() / "catalog" / "variables.yaml").is_file()

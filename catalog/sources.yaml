@@ -400,3 +400,235 @@ sources:
         terms_url: https://epi.yale.edu/
         snapshot_sha256: null
         note: "rights not human-verified"
+
+  - id: heritage_ief
+    publisher: The Heritage Foundation
+    landing_url: https://www.heritage.org/index/
+    terms_url: https://www.heritage.org/index/
+    licence_url: UNKNOWN
+    endpoints:
+      - id: country_scores
+        template: "https://www.heritage.org/index/pages/all-country-scores"
+        method: GET
+        notes: "IMSFE IOEF. Manual/BYOD until licence verified."
+    update_cadence: annual
+    version_detection: index year on page
+    citation: "The Heritage Foundation. Index of Economic Freedom."
+    rights:
+      licence_id: UNKNOWN
+      use_research: unknown
+      redistribute_raw: unknown
+      redistribute_derived: unknown
+      commercial_use: unknown
+      attribution_required: unknown
+      share_alike: unknown
+      no_derivatives: unknown
+      evidence:
+        checked_by: null
+        checked_on: null
+        terms_url: https://www.heritage.org/index/
+        snapshot_sha256: null
+        note: "Phase J candidate; rights not human-verified"
+
+  - id: fragile_states_index
+    publisher: The Fund for Peace
+    landing_url: https://fragilestatesindex.org/
+    terms_url: https://fragilestatesindex.org/
+    licence_url: UNKNOWN
+    endpoints:
+      - id: global_data
+        template: "https://fragilestatesindex.org/global-data/"
+        method: GET
+        notes: "IMSFE FSIN. Manual/BYOD until licence verified."
+    update_cadence: annual
+    version_detection: release year
+    citation: "Fund for Peace. Fragile States Index."
+    rights:
+      licence_id: UNKNOWN
+      use_research: unknown
+      redistribute_raw: unknown
+      redistribute_derived: unknown
+      commercial_use: unknown
+      attribution_required: unknown
+      share_alike: unknown
+      no_derivatives: unknown
+      evidence:
+        checked_by: null
+        checked_on: null
+        terms_url: https://fragilestatesindex.org/
+        snapshot_sha256: null
+        note: "Phase J candidate; rights not human-verified"
+
+  - id: inform_risk
+    publisher: European Commission DRMKC
+    landing_url: https://drmkc.jrc.ec.europa.eu/inform-index
+    terms_url: https://drmkc.jrc.ec.europa.eu/inform-index
+    licence_url: UNKNOWN
+    endpoints:
+      - id: index
+        template: "https://drmkc.jrc.ec.europa.eu/inform-index"
+        method: GET
+        notes: "IMSFE INRI. Manual/BYOD until licence verified."
+    update_cadence: annual
+    version_detection: INFORM release
+    citation: "European Commission. INFORM Risk Index."
+    rights:
+      licence_id: UNKNOWN
+      use_research: unknown
+      redistribute_raw: unknown
+      redistribute_derived: unknown
+      commercial_use: unknown
+      attribution_required: unknown
+      share_alike: unknown
+      no_derivatives: unknown
+      evidence:
+        checked_by: null
+        checked_on: null
+        terms_url: https://drmkc.jrc.ec.europa.eu/inform-index
+        snapshot_sha256: null
+        note: "Phase J candidate; rights not human-verified"
+
+  - id: eiu_democracy
+    publisher: Economist Intelligence Unit
+    landing_url: https://www.eiu.com/n/campaigns/democracy-index-2023/
+    terms_url: https://www.eiu.com/n/campaigns/democracy-index-2023/
+    licence_url: UNKNOWN
+    endpoints:
+      - id: report
+        template: "https://www.eiu.com/n/campaigns/democracy-index-2023/"
+        method: GET
+        notes: "IMSFE DEIN. Proprietary; BYOD."
+    update_cadence: annual
+    version_detection: report year
+    citation: "Economist Intelligence Unit. Democracy Index."
+    rights:
+      licence_id: UNKNOWN
+      use_research: unknown
+      redistribute_raw: unknown
+      redistribute_derived: unknown
+      commercial_use: unknown
+      attribution_required: unknown
+      share_alike: unknown
+      no_derivatives: unknown
+      evidence:
+        checked_by: null
+        checked_on: null
+        terms_url: https://www.eiu.com/n/campaigns/democracy-index-2023/
+        snapshot_sha256: null
+        note: "Phase J candidate; rights not human-verified"
+
+  - id: kof_globalisation
+    publisher: KOF Swiss Economic Institute
+    landing_url: https://kof.ethz.ch/en/forecasts-and-indicators/indicators/kof-globalisation-index.html
+    terms_url: https://kof.ethz.ch/en/forecasts-and-indicators/indicators/kof-globalisation-index.html
+    licence_url: UNKNOWN
+    endpoints:
+      - id: index
+        template: "https://kof.ethz.ch/en/forecasts-and-indicators/indicators/kof-globalisation-index.html"
+        method: GET
+        notes: "IMSFE GLIN. Manual/BYOD until licence verified."
+    update_cadence: annual
+    version_detection: KOF release
+    citation: "KOF Swiss Economic Institute. Globalisation Index."
+    rights:
+      licence_id: UNKNOWN
+      use_research: unknown
+      redistribute_raw: unknown
+      redistribute_derived: unknown
+      commercial_use: unknown
+      attribution_required: unknown
+      share_alike: unknown
+      no_derivatives: unknown
+      evidence:
+        checked_by: null
+        checked_on: null
+        terms_url: https://kof.ethz.ch/en/forecasts-and-indicators/indicators/kof-globalisation-index.html
+        snapshot_sha256: null
+        note: "Phase J candidate; rights not human-verified"
+
+  - id: transparency_cpi
+    publisher: Transparency International
+    landing_url: https://www.transparency.org/en/cpi
+    terms_url: https://www.transparency.org/en/cpi
+    licence_url: UNKNOWN
+    endpoints:
+      - id: cpi
+        template: "https://www.transparency.org/en/cpi/2023"
+        method: GET
+        notes: "IMSFE CPIN. Manual/BYOD until licence verified."
+    update_cadence: annual
+    version_detection: CPI year
+    citation: "Transparency International. Corruption Perceptions Index."
+    rights:
+      licence_id: UNKNOWN
+      use_research: unknown
+      redistribute_raw: unknown
+      redistribute_derived: unknown
+      commercial_use: unknown
+      attribution_required: unknown
+      share_alike: unknown
+      no_derivatives: unknown
+      evidence:
+        checked_by: null
+        checked_on: null
+        terms_url: https://www.transparency.org/en/cpi
+        snapshot_sha256: null
+        note: "Phase J candidate; rights not human-verified"
+
+  - id: global_trade_alert
+    publisher: Global Trade Alert
+    landing_url: https://globaltradealert.org/
+    terms_url: https://globaltradealert.org/
+    licence_url: UNKNOWN
+    endpoints:
+      - id: interventions
+        template: "https://globaltradealert.org/threads"
+        method: GET
+        notes: "IMSFE CCTI. Manual/BYOD until licence verified."
+    update_cadence: irregular
+    version_detection: site update
+    citation: "Global Trade Alert."
+    rights:
+      licence_id: UNKNOWN
+      use_research: unknown
+      redistribute_raw: unknown
+      redistribute_derived: unknown
+      commercial_use: unknown
+      attribution_required: unknown
+      share_alike: unknown
+      no_derivatives: unknown
+      evidence:
+        checked_by: null
+        checked_on: null
+        terms_url: https://globaltradealert.org/
+        snapshot_sha256: null
+        note: "Phase J candidate; rights not human-verified"
+
+  - id: freight_manual
+    publisher: Multiple freight rate tools (workbook refs)
+    landing_url: https://www.icontainers.com/
+    terms_url: https://www.icontainers.com/
+    licence_url: UNKNOWN
+    endpoints:
+      - id: manual
+        template: "https://www.icontainers.com/"
+        method: GET
+        notes: "IMSFE INTC/ITTT. Manual BYOD; no scrape."
+    update_cadence: irregular
+    version_detection: user upload date
+    citation: "Freight rate tools cited in IMSFE workbook (manual BYOD)."
+    rights:
+      licence_id: UNKNOWN
+      use_research: unknown
+      redistribute_raw: unknown
+      redistribute_derived: unknown
+      commercial_use: unknown
+      attribution_required: unknown
+      share_alike: unknown
+      no_derivatives: unknown
+      evidence:
+        checked_by: null
+        checked_on: null
+        terms_url: https://www.icontainers.com/
+        snapshot_sha256: null
+        note: "Phase J BYOD freight/transit; rights not human-verified"

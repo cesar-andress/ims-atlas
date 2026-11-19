@@ -63,6 +63,13 @@ export type AnalysisConfig = {
   matrixCutoff?: "median" | "fixed" | undefined;
   matrixCutA?: number | undefined;
   matrixCutF?: number | undefined;
+  /** attractiveness×fit (legacy) or IMSFE×EOC (Baena & Cano). */
+  matrixMode?: "attractiveness_fit" | "imsfe_eoc" | undefined;
+  /** IMSFE / SMI method family preset. */
+  methodFamily?: "imsfe_2025" | "smi_2018" | "smi_2020" | undefined;
+  preselectMode?: "top_n" | "cumulative_share" | undefined;
+  preselectTopN?: number | undefined;
+  preselectCumShare?: number | undefined;
   clusterK?: number | undefined;
   mapSeed?: number | undefined;
   mapColor?: "cluster" | "quadrant" | undefined;
@@ -101,6 +108,26 @@ export const COL_HS64_PRESET: AnalysisConfig = {
   weightScheme: "expert_mean",
   missingThreshold: 0.2,
   lang: "en",
+};
+
+/** IMSFE (Baena & Cano) faithful preset — ratio 0–10, expert means, EOC matrix. */
+export const IMSFE_BAENA_CANO_PRESET: AnalysisConfig = {
+  v: 1,
+  view: "ranking",
+  origin: "COL",
+  year: 2023,
+  hs: "64",
+  region: "world",
+  normalization: "ratio_legacy",
+  mcdm: "wsm",
+  weightScheme: "expert_mean",
+  missingThreshold: 0.2,
+  methodFamily: "imsfe_2025",
+  matrixMode: "imsfe_eoc",
+  matrixCutoff: "median",
+  preselectMode: "top_n",
+  preselectTopN: 30,
+  lang: "es",
 };
 
 function isObject(v: unknown): v is Record<string, unknown> {
@@ -216,6 +243,37 @@ export function parseAnalysisConfig(input: unknown): AnalysisConfig {
   if (matrixCutA !== undefined) out.matrixCutA = matrixCutA;
   const matrixCutF = asFiniteNumber(input.matrixCutF);
   if (matrixCutF !== undefined) out.matrixCutF = matrixCutF;
+
+  const matrixMode = asEnum(input.matrixMode, [
+    "attractiveness_fit",
+    "imsfe_eoc",
+  ] as const);
+  if (matrixMode) out.matrixMode = matrixMode;
+
+  const methodFamily = asEnum(input.methodFamily, [
+    "imsfe_2025",
+    "smi_2018",
+    "smi_2020",
+  ] as const);
+  if (methodFamily) out.methodFamily = methodFamily;
+
+  const preselectMode = asEnum(input.preselectMode, [
+    "top_n",
+    "cumulative_share",
+  ] as const);
+  if (preselectMode) out.preselectMode = preselectMode;
+
+  const preselectTopN = asIntInRange(input.preselectTopN, 1, 250);
+  if (preselectTopN !== undefined) out.preselectTopN = preselectTopN;
+
+  const preselectCumShare = asFiniteNumber(input.preselectCumShare);
+  if (
+    preselectCumShare !== undefined &&
+    preselectCumShare > 0 &&
+    preselectCumShare <= 1
+  ) {
+    out.preselectCumShare = preselectCumShare;
+  }
 
   const clusterK = asIntInRange(input.clusterK, 2, 12);
   if (clusterK !== undefined) out.clusterK = clusterK;
