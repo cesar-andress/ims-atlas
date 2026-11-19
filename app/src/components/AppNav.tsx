@@ -1,29 +1,9 @@
 import { PermalinkLink } from "./PermalinkLink";
 import { useTranslation } from "../i18n";
+import { prefetchAnalysisRoute } from "../ranking/prefetchRoutes";
 import { useAnalysis } from "../state/useAnalysis";
 import { PRIMARY_VIEWS, SECONDARY_VIEWS } from "../state/views";
 import type { ViewId } from "../state/schema";
-
-const PREFETCH: Partial<Record<ViewId, () => Promise<unknown>>> = {
-  ranking: () => import("../pages/Ranking"),
-  matrix: () => import("../pages/Matrix"),
-  map: () => import("../pages/MarketMap"),
-  catalog: () => import("../pages/Catalog"),
-  builder: () => import("../pages/Builder"),
-  uncertainty: () => import("../pages/Uncertainty"),
-  backtest: () => import("../pages/Backtest"),
-  time: () => import("../pages/TimeExplorer"),
-  cite: () => import("../pages/CiteExport"),
-  byod: () => import("../pages/Byod"),
-  docs: () => import("../pages/Docs"),
-  factors: () => import("../pages/Factors"),
-  compare: () => import("../pages/Compare"),
-  status: () => import("../pages/transparency/DataStatus"),
-  data_sources: () => import("../pages/transparency/DataSources"),
-  data_variable: () => import("../pages/transparency/DataVariable"),
-  data_pipeline: () => import("../pages/transparency/DataPipeline"),
-  data_releases: () => import("../pages/transparency/DataReleases"),
-};
 
 function NavItem({ view }: { view: ViewId }) {
   const { t } = useTranslation();
@@ -33,10 +13,8 @@ function NavItem({ view }: { view: ViewId }) {
     <PermalinkLink
       view={view}
       className={config.view === view ? "active" : undefined}
-      onMouseEnter={() => {
-        const load = PREFETCH[view];
-        if (load) void load();
-      }}
+      onMouseEnter={() => prefetchAnalysisRoute(view)}
+      onFocus={() => prefetchAnalysisRoute(view)}
     >
       {t(`nav.${view}`)}
     </PermalinkLink>

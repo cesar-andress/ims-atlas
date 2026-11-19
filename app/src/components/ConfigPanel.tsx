@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "../i18n";
 import { hsCategoryTree, hsLabel, REGIONS, searchHs } from "../data/hsProducts";
 import { searchOrigins } from "../data/iso3Exporters";
@@ -120,6 +120,36 @@ export function ConfigPanel() {
     const equal = 1 / FACTOR_ORDER.length;
     return Object.fromEntries(FACTOR_ORDER.map((f) => [f, equal]));
   }, [config.factorWeights]);
+
+  // Local slider draft: commit on pointer/key end so dragging does not re-rank every tick.
+  const [draftWeights, setDraftWeights] = useState<Record<string, number> | null>(null);
+  const draftWeightsRef = useRef(draftWeights);
+  draftWeightsRef.current = draftWeights;
+  const displayWeights = draftWeights ?? factorWeights;
+  useEffect(() => {
+    setDraftWeights(null);
+  }, [config.factorWeights, config.weightScheme]);
+
+  const [missingDraft, setMissingDraft] = useState(
+    String(config.missingThreshold ?? 0.2),
+  );
+  const missingTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    setMissingDraft(String(config.missingThreshold ?? 0.2));
+  }, [config.missingThreshold]);
+
+  function normalizeWeights(next: Record<string, number>): Record<string, number> {
+    const sum = Object.values(next).reduce((a, b) => a + b, 0);
+    return sum > 0
+      ? Object.fromEntries(Object.entries(next).map(([k, v]) => [k, v / sum]))
+      : next;
+  }
+
+  function commitWeights(next: Record<string, number>) {
+    const norm = normalizeWeights(next);
+    setDraftWeights(null);
+    setConfig({ weightScheme: "manual", factorWeights: norm });
+  }
 
   return (
     <aside
@@ -408,22 +438,33 @@ export function ConfigPanel() {
                     type="range"
                     min={0}
                     max={100}
-                    value={Math.round((factorWeights[f] ?? 0) * 100)}
+                    value={Math.round((displayWeights[f] ?? 0) * 100)}
                     onChange={(e) => {
                       const raw = Number(e.target.value) / 100;
-                      const next = { ...factorWeights, [f]: raw };
-                      const sum = Object.values(next).reduce((a, b) => a + b, 0);
-                      const norm =
-                        sum > 0
-                          ? Object.fromEntries(
-                              Object.entries(next).map(([k, v]) => [k, v / sum]),
-                            )
-                          : next;
-                      setConfig({ weightScheme: "manual", factorWeights: norm });
+                      const next = normalizeWeights({
+                        ...displayWeights,
+                        [f]: raw,
+                      });
+                      setDraftWeights(next);
+                    }}
+                    onPointerUp={() => {
+                      if (draftWeightsRef.current) {
+                        commitWeights(draftWeightsRef.current);
+                      }
+                    }}
+                    onKeyUp={() => {
+                      if (draftWeightsRef.current) {
+                        commitWeights(draftWeightsRef.current);
+                      }
+                    }}
+                    onBlur={() => {
+                      if (draftWeightsRef.current) {
+                        commitWeights(draftWeightsRef.current);
+                      }
                     }}
                   />
                   <span className="muted small">
-                    {((factorWeights[f] ?? 0) * 100).toFixed(0)}%
+                    {((displayWeights[f] ?? 0) * 100).toFixed(0)}%
                   </span>
                 </label>
               ))}
@@ -474,13 +515,25 @@ export function ConfigPanel() {
               min={0}
               max={1}
               step={0.05}
-              value={config.missingThreshold ?? 0.2}
+              value={missingDraft}
               data-testid="missing-threshold"
-              onChange={(e) =>
+              onChange={(e) => {
+                const text = e.target.value;
+                setMissingDraft(text);
+                if (missingTimer.current) clearTimeout(missingTimer.current);
+                missingTimer.current = setTimeout(() => {
+                  setConfig({
+                    missingThreshold: text === "" ? undefined : Number(text),
+                  });
+                }, 200);
+              }}
+              onBlur={() => {
+                if (missingTimer.current) clearTimeout(missingTimer.current);
                 setConfig({
-                  missingThreshold: e.target.value ? Number(e.target.value) : undefined,
-                })
-              }
+                  missingThreshold:
+                    missingDraft === "" ? undefined : Number(missingDraft),
+                });
+              }}
             />
           </label>
 

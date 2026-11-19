@@ -1,8 +1,10 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { AppShellFrame } from "./components/AppChrome";
 import { Home } from "./pages/Home";
 import { RankingModelProvider } from "./ranking/RankingModelContext";
+import { prefetchCriticalRoutes } from "./ranking/prefetchRoutes";
+import { scheduleIdle } from "./scheduleIdle";
 import { AnalysisProvider } from "./state/AnalysisContext";
 import { useAnalysis } from "./state/useAnalysis";
 import { isAnalysisView } from "./state/views";
@@ -80,6 +82,10 @@ function RouteFallback() {
 function AppShell() {
   const { config } = useAnalysis();
   const showConfig = isAnalysisView(config.view);
+
+  useEffect(() => {
+    scheduleIdle(() => prefetchCriticalRoutes());
+  }, []);
 
   return (
     <AppShellFrame

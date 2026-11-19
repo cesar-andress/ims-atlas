@@ -772,12 +772,21 @@ main {
   border: 1px solid var(--border);
   border-radius: 0.35rem;
   background: var(--surface);
+  content-visibility: auto;
+  contain-intrinsic-size: auto 36rem;
 }
 
 .ranking-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.85rem;
+}
+
+.table-scroll {
+  overflow: auto;
+  max-width: 100%;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 24rem;
 }
 
 .ranking-table th,
