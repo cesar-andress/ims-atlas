@@ -1,14 +1,36 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Route, Routes } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
+import { ConfigPanel } from "./components/ConfigPanel";
+import { Catalog } from "./pages/Catalog";
 import { Home } from "./pages/Home";
+import { StubView } from "./pages/StubView";
+import { AnalysisProvider } from "./state/AnalysisContext";
+import { useAnalysis } from "./state/useAnalysis";
+import type { ViewId } from "./state/schema";
 import { applyTheme, readStoredTheme, type ThemeMode } from "./theme";
 
 const REPO_URL = "https://github.com/cesar-andress/ims-atlas";
 const BACKTEST_URL = "https://github.com/cesar-andress/ims-backtest";
 
-export function App() {
+const NAV: ViewId[] = [
+  "home",
+  "catalog",
+  "builder",
+  "ranking",
+  "matrix",
+  "map",
+  "uncertainty",
+  "backtest",
+  "time",
+  "cite",
+  "byod",
+  "docs",
+];
+
+function AppShell() {
   const { t, i18n } = useTranslation();
+  const { config, setView, setConfig } = useAnalysis();
   const [theme, setTheme] = useState<ThemeMode>(() =>
     typeof document === "undefined" ? "light" : readStoredTheme(),
   );
@@ -17,10 +39,34 @@ export function App() {
     applyTheme(theme);
   }, [theme]);
 
+  useEffect(() => {
+    if (config.lang && config.lang !== (i18n.language.startsWith("es") ? "es" : "en")) {
+      void i18n.changeLanguage(config.lang);
+    }
+  }, [config.lang, i18n]);
+
+  const showConfig = config.view !== "home" && config.view !== "docs";
+
   return (
     <div className="shell">
       <header className="topbar" data-testid="site-header">
-        <div className="brand">{t("appName")}</div>
+        <div className="brand">
+          <Link to="/" onClick={() => setView("home")}>
+            {t("appName")}
+          </Link>
+        </div>
+        <nav className="main-nav" aria-label={t("mainNav")} data-testid="main-nav">
+          {NAV.map((view) => (
+            <Link
+              key={view}
+              to={view === "home" ? "/" : `/${view}`}
+              className={config.view === view ? "active" : undefined}
+              onClick={() => setView(view)}
+            >
+              {t(`nav.${view}`)}
+            </Link>
+          ))}
+        </nav>
         <div className="controls">
           <label>
             {t("language")}{" "}
@@ -28,7 +74,9 @@ export function App() {
               aria-label={t("language")}
               value={i18n.language.startsWith("es") ? "es" : "en"}
               onChange={(event) => {
-                void i18n.changeLanguage(event.target.value);
+                const lang = event.target.value as "en" | "es";
+                void i18n.changeLanguage(lang);
+                setConfig({ lang });
               }}
             >
               <option value="en">EN</option>
@@ -44,11 +92,25 @@ export function App() {
           </button>
         </div>
       </header>
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </main>
+      <div className={`workspace ${showConfig ? "with-config" : ""}`}>
+        {showConfig ? <ConfigPanel /> : null}
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/catalog" element={<Catalog />} />
+            <Route path="/builder" element={<StubView view="builder" />} />
+            <Route path="/ranking" element={<StubView view="ranking" />} />
+            <Route path="/matrix" element={<StubView view="matrix" />} />
+            <Route path="/map" element={<StubView view="map" />} />
+            <Route path="/uncertainty" element={<StubView view="uncertainty" />} />
+            <Route path="/backtest" element={<StubView view="backtest" />} />
+            <Route path="/time" element={<StubView view="time" />} />
+            <Route path="/cite" element={<StubView view="cite" />} />
+            <Route path="/byod" element={<StubView view="byod" />} />
+            <Route path="/docs" element={<StubView view="docs" />} />
+          </Routes>
+        </main>
+      </div>
       <footer className="site-footer">
         <p>{t("footerCredit")}</p>
         <nav aria-label="Project links">
@@ -61,5 +123,13 @@ export function App() {
         </nav>
       </footer>
     </div>
+  );
+}
+
+export function App() {
+  return (
+    <AnalysisProvider>
+      <AppShell />
+    </AnalysisProvider>
   );
 }

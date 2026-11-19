@@ -9,5 +9,11 @@ export default defineConfig(({ mode }) => {
   return {
     base,
     plugins: [react()],
+    optimizeDeps: {
+      exclude: ["@duckdb/duckdb-wasm"],
+    },
+    worker: {
+      format: "es",
+    },
   };
 });

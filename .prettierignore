@@ -10,3 +10,5 @@ catalog/variables.yaml
 catalog/LICENSES.md
 etl/tests/fixtures/**
 core/fixtures/
+app/public/meta/
+

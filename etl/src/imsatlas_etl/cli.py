@@ -427,6 +427,29 @@ def phase3_report_cmd() -> None:
     typer.echo(f"atlas-etl {__version__}: wrote {path}")
 
 
+@app.command("export-catalog-preview")
+def export_catalog_preview_cmd(
+    out: Annotated[
+        str | None,
+        typer.Option(
+            "--out",
+            help="Output JSON (default: app/public/meta/catalog-preview.json)",
+        ),
+    ] = None,
+) -> None:
+    """Export draft catalog preview JSON for the app Data catalog view."""
+    from pathlib import Path
+
+    from imsatlas_etl.export_catalog_preview import write_catalog_preview
+
+    try:
+        path = write_catalog_preview(Path(out) if out else None)
+    except Exception as exc:  # noqa: BLE001
+        typer.secho(str(exc), fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=1) from exc
+    typer.echo(f"atlas-etl {__version__}: wrote {path}")
+
+
 @app.command("export-phase6-goldens")
 def export_phase6_goldens_cmd(
     out: Annotated[

@@ -67,6 +67,9 @@ export-phase6-goldens:
 	cd etl && $(UV) sync --extra backtest --group dev
 	cd etl && $(UV) run atlas-etl export-phase6-goldens
 
+export-catalog-preview:
+	cd etl && $(UV) run atlas-etl export-catalog-preview
+
 release-staging:
 	cd etl && $(UV) run atlas-etl release --version 0.1.0 --staging --force
 	cd etl && $(UV) run atlas-etl lineage
