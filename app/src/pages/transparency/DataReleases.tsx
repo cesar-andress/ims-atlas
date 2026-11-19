@@ -16,6 +16,7 @@ export function DataReleases() {
       releases: payload.releases,
       current: payload.current,
       manifest,
+      releasesPayload: payload,
     };
   }, []);
 
@@ -90,6 +91,27 @@ export function DataReleases() {
                 <dt>spec</dt>
                 <dd data-from-json="manifest.spec">
                   {displayCell(data.manifest.spec)}
+                </dd>
+                <dt>{t("transparencySignature")}</dt>
+                <dd data-from-json="manifest.signature">
+                  {displayCell(
+                    (data.manifest.signature as { status?: string } | undefined)
+                      ?.status ??
+                      (data.releasesPayload as { signature?: { status?: string } })
+                        ?.signature?.status ??
+                      "unsigned",
+                  )}
+                </dd>
+                <dt>{t("transparencySha256sums")}</dt>
+                <dd>
+                  <a
+                    href={
+                      (data.releasesPayload as { sha256sums_path?: string })
+                        ?.sha256sums_path ?? `/data/v${data.current}/SHA256SUMS`
+                    }
+                  >
+                    SHA256SUMS
+                  </a>
                 </dd>
               </dl>
             </section>

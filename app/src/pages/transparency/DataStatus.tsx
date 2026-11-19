@@ -5,20 +5,26 @@ import {
   loadIndex,
   loadLatestRun,
   loadQa,
+  loadSpotCheck,
 } from "../../data/transparency";
+import { displayCell } from "../../formatDisplay";
 import { useTranslation } from "../../i18n";
 import { useAsyncResource } from "../../state/useAsyncResource";
 
 export function DataStatus() {
   const { t } = useTranslation();
   const { data, error, loading } = useAsyncResource(async () => {
-    const [index, qa, freshness, run] = await Promise.all([
+    const [index, qa, freshness, run, spot] = await Promise.all([
       loadIndex(),
       loadQa(),
       loadFreshness(),
       loadLatestRun(),
+      loadSpotCheck().catch((): Record<string, unknown> => ({
+        status: "missing",
+        samples: [],
+      })),
     ]);
-    return { index, qa, freshness, run };
+    return { index, qa, freshness, run, spot };
   }, []);
 
   return (
@@ -76,7 +82,54 @@ export function DataStatus() {
             <dd data-from-json="n_sources">{String(data.index.n_sources)}</dd>
             <dt>{t("transparencyNVariables")}</dt>
             <dd data-from-json="n_variables">{String(data.index.n_variables)}</dd>
+            <dt>{t("spotCheckTitle")}</dt>
+            <dd data-from-json="spot_check.status">{displayCell(data.spot.status)}</dd>
           </dl>
+          {Array.isArray(data.spot.samples) &&
+          (data.spot.samples as unknown[]).length > 0 ? (
+            <section data-testid="spot-check-section">
+              <h2>{t("spotCheckTitle")}</h2>
+              <p className="muted small">
+                {t("transparencySpotCheckAt")}: {displayCell(data.spot.generated_at)} ·
+                matches=
+                {displayCell(data.spot.matches)} · mismatches=
+                {displayCell(data.spot.mismatches)} · unreachable=
+                {displayCell(data.spot.unreachable)}
+              </p>
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>{t("spotCheckVariable")}</th>
+                    <th>{t("spotCheckIso")}</th>
+                    <th>{t("spotCheckYear")}</th>
+                    <th>{t("spotCheckExpected")}</th>
+                    <th>{t("spotCheckObserved")}</th>
+                    <th>{t("spotCheckResult")}</th>
+                    <th>{t("spotCheckNote")}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(data.spot.samples as Record<string, unknown>[]).map((c, i) => (
+                    <tr key={i}>
+                      <td>{displayCell(c.variable_id)}</td>
+                      <td>{displayCell(c.iso3)}</td>
+                      <td>{displayCell(c.year)}</td>
+                      <td>{displayCell(c.release_value)}</td>
+                      <td>{displayCell(c.upstream_value)}</td>
+                      <td>{displayCell(c.status)}</td>
+                      <td>{displayCell(c.detail ?? data.spot.note)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
+          ) : (
+            <p className="muted" data-testid="spot-check-empty">
+              {displayCell(data.spot.note) !== "—"
+                ? displayCell(data.spot.note)
+                : t("spotCheckEmpty")}
+            </p>
+          )}
         </>
       )}
     </TransparencyShell>

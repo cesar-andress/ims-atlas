@@ -18,11 +18,16 @@
     "qa": "/status/qa.json",
     "releases": "/status/releases.json",
     "sources": "/status/sources.json",
+    "spot_check": "/status/spot_check.json",
     "updates": "/status/updates.json",
     "variables": "/status/variables.json"
   },
   "qa_n_block": 0,
   "qa_n_warn": 0,
   "qa_status": "pass",
-  "schema": "transparency-index/v1"
+  "schema": "transparency-index/v1",
+  "spot_check_generated_at": "2026-11-19T21:07:04Z",
+  "spot_check_matches": 0,
+  "spot_check_mismatches": 0,
+  "spot_check_unreachable": 0
 }

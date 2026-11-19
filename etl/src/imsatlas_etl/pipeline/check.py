@@ -12,6 +12,7 @@ from imsatlas_etl.pipeline.io_paths import (
     freshness_path,
     ingested_versions,
 )
+from imsatlas_etl.pipeline.terms import annotate_terms_changed
 
 
 def _now_iso() -> str:
@@ -136,6 +137,10 @@ def run_check(
         by_id[str(row["source"])] = row
     ordered = [by_id[sid] for sid in PIPELINE_SOURCES if sid in by_id]
     ordered += [by_id[sid] for sid in sorted(by_id) if sid not in PIPELINE_SOURCES]
+    # Pure comparison against locally stored terms snapshots (no network).
+    ordered = annotate_terms_changed(ordered, root=root)
+    checked = {str(r["source"]) for r in rows}
+    rows = [r for r in ordered if str(r["source"]) in checked]
     modes = {str(r.get("mode") or "") for r in ordered}
     if modes == {"fixture"}:
         mode = "fixture"

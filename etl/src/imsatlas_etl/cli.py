@@ -432,6 +432,157 @@ def promote_cmd(
     )
 
 
+@app.command("verify-release")
+def verify_release_cmd(
+    release_dir: Annotated[
+        str,
+        typer.Argument(help="Release directory (e.g. data/release/public/v1.0.0)"),
+    ],
+) -> None:
+    """Recompute hashes vs SHA256SUMS and manifest.json (exit 1 on mismatch)."""
+    from pathlib import Path
+
+    from imsatlas_etl.pipeline.integrity import verify_release
+
+    result = verify_release(Path(release_dir))
+    if not result["ok"]:
+        for problem in result["problems"]:
+            typer.secho(problem, fg=typer.colors.RED, err=True)
+        typer.secho(
+            f"atlas-etl {__version__}: verify-release FAILED "
+            f"({len(result['problems'])} problems)",
+            fg=typer.colors.RED,
+            err=True,
+        )
+        raise typer.Exit(code=1)
+    typer.echo(
+        f"atlas-etl {__version__}: verify-release ok ({result['n_files']} files)",
+    )
+
+
+@app.command("reproduce-release")
+def reproduce_release_cmd(
+    version: Annotated[str, typer.Option("--version", help="Release version")],
+    fixture_root: Annotated[
+        str | None,
+        typer.Option(
+            "--fixture-root",
+            help="Rebuild curated tables from recorded fixtures (CI, no network)",
+        ),
+    ] = None,
+    reference: Annotated[
+        str,
+        typer.Option(
+            "--reference", help="auto (public, else staging) | public | staging"
+        ),
+    ] = "auto",
+    allow_extra: Annotated[
+        bool,
+        typer.Option(
+            "--allow-extra/--no-allow-extra",
+            help="Tolerate files/manifest keys only in the rebuild (older releases)",
+        ),
+    ] = False,
+) -> None:
+    """Rebuild a release and diff it byte-for-byte against the reference tree."""
+    from pathlib import Path
+
+    from imsatlas_etl.pipeline.reproduce import reproduce_release
+
+    try:
+        result = reproduce_release(
+            version.removeprefix("v"),
+            fixture_root=Path(fixture_root) if fixture_root else None,
+            reference=reference,
+            allow_extra=allow_extra,
+        )
+    except (FileNotFoundError, ValueError) as exc:
+        typer.secho(str(exc), fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=1) from exc
+    if not result["ok"]:
+        for key in (
+            "missing_in_candidate",
+            "extra_in_candidate",
+            "differing",
+            "manifest_fields_differing",
+            "manifest_fields_extra_in_candidate",
+        ):
+            for item in result[key]:
+                typer.secho(f"{key}: {item}", fg=typer.colors.RED, err=True)
+        typer.secho(
+            f"atlas-etl {__version__}: reproduce-release v{result['version']} "
+            f"DIFFERS from {result['reference']}",
+            fg=typer.colors.RED,
+            err=True,
+        )
+        raise typer.Exit(code=1)
+    typer.echo(
+        f"atlas-etl {__version__}: reproduce-release v{result['version']} "
+        f"matches {result['reference']} (mode={result['mode']})",
+    )
+
+
+@app.command("spot-check")
+def spot_check_cmd(
+    n: Annotated[int, typer.Option("--n", help="Cells to sample")] = 200,
+    seed: Annotated[int, typer.Option("--seed", help="Sampling seed")] = 1,
+    fixture_responses: Annotated[
+        str | None,
+        typer.Option(
+            "--fixture-responses",
+            help="Directory of recorded World Bank JSON responses (no network)",
+        ),
+    ] = None,
+) -> None:
+    """Re-fetch a seeded sample of public-release cells -> status/spot_check.json."""
+    from pathlib import Path
+
+    from imsatlas_etl.pipeline.spot_check import run_spot_check
+
+    try:
+        report = run_spot_check(
+            n=n,
+            seed=seed,
+            fixture_responses=Path(fixture_responses) if fixture_responses else None,
+        )
+    except (FileNotFoundError, ValueError) as exc:
+        typer.secho(str(exc), fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=1) from exc
+    typer.echo(
+        f"atlas-etl {__version__}: spot-check sampled={report['n_sampled']} "
+        f"matches={report['matches']} mismatches={report['mismatches']} "
+        f"unreachable={report['unreachable']}",
+    )
+
+
+@app.command("terms-check")
+def terms_check_cmd(
+    source: Annotated[
+        str | None,
+        typer.Option("--source", help="Comma-separated source ids, or all"),
+    ] = None,
+) -> None:
+    """Network: store the current terms-page sha256 under status/terms/.
+
+    Never edits rights evidence; ``check`` then sets ``terms_changed``.
+    """
+    from imsatlas_etl.pipeline.io_paths import PIPELINE_SOURCES
+    from imsatlas_etl.pipeline.terms import write_terms_snapshot
+
+    selected = _parse_sources(source) or list(PIPELINE_SOURCES)
+    failed = 0
+    for source_id in selected:
+        try:
+            path = write_terms_snapshot(source_id)
+        except SourcesValidationError as exc:
+            failed += 1
+            typer.secho(str(exc), fg=typer.colors.RED, err=True)
+            continue
+        typer.echo(f"wrote {path}")
+    if failed:
+        raise typer.Exit(code=1)
+
+
 @app.command("coverage-report")
 def coverage_report_cmd() -> None:
     """Write countries×years coverage CSV+PNG under status/coverage/."""

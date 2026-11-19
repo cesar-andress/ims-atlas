@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
+import { VerifyDatumPanel } from "../components/VerifyDatumPanel";
 import { formatScore } from "../format";
-import { useRankingModel } from "../ranking/useRankingModelApi";
+import { useTranslation } from "../i18n";
 import type { RankingViewModel } from "../ranking/rankingEngine";
+import { useRankingModel } from "../ranking/useRankingModelApi";
 import { useAnalysis } from "../state/useAnalysis";
 
 function FactorsBody({ model }: { model: RankingViewModel }) {
@@ -97,7 +98,16 @@ function FactorsBody({ model }: { model: RankingViewModel }) {
                 <td>{r.id}</td>
                 <td>{r.direction}</td>
                 <td data-testid={`raw-${r.id}`}>
-                  {r.raw === null ? "—" : formatScore(r.raw)}
+                  {r.raw === null ? "—" : formatScore(r.raw)}{" "}
+                  {iso && typeof config.year === "number" ? (
+                    <VerifyDatumPanel
+                      variableId={r.id}
+                      iso3={iso}
+                      year={config.year}
+                      displayValue={r.raw}
+                      sourceIds={[]}
+                    />
+                  ) : null}
                 </td>
                 <td data-testid={`norm-${r.id}`}>
                   {r.norm === null ? "—" : formatScore(r.norm)}

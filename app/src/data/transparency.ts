@@ -132,8 +132,15 @@ export function loadLatestRun(): Promise<Record<string, unknown>> {
 export function loadReleases(): Promise<{
   current: string;
   releases: Record<string, unknown>[];
+  signature?: { status?: string; note?: string };
+  sha256sums_path?: string;
+  provenance_path?: string;
 }> {
   return fetchJson("/status/releases.json");
+}
+
+export function loadSpotCheck(): Promise<Record<string, unknown>> {
+  return fetchJson("/status/spot_check.json");
 }
 
 export function loadUpdates(): Promise<TransparencyUpdates> {

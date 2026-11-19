@@ -1098,3 +1098,58 @@ main:has(.builder) {
   gap: 0.5rem;
   margin-bottom: 0.5rem;
 }
+
+.verify-datum {
+  display: inline;
+  position: relative;
+}
+
+.verify-datum > .linkish,
+button.linkish {
+  background: none;
+  border: none;
+  color: var(--link, #0b57d0);
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.verify-datum-panel {
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  top: 1.4rem;
+  min-width: min(28rem, 90vw);
+  max-width: 36rem;
+  max-height: min(70vh, 32rem);
+  overflow: auto;
+  padding: 0.75rem 1rem;
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #ccc);
+  border-radius: 0.35rem;
+  box-shadow: 0 0.35rem 1rem rgb(0 0 0 / 12%);
+  text-align: left;
+}
+
+.verify-datum-panel header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.verify-datum-panel .ok {
+  color: #2a7a4b;
+}
+
+.ranking-why {
+  margin-top: 1rem;
+}
+
+.ranking-why table {
+  width: 100%;
+  font-size: 0.85rem;
+}

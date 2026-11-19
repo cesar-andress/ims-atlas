@@ -1,4 +1,4 @@
-.PHONY: setup lint test e2e figures build etl pipeline-fixture pipeline-live release-staging promote-release release-data catalog-port catalog-validate check-live rights-report qa lineage coverage-report phase3-report export-phase5-goldens export-phase6-goldens export-phase8-goldens dev cname pin-backtest typecheck
+.PHONY: reproduce-release verify-release spot-check setup lint test e2e figures build etl pipeline-fixture pipeline-live release-staging promote-release release-data catalog-port catalog-validate check-live rights-report qa lineage coverage-report phase3-report export-phase5-goldens export-phase6-goldens export-phase8-goldens dev cname pin-backtest typecheck
 
 NODE_VERSION := 20
 PNPM ?= pnpm
@@ -107,6 +107,19 @@ rights-report:
 
 check-live:
 	cd etl && $(UV) run atlas-etl check-live
+
+VERSION ?= 1.0.0
+# Fixture path by default (CI, no network). Live: make reproduce-release VERSION=x.y.z FIXTURE=
+FIXTURE ?= --fixture-root tests/fixtures/mini_world
+
+reproduce-release:
+	cd etl && $(UV) run atlas-etl reproduce-release --version $(VERSION) $(FIXTURE) $(REPRO_ARGS)
+
+verify-release:
+	cd etl && $(UV) run atlas-etl verify-release ../data/release/public/v$(VERSION)
+
+spot-check:
+	cd etl && $(UV) run atlas-etl spot-check --n 200 --seed 1
 
 release-data: release-staging
 

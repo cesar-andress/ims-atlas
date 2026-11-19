@@ -38,6 +38,10 @@ export function DataSources() {
                   <th>{t("transparencyIngested")}</th>
                   <th>{t("transparencyReleaseVersion")}</th>
                   <th>{t("transparencyStale")}</th>
+                  <th>{t("transparencyRightsCheckedBy")}</th>
+                  <th>{t("transparencyRightsCheckedOn")}</th>
+                  <th>{t("transparencyTermsHash")}</th>
+                  <th>{t("transparencyTermsChanged")}</th>
                   <th>{t("transparencyLinks")}</th>
                 </tr>
               </thead>
@@ -45,6 +49,8 @@ export function DataSources() {
                 {data.sources.map((s) => {
                   const fr = s.freshness ?? {};
                   const rights = s.rights ?? {};
+                  const evidence =
+                    (rights.evidence as Record<string, unknown> | undefined) ?? {};
                   return (
                     <tr key={s.id} data-source-id={s.id}>
                       <td data-from-json="id">{s.id}</td>
@@ -66,6 +72,21 @@ export function DataSources() {
                         {displayCell(s.release_version)}
                       </td>
                       <td data-from-json="stale">{displayCell(fr.stale)}</td>
+                      <td data-from-json="evidence.checked_by">
+                        {displayCell(evidence.checked_by)}
+                      </td>
+                      <td data-from-json="evidence.checked_on">
+                        {displayCell(evidence.checked_on)}
+                      </td>
+                      <td data-from-json="evidence.snapshot_sha256">
+                        {typeof evidence.snapshot_sha256 === "string" &&
+                        evidence.snapshot_sha256.length > 0
+                          ? `${String(evidence.snapshot_sha256).slice(0, 12)}…`
+                          : "—"}
+                      </td>
+                      <td data-from-json="terms_changed">
+                        {displayCell((fr as { terms_changed?: unknown }).terms_changed)}
+                      </td>
                       <td>
                         {s.landing_url ? (
                           <a

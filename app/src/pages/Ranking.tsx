@@ -1,10 +1,12 @@
 import { lazy, Suspense, useMemo, useState } from "react";
-import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
+import { VerifyDatumPanel } from "../components/VerifyDatumPanel";
 import { downloadText, rankingToCsv } from "../cite/exportDownload";
 import { formatScore } from "../format";
+import { useTranslation } from "../i18n";
 import { useRankingModel } from "../ranking/useRankingModelApi";
 import { useCompareSelection } from "../state/useCompareSelection";
+import { useAnalysis } from "../state/useAnalysis";
 import type { RankingViewModel } from "../ranking/rankingEngine";
 
 const WorldChoropleth = lazy(() =>
@@ -18,6 +20,7 @@ const FactorBars = lazy(() =>
 
 function RankingBody({ model }: { model: RankingViewModel }) {
   const { t } = useTranslation();
+  const { config } = useAnalysis();
   const { compareA, compareB, selectIso, setConfig } = useCompareSelection();
   const [sortKey, setSortKey] = useState<"rank" | "score" | "iso3">("rank");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
@@ -41,6 +44,7 @@ function RankingBody({ model }: { model: RankingViewModel }) {
 
   const selectedIso = compareA ?? sorted[0]?.iso3;
   const compareIso = compareB;
+  const year = config.year;
 
   const factors = useMemo(() => {
     if (!selectedIso) return [];
@@ -222,6 +226,50 @@ function RankingBody({ model }: { model: RankingViewModel }) {
               <p>
                 {compareIso}: {formatScore(compareRow.score)} (#{compareRow.rank})
               </p>
+            </div>
+          ) : null}
+
+          {selectedIso && year !== undefined ? (
+            <div className="ranking-why" data-testid="ranking-why">
+              <h2>{t("verifyDatum")}</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>{t("parityRaw")}</th>
+                    <th />
+                  </tr>
+                </thead>
+                <tbody>
+                  {model.panel.variables
+                    .filter((v) => model.prepared.usedVariables.includes(v.id))
+                    .map((v) => {
+                      const rowIdx = model.prepared.candidates.indexOf(selectedIso);
+                      const rawCol = model.panel.variables.findIndex(
+                        (x) => x.id === v.id,
+                      );
+                      const raw =
+                        rowIdx >= 0
+                          ? (model.panel.values[rowIdx]?.[rawCol] ?? null)
+                          : null;
+                      return (
+                        <tr key={v.id}>
+                          <td>{v.id}</td>
+                          <td>{raw === null ? "—" : formatScore(raw)}</td>
+                          <td>
+                            <VerifyDatumPanel
+                              variableId={v.id}
+                              iso3={selectedIso}
+                              year={year}
+                              displayValue={raw}
+                              sourceIds={[]}
+                            />
+                          </td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </table>
             </div>
           ) : null}
         </div>

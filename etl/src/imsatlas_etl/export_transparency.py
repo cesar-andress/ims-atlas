@@ -16,6 +16,7 @@ from imsatlas_etl.pipeline.changes import (
     readable_source_summary,
     variables_status_fields,
 )
+from imsatlas_etl.pipeline.terms import terms_changed_for_source
 from imsatlas_etl.sources import load_sources
 
 FIXTURE_BANNER = (
@@ -146,6 +147,7 @@ def _sources_payload(
                     "upstream_version": fr.get("upstream_version"),
                     "stale": fr.get("stale"),
                     "mode": fr.get("mode"),
+                    "terms_changed": terms_changed_for_source(src),
                 },
                 "release_version": versions.get(sid),
             },
@@ -378,6 +380,7 @@ def write_transparency_bundle(
             "releases": "/status/releases.json",
             "updates": "/status/updates.json",
             "history": "/status/history.json",
+            "spot_check": "/status/spot_check.json",
             "manifest": f"/data/v{version}/manifest.json",
         },
         "current_release": version,
@@ -393,12 +396,50 @@ def write_transparency_bundle(
         "n_history_runs": len(history_rows),
     }
 
+    spot_src = status_src / "spot_check.json"
+    if spot_src.is_file():
+        spot_payload = with_fixture_flag(_read_json(spot_src), bundle_fixture)
+    else:
+        spot_payload = with_fixture_flag(
+            {
+                "schema": "spot-check/v1",
+                "n": 0,
+                "n_sampled": 0,
+                "matches": 0,
+                "mismatches": 0,
+                "unreachable": 0,
+                "samples": [],
+                "note": "No spot-check run published yet.",
+            },
+            bundle_fixture,
+        )
+    index["spot_check_generated_at"] = spot_payload.get("generated_at")
+    index["spot_check_matches"] = spot_payload.get("matches")
+    index["spot_check_mismatches"] = spot_payload.get("mismatches")
+    index["spot_check_unreachable"] = spot_payload.get("unreachable")
+
+    # Integrity hints from the public manifest (may pre-date Phase D).
+    signature = (manifest or {}).get("signature") or {
+        "status": "unsigned",
+        "note": "SHA256SUMS / signature fields appear on releases built after Phase D.",
+    }
+    releases = with_fixture_flag(
+        {
+            **releases,
+            "signature": signature,
+            "sha256sums_path": f"/data/v{version}/SHA256SUMS",
+            "provenance_path": f"/data/v{version}/provenance.parquet",
+        },
+        bundle_fixture,
+    )
+
     for name, payload in (
         ("sources.json", sources),
         ("variables.json", variables),
-        ("releases.json", with_fixture_flag(releases, bundle_fixture)),
+        ("releases.json", releases),
         ("updates.json", updates),
         ("history.json", history_public),
+        ("spot_check.json", spot_payload),
         ("index.json", with_fixture_flag(index, bundle_fixture)),
     ):
         _write_json(public_status / name, payload)

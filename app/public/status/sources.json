@@ -20,6 +20,7 @@
         "ingested_version": "2026-11-11",
         "mode": "live",
         "stale": false,
+        "terms_changed": null,
         "upstream_changed_at": "2026-11-11",
         "upstream_version": "2026-11-11"
       },
@@ -64,6 +65,7 @@
         "ingested_version": "2026-09-25",
         "mode": "live",
         "stale": false,
+        "terms_changed": null,
         "upstream_changed_at": "2026-09-25",
         "upstream_version": "2026-09-25"
       },
@@ -108,6 +110,7 @@
         "ingested_version": "2026-11-11",
         "mode": "live",
         "stale": false,
+        "terms_changed": null,
         "upstream_changed_at": "2026-11-11",
         "upstream_version": "2026-11-11"
       },
@@ -152,6 +155,7 @@
         "ingested_version": "mini-2022",
         "mode": "fixture",
         "stale": false,
+        "terms_changed": null,
         "upstream_changed_at": "2022-12-31",
         "upstream_version": "mini-2022"
       },
@@ -196,6 +200,7 @@
         "ingested_version": "mini-2022",
         "mode": "fixture",
         "stale": false,
+        "terms_changed": null,
         "upstream_changed_at": "2022-12-31",
         "upstream_version": "mini-2022"
       },
@@ -240,6 +245,7 @@
         "ingested_version": "mini-2022",
         "mode": "fixture",
         "stale": false,
+        "terms_changed": null,
         "upstream_changed_at": "2022-12-31",
         "upstream_version": "mini-2022"
       },
@@ -284,6 +290,7 @@
         "ingested_version": "mini-2022",
         "mode": "fixture",
         "stale": false,
+        "terms_changed": null,
         "upstream_changed_at": "2022-12-31",
         "upstream_version": "mini-2022"
       },
@@ -328,6 +335,7 @@
         "ingested_version": "mini-2022",
         "mode": "fixture",
         "stale": false,
+        "terms_changed": null,
         "upstream_changed_at": "2022-12-31",
         "upstream_version": "mini-2022"
       },
@@ -372,6 +380,7 @@
         "ingested_version": "mini-2022",
         "mode": "fixture",
         "stale": false,
+        "terms_changed": null,
         "upstream_changed_at": "2022-12-31",
         "upstream_version": "mini-2022"
       },
@@ -416,6 +425,7 @@
         "ingested_version": "mini-2022",
         "mode": "fixture",
         "stale": false,
+        "terms_changed": null,
         "upstream_changed_at": "2022-12-31",
         "upstream_version": "mini-2022"
       },
@@ -460,6 +470,7 @@
         "ingested_version": "mini-2022",
         "mode": "fixture",
         "stale": false,
+        "terms_changed": null,
         "upstream_changed_at": "2022-12-31",
         "upstream_version": "mini-2022"
       },
@@ -504,6 +515,7 @@
         "ingested_version": "mini-2022",
         "mode": "fixture",
         "stale": false,
+        "terms_changed": null,
         "upstream_changed_at": "2022-12-31",
         "upstream_version": "mini-2022"
       },
@@ -548,6 +560,7 @@
         "ingested_version": "mini-2022",
         "mode": "fixture",
         "stale": false,
+        "terms_changed": null,
         "upstream_changed_at": "2022-12-31",
         "upstream_version": "mini-2022"
       },
@@ -592,6 +605,7 @@
         "ingested_version": "mini-2022",
         "mode": "fixture",
         "stale": false,
+        "terms_changed": null,
         "upstream_changed_at": "2022-12-31",
         "upstream_version": "mini-2022"
       },

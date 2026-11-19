@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 import shutil
 from datetime import UTC, datetime
@@ -12,11 +11,18 @@ from typing import Any
 import pandas as pd
 
 from imsatlas_etl.catalog import load_catalog
+from imsatlas_etl.paths import repo_root
+from imsatlas_etl.pipeline.integrity import (
+    sha256_file,
+    signature_block,
+    write_sha256sums,
+)
 from imsatlas_etl.pipeline.io_paths import (
     freshness_path,
     public_release_dir,
     staging_release_dir,
 )
+from imsatlas_etl.pipeline.provenance import build_provenance_for_release
 from imsatlas_etl.pipeline.release_tables import write_spec3_tables
 from imsatlas_etl.rights import gate_for_variable, load_deployment
 from imsatlas_etl.sources import sources_by_id
@@ -33,11 +39,7 @@ def _now_iso() -> str:
 
 
 def _sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    return sha256_file(path)
 
 
 def _iter_release_files(base: Path) -> list[Path]:
@@ -199,8 +201,11 @@ Companion engine: [ims-backtest](https://github.com/cesar-andress/ims-backtest).
 | `country_year.parquet` | Long country panel | {counts.get("country_year_rows", 0)} |
 | `bilateral_year.parquet` | Long bilateral | {counts.get("bilateral_year_rows", 0)} |
 | `trade/hs2=*/part.parquet` | Trade by HS2 | {counts.get("trade_rows", 0)} |
+| `provenance.parquet` | One row per release cell | {counts.get("provenance_rows", 0)} |
+| `provenance.jsonl` | Same rows as JSON lines (tiny releases only) | |
 | `catalog.json` | Shipped variables only | |
-| `manifest.json` | Hashes, versions, gate decisions | |
+| `manifest.json` | Hashes, versions, gate decisions, signature status | |
+| `SHA256SUMS` | `sha256sum` digests of every other file | |
 | `LICENSES.md` | Licences for shipped vars | |
 
 ## Column dictionary
@@ -210,6 +215,14 @@ Companion engine: [ims-backtest](https://github.com/cesar-andress/ims-backtest).
 - `variable_id`: catalog id
 - `value`: numeric observation
 - `flag_imputed` / `flag_locf`: boolean; true only when imputation/LOCF was applied
+
+### provenance
+
+One row per cell of `country_year` / `bilateral_year`: `table`, entity ids,
+`year`, `variable_id`, `source_id`, `upstream_code`, `upstream_version`,
+`request_url_or_file`, `row_key`, `raw_sha256`, `transform_steps`,
+`flag_imputed`, `flag_locf`, `flag_unit_converted`, `flag_iso3_remap`, `value`.
+Verify integrity with `atlas-etl verify-release <dir>`.
 
 ### trade parts
 
@@ -279,16 +292,19 @@ def run_release(
     root: Path | None = None,
     staging: bool = True,
     force: bool = False,
+    out_dir: Path | None = None,
 ) -> dict[str, Any]:
     """
     Build SPEC §3 release tree from curated/.
 
     Default writes to data/release/staging/vX.Y.Z/. Use promote to publish.
+    ``out_dir`` overrides the destination directory (used by reproduce-release
+    so a reference release is never overwritten).
     """
     dest_parent = (
         staging_release_dir(root=root) if staging else public_release_dir(root=root)
     )
-    dest = dest_parent / f"v{version}"
+    dest = out_dir if out_dir is not None else dest_parent / f"v{version}"
     if dest.exists() and not force:
         raise FileExistsError(f"release exists: {dest} (use --force)")
     if dest.exists():
@@ -298,6 +314,9 @@ def run_release(
     gates = _variable_gates()
     included_ids = {g["id"] for g in gates if g["included"]}
     counts = write_spec3_tables(dest, root=root, included_ids=included_ids)
+    counts["provenance_rows"] = build_provenance_for_release(dest, root=root)[
+        "provenance_rows"
+    ]
     _write_catalog_json(dest, included_ids)
     _write_licenses_md(dest, gates)
     _write_readme(dest, version, counts)
@@ -333,6 +352,7 @@ def run_release(
         "variables": gates,
         "files": files_meta,
         "n_included_variables": len(included_ids),
+        "signature": signature_block(version, repo=repo_root()),
         "row_counts": counts,
         "size_bytes": sizes,
         "budgets": {
@@ -344,6 +364,7 @@ def run_release(
         json.dumps(manifest, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+    write_sha256sums(dest)
     return {
         "path": str(dest),
         "version": version,

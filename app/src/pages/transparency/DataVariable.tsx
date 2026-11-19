@@ -1,14 +1,15 @@
 import { useMemo } from "react";
-import { useTranslation } from "../../i18n";
 import { TransparencyShell } from "../../components/TransparencyShell";
-import { displayCell } from "../../formatDisplay";
-import { useAnalysis } from "../../state/useAnalysis";
-import { useAsyncResource } from "../../state/useAsyncResource";
+import { VerifyDatumPanel } from "../../components/VerifyDatumPanel";
 import {
   loadSources,
   loadVariables,
   type TransparencyVariable,
 } from "../../data/transparency";
+import { displayCell } from "../../formatDisplay";
+import { useTranslation } from "../../i18n";
+import { useAnalysis } from "../../state/useAnalysis";
+import { useAsyncResource } from "../../state/useAsyncResource";
 
 function varLabel(v: TransparencyVariable, lang: "en" | "es"): string {
   const name = v.name;
@@ -193,6 +194,17 @@ export function DataVariable() {
                           {Object.entries(years).map(([y, val]) => (
                             <td key={y} data-from-json="coverage.cell">
                               {val}
+                              {val === 1 ? (
+                                <>
+                                  {" "}
+                                  <VerifyDatumPanel
+                                    variableId={selected.id}
+                                    iso3={iso}
+                                    year={Number(y)}
+                                    sourceIds={selected.source_ids ?? []}
+                                  />
+                                </>
+                              ) : null}
                             </td>
                           ))}
                         </tr>

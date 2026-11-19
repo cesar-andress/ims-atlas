@@ -1,0 +1,5 @@
+{
+  "schema": "provenance-index/v1",
+  "n_rows": 0,
+  "note": "Release v1.0.0 has zero shippable cells (all variables byod_only). provenance.parquet / provenance.jsonl are produced on the next staging build after Phase D; Verify-datum stays empty until Phase R ships cells."
+}

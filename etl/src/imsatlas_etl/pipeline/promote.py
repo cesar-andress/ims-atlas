@@ -8,6 +8,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from imsatlas_etl.pipeline.integrity import write_sha256sums
 from imsatlas_etl.pipeline.io_paths import public_release_dir, staging_release_dir
 
 
@@ -49,6 +50,9 @@ def promote_release(
         json.dumps(manifest, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+
+    # manifest.json changed: SHA256SUMS must cover the promoted bytes.
+    write_sha256sums(dest)
 
     # Pointer to current public release
     current = public_parent / "CURRENT"

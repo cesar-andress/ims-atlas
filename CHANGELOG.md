@@ -6,6 +6,11 @@ All notable changes to IMS Atlas are documented in this file.
 
 ### Added
 
+- Phase D verifiable data: cell provenance (`provenance.parquet` /
+  `provenance.jsonl`), `SHA256SUMS` + `atlas-etl verify-release`,
+  `make reproduce-release` / `docs/reproduce.md`, seeded
+  `atlas-etl spot-check`, terms-page drift flag, and UI “Verificar este dato”
+  (World Bank live re-check) on Factors, Ranking, and variable coverage.
 - Phase 7b transparency views: `/status`, `/data/sources`, `/data/variables/:id`,
   `/data/pipeline`, `/data/releases` (values from `status/*.json` + release
   manifest via `atlas-etl export-transparency`).
