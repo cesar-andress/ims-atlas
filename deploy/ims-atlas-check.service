@@ -1,0 +1,15 @@
+[Unit]
+Description=IMS Atlas weekly freshness check
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/services/ims-atlas
+ExecStart=/opt/services/ims-atlas/deploy/atlas-etl-check.sh
+# Optional secrets (never commit): EnvironmentFile=-/etc/ims-atlas/check.env
+# Example check.env keys: GH_TOKEN=..., ATLAS_OPEN_GITHUB_ISSUE=1
+EnvironmentFile=-/etc/ims-atlas/check.env
+
+[Install]
+WantedBy=multi-user.target

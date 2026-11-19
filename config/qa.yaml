@@ -1,0 +1,5 @@
+# QA thresholds (SPEC §10.3 step 5). Tunable; defaults are conservative.
+coverage_drop_block_pct: 25.0
+coverage_drop_warn_pct: 10.0
+yoy_jump_warn_pct: 50.0
+yoy_jump_block_pct: 200.0

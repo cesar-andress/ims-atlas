@@ -314,16 +314,116 @@ def build(
     run_cmd(source=None, fixture_root=fixture_root, force=force)
 
 
+@app.command("qa")
+def qa_cmd(
+    series_breaks: Annotated[
+        str | None,
+        typer.Option(
+            "--series-breaks",
+            help="Comma-separated break years to flag if present",
+        ),
+    ] = None,
+) -> None:
+    """Run curated QA rules -> status/qa.json and status/qa.md."""
+    from imsatlas_etl.pipeline.qa import run_qa
+
+    breaks = None
+    if series_breaks:
+        breaks = [
+            int(part.strip()) for part in series_breaks.split(",") if part.strip()
+        ]
+    report = run_qa(series_breaks=breaks)
+    typer.echo(
+        f"atlas-etl {__version__}: qa {report['status']} "
+        f"(block={report['n_block']} warn={report['n_warn']})",
+    )
+    if report["status"] == "fail":
+        raise typer.Exit(code=1)
+
+
+@app.command("lineage")
+def lineage_cmd() -> None:
+    """Write status/lineage.json DAG."""
+    from imsatlas_etl.pipeline.lineage import write_lineage
+
+    path = write_lineage()
+    typer.echo(f"atlas-etl {__version__}: wrote {path}")
+
+
 @app.command("release")
-def release(
+def release_cmd(
     version: Annotated[
         str,
-        typer.Option("--version", help="Release version under data/release/"),
+        typer.Option("--version", help="Release version (e.g. 0.1.0)"),
     ] = "0.1.0",
+    staging: Annotated[
+        bool,
+        typer.Option("--staging/--public", help="Write staging (default) or public"),
+    ] = True,
+    force: Annotated[bool, typer.Option("--force")] = False,
 ) -> None:
-    """Write a versioned data release (implemented in Phase 2b/4)."""
+    """Build data/release/staging|public/vX.Y.Z from curated (gate-filtered)."""
+    from imsatlas_etl.pipeline.release import run_release
+
+    try:
+        result = run_release(version, staging=staging, force=force)
+    except (FileExistsError, FileNotFoundError, ValueError) as exc:
+        typer.secho(str(exc), fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=1) from exc
     typer.echo(
-        f"atlas-etl {__version__}: release scaffold — Phase 2b (v{version})",
+        f"atlas-etl {__version__}: release v{result['version']} "
+        f"staging={result['staging']} files={result['n_files']} "
+        f"included_vars={result['n_included_variables']} -> {result['path']}",
+    )
+
+
+@app.command("promote")
+def promote_cmd(
+    version: Annotated[str, typer.Argument(help="Version to promote (e.g. 0.1.0)")],
+    by: Annotated[str, typer.Option("--by", help="Human approving promotion")],
+    force: Annotated[bool, typer.Option("--force")] = False,
+) -> None:
+    """Promote staging release to public data/release/public/vX.Y.Z."""
+    from imsatlas_etl.pipeline.promote import promote_release
+
+    try:
+        result = promote_release(version, by=by, force=force)
+    except (FileExistsError, FileNotFoundError, ValueError) as exc:
+        typer.secho(str(exc), fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=1) from exc
+    typer.echo(
+        f"atlas-etl {__version__}: promoted v{result['version']} "
+        f"by {result['promoted_by']} -> {result['path']}",
+    )
+
+
+@app.command("check-alert")
+def check_alert_cmd(
+    fixture_root: Annotated[
+        str | None,
+        typer.Option("--fixture-root", help="Offline fixtures directory"),
+    ] = None,
+    open_issue: Annotated[
+        bool,
+        typer.Option(
+            "--open-issue/--no-open-issue",
+            help="Open GitHub issue via gh if GITHUB_TOKEN/GH_TOKEN set",
+        ),
+    ] = False,
+) -> None:
+    """Scheduled check + stale alert (log; optional gh issue)."""
+    from pathlib import Path
+
+    from imsatlas_etl.pipeline.alert import check_and_alert
+
+    result = check_and_alert(
+        fixture_root=Path(fixture_root) if fixture_root else None,
+        open_issue=open_issue,
+    )
+    typer.echo(
+        f"atlas-etl {__version__}: check-alert "
+        f"stale={result['n_stale']}/{result['n_sources']} "
+        f"alert={result['alert_path'] or 'none'}",
     )
 
 

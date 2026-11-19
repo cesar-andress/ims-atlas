@@ -35,13 +35,43 @@ Edge: [aiserv-server](https://github.com/cesar-andress/aiserv-server) `caddy/Cad
 ssh vpn-aplicaciones
 cd /opt/services/ims-atlas
 git pull --ff-only
+mkdir -p status data/release
+# Node build (see below if no host Node)
 pnpm install --frozen-lockfile
 VITE_BASE=/ pnpm --filter @ims-atlas/core build
 VITE_BASE=/ pnpm --filter @ims-atlas/app build
 docker compose -f deploy/docker-compose.yml up -d
 ```
 
+nginx serves `/status/*` (TTL 60s) and `/data/release/*` (immutable) from the
+host trees `status/` and `data/release/`.
+
 Do **not** scp/rsync the app tree. Publish only via git push → git pull.
+
+## Weekly freshness timer
+
+```bash
+sudo cp deploy/ims-atlas-check.service deploy/ims-atlas-check.timer /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now ims-atlas-check.timer
+# Optional GitHub issue on stale (token never in git):
+#   sudo mkdir -p /etc/ims-atlas
+#   echo 'GH_TOKEN=…' | sudo tee /etc/ims-atlas/check.env
+#   echo 'ATLAS_OPEN_GITHUB_ISSUE=1' | sudo tee -a /etc/ims-atlas/check.env
+```
+
+Manual check: `deploy/atlas-etl-check.sh`
+
+## Promote a data release
+
+On a machine with the ETL env (after `make pipeline-fixture && make release-staging`):
+
+```bash
+atlas-etl promote 0.1.0 --by "Your Name"
+```
+
+Then sync `status/` + `data/release/` on the host (git does not track them) or rebuild
+them on the server with the same fixture/live pipeline.
 
 ## Build without host Node
 

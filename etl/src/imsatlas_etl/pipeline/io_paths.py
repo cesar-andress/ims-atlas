@@ -39,3 +39,23 @@ def freshness_path(*, root: Path | None = None) -> Path:
 
 def runs_dir(*, root: Path | None = None) -> Path:
     return status_root(root) / "runs"
+
+
+def release_dir(*, root: Path | None = None) -> Path:
+    return data_root(root) / "release"
+
+
+def staging_release_dir(*, root: Path | None = None) -> Path:
+    return release_dir(root=root) / "staging"
+
+
+def public_release_dir(*, root: Path | None = None) -> Path:
+    return release_dir(root=root) / "public"
+
+
+def qa_json_path(*, root: Path | None = None) -> Path:
+    return status_root(root) / "qa.json"
+
+
+def lineage_path(*, root: Path | None = None) -> Path:
+    return status_root(root) / "lineage.json"

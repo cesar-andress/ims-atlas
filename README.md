@@ -8,18 +8,23 @@ is no backend and no accounts.
 
 ## Status
 
-Phase 2 (`v0.1.0`): variable catalog, source registry, licence gate, and offline ETL
-pipeline (`check` → `extract` → `validate` → `transform`). Browser engine and public
-data release land in later phases.
+Phase 2b (`v0.1.0`): catalog, rights gate, offline ETL, QA, staging release, lineage,
+and weekly freshness check units. Browser engine UI for data pages lands later.
 
 ```bash
 make catalog-validate   # variables.yaml + sources.yaml
 make rights-report      # writes catalog/RIGHTS.md (gate decisions)
 make pipeline-fixture   # offline mini-world DAG -> data/curated + status/
+make release-staging    # QA + staging release v0.1.0 + lineage.json
+make promote-release BY="Your Name"   # staging -> public
 ```
 
+Promote: `atlas-etl promote 0.1.0 --by "<name>"` after reviewing staging.
+Weekly check: install `deploy/ims-atlas-check.{service,timer}` on the host.
+
 Every source currently needs a human `atlas-etl rights-verify <SOURCE> --by "<name>"`
-plus yes/no rights flags before any variable can `ship_*`.
+plus yes/no rights flags before any variable can `ship_*` (releases include curated
+tables; variable columns stay excluded until the gate allows `ship_*`).
 
 ## Repository layout
 

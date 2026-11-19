@@ -35,7 +35,10 @@ def test_build_requires_fixture_or_runs_offline(
     assert "run ok" in result.stdout
 
 
-def test_release_scaffold() -> None:
-    result = runner.invoke(app, ["release"])
-    assert result.exit_code == 0
-    assert "release" in result.stdout
+def test_release_requires_curated(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("ATLAS_ROOT", str(tmp_path))
+    result = runner.invoke(app, ["release", "--version", "0.0.1", "--force"])
+    assert result.exit_code == 1
