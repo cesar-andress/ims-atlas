@@ -4,6 +4,7 @@ import {
   type ImsfeEocQuadrant,
 } from "@ims-atlas/core";
 import { AnalysisPage } from "../components/AnalysisPage";
+import { ExportMenu } from "../components/ExportMenu";
 import { StrategicScatter } from "../components/StrategicScatter";
 import { useTranslation } from "../i18n";
 import { useImsfeEocMatrix } from "../ranking/useImsfeEocMatrix";
@@ -112,45 +113,64 @@ export function Matrix() {
                     cut IMSFE={eocMatrix.cutImsfe.toFixed(3)} · cut EOC=
                     {eocMatrix.cutEoc.toFixed(3)} · n={eocMatrix.points.length}
                   </p>
-                  <table className="ranking-table" data-testid="matrix-table">
-                    <thead>
-                      <tr>
-                        <th>ISO3</th>
-                        <th>IMSFE</th>
-                        <th>EOC</th>
-                        <th>{t("quadrant")}</th>
-                        <th>{t("rank")}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {[...eocMatrix.points]
-                        .sort((a, b) => a.rank - b.rank)
-                        .map((p) => (
-                          <tr
-                            key={p.iso3}
-                            data-iso3={p.iso3}
-                            data-quadrant={p.quadrant}
-                            className={isSelected(p.iso3) ? "selected" : undefined}
-                            tabIndex={0}
-                            role="button"
-                            aria-pressed={isSelected(p.iso3)}
-                            onClick={() => selectIso(p.iso3)}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter" || e.key === " ") {
-                                e.preventDefault();
-                                selectIso(p.iso3);
-                              }
-                            }}
-                          >
-                            <td>{p.iso3}</td>
-                            <td>{p.imsfe.toFixed(4)}</td>
-                            <td>{p.eocNorm.toFixed(4)}</td>
-                            <td>{quadrantLabel(p.quadrant, lang)}</td>
-                            <td>{p.rank}</td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
+                  <div data-export-surface="table">
+                    <ExportMenu
+                      testIdPrefix="matrix-eoc"
+                      kind="table"
+                      title="IMSFE×EOC matrix"
+                      tableRows={[
+                        ["iso3", "imsfe", "eoc", "quadrant", "rank"],
+                        ...[...eocMatrix.points]
+                          .sort((a, b) => a.rank - b.rank)
+                          .map((p) => [
+                            p.iso3,
+                            p.imsfe.toFixed(4),
+                            p.eocNorm.toFixed(4),
+                            String(p.quadrant),
+                            String(p.rank),
+                          ]),
+                      ]}
+                    />
+                    <table className="ranking-table" data-testid="matrix-table">
+                      <thead>
+                        <tr>
+                          <th>ISO3</th>
+                          <th>IMSFE</th>
+                          <th>EOC</th>
+                          <th>{t("quadrant")}</th>
+                          <th>{t("rank")}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {[...eocMatrix.points]
+                          .sort((a, b) => a.rank - b.rank)
+                          .map((p) => (
+                            <tr
+                              key={p.iso3}
+                              data-iso3={p.iso3}
+                              data-quadrant={p.quadrant}
+                              className={isSelected(p.iso3) ? "selected" : undefined}
+                              tabIndex={0}
+                              role="button"
+                              aria-pressed={isSelected(p.iso3)}
+                              onClick={() => selectIso(p.iso3)}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                  e.preventDefault();
+                                  selectIso(p.iso3);
+                                }
+                              }}
+                            >
+                              <td>{p.iso3}</td>
+                              <td>{p.imsfe.toFixed(4)}</td>
+                              <td>{p.eocNorm.toFixed(4)}</td>
+                              <td>{quadrantLabel(p.quadrant, lang)}</td>
+                              <td>{p.rank}</td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </>
               ) : (
                 <p className="muted" data-testid="matrix-eoc-pending">
@@ -168,45 +188,64 @@ export function Matrix() {
               {matrix.cutFit.toFixed(3)} · n={matrix.points.length}
             </p>
             <StrategicScatter matrix={matrix} />
-            <table className="ranking-table" data-testid="matrix-table">
-              <thead>
-                <tr>
-                  <th>ISO3</th>
-                  <th>{t("attractiveness")}</th>
-                  <th>{t("fit")}</th>
-                  <th>{t("quadrant")}</th>
-                  <th>{t("rank")}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[...matrix.points]
-                  .sort((a, b) => a.rank - b.rank)
-                  .map((p) => (
-                    <tr
-                      key={p.iso3}
-                      data-iso3={p.iso3}
-                      data-quadrant={p.quadrant}
-                      className={isSelected(p.iso3) ? "selected" : undefined}
-                      tabIndex={0}
-                      role="button"
-                      aria-pressed={isSelected(p.iso3)}
-                      onClick={() => selectIso(p.iso3)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ") {
-                          e.preventDefault();
-                          selectIso(p.iso3);
-                        }
-                      }}
-                    >
-                      <td>{p.iso3}</td>
-                      <td>{p.attractiveness.toFixed(4)}</td>
-                      <td>{p.fit.toFixed(4)}</td>
-                      <td>Q{p.quadrant}</td>
-                      <td>{p.rank}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+            <div data-export-surface="table">
+              <ExportMenu
+                testIdPrefix="matrix"
+                kind="table"
+                title="Strategic matrix"
+                tableRows={[
+                  ["iso3", "attractiveness", "fit", "quadrant", "rank"],
+                  ...[...matrix.points]
+                    .sort((a, b) => a.rank - b.rank)
+                    .map((p) => [
+                      p.iso3,
+                      p.attractiveness.toFixed(4),
+                      p.fit.toFixed(4),
+                      String(p.quadrant),
+                      String(p.rank),
+                    ]),
+                ]}
+              />
+              <table className="ranking-table" data-testid="matrix-table">
+                <thead>
+                  <tr>
+                    <th>ISO3</th>
+                    <th>{t("attractiveness")}</th>
+                    <th>{t("fit")}</th>
+                    <th>{t("quadrant")}</th>
+                    <th>{t("rank")}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[...matrix.points]
+                    .sort((a, b) => a.rank - b.rank)
+                    .map((p) => (
+                      <tr
+                        key={p.iso3}
+                        data-iso3={p.iso3}
+                        data-quadrant={p.quadrant}
+                        className={isSelected(p.iso3) ? "selected" : undefined}
+                        tabIndex={0}
+                        role="button"
+                        aria-pressed={isSelected(p.iso3)}
+                        onClick={() => selectIso(p.iso3)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            selectIso(p.iso3);
+                          }
+                        }}
+                      >
+                        <td>{p.iso3}</td>
+                        <td>{p.attractiveness.toFixed(4)}</td>
+                        <td>{p.fit.toFixed(4)}</td>
+                        <td>Q{p.quadrant}</td>
+                        <td>{p.rank}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
           </>
         ) : null;
       }}

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnalysisPage } from "../components/AnalysisPage";
+import { ExportMenu } from "../components/ExportMenu";
 import { VerifyDatumPanel } from "../components/VerifyDatumPanel";
 import { formatScore } from "../format";
 import { useTranslation } from "../i18n";
@@ -80,7 +81,23 @@ function FactorsBody({ model }: { model: RankingViewModel }) {
           </select>
         </label>
       </div>
-      <div className="table-scroll">
+      <div className="table-scroll" data-export-surface="table">
+        <ExportMenu
+          testIdPrefix="factors"
+          kind="table"
+          title={`Factors ${factor} ${iso ?? ""}`}
+          tableRows={[
+            ["id", "direction", "raw", "normalised", "weight", "imputed"],
+            ...rows.map((r) => [
+              r.id,
+              r.direction,
+              r.raw === null ? "" : String(r.raw),
+              r.norm === null ? "" : String(r.norm),
+              String(r.weight),
+              r.imputed ? "yes" : "no",
+            ]),
+          ]}
+        />
         <table data-testid="factor-criteria-table">
           <thead>
             <tr>

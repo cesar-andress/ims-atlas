@@ -6,6 +6,9 @@ All notable changes to IMS Atlas are documented in this file.
 
 ### Added
 
+- Phase F polish: footer Atlas credit + R&D placeholder blocker marker, Matrix/Factors
+  ExportMenu, `make link-check` / `make bundle-budgets` / `make phase-f`, and
+  `docs/phase-f-blockers.md` + review notes. **No v1.1.0 git tag** until human confirm.
 - Phase N content: expanded Docs (getting started, non-experts, researchers, IMSFE
   workflow, projects, sources, cite), contextual `?` help drawer, `/paper` T4 tables
   with permalinks, and `/changelog` generated from `CHANGELOG.md`.

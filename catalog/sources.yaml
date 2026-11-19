@@ -6,7 +6,7 @@ sources:
     publisher: World Bank
     landing_url: https://databank.worldbank.org/source/world-development-indicators
     terms_url: https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets
-    licence_url: https://datacatalog.worldbank.org/public-licenses
+    licence_url: UNKNOWN
     endpoints:
       - id: indicator_json
         template: "https://api.worldbank.org/v2/country/all/indicator/{code}?format=json&per_page=20000"
@@ -28,13 +28,13 @@ sources:
         checked_on: null
         terms_url: https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets
         snapshot_sha256: null
-        note: "licence_id from World Bank public-licenses page; rights not human-verified"
+        note: "licence_url datacatalog…/public-licenses returned 404 on 2026-11-19 link-check; licence_id provisional until human re-locates licence page; terms_url still open"
 
   - id: worldbank_wgi
     publisher: World Bank
     landing_url: https://www.worldbank.org/en/publication/worldwide-governance-indicators
     terms_url: https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets
-    licence_url: https://datacatalog.worldbank.org/public-licenses
+    licence_url: UNKNOWN
     endpoints:
       - id: indicator_json
         template: "https://api.worldbank.org/v2/country/all/indicator/{code}?format=json&per_page=20000"
@@ -56,13 +56,13 @@ sources:
         checked_on: null
         terms_url: https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets
         snapshot_sha256: null
-        note: "licence_id from World Bank public-licenses page; rights not human-verified"
+        note: "licence_url datacatalog…/public-licenses returned 404 on 2026-11-19 link-check; licence_id provisional until human re-locates licence page; terms_url still open"
 
   - id: worldbank_lpi
     publisher: World Bank
     landing_url: https://lpi.worldbank.org/
     terms_url: https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets
-    licence_url: https://datacatalog.worldbank.org/public-licenses
+    licence_url: UNKNOWN
     endpoints:
       - id: indicator_json
         template: "https://api.worldbank.org/v2/country/all/indicator/{code}?format=json&per_page=20000"
@@ -84,7 +84,7 @@ sources:
         checked_on: null
         terms_url: https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets
         snapshot_sha256: null
-        note: "licence_id from World Bank public-licenses page; rights not human-verified"
+        note: "licence_url datacatalog…/public-licenses returned 404 on 2026-11-19 link-check; licence_id provisional until human re-locates licence page; terms_url still open"
 
   - id: baci
     publisher: CEPII

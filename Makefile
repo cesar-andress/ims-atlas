@@ -1,4 +1,4 @@
-.PHONY: reproduce-release verify-release spot-check setup lint test e2e figures build etl pipeline-fixture pipeline-live release-staging promote-release release-data release-dual catalog-port catalog-validate check-live rights-report qa lineage coverage-report phase3-report export-phase5-goldens export-phase6-goldens export-phase8-goldens dev cname pin-backtest typecheck
+.PHONY: reproduce-release verify-release spot-check setup lint test e2e figures build etl pipeline-fixture pipeline-live release-staging promote-release release-data release-dual catalog-port catalog-validate check-live rights-report qa lineage coverage-report phase3-report export-phase5-goldens export-phase6-goldens export-phase8-goldens dev cname pin-backtest typecheck link-check bundle-budgets phase-f
 
 NODE_VERSION := 20
 PNPM ?= pnpm
@@ -133,3 +133,14 @@ release-data: release-staging
 
 dev:
 	$(PNPM) run dev
+
+# Phase F polish gates (no git tag / Zenodo).
+link-check:
+	node scripts/check-source-links.mjs
+
+bundle-budgets: build
+	node scripts/check-bundle-budgets.mjs
+
+phase-f: e2e bundle-budgets link-check
+	@echo "Phase F gates ok. Footer R&D name still BLOCKER — see docs/phase-f-blockers.md"
+	@echo "Do NOT tag v1.1.0 until César confirms."
