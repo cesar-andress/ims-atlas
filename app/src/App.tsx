@@ -6,6 +6,7 @@ import { StubView } from "./pages/StubView";
 import { AnalysisProvider } from "./state/AnalysisContext";
 import { useAnalysis } from "./state/useAnalysis";
 import type { ViewId } from "./state/schema";
+import { ensureLanguage } from "./i18n";
 import { applyTheme, readStoredTheme, type ThemeMode } from "./theme";
 
 const ConfigPanel = lazy(() =>
@@ -86,10 +87,11 @@ function AppShell() {
   }, [theme]);
 
   useEffect(() => {
-    if (config.lang && config.lang !== (i18n.language.startsWith("es") ? "es" : "en")) {
-      void i18n.changeLanguage(config.lang);
+    const current = i18n.language.startsWith("es") ? "es" : "en";
+    if (config.lang && config.lang !== current) {
+      void ensureLanguage(config.lang);
     }
-  }, [config.lang, i18n]);
+  }, [config.lang, i18n.language]);
 
   useEffect(() => {
     prefetchHeavyRoutes();
@@ -131,8 +133,7 @@ function AppShell() {
               value={i18n.language.startsWith("es") ? "es" : "en"}
               onChange={(event) => {
                 const lang = event.target.value as "en" | "es";
-                void i18n.changeLanguage(lang);
-                setConfig({ lang });
+                void ensureLanguage(lang).then(() => setConfig({ lang }));
               }}
             >
               <option value="en">EN</option>

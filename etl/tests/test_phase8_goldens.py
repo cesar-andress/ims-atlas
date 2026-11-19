@@ -35,3 +35,9 @@ def test_default_output_paths_exist_after_write() -> None:
     write_phase8_goldens()
     assert core_path.is_file()
     assert app_path.is_file()
+    app = json.loads(app_path.read_text(encoding="utf-8"))
+    # Browser payload stays lean (no recomputable matrices).
+    assert "prepared_matrix" not in app["block"]
+    assert "raw" in app["block"]
+    assert "ranking_expert" in app["block"]
+    assert app_path.stat().st_size < core_path.stat().st_size

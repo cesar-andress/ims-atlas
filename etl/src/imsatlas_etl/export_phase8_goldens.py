@@ -328,20 +328,59 @@ def default_output_paths() -> tuple[Path, Path]:
     )
 
 
+_APP_BLOCK_KEYS = (
+    "preset",
+    "origin",
+    "hs",
+    "hs_name",
+    "year",
+    "normalization",
+    "mcdm",
+    "weight_scheme",
+    "missing_threshold",
+    "variables",
+    "candidates",
+    "raw",
+    "ranking_expert",
+)
+
+
+def slim_block_for_app(block: dict[str, Any]) -> dict[str, Any]:
+    """Drop recomputable matrices from the browser demo payload."""
+    return {k: block[k] for k in _APP_BLOCK_KEYS if k in block}
+
+
 def write_phase8_goldens(path: Path | None = None) -> Path:
-    payload = {
+    block = build_col_hs64_block()
+    full = {
         "spec": "phase8",
         "imsfe_source": "ims-backtest@v0.2.0",
         "tolerance": 1e-9,
-        "block": build_col_hs64_block(),
+        "block": block,
     }
-    text = json.dumps(payload, indent=2, sort_keys=True) + "\n"
     if path is not None:
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(text, encoding="utf-8")
+        path.write_text(
+            json.dumps(full, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
         return path
     core_path, app_path = default_output_paths()
-    for target in (core_path, app_path):
-        target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(text, encoding="utf-8")
+    core_path.parent.mkdir(parents=True, exist_ok=True)
+    app_path.parent.mkdir(parents=True, exist_ok=True)
+    core_path.write_text(
+        json.dumps(full, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    app_payload = {
+        "spec": "phase8",
+        "imsfe_source": "ims-backtest@v0.2.0",
+        "tolerance": 1e-9,
+        "block": slim_block_for_app(block),
+    }
+    # Compact JSON for faster first ranking fetch.
+    app_path.write_text(
+        json.dumps(app_payload, separators=(",", ":"), sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
     return core_path

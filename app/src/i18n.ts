@@ -1,193 +1,23 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-
-const nav = {
-  en: {
-    home: "Home",
-    catalog: "Data catalog",
-    builder: "Index builder",
-    ranking: "Ranking",
-    matrix: "Strategic matrix",
-    map: "Market map",
-    uncertainty: "Uncertainty",
-    backtest: "Backtest",
-    time: "Time explorer",
-    cite: "Cite & export",
-    byod: "BYOD",
-    docs: "Docs",
-  },
-  es: {
-    home: "Inicio",
-    catalog: "Catálogo de datos",
-    builder: "Constructor",
-    ranking: "Ranking",
-    matrix: "Matriz estratégica",
-    map: "Mapa de mercados",
-    uncertainty: "Incertidumbre",
-    backtest: "Backtest",
-    time: "Explorador temporal",
-    cite: "Citar y exportar",
-    byod: "BYOD",
-    docs: "Documentación",
-  },
-} as const;
-
-const resources = {
-  en: {
-    translation: {
-      appName: "IMS Atlas",
-      tagline:
-        "Build, compare, stress-test and backtest international market selection indices.",
-      home: "Home",
-      language: "Language",
-      theme: "Theme",
-      themeLight: "Light",
-      themeDark: "Dark",
-      statusNote: "In development — first public version coming soon",
-      dataRelease: "Data release",
-      footerCredit:
-        "Developed within the R&D&I project [project name/code] of AISERV SYSTEMS SLU (Madrid, Spain).",
-      footerRepo: "GitHub repository",
-      footerBacktest: "ims-backtest",
-      mainNav: "Main",
-      configPanel: "Analysis config",
-      origin: "Origin",
-      year: "Year",
-      product: "Product (HS)",
-      region: "Candidate region",
-      minImports: "Min imports (USD)",
-      variables: "Variables",
-      weightScheme: "Weights",
-      factorWeights: "Factor weights",
-      presetExpert2025: "IMSFE expert 2025",
-      weightsEqual: "Equal",
-      weightsManual: "Manual (sliders)",
-      missingThreshold: "Missing-data threshold",
-      normalization: "Normalisation",
-      method: "Method",
-      saveProject: "Save",
-      exportProject: "Export JSON",
-      importProject: "Import JSON",
-      examplePermalinks: "Example permalinks",
-      catalogIntro: "Variables by factor with licence badges and coverage heatmaps.",
-      permalinkState: "Permalink config",
-      loading: "Loading…",
-      status: "Status",
-      coverage: "Coverage",
-      selectVariable: "Select a variable",
-      stubSoon: "This view arrives in a later phase.",
-      builderIntro:
-        "Configure origin, product, year, candidates, variables and weights in the left panel.",
-      builderHint:
-        "Until redistributable release data ships, rankings use the COL HS64 2023 demo panel (imsfe golden).",
-      presetColHs64: "Load COL · HS64 · 2023 · IMSFE",
-      openRanking: "Open ranking →",
-      hs4Manual: "type a 4–6 digit code in HS",
-      rerankMs: "Re-rank time",
-      rank: "Rank",
-      score: "Score",
-      flags: "Flags",
-      imputed: "imputed",
-      mapLicence:
-        "Map boundaries: Natural Earth 110m (public domain). Loaded from Natural Earth Vector via jsDelivr.",
-      matrixIntro:
-        "IMSFE-style attractiveness × fit scatter. Bubble size tracks the index score; dashed lines are cut-offs.",
-      matrixCutoff: "Cut-offs",
-      cutoffMedian: "Median",
-      cutoffFixed: "Fixed",
-      attractiveness: "Attractiveness",
-      fit: "Fit",
-      quadrant: "Quadrant",
-      mapIntro:
-        "VOSviewer-like layout: SMACOF MDS on normalised criteria profiles, seeded k-means clusters, zoom/pan.",
-      mapSeed: "Layout seed",
-      mapColor: "Colour by",
-      colorCluster: "Cluster",
-      colorQuadrant: "Quadrant",
-      nav: nav.en,
-    },
-  },
-  es: {
-    translation: {
-      appName: "IMS Atlas",
-      tagline:
-        "Construye, compara, estresa y valida índices de selección de mercados internacionales.",
-      home: "Inicio",
-      language: "Idioma",
-      theme: "Tema",
-      themeLight: "Claro",
-      themeDark: "Oscuro",
-      statusNote: "En desarrollo — la primera versión pública estará disponible pronto",
-      dataRelease: "Publicación de datos",
-      footerCredit:
-        "Developed within the R&D&I project [project name/code] of AISERV SYSTEMS SLU (Madrid, Spain).",
-      footerRepo: "Repositorio en GitHub",
-      footerBacktest: "ims-backtest",
-      mainNav: "Principal",
-      configPanel: "Configuración",
-      origin: "Origen",
-      year: "Año",
-      product: "Producto (HS)",
-      region: "Región de candidatos",
-      minImports: "Importaciones mín. (USD)",
-      variables: "Variables",
-      weightScheme: "Pesos",
-      factorWeights: "Pesos por factor",
-      presetExpert2025: "IMSFE expert 2025",
-      weightsEqual: "Iguales",
-      weightsManual: "Manual (sliders)",
-      missingThreshold: "Umbral de missing",
-      normalization: "Normalización",
-      method: "Método",
-      saveProject: "Guardar",
-      exportProject: "Exportar JSON",
-      importProject: "Importar JSON",
-      examplePermalinks: "Permalinks de ejemplo",
-      catalogIntro: "Variables por factor con licencias y mapas de cobertura.",
-      permalinkState: "Config del permalink",
-      loading: "Cargando…",
-      status: "Estado",
-      coverage: "Cobertura",
-      selectVariable: "Selecciona una variable",
-      stubSoon: "Esta vista llegará en una fase posterior.",
-      builderIntro:
-        "Configura origen, producto, año, candidatos, variables y pesos en el panel izquierdo.",
-      builderHint:
-        "Hasta que haya datos redistribuibles verificados, el ranking usa el panel demo COL HS64 2023 (golden imsfe).",
-      presetColHs64: "Cargar COL · HS64 · 2023 · IMSFE",
-      openRanking: "Abrir ranking →",
-      hs4Manual: "escribe un código de 4–6 dígitos en HS",
-      rerankMs: "Tiempo de re-ranking",
-      rank: "Puesto",
-      score: "Puntuación",
-      flags: "Flags",
-      imputed: "imputado",
-      mapLicence:
-        "Fronteras: Natural Earth 110m (dominio público). Cargado desde Natural Earth Vector vía jsDelivr.",
-      matrixIntro:
-        "Dispersión atractividad × encaje (estilo IMSFE). El tamaño sigue la puntuación; las líneas son cortes.",
-      matrixCutoff: "Cortes",
-      cutoffMedian: "Mediana",
-      cutoffFixed: "Fijos",
-      attractiveness: "Atractividad",
-      fit: "Encaje",
-      quadrant: "Cuadrante",
-      mapIntro:
-        "Mapa tipo VOSviewer: MDS SMACOF sobre perfiles normalizados, k-means con semilla, zoom/pan.",
-      mapSeed: "Semilla",
-      mapColor: "Color por",
-      colorCluster: "Clúster",
-      colorQuadrant: "Cuadrante",
-      nav: nav.es,
-    },
-  },
-} as const;
+import { en } from "./locales/en";
 
 void i18n.use(initReactI18next).init({
-  resources,
+  resources: {
+    en: { translation: en },
+  },
   lng: "en",
   fallbackLng: "en",
   interpolation: { escapeValue: false },
 });
+
+/** Lazy-load Spanish bundle on first switch (keeps EN first paint smaller). */
+export async function ensureLanguage(lang: "en" | "es"): Promise<void> {
+  if (lang === "es" && !i18n.hasResourceBundle("es", "translation")) {
+    const mod = await import("./locales/es");
+    i18n.addResourceBundle("es", "translation", mod.default, true, true);
+  }
+  await i18n.changeLanguage(lang);
+}
 
 export default i18n;

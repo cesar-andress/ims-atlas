@@ -58,7 +58,8 @@ export default defineConfig(({ mode }) => {
               !d.includes("Catalog") &&
               !d.includes("WorldChoropleth") &&
               !d.includes("FactorBars") &&
-              !d.includes("StrategicScatter"),
+              !d.includes("StrategicScatter") &&
+              !d.includes("ConfigPanel"),
           ),
       },
       rollupOptions: {
@@ -79,7 +80,6 @@ export default defineConfig(({ mode }) => {
               if (id.includes("i18next") || id.includes("react-i18next")) {
                 return "i18n";
               }
-              if (id.includes("/zod/")) return "zod";
             }
             if (id.includes("/core/src/")) return "core";
             return undefined;
