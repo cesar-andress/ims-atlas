@@ -1,9 +1,8 @@
 import type { ReactNode } from "react";
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AppNav } from "./AppNav";
+import { PermalinkLink } from "./PermalinkLink";
 import { useAnalysis } from "../state/useAnalysis";
-import { configToSearch } from "../state/urlState";
 import { ensureLanguage, useTranslation } from "../i18n";
 import { applyTheme, readStoredTheme, type ThemeMode } from "../theme";
 
@@ -32,14 +31,7 @@ export function AppHeader() {
   return (
     <header className="topbar" data-testid="site-header">
       <div className="brand">
-        <Link
-          to={{
-            pathname: "/",
-            search: configToSearch({ ...config, view: "home" }),
-          }}
-        >
-          {t("appName")}
-        </Link>
+        <PermalinkLink view="home">{t("appName")}</PermalinkLink>
       </div>
       <AppNav />
       <div className="controls">

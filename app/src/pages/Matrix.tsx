@@ -83,7 +83,17 @@ export function Matrix() {
                 {[...matrix.points]
                   .sort((a, b) => a.rank - b.rank)
                   .map((p) => (
-                    <tr key={p.iso3} data-iso3={p.iso3} data-quadrant={p.quadrant}>
+                    <tr
+                      key={p.iso3}
+                      data-iso3={p.iso3}
+                      data-quadrant={p.quadrant}
+                      className={
+                        p.iso3 === config.compareA || p.iso3 === config.compareB
+                          ? "selected"
+                          : undefined
+                      }
+                      onClick={() => setConfig({ compareA: p.iso3 })}
+                    >
                       <td>{p.iso3}</td>
                       <td>{p.attractiveness.toFixed(4)}</td>
                       <td>{p.fit.toFixed(4)}</td>

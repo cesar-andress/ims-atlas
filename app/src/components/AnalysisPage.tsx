@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
-import { Link } from "react-router-dom";
 import { useTranslation } from "../i18n";
 import { useAnalysis } from "../state/useAnalysis";
 import { COL_HS64_PRESET } from "../state/schema";
-import { configToSearch, pathForView } from "../state/urlState";
 import { isAnalysisReady } from "../state/views";
 import { AnalysisSummary } from "./AnalysisSummary";
+import { AnalysisTabs } from "./AnalysisTabs";
+import { PermalinkLink } from "./PermalinkLink";
 import type { RankingViewModel } from "../ranking/rankingEngine";
 
 type Props = {
@@ -36,10 +36,6 @@ export function AnalysisPage({
   const { config, setConfig } = useAnalysis();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
   const ready = isAnalysisReady(config);
-  const builderTo = {
-    pathname: pathForView("builder"),
-    search: configToSearch({ ...config, view: "builder" }),
-  };
 
   return (
     <section
@@ -50,6 +46,7 @@ export function AnalysisPage({
       <header className="analysis-page-header">
         <h1 id={`${testId}-title`}>{t(titleKey)}</h1>
         {intro ? <p className="muted">{intro}</p> : null}
+        <AnalysisTabs />
         <p className="analysis-context muted" data-testid="analysis-context">
           {config.origin ?? "—"} / HS{config.hs ?? "—"} / {config.year ?? "—"} ·{" "}
           {config.weightScheme ?? "expert_mean"} · {config.mcdm ?? "wsm"}
@@ -82,7 +79,7 @@ export function AnalysisPage({
             >
               {t("presetColHs64")}
             </button>{" "}
-            <Link to={builderTo}>{t("nav.builder")}</Link>
+            <PermalinkLink view="builder">{t("nav.builder")}</PermalinkLink>
           </p>
         </div>
       ) : null}

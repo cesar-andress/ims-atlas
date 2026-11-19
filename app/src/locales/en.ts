@@ -39,6 +39,7 @@ export const en = {
   permalinkState: "Permalink config",
   loading: "Loading…",
   navMore: "More",
+  analysisViews: "Analysis views",
   analysisNeedConfig:
     "Set origin, product (HS) and year in the config panel, or load the demo preset.",
   homeStart: "Start in Builder",

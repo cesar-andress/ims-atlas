@@ -39,6 +39,7 @@ const es = {
   permalinkState: "Config del permalink",
   loading: "Cargando…",
   navMore: "Más",
+  analysisViews: "Vistas de análisis",
   analysisNeedConfig:
     "Define origen, producto (HS) y año en el panel, o carga el preset de demostración.",
   homeStart: "Empezar en Builder",

@@ -1,6 +1,7 @@
 import { lazy, Suspense, useMemo, useState } from "react";
 import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
+import { formatScore } from "../format";
 import { useRankingModel } from "../ranking/useRankingModel";
 import { useAnalysis } from "../state/useAnalysis";
 import type { RankingViewModel } from "../ranking/rankingEngine";
@@ -13,10 +14,6 @@ const WorldChoropleth = lazy(() =>
 const FactorBars = lazy(() =>
   import("../components/FactorBars").then((m) => ({ default: m.FactorBars })),
 );
-
-function formatScore(score: number): string {
-  return score.toFixed(4);
-}
 
 function RankingBody({ model }: { model: RankingViewModel }) {
   const { t } = useTranslation();

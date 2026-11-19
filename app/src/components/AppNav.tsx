@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
+import { PermalinkLink } from "./PermalinkLink";
 import { useTranslation } from "../i18n";
 import { useAnalysis } from "../state/useAnalysis";
-import { configToSearch, pathForView } from "../state/urlState";
 import { PRIMARY_VIEWS, SECONDARY_VIEWS } from "../state/views";
 import type { ViewId } from "../state/schema";
 
@@ -16,14 +15,10 @@ const PREFETCH: Partial<Record<ViewId, () => Promise<unknown>>> = {
 function NavItem({ view }: { view: ViewId }) {
   const { t } = useTranslation();
   const { config } = useAnalysis();
-  const to = {
-    pathname: pathForView(view),
-    search: configToSearch({ ...config, view }),
-  };
 
   return (
-    <Link
-      to={to}
+    <PermalinkLink
+      view={view}
       className={config.view === view ? "active" : undefined}
       onMouseEnter={() => {
         const load = PREFETCH[view];
@@ -31,7 +26,7 @@ function NavItem({ view }: { view: ViewId }) {
       }}
     >
       {t(`nav.${view}`)}
-    </Link>
+    </PermalinkLink>
   );
 }
 

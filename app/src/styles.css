@@ -322,6 +322,30 @@ main {
   margin-bottom: 0.5rem;
 }
 
+.analysis-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.5rem 0 0.75rem;
+}
+
+.analysis-tabs a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 0.35rem;
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.analysis-tabs a.active,
+.analysis-tabs a:hover {
+  color: var(--fg);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+}
+
 .analysis-context {
   margin: 0.25rem 0 0.75rem;
   font-size: 0.9rem;

@@ -22,6 +22,7 @@ export function ConfigPanel() {
     useAnalysis();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
   const [hsQuery, setHsQuery] = useState(config.hs ?? "");
+  const [hsDraft, setHsDraft] = useState(config.hs ?? "");
   const [originDraft, setOriginDraft] = useState(config.origin ?? "");
   const [yearDraft, setYearDraft] = useState(
     config.year !== undefined ? String(config.year) : "",
@@ -37,6 +38,7 @@ export function ConfigPanel() {
   // Keep local drafts in sync when permalink / preset changes config.
   useEffect(() => {
     setHsQuery(config.hs ?? "");
+    setHsDraft(config.hs ?? "");
   }, [config.hs]);
   useEffect(() => {
     setOriginDraft(config.origin ?? "");
@@ -116,6 +118,7 @@ export function ConfigPanel() {
                     onClick={() => {
                       setConfig({ hs: p.code });
                       setHsQuery(p.code);
+                      setHsDraft(p.code);
                     }}
                   >
                     {hsLabel(p.code, lang)}
@@ -132,14 +135,16 @@ export function ConfigPanel() {
           <label>
             HS
             <input
-              value={config.hs ?? ""}
+              value={hsDraft}
               maxLength={6}
               data-testid="hs-input"
               onChange={(e) =>
-                setConfig({
-                  hs: e.target.value.replace(/\D/g, "").slice(0, 6) || undefined,
-                })
+                setHsDraft(e.target.value.replace(/\D/g, "").slice(0, 6))
               }
+              onBlur={() => {
+                setConfig({ hs: hsDraft || undefined });
+                setHsQuery(hsDraft);
+              }}
             />
           </label>
 
