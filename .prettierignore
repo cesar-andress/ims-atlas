@@ -12,4 +12,5 @@ etl/tests/fixtures/**
 core/fixtures/
 app/public/meta/
 app/public/geo/
+app/e2e/fixtures/
 

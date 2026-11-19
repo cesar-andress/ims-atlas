@@ -17,6 +17,9 @@ export type DemoPanel = {
   importVolume: Record<string, number>;
   coveragePct: Record<string, number>;
   expectedExpertRanking: { iso3: string; score: number; rank: number }[];
+  /** BYOD-only ids omitted from the public demo (gate). */
+  excludedByod: { id: string; reason: string }[];
+  notes: string[];
 };
 
 type GoldenFile = {
@@ -28,6 +31,8 @@ type GoldenFile = {
     candidates: string[];
     raw: Record<string, number | null | string>[];
     ranking_expert: { iso3: string; score: number; rank: number }[];
+    notes?: string[];
+    excluded_byod?: { id: string; reason: string }[];
   };
 };
 
@@ -86,6 +91,8 @@ export async function loadDemoPanel(): Promise<DemoPanel> {
       importVolume,
       coveragePct,
       expectedExpertRanking: block.ranking_expert,
+      excludedByod: block.excluded_byod ?? [],
+      notes: block.notes ?? [],
     };
     return cache;
   })();

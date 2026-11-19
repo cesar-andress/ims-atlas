@@ -80,6 +80,11 @@ function RankingBody({ model }: { model: RankingViewModel }) {
         <span>
           n={model.ranking.length} · imputed={model.prepared.nImputedCells}
         </span>
+        {model.panel.excludedByod.length > 0 ? (
+          <p className="muted small" data-testid="demo-byod-note">
+            {t("demoByodExcluded")}
+          </p>
+        ) : null}
       </div>
 
       <div className="ranking-layout">

@@ -31,13 +31,24 @@ def test_write_phase8_goldens(tmp_path: Path) -> None:
 
 
 def test_default_output_paths_exist_after_write() -> None:
-    core_path, app_path = default_output_paths()
+    core_path, e2e_path, public_path = default_output_paths()
     write_phase8_goldens()
     assert core_path.is_file()
-    assert app_path.is_file()
-    app = json.loads(app_path.read_text(encoding="utf-8"))
+    assert e2e_path.is_file()
+    assert public_path.is_file()
+    e2e = json.loads(e2e_path.read_text(encoding="utf-8"))
+    public = json.loads(public_path.read_text(encoding="utf-8"))
+    # Full panel (private e2e) keeps TARIF/CULT; public demo must not.
+    e2e_ids = [v["id"] for v in e2e["block"]["variables"]]
+    pub_ids = [v["id"] for v in public["block"]["variables"]]
+    assert "TARIF" in e2e_ids and "CULT" in e2e_ids
+    assert "TARIF" not in pub_ids and "CULT" not in pub_ids
+    for row in public["block"]["raw"]:
+        assert "TARIF" not in row and "CULT" not in row
+    assert public["block"]["excluded_byod"]
     # Browser payload stays lean (no recomputable matrices).
-    assert "prepared_matrix" not in app["block"]
-    assert "raw" in app["block"]
-    assert "ranking_expert" in app["block"]
-    assert app_path.stat().st_size < core_path.stat().st_size
+    assert "prepared_matrix" not in public["block"]
+    assert "raw" in public["block"]
+    assert "ranking_expert" in public["block"]
+    assert public_path.stat().st_size < core_path.stat().st_size
+    assert e2e_path.stat().st_size < core_path.stat().st_size

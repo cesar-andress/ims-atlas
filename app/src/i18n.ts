@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import { en } from "./locales/en";
+import { parseConfigFromSearch } from "./state/urlState";
 
 type Lang = "en" | "es";
 /** Nested message tree (EN/ES string leaves differ; avoid literal-type coupling). */
@@ -27,6 +28,8 @@ const enDict: Dict = en;
 
 /** Module bridge so callers can await language switches without prop drilling. */
 let changeLanguageImpl: ((lang: Lang) => Promise<void>) | null = null;
+/** Queued when ensureLanguage runs before the provider mounts its impl. */
+let pendingLang: Lang | null = null;
 
 function lookup(dict: Dict, key: string): string {
   const parts = key.split(".");
@@ -41,24 +44,37 @@ function lookup(dict: Dict, key: string): string {
   return typeof cur === "string" ? cur : key;
 }
 
-export async function ensureLanguage(lang: Lang): Promise<void> {
-  if (changeLanguageImpl) {
-    await changeLanguageImpl(lang);
-    return;
+function langFromSearch(): Lang {
+  if (typeof window === "undefined") return "en";
+  try {
+    const cfg = parseConfigFromSearch(window.location.search);
+    return cfg.lang === "es" ? "es" : "en";
+  } catch {
+    return "en";
   }
+}
+
+export async function ensureLanguage(lang: Lang): Promise<void> {
   if (lang === "es" && !esBundle) {
     esBundle = (await import("./locales/es")).default;
   }
+  if (changeLanguageImpl) {
+    await changeLanguageImpl(lang);
+    pendingLang = null;
+    return;
+  }
+  pendingLang = lang;
 }
 
 export function I18nProvider({
   children,
-  initialLang = "en",
+  initialLang,
 }: {
   children: ReactNode;
   initialLang?: Lang;
 }) {
-  const [language, setLanguage] = useState<Lang>(initialLang);
+  const bootLang = initialLang ?? langFromSearch();
+  const [language, setLanguage] = useState<Lang>(bootLang);
   const [, setEsReady] = useState(0);
 
   const changeLanguage = useCallback(async (lang: Lang) => {
@@ -74,10 +90,23 @@ export function I18nProvider({
 
   useEffect(() => {
     changeLanguageImpl = changeLanguage;
+    const queued = pendingLang;
+    pendingLang = null;
+    if (queued) {
+      void changeLanguage(queued);
+    } else if (bootLang === "es") {
+      void changeLanguage("es");
+    }
     return () => {
       changeLanguageImpl = null;
     };
-  }, [changeLanguage]);
+  }, [bootLang, changeLanguage]);
+
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      document.documentElement.lang = language;
+    }
+  }, [language]);
 
   const dict = language === "es" && esBundle ? esBundle : enDict;
 

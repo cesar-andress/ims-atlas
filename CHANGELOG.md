@@ -2,6 +2,16 @@
 
 All notable changes to IMS Atlas are documented in this file.
 
+## [Unreleased]
+
+### Fixed
+
+- Public demo panel no longer ships BYOD raw values for TARIF/CULT; full panel
+  lives under `app/e2e/fixtures/` only. ETL `test_public_licence_guard` blocks
+  redistributable:false / byod_only value keys in `app/public` and `app/dist`.
+- Permalink `lang=es` applies on first paint; P(top-k) table sorts by P(top-10);
+  Spanish footer credit string.
+
 ## [1.0.0] — 2026-11-19
 
 ### Added

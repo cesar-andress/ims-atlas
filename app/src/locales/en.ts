@@ -15,6 +15,9 @@ export const en = {
     "Developed within the R&D&I project [project name/code] of AISERV SYSTEMS SLU (Madrid, Spain).",
   footerRepo: "GitHub repository",
   footerBacktest: "ims-backtest",
+  demoByodExcluded:
+    "Public demo excludes BYOD variables TARIF and CULT (redistributable: false). Upload your own values under BYOD, or use the private e2e fixture for the full paper ranking.",
+  demoByodExcludedShort: "Demo without TARIF/CULT (BYOD)",
   mainNav: "Main",
   configPanel: "Analysis config",
   origin: "Origin",

@@ -31,7 +31,10 @@ export function Uncertainty() {
         p5: pTop5[i]!,
         p10: pTop10[i]!,
       }))
-      .sort((a, b) => b.p1 - a.p1)
+      .sort(
+        (a, b) =>
+          b.p10 - a.p10 || b.p5 - a.p5 || b.p1 - a.p1 || a.iso3.localeCompare(b.iso3),
+      )
       .slice(0, 15);
   }, [smaaModel]);
 

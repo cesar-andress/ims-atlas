@@ -320,10 +320,15 @@ def build_col_hs64_block(*, seed: int = 64_2023) -> dict[str, Any]:
     }
 
 
-def default_output_paths() -> tuple[Path, Path]:
+# BYOD / non-redistributable ids must never ship under app/public.
+_PUBLIC_DROP_IDS = frozenset({"TARIF", "CULT"})
+
+
+def default_output_paths() -> tuple[Path, Path, Path]:
     root = repo_root()
     return (
         root / "core" / "fixtures" / "phase8" / "golden.json",
+        root / "app" / "e2e" / "fixtures" / "phase8_col_hs64_full.json",
         root / "app" / "public" / "meta" / "phase8_col_hs64.json",
     )
 
@@ -350,6 +355,93 @@ def slim_block_for_app(block: dict[str, Any]) -> dict[str, Any]:
     return {k: block[k] for k in _APP_BLOCK_KEYS if k in block}
 
 
+def _ranking_from_raw(
+    candidates: list[str],
+    variables: list[dict[str, Any]],
+    raw_rows: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """Re-score a slim panel (same seed values) after dropping BYOD columns."""
+    columns = [v["id"] for v in variables]
+    directions = {v["id"]: v["direction"] for v in variables}
+    frame = pd.DataFrame(
+        [
+            {
+                "iso3_d": row["iso3"],
+                **{
+                    col: (np.nan if row.get(col) is None else float(row[col]))
+                    for col in columns
+                },
+            }
+            for row in raw_rows
+        ],
+    )
+    # Preserve candidate order from the full block.
+    frame = frame.set_index("iso3_d").loc[candidates].reset_index()
+    policy = MissingDataSettings(
+        max_missing_share=0.2,
+        impute="median",
+        min_candidates=20,
+    )
+    prep = prepare_block(frame, columns, settings=_settings(policy), missing=policy)
+    used = prep.used_variables
+    used_dirs = {c: directions[c] for c in used}
+    subset_vars = [
+        VariableConfig(
+            id=v["id"],
+            name=v["id"],
+            factor=v["factor"],  # type: ignore[arg-type]
+            direction=v["direction"],  # type: ignore[arg-type]
+            source="synthetic",
+            code=v["id"],
+            transform="none",
+            origin_specific=False,
+        )
+        for v in variables
+        if v["id"] in used
+    ]
+    subset = VariablesConfig(factors=list(_FACTORS), variables=subset_vars)  # type: ignore[arg-type]
+    w_expert = expert_weights_like_core(subset)
+    normalized = normalize_matrix(prep.matrix, used_dirs, "minmax")  # type: ignore[arg-type]
+    scores = mcdm_score(
+        prep.matrix,
+        w_expert,
+        used_dirs,  # type: ignore[arg-type]
+        "wsm",
+        normalized=normalized,
+    )
+    ordered = scores.sort_values(ascending=False)
+    return [
+        {"iso3": str(iso), "score": float(sc), "rank": rank}
+        for rank, (iso, sc) in enumerate(ordered.items(), start=1)
+    ]
+
+
+def slim_block_for_public(block: dict[str, Any]) -> dict[str, Any]:
+    """Public demo: drop BYOD raw columns and recompute expert ranking."""
+    slim = slim_block_for_app(block)
+    variables = [v for v in slim["variables"] if v["id"] not in _PUBLIC_DROP_IDS]
+    keep = {v["id"] for v in variables}
+    raw = []
+    for row in slim["raw"]:
+        out: dict[str, Any] = {"iso3": row["iso3"]}
+        for col in keep:
+            out[col] = row.get(col)
+        raw.append(out)
+    ranking = _ranking_from_raw(list(slim["candidates"]), variables, raw)
+    slim["variables"] = variables
+    slim["raw"] = raw
+    slim["ranking_expert"] = ranking
+    slim["notes"] = [
+        "Public demo without BYOD variables TARIF and CULT (gate: byod_only).",
+        "Full ranking: app/e2e/fixtures/phase8_col_hs64_full.json",
+    ]
+    slim["excluded_byod"] = [
+        {"id": "TARIF", "reason": "redistributable:false / byod_only"},
+        {"id": "CULT", "reason": "redistributable:false / byod_only"},
+    ]
+    return slim
+
+
 def write_phase8_goldens(path: Path | None = None) -> Path:
     block = build_col_hs64_block()
     full = {
@@ -365,22 +457,30 @@ def write_phase8_goldens(path: Path | None = None) -> Path:
             encoding="utf-8",
         )
         return path
-    core_path, app_path = default_output_paths()
-    core_path.parent.mkdir(parents=True, exist_ok=True)
-    app_path.parent.mkdir(parents=True, exist_ok=True)
+    core_path, e2e_path, public_path = default_output_paths()
+    for p in (core_path, e2e_path, public_path):
+        p.parent.mkdir(parents=True, exist_ok=True)
     core_path.write_text(
         json.dumps(full, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
-    app_payload = {
+    e2e_payload = {
         "spec": "phase8",
         "imsfe_source": "ims-backtest@v0.2.0",
         "tolerance": 1e-9,
         "block": slim_block_for_app(block),
     }
+    e2e_path.write_text(
+        json.dumps(e2e_payload, separators=(",", ":"), sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    public_payload = {
+        "provenance": "phase10-fix public demo (no TARIF/CULT raw values)",
+        "block": slim_block_for_public(block),
+    }
     # Compact JSON for faster first ranking fetch.
-    app_path.write_text(
-        json.dumps(app_payload, separators=(",", ":"), sort_keys=True) + "\n",
+    public_path.write_text(
+        json.dumps(public_payload, separators=(",", ":"), sort_keys=True) + "\n",
         encoding="utf-8",
     )
     return core_path
