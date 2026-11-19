@@ -69,6 +69,11 @@ const DataReleases = lazy(() =>
     default: m.DataReleases,
   })),
 );
+const DataUpdates = lazy(() =>
+  import("./pages/transparency/DataUpdates").then((m) => ({
+    default: m.DataUpdates,
+  })),
+);
 
 function RouteFallback() {
   const { t } = useTranslation();
@@ -117,6 +122,7 @@ function AppShell() {
           <Route path="/data/variables/:id" element={<DataVariable />} />
           <Route path="/data/pipeline" element={<DataPipeline />} />
           <Route path="/data/releases" element={<DataReleases />} />
+          <Route path="/data/updates" element={<DataUpdates />} />
         </Routes>
       </Suspense>
     </AppShellFrame>

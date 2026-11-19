@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message:StructureSpecificData xmlns:message="urn:test:message" xmlns:ss="urn:test:ss">
+<message:DataSet><Series PRODUCTCODE="640399" REPORTER="x" PARTNER="170" DATATYPE="Reported"><Obs TIME_PERIOD="2019" OBS_VALUE="5.0" NBR_NA_LINES="0"/></Series><Series PRODUCTCODE="640510" REPORTER="x" PARTNER="170" DATATYPE="Reported"><Obs TIME_PERIOD="2019" OBS_VALUE="8.0" NBR_NA_LINES="1"/></Series><Series PRODUCTCODE="850000" REPORTER="x" PARTNER="170" DATATYPE="Reported"><Obs TIME_PERIOD="2019" OBS_VALUE="1.0" NBR_NA_LINES="0"/></Series><Series PRODUCTCODE="6403" REPORTER="x" PARTNER="170" DATATYPE="Reported"><Obs TIME_PERIOD="2019" OBS_VALUE="2.0" NBR_NA_LINES="0"/></Series><Series PRODUCTCODE="640419" REPORTER="x" PARTNER="170" DATATYPE="Reported"><Obs TIME_PERIOD="2018" OBS_VALUE="7.0" NBR_NA_LINES="0"/></Series></message:DataSet>
+</message:StructureSpecificData>

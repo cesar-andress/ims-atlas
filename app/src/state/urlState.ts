@@ -87,6 +87,7 @@ export function pathForView(view: ViewId, focusVariable?: string): string {
   if (view === "data_sources") return "/data/sources";
   if (view === "data_pipeline") return "/data/pipeline";
   if (view === "data_releases") return "/data/releases";
+  if (view === "data_updates") return "/data/updates";
   if (view === "data_variable") {
     const id = focusVariable && focusVariable.length > 0 ? focusVariable : "_";
     return `/data/variables/${id}`;
@@ -101,6 +102,7 @@ export function viewFromPath(pathname: string): ViewId {
   if (clean === "/data/sources") return "data_sources";
   if (clean === "/data/pipeline") return "data_pipeline";
   if (clean === "/data/releases") return "data_releases";
+  if (clean === "/data/updates") return "data_updates";
   if (clean.startsWith("/data/variables/")) return "data_variable";
   const seg = clean.replace(/^\//, "").split("/")[0] ?? "home";
   const parsed = ViewIdSchema.safeParse(seg);

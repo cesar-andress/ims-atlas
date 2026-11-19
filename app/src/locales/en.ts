@@ -59,6 +59,24 @@ export const en = {
     "Lineage DAG and last run log from status/lineage.json and status/runs/.",
   transparencyReleasesIntro:
     "Published releases and manifest fields from the release JSON.",
+  transparencyUpdatesIntro:
+    "Timeline of ETL runs and readable diffs versus the previous live ingest of each source.",
+  transparencyUpdatesEmpty:
+    "No ETL run history has been published yet. After the first live run, diffs appear here.",
+  transparencyUpdatesNoDiff: "No per-source diff text for this run.",
+  fixtureStatusBanner:
+    "This status page shows a fixture pipeline run (mini_world test data), not a live ingest. Do not treat versions or row counts as production.",
+  copy: "Copy",
+  copied: "Copied",
+  copyFailed: "Could not copy",
+  newsPillFirst: "Updates",
+  newsPillNone: "No new updates",
+  newsPillCount: "{n} updates since your last visit",
+  transparencyVarUpdated: "Updated",
+  transparencyVarNextExpected: "Next expected (by cadence)",
+  transparencyVarNewCells: "New cells since previous ingest",
+  transparencyEndpoints: "Endpoint templates",
+  transparencyDaysAgo: "{n} days ago",
   transparencyRelease: "Current release",
   transparencyFreshnessAt: "Freshness generated at",
   transparencyQaStatus: "QA status",
@@ -171,11 +189,14 @@ export const en = {
   variableValue: "Variable / factor value (T6 ablation)",
   variableValueHint:
     "Walk-forward ΔNDCG@10 when adding fit / competition blocks on top of a macro base (paper T6).",
-  looRankSensitivity: "Leave-one-out rank sensitivity (demo panel)",
+  looRankSensitivity: "Leave-one-out rank sensitivity",
   looHint:
-    "Spearman of ranks after dropping each variable on the current demo panel. Not a walk-forward backtest.",
+    "Spearman of ranks after dropping each variable on the current analysis panel. Not a walk-forward backtest.",
   timeIntro:
-    "Bump chart of destination ranks over years for the COL · HS64 expert WSM series (imsfe panel ranks).",
+    "Bump chart of destination ranks over years when a multi-year panel is available for the chosen origin and product.",
+  appUpdateBanner:
+    "A newer version of IMS Atlas is available. Reload to leave stale map or ranking state behind.",
+  appUpdateReload: "Reload",
   citeIntro:
     "Permalink, citation formats, and exports for the current analysis. DOIs are placeholders until Zenodo deposits exist.",
   doiPending: "DOI placeholders",
@@ -268,7 +289,7 @@ export const en = {
       q3: "Why are some variables missing from the public release?",
       a3: "Only variables with redistributable licence and verified status may ship. Others are BYOD or local-only.",
       q4: "Why can Time explorer ranks differ from the Ranking view?",
-      a4: "The demo Ranking panel uses the phase-8 golden export; Time uses a multi-year imsfe panel rank series. Both are labelled with provenance; they are not silently spliced.",
+      a4: "The public data release is still empty (pending). Ranking and Time only show ranks when the same real panel is loaded (or when e2e injects a private fixture). They are not silently spliced from different panels.",
     },
   },
   nav: navEn,

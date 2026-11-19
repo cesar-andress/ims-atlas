@@ -1,4 +1,4 @@
-.PHONY: setup lint test e2e figures build etl pipeline-fixture release-staging promote-release release-data catalog-port catalog-validate check-live rights-report qa lineage coverage-report phase3-report export-phase5-goldens export-phase6-goldens export-phase8-goldens dev cname pin-backtest typecheck
+.PHONY: setup lint test e2e figures build etl pipeline-fixture pipeline-live release-staging promote-release release-data catalog-port catalog-validate check-live rights-report qa lineage coverage-report phase3-report export-phase5-goldens export-phase6-goldens export-phase8-goldens dev cname pin-backtest typecheck
 
 NODE_VERSION := 20
 PNPM ?= pnpm
@@ -50,6 +50,9 @@ etl:
 
 pipeline-fixture:
 	cd etl && $(UV) run atlas-etl run --fixture-root tests/fixtures/mini_world --force
+
+pipeline-live:
+	cd etl && $(UV) run atlas-etl run --live
 
 qa:
 	cd etl && $(UV) run atlas-etl qa

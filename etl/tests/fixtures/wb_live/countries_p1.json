@@ -1,0 +1,38 @@
+[
+  {
+    "page": 1,
+    "pages": 1,
+    "per_page": 400,
+    "total": 3,
+    "lastupdated": "2024-01-15"
+  },
+  [
+    {
+      "id": "COL",
+      "iso2Code": "CO",
+      "name": "Colombia",
+      "region": {
+        "id": "LCN",
+        "value": "Latin America & Caribbean"
+      }
+    },
+    {
+      "id": "ESP",
+      "iso2Code": "ES",
+      "name": "Spain",
+      "region": {
+        "id": "ECS",
+        "value": "Europe & Central Asia"
+      }
+    },
+    {
+      "id": "WLD",
+      "iso2Code": "1W",
+      "name": "World",
+      "region": {
+        "id": "NA",
+        "value": "Aggregates"
+      }
+    }
+  ]
+]

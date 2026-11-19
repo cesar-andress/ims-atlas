@@ -4,13 +4,41 @@ from __future__ import annotations
 
 import csv
 import json
-import shutil
+import re
 from pathlib import Path
 from typing import Any
 
 from imsatlas_etl.catalog import load_catalog
 from imsatlas_etl.paths import repo_root
+from imsatlas_etl.pipeline.changes import (
+    changes_dir,
+    read_history,
+    readable_source_summary,
+    variables_status_fields,
+)
 from imsatlas_etl.sources import load_sources
+
+FIXTURE_BANNER = (
+    "Fixture pipeline artefact (mini_world test data). "
+    "Not a live ingest and not a production data release."
+)
+_FIXTURE_MARKERS = re.compile(
+    r'"mode": "fixture"|"fixture_mode": true|"is_fixture": true|"mini-',
+)
+
+
+def payload_is_fixture(payload: object) -> bool:
+    """True when a status payload carries fixture-mode or mini-world markers."""
+    return bool(_FIXTURE_MARKERS.search(json.dumps(payload, sort_keys=True)))
+
+
+def with_fixture_flag(payload: dict[str, Any], is_fixture: bool) -> dict[str, Any]:
+    """Copy of ``payload`` with an explicit ``is_fixture`` flag (+ banner text)."""
+    out = {k: v for k, v in payload.items() if k != "fixture_banner"}
+    out["is_fixture"] = is_fixture
+    if is_fixture:
+        out["fixture_banner"] = FIXTURE_BANNER
+    return out
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -135,8 +163,16 @@ def _sources_payload(
 def _variables_payload(
     manifest: dict[str, Any] | None,
     coverage: dict[str, dict[str, dict[str, int]]],
+    freshness: dict[str, Any],
+    *,
+    root: Path,
 ) -> dict[str, Any]:
     catalog = load_catalog()
+    status_fields = variables_status_fields(
+        catalog["variables"],
+        freshness,
+        root=root,
+    )
     gates = {
         str(g["id"]): g
         for g in (manifest or {}).get("variables", [])
@@ -163,6 +199,7 @@ def _variables_payload(
                 "gate": gate,
                 "coverage": coverage.get(vid),
                 "download_allowed": bool(gate and gate.get("included")),
+                **status_fields.get(vid, {}),
             },
         )
     return {
@@ -186,19 +223,40 @@ def write_transparency_bundle(
     qa = _read_json(status_src / "qa.json")
     lineage = _read_json(status_src / "lineage.json")
 
-    _write_json(public_status / "freshness.json", freshness)
-    _write_json(public_status / "qa.json", qa)
-    _write_json(public_status / "lineage.json", lineage)
-
     latest = _latest_run(status_src / "runs")
     run_payload: dict[str, Any] | None = None
     if latest is not None:
         run_payload = _read_json(latest)
+
+    # Fixture honesty: anything derived from a fixture-mode run or freshness is
+    # flagged is_fixture:true in every public payload (SPEC: no fake "live").
+    fixture = payload_is_fixture(freshness) or (
+        run_payload is not None and payload_is_fixture(run_payload)
+    )
+    freshness = with_fixture_flag(freshness, fixture)
+    for name, payload in (
+        ("freshness.json", freshness),
+        ("qa.json", with_fixture_flag(qa, fixture)),
+        ("lineage.json", with_fixture_flag(lineage, fixture)),
+    ):
+        _write_json(public_status / name, payload)
+        _write_json(status_src / name, payload)
+
+    if latest is not None and run_payload is not None:
         runs_out = public_status / "runs"
         runs_out.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(latest, runs_out / latest.name)
-        _write_json(public_status / "runs" / "latest.json", run_payload)
-        _write_json(status_src / "runs" / "latest.json", run_payload)
+        flagged_run = with_fixture_flag(run_payload, payload_is_fixture(run_payload))
+        _write_json(runs_out / latest.name, flagged_run)
+        _write_json(runs_out / "latest.json", flagged_run)
+        _write_json(status_src / "runs" / "latest.json", flagged_run)
+    runs_out = public_status / "runs"
+    for old in sorted(runs_out.glob("*.json")) if runs_out.is_dir() else []:
+        if old.name in {latest.name if latest else "", "latest.json"}:
+            continue
+        old_payload = _read_json(old)
+        _write_json(
+            old, with_fixture_flag(old_payload, payload_is_fixture(old_payload))
+        )
 
     current_ptr = (
         (root / "data" / "release" / "public" / "CURRENT")
@@ -217,20 +275,27 @@ def write_transparency_bundle(
         manifest = _read_json(manifest_path)
         dest_rel = root / "app" / "public" / "data" / f"v{version}"
         dest_rel.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(manifest_path, dest_rel / "manifest.json")
+        _write_json(
+            dest_rel / "manifest.json",
+            with_fixture_flag(manifest, payload_is_fixture(manifest)),
+        )
         # Also mirror CHANGELOG/README when present (text, not invented).
         for name in ("CHANGELOG.md", "README.md", "LICENSES.md"):
             src = manifest_path.parent / name
             if src.is_file():
-                shutil.copy2(src, dest_rel / name)
+                (dest_rel / name).write_bytes(src.read_bytes())
         (root / "app" / "public" / "data" / "CURRENT").write_text(
             f"{version}\n",
             encoding="utf-8",
         )
 
     coverage = _coverage_matrices(status_src / "coverage")
-    sources = _sources_payload(freshness, manifest)
-    variables = _variables_payload(manifest, coverage)
+    bundle_fixture = fixture or (manifest is not None and payload_is_fixture(manifest))
+    sources = with_fixture_flag(_sources_payload(freshness, manifest), bundle_fixture)
+    variables = with_fixture_flag(
+        _variables_payload(manifest, coverage, freshness, root=root),
+        bundle_fixture,
+    )
 
     releases = {
         "schema": "transparency-releases/v1",
@@ -249,6 +314,58 @@ def write_transparency_bundle(
         ],
     }
 
+    history_rows = read_history(root=root)
+    updates_runs: list[dict[str, Any]] = []
+    changes_out = public_status / "changes"
+    changes_out.mkdir(parents=True, exist_ok=True)
+    src_changes = changes_dir(root=root)
+    for entry in reversed(history_rows[-50:]):
+        run_id = str(entry.get("run_id") or "")
+        change_payload: dict[str, Any] | None = None
+        change_path = src_changes / f"{run_id}.json" if run_id else None
+        if change_path is not None and change_path.is_file():
+            change_payload = _read_json(change_path)
+            _write_json(
+                changes_out / f"{run_id}.json",
+                with_fixture_flag(
+                    change_payload,
+                    payload_is_fixture(change_payload) or bundle_fixture,
+                ),
+            )
+        summaries: list[str] = []
+        for sid, diff in ((change_payload or {}).get("sources") or {}).items():
+            if isinstance(diff, dict):
+                summaries.append(readable_source_summary(str(sid), diff))
+        updates_runs.append(
+            {
+                "run_id": run_id,
+                "mode": entry.get("mode"),
+                "status": entry.get("status"),
+                "started_at": entry.get("started_at"),
+                "ended_at": entry.get("ended_at"),
+                "summaries": summaries,
+                "n_new_cells": entry.get("n_new_cells"),
+                "n_revised_cells": entry.get("n_revised_cells"),
+            },
+        )
+    updates = with_fixture_flag(
+        {
+            "schema": "transparency-updates/v1",
+            "generated_from": "status/history.jsonl + status/changes/",
+            "runs": updates_runs,
+            "n_runs": len(updates_runs),
+        },
+        bundle_fixture,
+    )
+    history_public = with_fixture_flag(
+        {
+            "schema": "transparency-history/v1",
+            "runs": history_rows[-200:],
+            "n_runs": len(history_rows),
+        },
+        bundle_fixture,
+    )
+
     index = {
         "schema": "transparency-index/v1",
         "paths": {
@@ -259,6 +376,8 @@ def write_transparency_bundle(
             "sources": "/status/sources.json",
             "variables": "/status/variables.json",
             "releases": "/status/releases.json",
+            "updates": "/status/updates.json",
+            "history": "/status/history.json",
             "manifest": f"/data/v{version}/manifest.json",
         },
         "current_release": version,
@@ -271,13 +390,16 @@ def write_transparency_bundle(
         "n_sources": sources["n_sources"],
         "n_variables": variables["n_variables"],
         "n_lineage_edges": len(lineage.get("edges") or []),
+        "n_history_runs": len(history_rows),
     }
 
     for name, payload in (
         ("sources.json", sources),
         ("variables.json", variables),
-        ("releases.json", releases),
-        ("index.json", index),
+        ("releases.json", with_fixture_flag(releases, bundle_fixture)),
+        ("updates.json", updates),
+        ("history.json", history_public),
+        ("index.json", with_fixture_flag(index, bundle_fixture)),
     ):
         _write_json(public_status / name, payload)
         # Host nginx serves /status/ from repo status/ (not app/dist).
@@ -288,4 +410,5 @@ def write_transparency_bundle(
         "release_version": version,
         "n_sources": str(sources["n_sources"]),
         "n_variables": str(variables["n_variables"]),
+        "is_fixture": str(bundle_fixture).lower(),
     }

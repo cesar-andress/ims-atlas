@@ -1,0 +1,26 @@
+[
+  {
+    "page": 2,
+    "pages": 2,
+    "per_page": 3,
+    "total": 6,
+    "lastupdated": "2024-03-28"
+  },
+  [
+    {
+      "countryiso3code": "ESP",
+      "date": "2022",
+      "value": 47500000
+    },
+    {
+      "countryiso3code": "ESP",
+      "date": "2021",
+      "value": null
+    },
+    {
+      "countryiso3code": "",
+      "date": "2022",
+      "value": 1
+    }
+  ]
+]

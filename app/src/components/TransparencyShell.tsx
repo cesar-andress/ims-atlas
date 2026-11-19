@@ -11,6 +11,7 @@ const TRANSPARENCY_VIEWS: readonly ViewId[] = [
   "data_variable",
   "data_pipeline",
   "data_releases",
+  "data_updates",
 ];
 
 type Props = {

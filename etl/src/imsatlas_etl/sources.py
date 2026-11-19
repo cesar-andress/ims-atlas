@@ -9,6 +9,7 @@ from typing import Any
 import yaml
 from jsonschema import Draft202012Validator
 
+from imsatlas_etl.landing_hosts import check_landing_hosts
 from imsatlas_etl.paths import sources_schema_path, sources_yaml_path
 
 
@@ -76,6 +77,7 @@ def validate_sources(
                         "snapshot_sha256",
                     )
 
+    errors.extend(check_landing_hosts(sources if isinstance(sources, list) else []))
     return errors
 
 

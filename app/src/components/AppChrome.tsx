@@ -2,7 +2,9 @@ import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { version as APP_VERSION } from "@ims-atlas/core";
 import { AppNav } from "./AppNav";
+import { AppUpdateBanner } from "./AppUpdateBanner";
 import { PermalinkLink } from "./PermalinkLink";
+import { UpdatesNewsPill } from "./UpdatesNewsPill";
 import { dataConfig } from "../dataConfig";
 import { useAnalysis } from "../state/useAnalysis";
 import { ensureLanguage, useTranslation } from "../i18n";
@@ -36,6 +38,7 @@ export function AppHeader() {
         <PermalinkLink view="home">{t("appName")}</PermalinkLink>
       </div>
       <AppNav />
+      <UpdatesNewsPill />
       <div className="controls">
         <label>
           {t("language")}{" "}
@@ -98,6 +101,7 @@ export function AppShellFrame({
       <a className="skip-link" href="#main-content">
         {t("skipToContent")}
       </a>
+      <AppUpdateBanner />
       <AppHeader />
       <div className={`workspace ${showConfig ? "with-config" : ""}`}>
         {showConfig ? configSlot : null}

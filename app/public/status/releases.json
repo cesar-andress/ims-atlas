@@ -1,5 +1,7 @@
 {
   "current": "1.0.0",
+  "fixture_banner": "Fixture pipeline artefact (mini_world test data). Not a live ingest and not a production data release.",
+  "is_fixture": true,
   "releases": [
     {
       "created_at": "2026-11-19T19:29:09Z",

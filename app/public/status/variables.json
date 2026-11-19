@@ -1,5 +1,7 @@
 {
+  "fixture_banner": "Fixture pipeline artefact (mini_world test data). Not a live ingest and not a production data release.",
   "generated_from": "catalog/variables.yaml + release manifest + status/coverage",
+  "is_fixture": true,
   "n_variables": 27,
   "schema": "transparency-variables/v1",
   "variables": [
@@ -26,10 +28,14 @@
         ]
       },
       "id": "IMPV",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
       "name": {
         "en": "HS chapter imports (USD)",
         "es": "Importaciones del cap\u00edtulo HS (USD)"
       },
+      "new_cells_since_previous": null,
       "redistributable": true,
       "source_ids": [
         "baci"
@@ -66,10 +72,14 @@
         ]
       },
       "id": "IMPC",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_upstream_change": "2026-11-11",
       "name": {
         "en": "HS chapter imports per capita",
         "es": "Importaciones del cap\u00edtulo HS per c\u00e1pita"
       },
+      "new_cells_since_previous": 7803,
       "redistributable": true,
       "source_ids": [
         "baci",
@@ -104,10 +114,14 @@
         ]
       },
       "id": "GRW",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
       "name": {
         "en": "HS chapter import growth (3-year CAGR)",
         "es": "Crecimiento de importaciones del cap\u00edtulo HS (CAGR 3 a\u00f1os)"
       },
+      "new_cells_since_previous": null,
       "redistributable": true,
       "source_ids": [
         "baci"
@@ -141,10 +155,14 @@
         ]
       },
       "id": "GDPPC",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_upstream_change": "2026-11-11",
       "name": {
         "en": "GDP per capita PPP",
         "es": "PIB per c\u00e1pita PPA"
       },
+      "new_cells_since_previous": 6968,
       "redistributable": true,
       "source_ids": [
         "worldbank_wdi"
@@ -178,10 +196,14 @@
         ]
       },
       "id": "DIST",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
       "name": {
         "en": "Population-weighted distance",
         "es": "Distancia ponderada por poblaci\u00f3n"
       },
+      "new_cells_since_previous": null,
       "redistributable": true,
       "source_ids": [
         "cepi_gravity"
@@ -215,10 +237,14 @@
         ]
       },
       "id": "TARIF",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
       "name": {
         "en": "Applied preferential tariff (AHS), origin to destination",
         "es": "Arancel preferencial aplicado (AHS), origen a destino"
       },
+      "new_cells_since_previous": null,
       "redistributable": false,
       "source_ids": [
         "wits_trains"
@@ -252,10 +278,14 @@
         ]
       },
       "id": "FTA",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
       "name": {
         "en": "Preferential trade agreement in force",
         "es": "Acuerdo comercial preferencial en vigor"
       },
+      "new_cells_since_previous": null,
       "redistributable": true,
       "source_ids": [
         "cepi_gravity"
@@ -289,10 +319,14 @@
         ]
       },
       "id": "LPI",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_upstream_change": "2026-11-11",
       "name": {
         "en": "Logistics Performance Index (overall)",
         "es": "\u00cdndice de desempe\u00f1o log\u00edstico (global)"
       },
+      "new_cells_since_previous": 1068,
       "redistributable": true,
       "source_ids": [
         "worldbank_lpi"
@@ -326,10 +360,14 @@
         ]
       },
       "id": "ASIASH",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
       "name": {
         "en": "China+Vietnam share of destination HS imports",
         "es": "Cuota China+Vietnam en importaciones HS del destino"
       },
+      "new_cells_since_previous": null,
       "redistributable": true,
       "source_ids": [
         "baci"
@@ -363,10 +401,14 @@
         ]
       },
       "id": "HHI",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
       "name": {
         "en": "Supplier concentration (HHI) in destination HS imports",
         "es": "Concentraci\u00f3n de proveedores (HHI) en importaciones HS"
       },
+      "new_cells_since_previous": null,
       "redistributable": true,
       "source_ids": [
         "baci"
@@ -400,10 +442,14 @@
         ]
       },
       "id": "UVGAP",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
       "name": {
         "en": "Absolute log unit-value gap (destination imports vs origin exports)",
         "es": "Brecha absoluta de valor unitario en log"
       },
+      "new_cells_since_previous": null,
       "redistributable": true,
       "source_ids": [
         "baci"
@@ -437,10 +483,14 @@
         ]
       },
       "id": "CULT",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
       "name": {
         "en": "Cultural distance (Kogut-Singh, Hofstede 6 dimensions)",
         "es": "Distancia cultural (Kogut-Singh, Hofstede 6 dimensiones)"
       },
+      "new_cells_since_previous": null,
       "redistributable": false,
       "source_ids": [
         "hofstede"
@@ -474,10 +524,14 @@
         ]
       },
       "id": "LANG",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
       "name": {
         "en": "Common official language",
         "es": "Idioma oficial com\u00fan"
       },
+      "new_cells_since_previous": null,
       "redistributable": true,
       "source_ids": [
         "cepi_gravity"
@@ -511,10 +565,14 @@
         ]
       },
       "id": "INFL",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_upstream_change": "2026-11-11",
       "name": {
         "en": "Inflation deviation from 2 percent",
         "es": "Desviaci\u00f3n de la inflaci\u00f3n respecto al 2 por ciento"
       },
+      "new_cells_since_previous": 6193,
       "redistributable": true,
       "source_ids": [
         "worldbank_wdi"
@@ -548,10 +606,14 @@
         ]
       },
       "id": "UNEMP",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_upstream_change": "2026-11-11",
       "name": {
         "en": "Unemployment rate",
         "es": "Tasa de desempleo"
       },
+      "new_cells_since_previous": 6531,
       "redistributable": true,
       "source_ids": [
         "worldbank_wdi"
@@ -585,10 +647,14 @@
         ]
       },
       "id": "GOV",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_upstream_change": "2026-09-25",
       "name": {
         "en": "Mean Worldwide Governance Indicators",
         "es": "Media de Worldwide Governance Indicators"
       },
+      "new_cells_since_previous": 25910,
       "redistributable": true,
       "source_ids": [
         "worldbank_wgi"
@@ -622,10 +688,14 @@
         ]
       },
       "id": "EOC",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_upstream_change": "2026-11-11",
       "name": {
         "en": "External Opening Coefficient (trade/GDP)",
         "es": "Coeficiente de apertura externa (comercio/PIB)"
       },
+      "new_cells_since_previous": 6134,
       "redistributable": true,
       "source_ids": [
         "worldbank_wdi"
@@ -659,10 +729,14 @@
         ]
       },
       "id": "REEXP",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
       "name": {
         "en": "Re-export intensity (chapter X_j / M_j)",
         "es": "Intensidad de reexportaci\u00f3n (cap\u00edtulo X_j / M_j)"
       },
+      "new_cells_since_previous": null,
       "redistributable": true,
       "source_ids": [
         "baci"
@@ -712,10 +786,14 @@
         ]
       },
       "id": "ITU_IDI",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
       "name": {
         "en": "ICT Development Index",
         "es": "\u00cdndice de desarrollo de las TIC"
       },
+      "new_cells_since_previous": null,
       "redistributable": false,
       "source_ids": [
         "itu_datahub"
@@ -765,10 +843,14 @@
         ]
       },
       "id": "EF_EPI",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
       "name": {
         "en": "EF English Proficiency Index",
         "es": "\u00cdndice de dominio del ingl\u00e9s EF"
       },
+      "new_cells_since_previous": null,
       "redistributable": false,
       "source_ids": [
         "ef_epi"
@@ -818,10 +900,14 @@
         ]
       },
       "id": "ODIN",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
       "name": {
         "en": "Open Data Inventory overall score",
         "es": "Puntuaci\u00f3n global Open Data Inventory"
       },
+      "new_cells_since_previous": null,
       "redistributable": false,
       "source_ids": [
         "odin"
@@ -871,10 +957,14 @@
         ]
       },
       "id": "GEDI",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
       "name": {
         "en": "Global Entrepreneurship Index",
         "es": "\u00cdndice global de emprendimiento (GEDI)"
       },
+      "new_cells_since_previous": null,
       "redistributable": false,
       "source_ids": [
         "gedi"
@@ -924,10 +1014,14 @@
         ]
       },
       "id": "GII",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
       "name": {
         "en": "Global Innovation Index",
         "es": "\u00cdndice global de innovaci\u00f3n"
       },
+      "new_cells_since_previous": null,
       "redistributable": true,
       "source_ids": [
         "wipo_gii"
@@ -977,10 +1071,14 @@
         ]
       },
       "id": "STARTUPBLINK",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
       "name": {
         "en": "Global Startup Ecosystem Index",
         "es": "\u00cdndice global de ecosistemas startup"
       },
+      "new_cells_since_previous": null,
       "redistributable": false,
       "source_ids": [
         "startupblink"
@@ -1030,10 +1128,14 @@
         ]
       },
       "id": "EPI",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": null,
+      "last_upstream_change": "2022-12-31",
       "name": {
         "en": "Environmental Performance Index",
         "es": "\u00cdndice de desempe\u00f1o ambiental"
       },
+      "new_cells_since_previous": null,
       "redistributable": false,
       "source_ids": [
         "yale_epi"
@@ -1083,10 +1185,14 @@
         ]
       },
       "id": "CO2PC",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_upstream_change": "2026-11-11",
       "name": {
         "en": "CO2 emissions excluding LULUCF per capita (t CO2e/capita)",
         "es": "Emisiones de CO2 excl. UTCUTS per c\u00e1pita (t CO2e/c\u00e1pita)"
       },
+      "new_cells_since_previous": 7096,
       "redistributable": true,
       "source_ids": [
         "worldbank_wdi"
@@ -1136,10 +1242,14 @@
         ]
       },
       "id": "PLI",
+      "last_checked": "2026-11-19T20:52:34Z",
+      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_upstream_change": "2026-11-11",
       "name": {
         "en": "Price level index (households and NPISHs final consumption)",
         "es": "\u00cdndice de nivel de precios (consumo final hogares y NPSH)"
       },
+      "new_cells_since_previous": 6320,
       "redistributable": true,
       "source_ids": [
         "worldbank_wdi"

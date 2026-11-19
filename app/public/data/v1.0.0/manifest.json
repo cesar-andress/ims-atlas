@@ -27,6 +27,8 @@
       "sha256": "55655a3f024c6f3f06d3f0fc12f99755b7a942abbe2256a65b354ca8119d6926"
     }
   ],
+  "fixture_banner": "Fixture pipeline artefact (mini_world test data). Not a live ingest and not a production data release.",
+  "is_fixture": true,
   "n_included_variables": 0,
   "promoted_at": "2026-11-19T19:29:32Z",
   "promoted_by": "C\u00e9sar Andr\u00e9s",

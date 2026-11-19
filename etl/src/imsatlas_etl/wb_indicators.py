@@ -39,6 +39,22 @@ def world_bank_codes_from_catalog(data: dict[str, Any] | None = None) -> list[st
     return sorted(codes)
 
 
+def world_bank_codes_for_source(
+    source_id: str,
+    data: dict[str, Any] | None = None,
+) -> list[str]:
+    """WB-style codes of catalog variables that list ``source_id`` in source_ids."""
+    catalog = data or load_catalog()
+    scoped = {
+        "variables": [
+            var
+            for var in catalog.get("variables", [])
+            if isinstance(var, dict) and source_id in (var.get("source_ids") or [])
+        ],
+    }
+    return world_bank_codes_from_catalog(scoped)
+
+
 def fixture_path(code: str) -> Path:
     safe = code.replace(".", "_")
     return FIXTURES_DIR / f"{safe}.json"

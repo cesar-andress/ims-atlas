@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 from imsatlas_etl.paths import repo_root
@@ -77,3 +78,53 @@ def qa_json_path(*, root: Path | None = None) -> Path:
 
 def lineage_path(*, root: Path | None = None) -> Path:
     return status_root(root) / "lineage.json"
+
+
+# Canonical raw table per source; a version dir counts as ingested only once
+# one of these exists (partial live pulls leave pages/ or xml/ behind).
+TABLE_FILES = (
+    "indicators.csv",
+    "trade.csv",
+    "bilateral.csv",
+    "tariffs.csv",
+    "dimensions.csv",
+    "values.csv",
+)
+
+
+def _table_mode(version_dir: Path) -> tuple[Path, str | None] | None:
+    for name in TABLE_FILES:
+        table = version_dir / name
+        if table.is_file():
+            meta = table.with_suffix(table.suffix + ".meta.json")
+            mode = None
+            if meta.is_file():
+                mode = json.loads(meta.read_text(encoding="utf-8")).get("mode")
+            return table, mode
+    return None
+
+
+def ingested_versions(
+    source_id: str,
+    *,
+    mode: str | None = None,
+    root: Path | None = None,
+) -> list[str]:
+    """Ingested raw versions, oldest to newest (by table mtime).
+
+    With ``mode`` set, versions written by the other mode are ignored so that
+    fixture and live raw data never masquerade as each other.
+    """
+    base = data_root(root) / "raw" / source_id
+    if not base.is_dir():
+        return []
+    found: list[tuple[int, str]] = []
+    for path in base.iterdir():
+        info = _table_mode(path) if path.is_dir() else None
+        if info is None:
+            continue
+        table, table_mode = info
+        if mode is not None and table_mode not in (None, mode):
+            continue
+        found.append((table.stat().st_mtime_ns, path.name))
+    return [name for _mtime, name in sorted(found)]

@@ -1,6 +1,9 @@
 # Local-only project docs and agent config (never commit)
 SPEC.md
 PROMPTS.md
+PROMPTS_GUI.md
+PROMPTS_ADVANCE.md
+WORKBOOK_SOURCES.md
 .cursor/
 
 # Dependencies and build
@@ -26,6 +29,9 @@ data/raw/
 data/curated/
 data/release/
 data/local/
+# Manual drops (BYOD): only the per-source README.md is tracked.
+data/manual/*/*
+!data/manual/*/README.md
 # Host ETL outputs (root). SPA mirrors live under app/public/status/.
 /status/
 .env

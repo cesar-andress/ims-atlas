@@ -1,4 +1,4 @@
-import { useTranslation } from "../../i18n";
+import { FixtureStatusBanner } from "../../components/FixtureStatusBanner";
 import { TransparencyShell } from "../../components/TransparencyShell";
 import {
   loadFreshness,
@@ -6,6 +6,7 @@ import {
   loadLatestRun,
   loadQa,
 } from "../../data/transparency";
+import { useTranslation } from "../../i18n";
 import { useAsyncResource } from "../../state/useAsyncResource";
 
 export function DataStatus() {
@@ -30,40 +31,53 @@ export function DataStatus() {
       {loading || !data ? (
         <p className="muted">{t("loading")}</p>
       ) : (
-        <dl className="status-grid" data-testid="status-summary">
-          <dt>{t("transparencyRelease")}</dt>
-          <dd data-from-json="current_release">{data.index.current_release}</dd>
-          <dt>{t("transparencyFreshnessAt")}</dt>
-          <dd data-from-json="freshness_generated_at">
-            {String(
-              data.index.freshness_generated_at ?? data.freshness.generated_at ?? "—",
+        <>
+          <FixtureStatusBanner
+            isFixture={Boolean(
+              data.index.is_fixture ??
+              (data.freshness as { is_fixture?: boolean }).is_fixture,
             )}
-          </dd>
-          <dt>{t("transparencyQaStatus")}</dt>
-          <dd data-from-json="qa_status">
-            {String(data.index.qa_status ?? data.qa.status)}
-          </dd>
-          <dt>{t("transparencyQaWarn")}</dt>
-          <dd data-from-json="qa_n_warn">
-            {String(data.index.qa_n_warn ?? data.qa.n_warn)}
-          </dd>
-          <dt>{t("transparencyQaBlock")}</dt>
-          <dd data-from-json="qa_n_block">
-            {String(data.index.qa_n_block ?? data.qa.n_block)}
-          </dd>
-          <dt>{t("transparencyLastRun")}</dt>
-          <dd data-from-json="latest_run_id">
-            {String(data.index.latest_run_id ?? data.run.run_id)}
-          </dd>
-          <dt>{t("transparencyLastRunStatus")}</dt>
-          <dd data-from-json="latest_run_status">
-            {String(data.index.latest_run_status ?? data.run.status)}
-          </dd>
-          <dt>{t("transparencyNSources")}</dt>
-          <dd data-from-json="n_sources">{String(data.index.n_sources)}</dd>
-          <dt>{t("transparencyNVariables")}</dt>
-          <dd data-from-json="n_variables">{String(data.index.n_variables)}</dd>
-        </dl>
+            message={
+              data.index.fixture_banner ??
+              (data.freshness as { fixture_banner?: string | null }).fixture_banner ??
+              null
+            }
+          />
+          <dl className="status-grid" data-testid="status-summary">
+            <dt>{t("transparencyRelease")}</dt>
+            <dd data-from-json="current_release">{data.index.current_release}</dd>
+            <dt>{t("transparencyFreshnessAt")}</dt>
+            <dd data-from-json="freshness_generated_at">
+              {String(
+                data.index.freshness_generated_at ?? data.freshness.generated_at ?? "—",
+              )}
+            </dd>
+            <dt>{t("transparencyQaStatus")}</dt>
+            <dd data-from-json="qa_status">
+              {String(data.index.qa_status ?? data.qa.status)}
+            </dd>
+            <dt>{t("transparencyQaWarn")}</dt>
+            <dd data-from-json="qa_n_warn">
+              {String(data.index.qa_n_warn ?? data.qa.n_warn)}
+            </dd>
+            <dt>{t("transparencyQaBlock")}</dt>
+            <dd data-from-json="qa_n_block">
+              {String(data.index.qa_n_block ?? data.qa.n_block)}
+            </dd>
+            <dt>{t("transparencyLastRun")}</dt>
+            <dd data-from-json="latest_run_id">
+              {String(data.index.latest_run_id ?? data.run.run_id)}
+            </dd>
+            <dt>{t("transparencyLastRunStatus")}</dt>
+            <dd data-from-json="latest_run_status">
+              {String(data.index.latest_run_status ?? data.run.status)}
+            </dd>
+            <dt>{t("transparencyNSources")}</dt>
+            <dd data-from-json="n_sources">{String(data.index.n_sources)}</dd>
+            <dt>{t("transparencyNVariables")}</dt>
+            <dd data-from-json="n_variables">{String(data.index.n_variables)}</dd>
+          </dl>
+        </>
       )}
     </TransparencyShell>
   );

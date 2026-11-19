@@ -27,6 +27,9 @@ from imsatlas_etl.sources import (
 from imsatlas_etl.verify import verify_variable
 from imsatlas_etl.wb_indicators import check_live_all_catalog_codes
 
+EXIT_FAILURE = 1  # QA block or any pipeline failure
+EXIT_UNREACHABLE = 2  # upstream unreachable or required manual drop missing
+
 app = typer.Typer(add_completion=False, no_args_is_help=True, help="IMS Atlas ETL")
 
 
@@ -182,13 +185,18 @@ def check_cmd(
     """Probe upstream versions -> status/freshness.json."""
     from pathlib import Path
 
+    from imsatlas_etl.connectors.http import SourceUnavailableError
     from imsatlas_etl.pipeline.check import run_check
 
-    rows = run_check(
-        sources=_parse_sources(source),
-        fixture_root=Path(fixture_root) if fixture_root else None,
-        force=force,
-    )
+    try:
+        rows = run_check(
+            sources=_parse_sources(source),
+            fixture_root=Path(fixture_root) if fixture_root else None,
+            force=force,
+        )
+    except SourceUnavailableError as exc:
+        typer.secho(str(exc), fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=EXIT_UNREACHABLE) from exc
     stale = sum(1 for r in rows if r.get("stale"))
     typer.echo(
         f"atlas-etl {__version__}: check ok ({len(rows)} sources, {stale} stale)",
@@ -207,23 +215,21 @@ def extract_cmd(
     ] = None,
     force: Annotated[bool, typer.Option("--force")] = False,
 ) -> None:
-    """Download/copy into data/raw/<source>/<version>/."""
+    """Copy fixtures, or (no --fixture-root) pull live / ingest manual drops."""
     from pathlib import Path
 
+    from imsatlas_etl.connectors.http import SourceUnavailableError
     from imsatlas_etl.pipeline.extract import run_extract
 
-    if fixture_root is None:
-        typer.secho(
-            "extract currently requires --fixture-root (live zip/API extract Phase 2+)",
-            fg=typer.colors.RED,
-            err=True,
+    try:
+        results = run_extract(
+            sources=_parse_sources(source),
+            fixture_root=Path(fixture_root) if fixture_root else None,
+            force=force,
         )
-        raise typer.Exit(code=1)
-    results = run_extract(
-        sources=_parse_sources(source),
-        fixture_root=Path(fixture_root),
-        force=force,
-    )
+    except SourceUnavailableError as exc:
+        typer.secho(str(exc), fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=EXIT_UNREACHABLE) from exc
     typer.echo(f"atlas-etl {__version__}: extract ok ({len(results)} sources)")
 
 
@@ -274,15 +280,33 @@ def run_cmd(
         typer.Option("--fixture-root", help="Offline fixtures directory"),
     ] = None,
     force: Annotated[bool, typer.Option("--force")] = False,
+    live: Annotated[
+        bool,
+        typer.Option(
+            "--live",
+            help=(
+                "Live run (mode=live): check, extract, validate, transform, qa, "
+                "lineage. Exit 0 ok, 1 QA block/failure, 2 source unreachable."
+            ),
+        ),
+    ] = False,
 ) -> None:
-    """Run check -> extract -> validate -> transform (DAG)."""
+    """Run the DAG: fixture mode (--fixture-root) or live mode (--live)."""
     from pathlib import Path
 
+    from imsatlas_etl.connectors.http import SourceUnavailableError
     from imsatlas_etl.pipeline.runner import run_pipeline
 
-    if fixture_root is None:
+    if live and fixture_root is not None:
         typer.secho(
-            "run currently requires --fixture-root for extract",
+            "--live and --fixture-root are mutually exclusive",
+            fg=typer.colors.RED,
+            err=True,
+        )
+        raise typer.Exit(code=1)
+    if not live and fixture_root is None:
+        typer.secho(
+            "run requires --fixture-root (offline) or --live",
             fg=typer.colors.RED,
             err=True,
         )
@@ -290,16 +314,23 @@ def run_cmd(
     try:
         log = run_pipeline(
             sources=_parse_sources(source),
-            fixture_root=Path(fixture_root),
+            fixture_root=Path(fixture_root) if fixture_root else None,
             force=force,
         )
+    except SourceUnavailableError as exc:
+        typer.secho(str(exc), fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=EXIT_UNREACHABLE) from exc
     except Exception as exc:
         typer.secho(str(exc), fg=typer.colors.RED, err=True)
-        raise typer.Exit(code=1) from exc
+        raise typer.Exit(code=EXIT_FAILURE) from exc
     counts = log.get("steps", {}).get("transform", {}).get("row_counts", {})
     typer.echo(
-        f"atlas-etl {__version__}: run ok id={log['run_id']} rows={counts}",
+        f"atlas-etl {__version__}: run {log['status']} mode={log['mode']} "
+        f"id={log['run_id']} rows={counts}",
     )
+    if log["status"] == "qa_blocked":
+        typer.secho("QA blocked: see status/qa.md", fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=EXIT_FAILURE)
 
 
 @app.command("build")
@@ -310,8 +341,8 @@ def build(
     ] = None,
     force: Annotated[bool, typer.Option("--force")] = False,
 ) -> None:
-    """Alias for `run` (full DAG)."""
-    run_cmd(source=None, fixture_root=fixture_root, force=force)
+    """Alias for `run` in fixture mode (full DAG)."""
+    run_cmd(source=None, fixture_root=fixture_root, force=force, live=False)
 
 
 @app.command("qa")

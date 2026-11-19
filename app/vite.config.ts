@@ -1,5 +1,44 @@
+import { execSync } from "node:child_process";
+import { readFileSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv, type Plugin } from "vite";
+
+const appRoot = dirname(fileURLToPath(import.meta.url));
+
+/** Write /version.json so clients can detect a newer deploy and reload. */
+function emitVersionJson(): Plugin {
+  return {
+    name: "ims-atlas-version-json",
+    apply: "build",
+    writeBundle(outputOptions) {
+      const dir = outputOptions.dir;
+      if (!dir) return;
+      let buildId = process.env.VITE_BUILD_ID || process.env.GITHUB_SHA || "";
+      if (!buildId) {
+        try {
+          buildId = execSync("git rev-parse HEAD", { encoding: "utf8" }).trim();
+        } catch {
+          buildId = `local-${Date.now()}`;
+        }
+      }
+      const pkg = JSON.parse(readFileSync(join(appRoot, "package.json"), "utf8")) as {
+        version: string;
+      };
+      const payload = {
+        buildId,
+        version: pkg.version,
+        builtAt: new Date().toISOString(),
+      };
+      writeFileSync(
+        join(dir, "version.json"),
+        `${JSON.stringify(payload, null, 2)}\n`,
+        "utf8",
+      );
+    },
+  };
+}
 
 /** Emit Gzip companions for nginx gzip_static (hashed assets + public geo/meta). */
 function compressAssets(): Plugin {
@@ -61,7 +100,7 @@ export default defineConfig(({ mode }) => {
   const base = env.VITE_BASE || process.env.VITE_BASE || "/";
   return {
     base,
-    plugins: [react(), compressAssets()],
+    plugins: [react(), emitVersionJson(), compressAssets()],
     optimizeDeps: {
       exclude: ["@duckdb/duckdb-wasm"],
     },

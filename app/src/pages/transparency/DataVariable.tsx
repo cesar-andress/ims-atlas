@@ -4,7 +4,11 @@ import { TransparencyShell } from "../../components/TransparencyShell";
 import { displayCell } from "../../formatDisplay";
 import { useAnalysis } from "../../state/useAnalysis";
 import { useAsyncResource } from "../../state/useAsyncResource";
-import { loadVariables, type TransparencyVariable } from "../../data/transparency";
+import {
+  loadSources,
+  loadVariables,
+  type TransparencyVariable,
+} from "../../data/transparency";
 
 function varLabel(v: TransparencyVariable, lang: "en" | "es"): string {
   const name = v.name;
@@ -13,15 +17,46 @@ function varLabel(v: TransparencyVariable, lang: "en" | "es"): string {
   return name[lang] ?? name.en ?? v.id;
 }
 
+function daysAgoLabel(
+  iso: string | null | undefined,
+  t: (k: string) => string,
+): string {
+  if (!iso) return "—";
+  const then = Date.parse(iso);
+  if (Number.isNaN(then)) return iso;
+  const days = Math.max(0, Math.floor((Date.now() - then) / 86_400_000));
+  return `${iso} (${t("transparencyDaysAgo").replace("{n}", String(days))})`;
+}
+
+function nextExpectedFromCadence(
+  lastIso: string | null | undefined,
+  cadence: string | null | undefined,
+): string {
+  if (!lastIso || !cadence) return "—";
+  const then = Date.parse(lastIso);
+  if (Number.isNaN(then)) return "—";
+  const c = cadence.toLowerCase();
+  let days = 0;
+  if (c.includes("annual") || c.includes("year")) days = 365;
+  else if (c.includes("biennial")) days = 730;
+  else if (c.includes("quarter")) days = 91;
+  else if (c.includes("month")) days = 30;
+  else return "—";
+  return new Date(then + days * 86_400_000).toISOString().slice(0, 10);
+}
+
 export function DataVariable() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
   const { config, setConfig } = useAnalysis();
-  const {
-    data: rows,
-    error,
-    loading,
-  } = useAsyncResource(() => loadVariables().then((p) => p.variables), []);
+  const { data, error, loading } = useAsyncResource(async () => {
+    const [vars, sources] = await Promise.all([loadVariables(), loadSources()]);
+    const cadenceBySource = Object.fromEntries(
+      sources.sources.map((s) => [s.id, s.update_cadence ?? null]),
+    );
+    return { rows: vars.variables, cadenceBySource, isFixture: vars.is_fixture };
+  }, []);
+  const rows = data?.rows;
 
   const selected = useMemo(() => {
     if (!rows) return null;
@@ -30,6 +65,15 @@ export function DataVariable() {
     return rows.find((v) => v.id === id) ?? null;
   }, [rows, config.focusVariable]);
 
+  const selectedCadence = useMemo(() => {
+    if (!selected || !data?.cadenceBySource) return null;
+    for (const sid of selected.source_ids ?? []) {
+      const c = data.cadenceBySource[sid];
+      if (c) return c;
+    }
+    return null;
+  }, [selected, data?.cadenceBySource]);
+
   return (
     <TransparencyShell
       testId="data-variable-view"
@@ -37,7 +81,7 @@ export function DataVariable() {
       introKey="transparencyVariableIntro"
     >
       {error ? <p className="error">{error}</p> : null}
-      {loading || !rows ? (
+      {loading || !data || !rows ? (
         <p className="muted">{t("loading")}</p>
       ) : (
         <div className="variable-transparency">
@@ -89,6 +133,24 @@ export function DataVariable() {
                 <dt>{t("transparencyDownload")}</dt>
                 <dd data-from-json="download_allowed">
                   {displayCell(selected.download_allowed)}
+                </dd>
+                <dt>{t("transparencyVarUpdated")}</dt>
+                <dd data-from-json="last_upstream_change">
+                  {daysAgoLabel(
+                    selected.last_upstream_change ?? selected.last_checked,
+                    t,
+                  )}
+                </dd>
+                <dt>{t("transparencyVarNextExpected")}</dt>
+                <dd data-from-json="next_expected">
+                  {nextExpectedFromCadence(
+                    selected.last_upstream_change ?? selected.last_checked,
+                    selectedCadence,
+                  )}
+                </dd>
+                <dt>{t("transparencyVarNewCells")}</dt>
+                <dd data-from-json="new_cells_since_previous">
+                  {displayCell(selected.new_cells_since_previous)}
                 </dd>
               </dl>
 

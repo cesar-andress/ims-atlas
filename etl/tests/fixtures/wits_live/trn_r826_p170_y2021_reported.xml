@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message:StructureSpecificData xmlns:message="urn:test:message" xmlns:ss="urn:test:ss">
+<message:DataSet><Series PRODUCTCODE="640399" REPORTER="x" PARTNER="170" DATATYPE="Reported"><Obs TIME_PERIOD="2021" OBS_VALUE="3.0" NBR_NA_LINES="0"/></Series></message:DataSet>
+</message:StructureSpecificData>

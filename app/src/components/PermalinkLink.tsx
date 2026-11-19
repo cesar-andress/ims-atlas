@@ -12,6 +12,8 @@ type Props = {
   className?: string | undefined;
   children: ReactNode;
   "data-testid"?: string | undefined;
+  title?: string | undefined;
+  onClick?: (() => void) | undefined;
   onMouseEnter?: (() => void) | undefined;
   onFocus?: (() => void) | undefined;
 };
@@ -23,6 +25,8 @@ export function PermalinkLink({
   patch,
   className,
   children,
+  title,
+  onClick,
   onMouseEnter,
   onFocus,
   "data-testid": testId,
@@ -42,6 +46,8 @@ export function PermalinkLink({
       }}
       className={className}
       data-testid={testId}
+      title={title}
+      onClick={onClick}
       onMouseEnter={onMouseEnter}
       onFocus={onFocus}
     >

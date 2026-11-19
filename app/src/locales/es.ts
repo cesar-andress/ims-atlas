@@ -59,6 +59,24 @@ const es = {
     "DAG de linaje y log de la última ejecución desde status/lineage.json y status/runs/.",
   transparencyReleasesIntro:
     "Publicaciones y campos del manifiesto desde el JSON de release.",
+  transparencyUpdatesIntro:
+    "Línea temporal de ejecuciones ETL y diferencias legibles frente a la ingestión live anterior de cada fuente.",
+  transparencyUpdatesEmpty:
+    "Aún no hay historial de ejecuciones publicado. Tras la primera corrida live, los diffs aparecerán aquí.",
+  transparencyUpdatesNoDiff: "Esta ejecución no tiene texto de diff por fuente.",
+  fixtureStatusBanner:
+    "Esta página de estado muestra una corrida de fixture (datos de prueba mini_world), no una ingestión live. No trate versiones ni conteos como producción.",
+  copy: "Copiar",
+  copied: "Copiado",
+  copyFailed: "No se pudo copiar",
+  newsPillFirst: "Novedades",
+  newsPillNone: "Sin novedades",
+  newsPillCount: "{n} novedades desde tu última visita",
+  transparencyVarUpdated: "Actualizado",
+  transparencyVarNextExpected: "Próxima fecha esperada (según cadencia)",
+  transparencyVarNewCells: "Celdas nuevas desde la ingestión anterior",
+  transparencyEndpoints: "Plantillas de endpoint",
+  transparencyDaysAgo: "hace {n} días",
   transparencyRelease: "Release actual",
   transparencyFreshnessAt: "Frescura generada en",
   transparencyQaStatus: "Estado QA",
@@ -172,11 +190,14 @@ const es = {
   variableValue: "Valor de variable / factor (ablación T6)",
   variableValueHint:
     "ΔNDCG@10 walk-forward al añadir bloques de encaje / competencia sobre una base macro (T6 del paper).",
-  looRankSensitivity: "Sensibilidad leave-one-out (panel demo)",
+  looRankSensitivity: "Sensibilidad leave-one-out",
   looHint:
-    "Spearman de rangos tras quitar cada variable en el panel demo actual. No es un backtest walk-forward.",
+    "Spearman de rangos tras quitar cada variable en el panel de análisis actual. No es un backtest walk-forward.",
   timeIntro:
-    "Bump chart de rangos por año para la serie COL · HS64 WSM expert (rangos imsfe).",
+    "Bump chart de rangos por año cuando hay un panel multi-año disponible para el origen y producto elegidos.",
+  appUpdateBanner:
+    "Hay una versión más reciente de IMS Atlas. Recarga para no quedarte con un mapa o ranking obsoleto.",
+  appUpdateReload: "Recargar",
   citeIntro:
     "Permalink, citas y exportaciones del análisis actual. Los DOI son placeholders hasta Zenodo.",
   doiPending: "DOI pendientes",
@@ -266,7 +287,7 @@ const es = {
       q3: "¿Por qué faltan variables en el release público?",
       a3: "Solo se publican variables con licencia redistribuible y status verified. El resto es BYOD o local.",
       q4: "¿Por qué Time explorer puede diferir del Ranking?",
-      a4: "El Ranking demo usa el golden phase-8; Time usa una serie multi-año imsfe. Ambos llevan procedencia; no se empalman en silencio.",
+      a4: "La publicación de datos pública sigue vacía (pendiente). Ranking y Time solo muestran puestos cuando se carga el mismo panel real (o cuando e2e inyecta un fixture privado). No se empalman paneles distintos en silencio.",
     },
   },
   nav: navEs,

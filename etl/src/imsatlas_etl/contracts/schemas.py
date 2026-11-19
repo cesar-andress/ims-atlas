@@ -5,8 +5,11 @@ from __future__ import annotations
 import pandera.pandas as pa
 from pandera.pandas import Check, Column, DataFrameSchema
 
+# Earliest year accepted by raw contracts; live connectors filter (and count) below.
+MIN_YEAR = 1990
+
 ISO3 = Column(str, checks=Check.str_length(3, 3), nullable=False)
-YEAR = Column(int, checks=Check.ge(1990), nullable=False)
+YEAR = Column(int, checks=Check.ge(MIN_YEAR), nullable=False)
 
 indicators_schema = DataFrameSchema(
     {

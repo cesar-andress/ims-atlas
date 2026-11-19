@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+import pandas as pd
 import pandera.errors as pa_errors
 
 from imsatlas_etl.connectors import baci, country_index, gravity, hofstede, wits
@@ -28,7 +29,12 @@ def _version_for(source_id: str, *, root: Path | None) -> str:
     raise KeyError(source_id)
 
 
-def _load_raw(source_id: str, version: str, *, root: Path | None):
+def load_raw_table(
+    source_id: str,
+    version: str,
+    *,
+    root: Path | None = None,
+) -> pd.DataFrame:
     directory = raw_source_dir(source_id, version, root=root)
     if source_id.startswith("worldbank_"):
         return wb.load_raw_indicators(directory / "indicators.csv")
@@ -58,7 +64,7 @@ def validate_source(
 ) -> dict[str, Any]:
     schema = RAW_CONTRACTS[source_id]
     version = _version_for(source_id, root=root)
-    frame = _load_raw(source_id, version, root=root)
+    frame = load_raw_table(source_id, version, root=root)
     try:
         schema.validate(frame, lazy=True)
     except pa_errors.SchemaErrors as exc:

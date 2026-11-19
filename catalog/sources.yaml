@@ -232,17 +232,18 @@ sources:
         note: "rights not human-verified"
 
   - id: ef_epi
-    publisher: Fraser Institute
-    landing_url: https://www.fraserinstitute.org/economic-freedom
-    terms_url: https://www.fraserinstitute.org/terms-use
+    publisher: EF Education First
+    landing_url: https://www.ef.com/wwen/epi/
+    terms_url: https://www.ef.com/wwen/epi/
     licence_url: UNKNOWN
     endpoints:
-      - id: dataset
-        template: "https://www.fraserinstitute.org/economic-freedom/dataset"
+      - id: landing
+        template: "https://www.ef.com/wwen/epi/"
         method: GET
+        notes: "Manual drop only; no scrape. Human downloads the EPI release file into data/manual/ef_epi/."
     update_cadence: annual
-    version_detection: Economic Freedom of the World edition year
-    citation: "Fraser Institute. Economic Freedom of the World."
+    version_detection: EF EPI edition year (from release filename / landing)
+    citation: "EF Education First. EF English Proficiency Index."
     rights:
       licence_id: UNKNOWN
       use_research: unknown
@@ -255,7 +256,7 @@ sources:
       evidence:
         checked_by: null
         checked_on: null
-        terms_url: https://www.fraserinstitute.org/terms-use
+        terms_url: https://www.ef.com/wwen/epi/
         snapshot_sha256: null
         note: "rights not human-verified"
 

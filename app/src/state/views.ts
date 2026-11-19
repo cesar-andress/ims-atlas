@@ -25,6 +25,7 @@ export const SECONDARY_VIEWS: readonly ViewId[] = [
   "data_variable",
   "data_pipeline",
   "data_releases",
+  "data_updates",
 ] as const;
 
 /** Views that share the analysis config panel + ranking model. */

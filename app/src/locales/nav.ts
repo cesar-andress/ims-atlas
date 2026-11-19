@@ -16,6 +16,7 @@ export const navEn = {
   data_variable: "Variables",
   data_pipeline: "Pipeline DAG",
   data_releases: "Releases",
+  data_updates: "Updates",
   factors: "Factors",
   compare: "Compare",
 } as const;
@@ -38,6 +39,7 @@ export const navEs = {
   data_variable: "Variables",
   data_pipeline: "DAG del pipeline",
   data_releases: "Publicaciones",
+  data_updates: "Novedades",
   factors: "Factores",
   compare: "Comparar",
 } as const;

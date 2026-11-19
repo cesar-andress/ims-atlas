@@ -19,6 +19,7 @@ const VIEWS = [
   "data_variable",
   "data_pipeline",
   "data_releases",
+  "data_updates",
   "status",
   "factors",
   "compare",

@@ -6,7 +6,14 @@ import json
 from pathlib import Path
 from typing import Any
 
-from imsatlas_etl.connectors import baci, country_index, gravity, hofstede, wits
+from imsatlas_etl.connectors import (
+    baci,
+    country_index,
+    gravity,
+    hofstede,
+    manual_drop,
+    wits,
+)
 from imsatlas_etl.connectors import worldbank as wb
 from imsatlas_etl.pipeline.io_paths import (
     PHASE3_INDEX_SOURCES,
@@ -36,20 +43,38 @@ def _versions_from_freshness(
     return out
 
 
-def extract_source(
+WB_SOURCES = frozenset({"worldbank_wdi", "worldbank_wgi", "worldbank_lpi"})
+
+
+def _extract_live(
     source_id: str,
     version: str,
     *,
-    fixture_root: Path | None,
-    root: Path | None = None,
-    force: bool = False,
+    root: Path | None,
+    force: bool,
 ) -> dict[str, Any]:
-    if fixture_root is None:
-        raise RuntimeError(
-            "live extract for zip/API sources is not enabled in this phase without "
-            "fixtures; pass --fixture-root or run the offline pipeline",
-        )
-    if source_id in {"worldbank_wdi", "worldbank_wgi", "worldbank_lpi"}:
+    if source_id in WB_SOURCES:
+        return wb.extract_live(source_id, version, root=root, force=force)
+    if source_id == "baci":
+        return baci.extract_live(version, root=root, force=force)
+    if source_id == "cepi_gravity":
+        return gravity.extract_live(version, root=root, force=force)
+    if source_id == "wits_trains":
+        return wits.extract_live(version, root=root, force=force)
+    if manual_drop.is_manual_source(source_id):
+        return manual_drop.extract_live(source_id, version, root=root, force=force)
+    raise ValueError(f"unsupported extract source: {source_id}")
+
+
+def _extract_fixture(
+    source_id: str,
+    version: str,
+    *,
+    fixture_root: Path,
+    root: Path | None,
+    force: bool,
+) -> dict[str, Any]:
+    if source_id in WB_SOURCES:
         return wb.extract_from_fixture(
             source_id,
             version,
@@ -57,29 +82,14 @@ def extract_source(
             root=root,
             force=force,
         )
-    if source_id == "baci":
-        return baci.extract_from_fixture(
-            version,
-            fixture_root=fixture_root,
-            root=root,
-            force=force,
-        )
-    if source_id == "cepi_gravity":
-        return gravity.extract_from_fixture(
-            version,
-            fixture_root=fixture_root,
-            root=root,
-            force=force,
-        )
-    if source_id == "hofstede":
-        return hofstede.extract_from_fixture(
-            version,
-            fixture_root=fixture_root,
-            root=root,
-            force=force,
-        )
-    if source_id == "wits_trains":
-        return wits.extract_from_fixture(
+    simple = {
+        "baci": baci.extract_from_fixture,
+        "cepi_gravity": gravity.extract_from_fixture,
+        "hofstede": hofstede.extract_from_fixture,
+        "wits_trains": wits.extract_from_fixture,
+    }
+    if source_id in simple:
+        return simple[source_id](
             version,
             fixture_root=fixture_root,
             root=root,
@@ -94,6 +104,26 @@ def extract_source(
             force=force,
         )
     raise ValueError(f"unsupported extract source: {source_id}")
+
+
+def extract_source(
+    source_id: str,
+    version: str,
+    *,
+    fixture_root: Path | None,
+    root: Path | None = None,
+    force: bool = False,
+) -> dict[str, Any]:
+    """Fixture mode when ``fixture_root`` is set, otherwise live/manual extract."""
+    if fixture_root is not None:
+        return _extract_fixture(
+            source_id,
+            version,
+            fixture_root=fixture_root,
+            root=root,
+            force=force,
+        )
+    return _extract_live(source_id, version, root=root, force=force)
 
 
 def run_extract(

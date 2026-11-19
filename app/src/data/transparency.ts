@@ -13,6 +13,8 @@ export type TransparencyIndex = {
   n_sources?: number | null;
   n_variables?: number | null;
   n_lineage_edges?: number | null;
+  is_fixture?: boolean;
+  fixture_banner?: string | null;
 };
 
 export type TransparencySource = {
@@ -56,6 +58,26 @@ export type TransparencyVariable = {
   } | null;
   coverage?: Record<string, Record<string, number>> | null;
   download_allowed?: boolean | null;
+  last_checked?: string | null;
+  last_upstream_change?: string | null;
+  last_ingested?: string | null;
+  new_cells_since_previous?: number | null;
+};
+
+export type TransparencyUpdates = {
+  is_fixture?: boolean;
+  fixture_banner?: string | null;
+  runs: {
+    run_id: string;
+    mode?: string | null;
+    status?: string | null;
+    started_at?: string | null;
+    ended_at?: string | null;
+    summaries?: string[];
+    n_new_cells?: number | null;
+    n_revised_cells?: number | null;
+  }[];
+  n_runs?: number;
 };
 
 async function fetchJson<T>(path: string): Promise<T> {
@@ -72,11 +94,19 @@ export function loadIndex(): Promise<TransparencyIndex> {
   return fetchJson("/status/index.json");
 }
 
-export function loadSources(): Promise<{ sources: TransparencySource[] }> {
+export function loadSources(): Promise<{
+  sources: TransparencySource[];
+  is_fixture?: boolean;
+  fixture_banner?: string | null;
+}> {
   return fetchJson("/status/sources.json");
 }
 
-export function loadVariables(): Promise<{ variables: TransparencyVariable[] }> {
+export function loadVariables(): Promise<{
+  variables: TransparencyVariable[];
+  is_fixture?: boolean;
+  fixture_banner?: string | null;
+}> {
   return fetchJson("/status/variables.json");
 }
 
@@ -104,6 +134,10 @@ export function loadReleases(): Promise<{
   releases: Record<string, unknown>[];
 }> {
   return fetchJson("/status/releases.json");
+}
+
+export function loadUpdates(): Promise<TransparencyUpdates> {
+  return fetchJson("/status/updates.json");
 }
 
 export function loadManifest(path: string): Promise<Record<string, unknown>> {

@@ -18,6 +18,28 @@ def test_sources_yaml_validates() -> None:
     assert len(data["sources"]) >= 10
 
 
+def test_ef_epi_is_education_first_not_fraser() -> None:
+    registry = sources_by_id()
+    ef = registry["ef_epi"]
+    assert ef["publisher"] == "EF Education First"
+    assert "ef.com" in str(ef["landing_url"])
+    assert "fraser" not in str(ef["landing_url"]).lower()
+    assert "fraser" not in str(ef["citation"]).lower()
+
+
+def test_each_source_landing_host_is_allowlisted() -> None:
+    from urllib.parse import urlparse
+
+    from imsatlas_etl.landing_hosts import LANDING_HOST_ALLOWLIST
+
+    data = load_sources()
+    assert_valid_sources(data)
+    for source in data["sources"]:
+        sid = source["id"]
+        host = urlparse(source["landing_url"]).hostname
+        assert host in LANDING_HOST_ALLOWLIST[sid], sid
+
+
 def test_deployment_commercial_context_true() -> None:
     deploy = load_deployment()
     assert deployment_yaml_path().is_file()
