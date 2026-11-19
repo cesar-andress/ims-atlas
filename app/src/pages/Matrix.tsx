@@ -5,10 +5,12 @@ import { StrategicScatter } from "../components/StrategicScatter";
 import { useRankingModel } from "../ranking/useRankingModel";
 import { useStrategicMatrix } from "../ranking/useStrategicMatrix";
 import { useAnalysis } from "../state/useAnalysis";
+import { useCompareSelection } from "../state/useCompareSelection";
 
 export function Matrix() {
   const { t } = useTranslation();
   const { config, setConfig } = useAnalysis();
+  const { selectIso, isSelected } = useCompareSelection();
   const { model, error } = useRankingModel();
   const cutoff: AxisMode = config.matrixCutoff === "fixed" ? "fixed" : "median";
   const matrix = useStrategicMatrix(model);
@@ -87,12 +89,17 @@ export function Matrix() {
                       key={p.iso3}
                       data-iso3={p.iso3}
                       data-quadrant={p.quadrant}
-                      className={
-                        p.iso3 === config.compareA || p.iso3 === config.compareB
-                          ? "selected"
-                          : undefined
-                      }
-                      onClick={() => setConfig({ compareA: p.iso3 })}
+                      className={isSelected(p.iso3) ? "selected" : undefined}
+                      tabIndex={0}
+                      role="button"
+                      aria-pressed={isSelected(p.iso3)}
+                      onClick={() => selectIso(p.iso3)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          selectIso(p.iso3);
+                        }
+                      }}
                     >
                       <td>{p.iso3}</td>
                       <td>{p.attractiveness.toFixed(4)}</td>

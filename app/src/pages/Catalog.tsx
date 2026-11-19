@@ -4,38 +4,25 @@ import { CoverageHeatmap } from "../components/CoverageHeatmap";
 import { LicenceBadge } from "../components/LicenceBadge";
 import { PageShell } from "../components/PageShell";
 import { loadCatalogPreview } from "../data/catalogLoader";
-import type { CatalogPreview, CatalogVariable } from "../data/types";
+import type { CatalogVariable } from "../data/types";
 import { useAnalysis } from "../state/useAnalysis";
+import { useAsyncResource } from "../state/useAsyncResource";
 
 export function Catalog() {
   const { t, i18n } = useTranslation();
   const { config } = useAnalysis();
-  const [catalog, setCatalog] = useState<CatalogPreview | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const {
+    data: catalog,
+    error,
+    loading,
+  } = useAsyncResource(() => loadCatalogPreview(), []);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    void loadCatalogPreview()
-      .then((data) => {
-        if (cancelled) return;
-        setCatalog(data);
-        setSelectedId(data.variables[0]?.id ?? null);
-        setError(null);
-      })
-      .catch((err: unknown) => {
-        if (cancelled) return;
-        setError(err instanceof Error ? err.message : String(err));
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+    if (catalog && !selectedId) {
+      setSelectedId(catalog.variables[0]?.id ?? null);
+    }
+  }, [catalog, selectedId]);
 
   const byFactor = useMemo(() => {
     const map = new Map<string, CatalogVariable[]>();

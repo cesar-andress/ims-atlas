@@ -4,7 +4,7 @@ import { AnalysisPage } from "../components/AnalysisPage";
 import { downloadText, rankingToCsv } from "../cite/exportDownload";
 import { formatScore } from "../format";
 import { useRankingModel } from "../ranking/useRankingModel";
-import { useAnalysis } from "../state/useAnalysis";
+import { useCompareSelection } from "../state/useCompareSelection";
 import type { RankingViewModel } from "../ranking/rankingEngine";
 
 const WorldChoropleth = lazy(() =>
@@ -18,7 +18,7 @@ const FactorBars = lazy(() =>
 
 function RankingBody({ model }: { model: RankingViewModel }) {
   const { t } = useTranslation();
-  const { config, setConfig } = useAnalysis();
+  const { compareA, compareB, selectIso, setConfig } = useCompareSelection();
   const [sortKey, setSortKey] = useState<"rank" | "score" | "iso3">("rank");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
 
@@ -39,8 +39,8 @@ function RankingBody({ model }: { model: RankingViewModel }) {
     return rows;
   }, [model.ranking, sortKey, sortDir]);
 
-  const selectedIso = config.compareA ?? sorted[0]?.iso3;
-  const compareIso = config.compareB;
+  const selectedIso = compareA ?? sorted[0]?.iso3;
+  const compareIso = compareB;
 
   const factors = useMemo(() => {
     if (!selectedIso) return [];
@@ -59,16 +59,6 @@ function RankingBody({ model }: { model: RankingViewModel }) {
     else {
       setSortKey(key);
       setSortDir(key === "rank" ? "asc" : "desc");
-    }
-  }
-
-  function selectRow(iso3: string) {
-    if (!config.compareA || config.compareA === iso3) {
-      setConfig({ compareA: iso3 });
-    } else if (!config.compareB) {
-      setConfig({ compareB: iso3 });
-    } else {
-      setConfig({ compareA: iso3, compareB: undefined });
     }
   }
 
@@ -144,7 +134,7 @@ function RankingBody({ model }: { model: RankingViewModel }) {
                         ? "selected"
                         : undefined
                     }
-                    onClick={() => selectRow(row.iso3)}
+                    onClick={() => selectIso(row.iso3)}
                   >
                     <td>{row.rank}</td>
                     <td>{row.iso3}</td>
@@ -168,7 +158,7 @@ function RankingBody({ model }: { model: RankingViewModel }) {
             <WorldChoropleth
               rows={model.ranking}
               selected={selectedIso}
-              onSelect={(iso3) => setConfig({ compareA: iso3 })}
+              onSelect={selectIso}
             />
           </Suspense>
           <p className="licence-note" data-testid="map-licence">
@@ -179,7 +169,7 @@ function RankingBody({ model }: { model: RankingViewModel }) {
             <label>
               A
               <select
-                value={config.compareA ?? selectedIso ?? ""}
+                value={compareA ?? selectedIso ?? ""}
                 onChange={(e) => setConfig({ compareA: e.target.value || undefined })}
               >
                 {model.ranking.map((r) => (
@@ -192,7 +182,7 @@ function RankingBody({ model }: { model: RankingViewModel }) {
             <label>
               B
               <select
-                value={config.compareB ?? ""}
+                value={compareB ?? ""}
                 onChange={(e) => setConfig({ compareB: e.target.value || undefined })}
               >
                 <option value="">—</option>

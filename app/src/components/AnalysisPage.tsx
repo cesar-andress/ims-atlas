@@ -70,8 +70,6 @@ export function AnalysisPage({
         </p>
       </header>
 
-      {controls}
-
       {pending ? <PendingReleaseNotice detail={error.message} /> : null}
 
       {hardError ? (
@@ -109,6 +107,7 @@ export function AnalysisPage({
 
       {showModelBody || showFallbackBody ? (
         <>
+          {controls}
           {model && model.warnings.length > 0 ? (
             <ul className="warnings" data-testid="ranking-warnings">
               {model.warnings.map((w) => (

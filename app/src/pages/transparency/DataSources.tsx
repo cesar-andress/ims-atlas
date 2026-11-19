@@ -1,27 +1,15 @@
-import { useEffect, useState } from "react";
 import { useTranslation } from "../../i18n";
 import { TransparencyShell } from "../../components/TransparencyShell";
-import { loadSources, type TransparencySource } from "../../data/transparency";
+import { loadSources } from "../../data/transparency";
 import { displayCell } from "../../formatDisplay";
+import { useAsyncResource } from "../../state/useAsyncResource";
 
 export function DataSources() {
   const { t } = useTranslation();
-  const [rows, setRows] = useState<TransparencySource[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    void loadSources()
-      .then((payload) => {
-        if (!cancelled) setRows(payload.sources);
-      })
-      .catch((e: unknown) => {
-        if (!cancelled) setError(e instanceof Error ? e.message : String(e));
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const { data, error, loading } = useAsyncResource(
+    () => loadSources().then((p) => p.sources),
+    [],
+  );
 
   return (
     <TransparencyShell
@@ -30,7 +18,7 @@ export function DataSources() {
       introKey="transparencySourcesIntro"
     >
       {error ? <p className="error">{error}</p> : null}
-      {!rows ? (
+      {loading || !data ? (
         <p className="muted">{t("loading")}</p>
       ) : (
         <div className="table-scroll">
@@ -50,7 +38,7 @@ export function DataSources() {
               </tr>
             </thead>
             <tbody>
-              {rows.map((s) => {
+              {data.map((s) => {
                 const fr = s.freshness ?? {};
                 const rights = s.rights ?? {};
                 return (

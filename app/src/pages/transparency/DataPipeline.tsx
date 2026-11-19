@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "../../i18n";
 import { TransparencyShell } from "../../components/TransparencyShell";
 import { loadLatestRun, loadLineage } from "../../data/transparency";
+import { useAsyncResource } from "../../state/useAsyncResource";
 
 type Edge = { from: string; to: string };
 
@@ -26,25 +27,13 @@ function nodeStatus(
 
 export function DataPipeline() {
   const { t } = useTranslation();
-  const [edges, setEdges] = useState<Edge[] | null>(null);
-  const [run, setRun] = useState<Record<string, unknown> | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    void Promise.all([loadLineage(), loadLatestRun()])
-      .then(([lineage, latest]) => {
-        if (cancelled) return;
-        setEdges(lineage.edges ?? []);
-        setRun(latest);
-      })
-      .catch((e: unknown) => {
-        if (!cancelled) setError(e instanceof Error ? e.message : String(e));
-      });
-    return () => {
-      cancelled = true;
-    };
+  const { data, error, loading } = useAsyncResource(async () => {
+    const [lineage, run] = await Promise.all([loadLineage(), loadLatestRun()]);
+    return { edges: (lineage.edges ?? []) as Edge[], run };
   }, []);
+
+  const edges = data?.edges ?? null;
+  const run = data?.run ?? null;
 
   const nodes = useMemo(() => {
     if (!edges) return [];
@@ -63,7 +52,7 @@ export function DataPipeline() {
       introKey="transparencyPipelineIntro"
     >
       {error ? <p className="error">{error}</p> : null}
-      {!edges || !run ? (
+      {loading || !edges || !run ? (
         <p className="muted">{t("loading")}</p>
       ) : (
         <>

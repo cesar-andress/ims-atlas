@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "../../i18n";
 import { TransparencyShell } from "../../components/TransparencyShell";
 import { displayCell } from "../../formatDisplay";
 import { useAnalysis } from "../../state/useAnalysis";
+import { useAsyncResource } from "../../state/useAsyncResource";
 import { loadVariables, type TransparencyVariable } from "../../data/transparency";
 
 function varLabel(v: TransparencyVariable, lang: "en" | "es"): string {
@@ -16,22 +17,11 @@ export function DataVariable() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
   const { config, setConfig } = useAnalysis();
-  const [rows, setRows] = useState<TransparencyVariable[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    void loadVariables()
-      .then((payload) => {
-        if (!cancelled) setRows(payload.variables);
-      })
-      .catch((e: unknown) => {
-        if (!cancelled) setError(e instanceof Error ? e.message : String(e));
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const {
+    data: rows,
+    error,
+    loading,
+  } = useAsyncResource(() => loadVariables().then((p) => p.variables), []);
 
   const selected = useMemo(() => {
     if (!rows) return null;
@@ -47,7 +37,7 @@ export function DataVariable() {
       introKey="transparencyVariableIntro"
     >
       {error ? <p className="error">{error}</p> : null}
-      {!rows ? (
+      {loading || !rows ? (
         <p className="muted">{t("loading")}</p>
       ) : (
         <div className="variable-transparency">
