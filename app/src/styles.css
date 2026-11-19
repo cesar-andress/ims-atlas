@@ -1487,3 +1487,148 @@ button.linkish {
 .warn {
   color: #8a4b00;
 }
+
+.global-search {
+  position: relative;
+}
+
+.global-search-toggle {
+  font-size: 0.85rem;
+}
+
+.global-search-toggle kbd {
+  font-size: 0.75rem;
+  padding: 0.05rem 0.3rem;
+  border: 1px solid var(--border, #ccc);
+  border-radius: 0.2rem;
+}
+
+.global-search-panel {
+  position: absolute;
+  right: 0;
+  top: 2rem;
+  z-index: 30;
+  width: min(28rem, 92vw);
+  max-height: min(70vh, 28rem);
+  overflow: auto;
+  padding: 0.75rem;
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #ccc);
+  border-radius: 0.35rem;
+  box-shadow: 0 0.35rem 1rem rgb(0 0 0 / 14%);
+}
+
+.global-search-panel input[type="search"] {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.global-search-results ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.5rem;
+}
+
+.global-search-results button {
+  width: 100%;
+  text-align: left;
+  padding: 0.35rem 0.4rem;
+  border: none;
+  background: transparent;
+}
+
+.global-search-results button.active,
+.global-search-results button:hover {
+  background: color-mix(in srgb, var(--accent, #3a6ea5) 12%, transparent);
+}
+
+.variable-basket {
+  margin: 0.75rem 0 1rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border, #ddd);
+  border-radius: 0.35rem;
+}
+
+.basket-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+
+.basket-header h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.explore-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  margin: 0.75rem 0;
+}
+
+.explore-filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.85rem;
+}
+
+.explore-table-wrap {
+  overflow: auto;
+  max-width: 100%;
+  max-height: 28rem;
+}
+
+.explore-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.explore-table-wrap th,
+.explore-table-wrap td {
+  padding: 0.25rem 0.4rem;
+  border-bottom: 1px solid var(--border, #eee);
+  text-align: left;
+}
+
+.explore-pager {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 0.75rem;
+}
+
+button.pinned {
+  font-weight: 600;
+}
+
+.scatter-svg {
+  width: min(100%, 22rem);
+  height: auto;
+  border: 1px solid var(--border, #ddd);
+  border-radius: 0.25rem;
+  background: var(--surface, #fff);
+}
+
+.corr-scroll {
+  overflow: auto;
+  max-width: 100%;
+}
+
+.sql-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.5rem 0;
+}
+
+.sql-page textarea {
+  width: 100%;
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+}

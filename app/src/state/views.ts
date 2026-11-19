@@ -17,10 +17,14 @@ export const PRIMARY_VIEWS: readonly ViewId[] = [
   "factors",
   "compare",
   "projects",
+  "explore",
 ] as const;
 
 /** Transparency / pipeline views (SPEC §10.4) under More. */
 export const SECONDARY_VIEWS: readonly ViewId[] = [
+  "explore_analysis",
+  "country",
+  "sql",
   "project_dashboard",
   "project_variables",
   "project_coverage",

@@ -6,6 +6,7 @@ import { AppUpdateBanner } from "./AppUpdateBanner";
 import { PermalinkLink } from "./PermalinkLink";
 import { AccessMenu } from "./AccessMenu";
 import { UpdatesNewsPill } from "./UpdatesNewsPill";
+import { GlobalSearch } from "./GlobalSearch";
 import { dataConfig } from "../dataConfig";
 import { useAnalysis } from "../state/useAnalysis";
 import { ensureLanguage, useTranslation } from "../i18n";
@@ -58,6 +59,7 @@ export function AppHeader() {
         ) : null}
       </div>
       <AppNav />
+      <GlobalSearch />
       <UpdatesNewsPill />
       <div className="controls">
         <AccessMenu />

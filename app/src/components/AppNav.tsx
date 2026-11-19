@@ -33,8 +33,12 @@ export function AppNav() {
         <NavItem key={view} view={view} />
       ))}
       {SECONDARY_VIEWS.length > 0 ? (
-        <details className="nav-more" {...(secondaryOpen ? { open: true } : {})}>
-          <summary>{t("navMore")}</summary>
+        <details
+          className={secondaryOpen ? "nav-more has-secondary-active" : "nav-more"}
+        >
+          <summary className={secondaryOpen ? "active" : undefined}>
+            {t("navMore")}
+          </summary>
           <div className="nav-more-panel">
             {SECONDARY_VIEWS.map((view) => (
               <NavItem key={view} view={view} />

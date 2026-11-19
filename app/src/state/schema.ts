@@ -28,6 +28,10 @@ const VIEWS = [
   "project_variables",
   "project_coverage",
   "project_dashboard",
+  "explore",
+  "explore_analysis",
+  "country",
+  "sql",
 ] as const;
 
 export type ViewId = (typeof VIEWS)[number];
@@ -102,6 +106,20 @@ export type AnalysisConfig = {
   lang?: "en" | "es" | undefined;
   /** Variable id for /data/variables/:id transparency detail. */
   focusVariable?: string | undefined;
+  /** Phase E country profile ISO3. */
+  focusCountry?: string | undefined;
+  /** Phase E explore filters (URL). */
+  exploreFactor?: string | undefined;
+  exploreSource?: string | undefined;
+  exploreLicence?: "all" | "open" | "closed" | undefined;
+  exploreYearFrom?: number | undefined;
+  exploreYearTo?: number | undefined;
+  exploreMinCoverage?: number | undefined;
+  explorePinned?: string[] | undefined;
+  scatterX?: string | undefined;
+  scatterY?: string | undefined;
+  /** Expert SQL console unlock. */
+  expertMode?: boolean | undefined;
 };
 
 export type ProjectFile = {
@@ -352,6 +370,52 @@ export function parseAnalysisConfig(input: unknown): AnalysisConfig {
   ) {
     out.focusVariable = input.focusVariable;
   }
+
+  const focusCountry = asIso3(input.focusCountry);
+  if (focusCountry) out.focusCountry = focusCountry;
+
+  if (typeof input.exploreFactor === "string" && input.exploreFactor.trim()) {
+    out.exploreFactor = input.exploreFactor.trim().slice(0, 64);
+  }
+  if (typeof input.exploreSource === "string" && input.exploreSource.trim()) {
+    out.exploreSource = input.exploreSource.trim().slice(0, 64);
+  }
+  const exploreLicence = asEnum(input.exploreLicence, [
+    "all",
+    "open",
+    "closed",
+  ] as const);
+  if (exploreLicence) out.exploreLicence = exploreLicence;
+
+  const exploreYearFrom = asIntInRange(input.exploreYearFrom, 1900, 2100);
+  if (exploreYearFrom !== undefined) out.exploreYearFrom = exploreYearFrom;
+  const exploreYearTo = asIntInRange(input.exploreYearTo, 1900, 2100);
+  if (exploreYearTo !== undefined) out.exploreYearTo = exploreYearTo;
+
+  const exploreMinCoverage = asFiniteNumber(input.exploreMinCoverage);
+  if (
+    exploreMinCoverage !== undefined &&
+    exploreMinCoverage >= 0 &&
+    exploreMinCoverage <= 1
+  ) {
+    out.exploreMinCoverage = exploreMinCoverage;
+  }
+
+  if (Array.isArray(input.explorePinned)) {
+    const pinned = input.explorePinned
+      .filter((x): x is string => typeof x === "string" && /^[A-Za-z]{3}$/.test(x))
+      .map((x) => x.toUpperCase())
+      .slice(0, 24);
+    if (pinned.length) out.explorePinned = pinned;
+  }
+
+  if (typeof input.scatterX === "string" && input.scatterX.trim()) {
+    out.scatterX = input.scatterX.trim().slice(0, 32);
+  }
+  if (typeof input.scatterY === "string" && input.scatterY.trim()) {
+    out.scatterY = input.scatterY.trim().slice(0, 32);
+  }
+  if (typeof input.expertMode === "boolean") out.expertMode = input.expertMode;
 
   return out;
 }

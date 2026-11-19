@@ -233,10 +233,21 @@ export async function deleteProject(id: string): Promise<void> {
 export async function duplicateProject(id: string): Promise<AtlasProject> {
   const src = await getProject(id);
   if (!src) throw new Error("Project not found.");
-  const { id: _id, createdAt: _c, updatedAt: _u, ...rest } = src;
   const copy = createEmptyProject({
-    ...rest,
     name: `${src.name} (copy)`,
+    config: src.config,
+    ...(src.description !== undefined ? { description: src.description } : {}),
+    ...(src.yearFrom !== undefined ? { yearFrom: src.yearFrom } : {}),
+    ...(src.yearTo !== undefined ? { yearTo: src.yearTo } : {}),
+    ...(src.candidateIsos !== undefined ? { candidateIsos: src.candidateIsos } : {}),
+    ...(src.notes !== undefined ? { notes: src.notes } : {}),
+    ...(src.dataReleaseId !== undefined ? { dataReleaseId: src.dataReleaseId } : {}),
+    ...(src.byodDefinitions !== undefined
+      ? { byodDefinitions: src.byodDefinitions }
+      : {}),
+    ...(src.missingPolicyByVar !== undefined
+      ? { missingPolicyByVar: src.missingPolicyByVar }
+      : {}),
   });
   return upsertProject(copy);
 }

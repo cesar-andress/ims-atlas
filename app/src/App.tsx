@@ -70,6 +70,22 @@ const ProjectDashboard = lazy(() =>
     default: m.ProjectDashboard,
   })),
 );
+const Explore = lazy(() =>
+  import("./pages/Explore").then((m) => ({ default: m.Explore })),
+);
+const ExploreAnalysis = lazy(() =>
+  import("./pages/ExploreAnalysis").then((m) => ({
+    default: m.ExploreAnalysis,
+  })),
+);
+const CountryProfile = lazy(() =>
+  import("./pages/CountryProfile").then((m) => ({
+    default: m.CountryProfile,
+  })),
+);
+const SqlConsole = lazy(() =>
+  import("./pages/SqlConsole").then((m) => ({ default: m.SqlConsole })),
+);
 const DataStatus = lazy(() =>
   import("./pages/transparency/DataStatus").then((m) => ({ default: m.DataStatus })),
 );
@@ -147,6 +163,10 @@ function AppShell() {
           <Route path="/project_variables" element={<ProjectVariables />} />
           <Route path="/project_coverage" element={<ProjectCoverage />} />
           <Route path="/project_dashboard" element={<ProjectDashboard />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/explore_analysis" element={<ExploreAnalysis />} />
+          <Route path="/country" element={<CountryProfile />} />
+          <Route path="/sql" element={<SqlConsole />} />
           <Route path="/status" element={<DataStatus />} />
           <Route path="/data/sources" element={<DataSources />} />
           <Route path="/data/variables/:id" element={<DataVariable />} />

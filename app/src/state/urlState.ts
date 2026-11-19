@@ -96,6 +96,23 @@ export function configToSearch(config: AnalysisConfig): string {
   }
   if (config.lang) compact.lang = config.lang;
   if (config.focusVariable) compact.focusVariable = config.focusVariable;
+  if (config.focusCountry) compact.focusCountry = config.focusCountry;
+  if (config.exploreFactor) compact.exploreFactor = config.exploreFactor;
+  if (config.exploreSource) compact.exploreSource = config.exploreSource;
+  if (config.exploreLicence) compact.exploreLicence = config.exploreLicence;
+  if (config.exploreYearFrom !== undefined) {
+    compact.exploreYearFrom = config.exploreYearFrom;
+  }
+  if (config.exploreYearTo !== undefined) {
+    compact.exploreYearTo = config.exploreYearTo;
+  }
+  if (config.exploreMinCoverage !== undefined) {
+    compact.exploreMinCoverage = config.exploreMinCoverage;
+  }
+  if (config.explorePinned?.length) compact.explorePinned = config.explorePinned;
+  if (config.scatterX) compact.scatterX = config.scatterX;
+  if (config.scatterY) compact.scatterY = config.scatterY;
+  if (config.expertMode !== undefined) compact.expertMode = config.expertMode;
   return `?${PARAM}=${encodeConfig(AnalysisConfigSchema.parse(compact))}`;
 }
 

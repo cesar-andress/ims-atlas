@@ -6,6 +6,9 @@ All notable changes to IMS Atlas are documented in this file.
 
 ### Added
 
+- Phase E data explorer: global search (`/` in header), `/explore` table with filters
+  and URL state, “My variables” basket, country profile, correlation/scatter analysis,
+  and expert read-only SQL console (DuckDB-WASM).
 - Phase G projects: versioned `.atlas.json` model, IndexedDB library (localStorage /
   memory fallback), `/projects` list (create/rename/duplicate/delete/open), save toast +
   unsaved dot + Ctrl/Cmd+S + draft autosave, project variables + coverage check +

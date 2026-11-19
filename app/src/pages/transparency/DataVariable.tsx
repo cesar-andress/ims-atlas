@@ -12,6 +12,7 @@ import { displayCell } from "../../formatDisplay";
 import { useTranslation } from "../../i18n";
 import { useAnalysis } from "../../state/useAnalysis";
 import { useAsyncResource } from "../../state/useAsyncResource";
+import { addToBasket } from "../../state/variableBasket";
 
 function varLabel(v: TransparencyVariable, lang: "en" | "es"): string {
   const name = v.name;
@@ -137,6 +138,17 @@ export function DataVariable() {
                   gateIncluded={selected.gate?.included ?? null}
                   gateDecision={selected.gate?.decision ?? null}
                 />
+                <button
+                  type="button"
+                  data-testid="variable-add-basket"
+                  onClick={() =>
+                    setConfig({
+                      variableIds: addToBasket(config.variableIds, selected.id),
+                    })
+                  }
+                >
+                  {t("basketAdd")}
+                </button>
               </div>
               <dl className="status-grid">
                 <dt>ID</dt>

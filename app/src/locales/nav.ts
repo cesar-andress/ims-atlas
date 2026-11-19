@@ -24,6 +24,10 @@ export const navEn = {
   project_variables: "Project variables",
   project_coverage: "Coverage check",
   project_dashboard: "Project dashboard",
+  explore: "Explore",
+  explore_analysis: "Explore analysis",
+  country: "Country",
+  sql: "SQL",
   privacy: "Privacy",
 } as const;
 
@@ -53,5 +57,9 @@ export const navEs = {
   project_variables: "Variables del proyecto",
   project_coverage: "Cobertura",
   project_dashboard: "Panel del proyecto",
+  explore: "Explorar",
+  explore_analysis: "Análisis explorar",
+  country: "País",
+  sql: "SQL",
   privacy: "Privacidad",
 } as const;

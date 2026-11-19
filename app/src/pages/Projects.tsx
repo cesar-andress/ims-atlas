@@ -66,9 +66,7 @@ export function Projects() {
     const partial = {
       name: defaultNameFromConfig(base),
       config: base,
-      ...(base.year !== undefined
-        ? { yearFrom: base.year, yearTo: base.year }
-        : {}),
+      ...(base.year !== undefined ? { yearFrom: base.year, yearTo: base.year } : {}),
     };
     const project = createEmptyProject(partial);
     const { upsertProject } = await import("../state/projectIdb");
