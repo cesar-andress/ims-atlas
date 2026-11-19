@@ -6,6 +6,11 @@ version: 0.1.0
 license: MIT
 repository-code: "https://github.com/cesar-andress/ims-atlas"
 authors:
+  - family-names: Baena-Rojas
+    given-names: Jose Jaime
+    orcid: "https://orcid.org/0000-0002-0915-4087"
+    email: josejaime.baena@unir.net
+    affiliation: "Pontificia Universidad Católica del Perú; Universidad Internacional de La Rioja"
   - family-names: Andrés
     given-names: César
     orcid: "https://orcid.org/0009-0001-8968-3404"
