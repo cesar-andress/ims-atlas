@@ -1,9 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Map as MapLibreMap } from "maplibre-gl";
-
-/** Natural Earth 110m admin-0 countries (public domain) via jsDelivr. */
-export const NE_GEOJSON_URL =
-  "https://cdn.jsdelivr.net/gh/nvkelso/natural-earth-vector@v5.1.2/geojson/ne_110m_admin_0_countries.geojson";
+import { neGeojsonUrl } from "../geo/neGeojson";
 
 /** ISO_A3 keyed scores for choropleth fill. */
 export type ChoroplethDatum = { iso3: string; score: number; rank: number };
@@ -23,18 +20,39 @@ function scoreColor(t: number): string {
 
 /**
  * MapLibre choropleth (lazy-loads maplibre-gl + CSS on mount).
- * Licence note must remain visible in the parent view.
+ * Mount is deferred until the container is near the viewport.
  */
 export function WorldChoropleth({ rows, selected, onSelect }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const rowsRef = useRef(rows);
   const onSelectRef = useRef(onSelect);
+  const [active, setActive] = useState(false);
   rowsRef.current = rows;
   onSelectRef.current = onSelect;
 
   useEffect(() => {
-    if (!containerRef.current || mapRef.current) return;
+    const el = containerRef.current;
+    if (!el || active) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setActive(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setActive(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "120px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [active]);
+
+  useEffect(() => {
+    if (!active || !containerRef.current || mapRef.current) return;
     let cancelled = false;
     let map: MapLibreMap | null = null;
 
@@ -50,7 +68,7 @@ export function WorldChoropleth({ rows, selected, onSelect }: Props) {
           sources: {
             ne: {
               type: "geojson",
-              data: NE_GEOJSON_URL,
+              data: neGeojsonUrl(),
             },
           },
           layers: [
@@ -109,8 +127,8 @@ export function WorldChoropleth({ rows, selected, onSelect }: Props) {
       map?.remove();
       mapRef.current = null;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- mount once
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- mount once when active
+  }, [active]);
 
   useEffect(() => {
     const map = mapRef.current;

@@ -55,7 +55,7 @@ export const en = {
   flags: "Flags",
   imputed: "imputed",
   mapLicence:
-    "Map boundaries: Natural Earth 110m (public domain). Loaded from Natural Earth Vector via jsDelivr.",
+    "Map boundaries: Natural Earth 110m (public domain), slimmed and served with this app.",
   matrixIntro:
     "IMSFE-style attractiveness × fit scatter. Bubble size tracks the index score; dashed lines are cut-offs.",
   matrixCutoff: "Cut-offs",

@@ -1,5 +1,5 @@
 import { lazy, Suspense, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "../i18n";
 import { useRankingModel } from "../ranking/useRankingModel";
 import { useAnalysis } from "../state/useAnalysis";
 

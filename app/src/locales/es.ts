@@ -55,7 +55,7 @@ const es = {
   flags: "Flags",
   imputed: "imputado",
   mapLicence:
-    "Fronteras: Natural Earth 110m (dominio público). Cargado desde Natural Earth Vector vía jsDelivr.",
+    "Fronteras: Natural Earth 110m (dominio público), versión reducida servida con esta app.",
   matrixIntro:
     "Dispersión atractividad × encaje (estilo IMSFE). El tamaño sigue la puntuación; las líneas son cortes.",
   matrixCutoff: "Cortes",

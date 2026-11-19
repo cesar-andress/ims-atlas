@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "../i18n";
 import { CoverageHeatmap } from "../components/CoverageHeatmap";
 import { LicenceBadge } from "../components/LicenceBadge";
 import { loadCatalogPreview } from "../data/catalogLoader";

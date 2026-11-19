@@ -1,12 +1,11 @@
 import { lazy, Suspense, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Link, Route, Routes } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { StubView } from "./pages/StubView";
 import { AnalysisProvider } from "./state/AnalysisContext";
 import { useAnalysis } from "./state/useAnalysis";
 import type { ViewId } from "./state/schema";
-import { ensureLanguage } from "./i18n";
+import { ensureLanguage, useTranslation } from "./i18n";
 import { applyTheme, readStoredTheme, type ThemeMode } from "./theme";
 
 const ConfigPanel = lazy(() =>
@@ -46,26 +45,6 @@ const NAV: ViewId[] = [
   "docs",
 ];
 
-/** Warm heavy route chunks after first paint (idle). */
-function prefetchHeavyRoutes(): void {
-  const run = () => {
-    void import("./pages/Ranking");
-    void import("./pages/Matrix");
-    void import("./pages/MarketMap");
-    void import("./components/ConfigPanel");
-  };
-  const ric = (
-    window as Window & {
-      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
-    }
-  ).requestIdleCallback;
-  if (typeof ric === "function") {
-    ric(() => run(), { timeout: 2500 });
-  } else {
-    setTimeout(run, 1200);
-  }
-}
-
 function RouteFallback() {
   const { t } = useTranslation();
   return (
@@ -92,10 +71,6 @@ function AppShell() {
       void ensureLanguage(config.lang);
     }
   }, [config.lang, i18n.language]);
-
-  useEffect(() => {
-    prefetchHeavyRoutes();
-  }, []);
 
   const showConfig = config.view !== "home" && config.view !== "docs";
 

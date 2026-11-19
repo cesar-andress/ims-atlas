@@ -1,14 +1,14 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv, type Plugin } from "vite";
 
-/** Emit Brotli/Gzip companions for nginx gzip_static / brotli_static when available. */
+/** Emit Gzip companions for nginx gzip_static (hashed assets + public geo/meta). */
 function compressAssets(): Plugin {
   return {
     name: "ims-atlas-compress",
     apply: "build",
     async writeBundle(outputOptions, bundle) {
       const { gzipSync } = await import("node:zlib");
-      const { writeFile } = await import("node:fs/promises");
+      const { writeFile, readdir, readFile, stat } = await import("node:fs/promises");
       const { join } = await import("node:path");
       const dir = outputOptions.dir;
       if (!dir) return;
@@ -23,6 +23,32 @@ function compressAssets(): Plugin {
         if (source.byteLength < 1024) continue;
         await writeFile(join(dir, `${fileName}.gz`), gzipSync(source, { level: 9 }));
       }
+      // Public-dir copies (geojson, meta) are not always in the Rollup bundle map.
+      async function gzipTree(rel: string): Promise<void> {
+        const abs = join(dir, rel);
+        let entries;
+        try {
+          entries = await readdir(abs, { withFileTypes: true });
+        } catch {
+          return;
+        }
+        for (const ent of entries) {
+          const child = join(rel, ent.name);
+          if (ent.isDirectory()) {
+            await gzipTree(child);
+            continue;
+          }
+          if (!/\.(geojson|json|js|css|svg|html)$/.test(ent.name)) continue;
+          if (ent.name.endsWith(".gz")) continue;
+          const full = join(dir, child);
+          const st = await stat(full);
+          if (st.size < 1024) continue;
+          const buf = await readFile(full);
+          await writeFile(`${full}.gz`, gzipSync(buf, { level: 9 }));
+        }
+      }
+      await gzipTree("geo");
+      await gzipTree("meta");
     },
   };
 }
@@ -76,9 +102,6 @@ export default defineConfig(({ mode }) => {
                 id.includes("scheduler")
               ) {
                 return "react-vendor";
-              }
-              if (id.includes("i18next") || id.includes("react-i18next")) {
-                return "i18n";
               }
             }
             if (id.includes("/core/src/")) return "core";

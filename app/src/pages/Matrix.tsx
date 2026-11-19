@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "../i18n";
 import { buildStrategicMatrix, type AxisMode } from "@ims-atlas/core";
 import { StrategicScatter } from "../components/StrategicScatter";
 import { useRankingModel } from "../ranking/useRankingModel";

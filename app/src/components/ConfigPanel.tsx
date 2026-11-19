@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "../i18n";
 import { hsLabel, REGIONS, searchHs } from "../data/hsProducts";
 import { loadDemoPanel, type DemoPanel } from "../ranking/demoPanel";
 import { COL_HS64_PRESET } from "../state/schema";

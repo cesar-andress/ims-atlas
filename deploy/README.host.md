@@ -32,8 +32,11 @@ Edge: [aiserv-server](https://github.com/cesar-andress/aiserv-server) `caddy/Cad
 ## Performance notes
 
 Vite emits route/vendor chunks and precompressed `.gz` siblings. nginx uses
-`gzip_static` + long-lived `Cache-Control` for `/assets/*` (immutable hashes).
-Home does not download MapLibre/ECharts until Ranking/Matrix/Map are opened.
+`gzip_static` + long-lived `Cache-Control` for `/assets/*` (immutable hashes)
+and `/geo/*` (slim Natural Earth). Home first paint is React + app shell only
+(no i18next, MapLibre, or ECharts). Choropleth geometry is local
+(`/geo/…slim.geojson`, ~50 KiB gzip) and MapLibre mounts when the map enters
+the viewport.
 
 ## Update (git only)
 

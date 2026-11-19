@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "../i18n";
 import { dataConfig, releaseUrl } from "../dataConfig";
 import { useAnalysis } from "../state/useAnalysis";
 import { configToSearch } from "../state/urlState";

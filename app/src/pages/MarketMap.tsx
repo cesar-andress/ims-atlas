@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "../i18n";
 import { buildStrategicMatrix, type MarketLayoutResult } from "@ims-atlas/core";
 import { MarketMapCanvas } from "../components/MarketMapCanvas";
 import { useRankingModel } from "../ranking/useRankingModel";

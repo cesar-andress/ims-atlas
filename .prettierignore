@@ -11,4 +11,5 @@ catalog/LICENSES.md
 etl/tests/fixtures/**
 core/fixtures/
 app/public/meta/
+app/public/geo/
 
