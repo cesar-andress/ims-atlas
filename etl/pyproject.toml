@@ -15,7 +15,9 @@ dependencies = [
 [project.optional-dependencies]
 # Populated by `make pin-backtest` once config/ims-backtest.json has a real tag.
 # Never pin to a branch.
-backtest = []
+backtest = [
+  "imsfe @ git+https://github.com/cesar-andress/ims-backtest.git@v0.2.0",
+]
 
 [project.scripts]
 atlas-etl = "imsatlas_etl.cli:app"
@@ -26,6 +28,9 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/imsatlas_etl"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [tool.uv]
 package = true

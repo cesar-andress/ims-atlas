@@ -11,6 +11,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const cfg = JSON.parse(readFileSync(join(root, "config", "ims-backtest.json"), "utf8"));
 const tag = String(cfg.tag ?? "").trim();
 const repo = String(cfg.repository ?? "").trim();
+const packageName = String(cfg.package_name ?? "imsfe").trim();
 
 if (!tag || tag === "UNKNOWN") {
   console.error(
@@ -22,8 +23,12 @@ if (!repo) {
   console.error("config/ims-backtest.json repository is missing.");
   process.exit(1);
 }
+if (!packageName) {
+  console.error("config/ims-backtest.json package_name is missing.");
+  process.exit(1);
+}
 
-const dep = `ims-backtest @ git+${repo}@${tag}`;
+const dep = `${packageName} @ git+${repo}@${tag}`;
 const pyprojectPath = join(root, "etl", "pyproject.toml");
 let text = readFileSync(pyprojectPath, "utf8");
 

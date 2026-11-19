@@ -4,8 +4,7 @@ Open, browser-based tool to **build, compare, stress-test and backtest** interna
 market selection (IMS) indices on open data. All computation runs in the browser; there
 is no backend and no accounts.
 
-> Developed within the R&D&I project of AISERV SYSTEMS SLU.
-> **[PENDING — paste the exact official wording here.]**
+> Developed within the R&D&I project [project name/code] of AISERV SYSTEMS SLU (Madrid, Spain).
 
 ## Status
 
@@ -52,7 +51,7 @@ Deploy is **git-only** (push → `git pull --ff-only` on the hosts). See [`deplo
 
 ## Licence
 
-MIT — see [LICENSE](LICENSE). Copyright line is pending maintainer confirmation.
+MIT — see [LICENSE](LICENSE). Copyright (c) 2026 César Andrés-Sanchez and AISERV SYSTEMS SLU.
 
 ## Cite
 

@@ -1,5 +1,6 @@
 {
   "repository": "https://github.com/cesar-andress/ims-backtest.git",
-  "tag": "UNKNOWN",
-  "comment": "Pin etl to a published git tag only (never a branch). Set tag then run: make pin-backtest"
+  "package_name": "imsfe",
+  "tag": "v0.2.0",
+  "comment": "Pin etl to a published git tag only (never a branch). PyPI/project name in that repo is imsfe. Set tag then run: make pin-backtest"
 }
