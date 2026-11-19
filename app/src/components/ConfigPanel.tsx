@@ -1,10 +1,50 @@
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { hsLabel, REGIONS, searchHs } from "../data/hsProducts";
+import { loadDemoPanel, type DemoPanel } from "../ranking/demoPanel";
+import { COL_HS64_PRESET } from "../state/schema";
 import { useAnalysis } from "../state/useAnalysis";
 
+const FACTOR_ORDER = [
+  "demand",
+  "cost_access",
+  "logistics",
+  "competition",
+  "product_fit",
+  "macro_risk",
+  "institutional",
+  "openness_legacy",
+] as const;
+
 export function ConfigPanel() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { config, setConfig, saveProject, exportProject, importProject } =
     useAnalysis();
+  const lang = i18n.language.startsWith("es") ? "es" : "en";
+  const [hsQuery, setHsQuery] = useState(config.hs ?? "");
+  const [panel, setPanel] = useState<DemoPanel | null>(null);
+
+  useEffect(() => {
+    void loadDemoPanel()
+      .then(setPanel)
+      .catch(() => setPanel(null));
+  }, []);
+
+  const hsHits = useMemo(() => searchHs(hsQuery, lang), [hsQuery, lang]);
+
+  const selectedVars = useMemo(() => {
+    if (!panel) return new Set<string>();
+    if (config.variableIds?.length) return new Set(config.variableIds);
+    return new Set(panel.variables.map((v) => v.id));
+  }, [panel, config.variableIds]);
+
+  const factorWeights = useMemo(() => {
+    if (config.factorWeights && Object.keys(config.factorWeights).length > 0) {
+      return { ...config.factorWeights };
+    }
+    const equal = 1 / FACTOR_ORDER.length;
+    return Object.fromEntries(FACTOR_ORDER.map((f) => [f, equal]));
+  }, [config.factorWeights]);
 
   return (
     <aside
@@ -13,12 +53,22 @@ export function ConfigPanel() {
       aria-label={t("configPanel")}
     >
       <h2>{t("configPanel")}</h2>
+
+      <button
+        type="button"
+        data-testid="apply-col-hs64"
+        onClick={() => setConfig({ ...COL_HS64_PRESET, view: config.view, lang })}
+      >
+        {t("presetColHs64")}
+      </button>
+
       <label>
         {t("origin")}
         <input
           value={config.origin ?? ""}
           maxLength={3}
           placeholder="COL"
+          data-testid="origin-input"
           onChange={(e) =>
             setConfig({
               origin: e.target.value
@@ -28,12 +78,60 @@ export function ConfigPanel() {
           }
         />
       </label>
+
+      <label>
+        {t("product")}
+        <input
+          value={hsQuery}
+          placeholder="64 / Footwear"
+          data-testid="hs-search"
+          onChange={(e) => setHsQuery(e.target.value)}
+        />
+      </label>
+      {hsHits.length > 0 ? (
+        <ul className="hs-hits" data-testid="hs-hits">
+          {hsHits.slice(0, 8).map((p) => (
+            <li key={p.code}>
+              <button
+                type="button"
+                className={config.hs === p.code ? "active" : undefined}
+                onClick={() => {
+                  setConfig({ hs: p.code });
+                  setHsQuery(p.code);
+                }}
+              >
+                {hsLabel(p.code, lang)}
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+      {config.hs && config.hs.length > 2 ? (
+        <p className="muted small">
+          HS4: {config.hs} ({t("hs4Manual")})
+        </p>
+      ) : null}
+      <label>
+        HS
+        <input
+          value={config.hs ?? ""}
+          maxLength={6}
+          data-testid="hs-input"
+          onChange={(e) =>
+            setConfig({
+              hs: e.target.value.replace(/\D/g, "").slice(0, 6) || undefined,
+            })
+          }
+        />
+      </label>
+
       <label>
         {t("year")}
         <input
           type="number"
           value={config.year ?? ""}
-          placeholder="2019"
+          placeholder="2023"
+          data-testid="year-input"
           onChange={(e) =>
             setConfig({
               year: e.target.value ? Number(e.target.value) : undefined,
@@ -41,19 +139,141 @@ export function ConfigPanel() {
           }
         />
       </label>
+
       <label>
-        {t("normalization")}
+        {t("region")}
         <select
-          value={config.normalization ?? ""}
+          value={config.region ?? "world"}
+          data-testid="region-select"
+          onChange={(e) => setConfig({ region: e.target.value })}
+        >
+          {REGIONS.map((r) => (
+            <option key={r.id} value={r.id}>
+              {r.name[lang]}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label>
+        {t("minImports")}
+        <input
+          type="number"
+          min={0}
+          step={1000}
+          value={config.minImports ?? ""}
+          placeholder="0"
           onChange={(e) =>
             setConfig({
-              normalization: e.target.value
-                ? (e.target.value as typeof config.normalization)
-                : undefined,
+              minImports: e.target.value ? Number(e.target.value) : undefined,
+            })
+          }
+        />
+      </label>
+
+      <fieldset className="var-fieldset" data-testid="variable-picker">
+        <legend>{t("variables")}</legend>
+        {panel ? (
+          FACTOR_ORDER.map((factor) => {
+            const vars = panel.variables.filter((v) => v.factor === factor);
+            if (vars.length === 0) return null;
+            return (
+              <div key={factor} className="factor-vars">
+                <strong>{factor}</strong>
+                {vars.map((v) => {
+                  const cov = panel.coveragePct[v.id] ?? 0;
+                  const checked = selectedVars.has(v.id);
+                  return (
+                    <label key={v.id} className="var-check">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => {
+                          const next = new Set(selectedVars);
+                          if (checked) next.delete(v.id);
+                          else next.add(v.id);
+                          setConfig({ variableIds: [...next] });
+                        }}
+                      />
+                      <span>
+                        {v.id}{" "}
+                        <span className="muted">
+                          ({cov.toFixed(0)}% · {v.direction})
+                        </span>
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            );
+          })
+        ) : (
+          <p className="muted">{t("loading")}</p>
+        )}
+      </fieldset>
+
+      <label>
+        {t("weightScheme")}
+        <select
+          value={config.weightScheme ?? "expert_mean"}
+          data-testid="weight-scheme"
+          onChange={(e) =>
+            setConfig({
+              weightScheme: e.target.value as typeof config.weightScheme,
             })
           }
         >
-          <option value="">—</option>
+          <option value="expert_mean">{t("presetExpert2025")}</option>
+          <option value="equal">{t("weightsEqual")}</option>
+          <option value="manual">{t("weightsManual")}</option>
+          <option value="entropy">entropy</option>
+          <option value="critic">CRITIC</option>
+        </select>
+      </label>
+
+      {config.weightScheme === "manual" ? (
+        <fieldset className="weight-sliders" data-testid="weight-sliders">
+          <legend>{t("factorWeights")}</legend>
+          {FACTOR_ORDER.map((f) => (
+            <label key={f}>
+              {f}
+              <input
+                type="range"
+                min={0}
+                max={100}
+                value={Math.round((factorWeights[f] ?? 0) * 100)}
+                onChange={(e) => {
+                  const raw = Number(e.target.value) / 100;
+                  const next = { ...factorWeights, [f]: raw };
+                  const sum = Object.values(next).reduce((a, b) => a + b, 0);
+                  const norm =
+                    sum > 0
+                      ? Object.fromEntries(
+                          Object.entries(next).map(([k, v]) => [k, v / sum]),
+                        )
+                      : next;
+                  setConfig({ weightScheme: "manual", factorWeights: norm });
+                }}
+              />
+              <span className="muted small">
+                {((factorWeights[f] ?? 0) * 100).toFixed(0)}%
+              </span>
+            </label>
+          ))}
+        </fieldset>
+      ) : null}
+
+      <label>
+        {t("normalization")}
+        <select
+          value={config.normalization ?? "minmax"}
+          data-testid="normalization-select"
+          onChange={(e) =>
+            setConfig({
+              normalization: e.target.value as typeof config.normalization,
+            })
+          }
+        >
           <option value="minmax">minmax</option>
           <option value="ratio_legacy">ratio_legacy</option>
           <option value="zscore">zscore</option>
@@ -61,23 +281,42 @@ export function ConfigPanel() {
           <option value="log_minmax">log_minmax</option>
         </select>
       </label>
+
       <label>
         {t("method")}
         <select
-          value={config.mcdm ?? ""}
+          value={config.mcdm ?? "wsm"}
+          data-testid="mcdm-select"
           onChange={(e) =>
             setConfig({
-              mcdm: e.target.value ? (e.target.value as typeof config.mcdm) : undefined,
+              mcdm: e.target.value as typeof config.mcdm,
             })
           }
         >
-          <option value="">—</option>
           <option value="wsm">wsm</option>
           <option value="topsis">topsis</option>
           <option value="vikor">vikor</option>
           <option value="promethee_ii">promethee_ii</option>
         </select>
       </label>
+
+      <label>
+        {t("missingThreshold")}
+        <input
+          type="number"
+          min={0}
+          max={1}
+          step={0.05}
+          value={config.missingThreshold ?? 0.2}
+          data-testid="missing-threshold"
+          onChange={(e) =>
+            setConfig({
+              missingThreshold: e.target.value ? Number(e.target.value) : undefined,
+            })
+          }
+        />
+      </label>
+
       <div className="config-actions">
         <button type="button" onClick={() => saveProject("local")}>
           {t("saveProject")}

@@ -57,6 +57,7 @@ export {
 } from "./weights.js";
 
 export {
+  factorContributions,
   hierarchicalWsm,
   score,
   scorePrometheeIi,

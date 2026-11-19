@@ -2,7 +2,7 @@
  * High-level origin-year scoring pipeline: prepare → weights → normalise → MCDM.
  */
 
-import { score as scoreMcdm } from "./mcdm.js";
+import { factorContributions, score as scoreMcdm } from "./mcdm.js";
 import { prepareBlock, type PrepareBlockInput } from "./missing.js";
 import { normalizeMatrix } from "./normalize.js";
 import type {
@@ -35,8 +35,11 @@ export type ScoreBlockInput = {
 export type ScoreBlockResult = {
   prepared: PreparedBlock;
   weights: HierarchicalWeights;
+  normalized: number[][];
   scores: number[];
   ranking: { iso3: string; score: number; rank: number }[];
+  /** Within-factor attractiveness (pre factor-weight), keyed by ISO3. */
+  factorScores: Record<string, Record<string, number>>;
 };
 
 export function scoreBlock(input: ScoreBlockInput): ScoreBlockResult {
@@ -71,7 +74,7 @@ export function scoreBlock(input: ScoreBlockInput): ScoreBlockResult {
   if (input.manualWeights !== undefined) {
     weightOpts.manual = input.manualWeights;
   }
-  let weights = getWeights(input.weightScheme, input.variables, weightOpts);
+  let weights = getWeights(input.weightScheme, usedVars, weightOpts);
   weights = restrictWeights(weights, prepared.usedVariables);
 
   const normalized = normalizeMatrix(
@@ -90,6 +93,12 @@ export function scoreBlock(input: ScoreBlockInput): ScoreBlockResult {
     { normalized },
   );
 
+  const contrib = factorContributions(normalized, prepared.usedVariables, weights);
+  const factorScores: Record<string, Record<string, number>> = {};
+  for (let i = 0; i < prepared.candidates.length; i++) {
+    factorScores[prepared.candidates[i]!] = contrib.perCandidate[i]!;
+  }
+
   const order = scores
     .map((score, i) => ({ iso3: prepared.candidates[i]!, score, i }))
     .sort((a, b) => b.score - a.score || a.iso3.localeCompare(b.iso3));
@@ -100,5 +109,5 @@ export function scoreBlock(input: ScoreBlockInput): ScoreBlockResult {
     rank: rank0 + 1,
   }));
 
-  return { prepared, weights, scores, ranking };
+  return { prepared, weights, normalized, scores, ranking, factorScores };
 }

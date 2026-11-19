@@ -28,14 +28,13 @@ function flatWeightsArray(
   return arr.map((w) => w / total);
 }
 
-/** Hierarchical WSM on a direction-aware normalised matrix (higher = better). */
-export function hierarchicalWsm(
-  normalized: readonly (readonly number[])[],
+type FactorColMeta = { idxs: number[]; w: number[] };
+
+function buildFactorCols(
   columns: readonly string[],
   weights: HierarchicalWeights,
-): number[] {
-  const n = normalized.length;
-  const factorCols = new Map<string, { idxs: number[]; w: number[] }>();
+): { factorNames: string[]; factorCols: Map<string, FactorColMeta>; fw: number[] } {
+  const factorCols = new Map<string, FactorColMeta>();
 
   for (const [factor, vw] of Object.entries(weights.variablesWithin)) {
     const idxs: number[] = [];
@@ -60,21 +59,45 @@ export function hierarchicalWsm(
   const fwSum = fw.reduce((a, b) => a + b, 0);
   if (fwSum <= 0) throw new Error("No overlapping factors between weights and matrix");
   fw = fw.map((x) => x / fwSum);
+  return { factorNames, factorCols, fw };
+}
 
+/** Per-candidate within-factor scores (before factor weight), then overall WSM. */
+export function factorContributions(
+  normalized: readonly (readonly number[])[],
+  columns: readonly string[],
+  weights: HierarchicalWeights,
+): { factors: string[]; perCandidate: Record<string, number>[]; scores: number[] } {
+  const n = normalized.length;
+  const { factorNames, factorCols, fw } = buildFactorCols(columns, weights);
+  const perCandidate: Record<string, number>[] = [];
   const scores = new Array<number>(n).fill(0);
   for (let i = 0; i < n; i++) {
+    const row: Record<string, number> = {};
     let score = 0;
     for (let fi = 0; fi < factorNames.length; fi++) {
-      const meta = factorCols.get(factorNames[fi]!)!;
+      const name = factorNames[fi]!;
+      const meta = factorCols.get(name)!;
       let fs = 0;
       for (let k = 0; k < meta.idxs.length; k++) {
         fs += normalized[i]![meta.idxs[k]!]! * meta.w[k]!;
       }
+      row[name] = fs;
       score += fs * fw[fi]!;
     }
+    perCandidate.push(row);
     scores[i] = score;
   }
-  return scores;
+  return { factors: factorNames, perCandidate, scores };
+}
+
+/** Hierarchical WSM on a direction-aware normalised matrix (higher = better). */
+export function hierarchicalWsm(
+  normalized: readonly (readonly number[])[],
+  columns: readonly string[],
+  weights: HierarchicalWeights,
+): number[] {
+  return factorContributions(normalized, columns, weights).scores;
 }
 
 /** pymcdm minmax_normalization used by default TOPSIS. */

@@ -50,6 +50,8 @@ export function configToSearch(config: AnalysisConfig): string {
   if (config.origin) compact.origin = config.origin;
   if (config.year !== undefined) compact.year = config.year;
   if (config.hs) compact.hs = config.hs;
+  if (config.region) compact.region = config.region;
+  if (config.minImports !== undefined) compact.minImports = config.minImports;
   if (config.normalization) compact.normalization = config.normalization;
   if (config.mcdm) compact.mcdm = config.mcdm;
   if (config.weightScheme) compact.weightScheme = config.weightScheme;
@@ -57,6 +59,11 @@ export function configToSearch(config: AnalysisConfig): string {
     compact.missingThreshold = config.missingThreshold;
   }
   if (config.variableIds?.length) compact.variableIds = config.variableIds;
+  if (config.factorWeights && Object.keys(config.factorWeights).length > 0) {
+    compact.factorWeights = config.factorWeights;
+  }
+  if (config.compareA) compact.compareA = config.compareA;
+  if (config.compareB) compact.compareB = config.compareB;
   if (config.lang) compact.lang = config.lang;
   return `?${PARAM}=${encodeConfig(AnalysisConfigSchema.parse(compact))}`;
 }

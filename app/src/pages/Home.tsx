@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { dataConfig, releaseUrl } from "../dataConfig";
 import { useAnalysis } from "../state/useAnalysis";
 import { configToSearch } from "../state/urlState";
-import type { AnalysisConfig } from "../state/schema";
+import { COL_HS64_PRESET, type AnalysisConfig } from "../state/schema";
 
 const EXAMPLES: AnalysisConfig[] = [
   {
@@ -14,20 +14,16 @@ const EXAMPLES: AnalysisConfig[] = [
     lang: "en",
   },
   {
-    v: 1,
-    view: "catalog",
-    origin: "PER",
-    year: 2020,
-    normalization: "minmax",
-    mcdm: "wsm",
-    lang: "es",
+    ...COL_HS64_PRESET,
+    view: "ranking",
   },
   {
     v: 1,
     view: "builder",
-    origin: "MEX",
-    year: 2018,
-    weightScheme: "equal",
+    origin: "COL",
+    year: 2023,
+    hs: "64",
+    weightScheme: "expert_mean",
     missingThreshold: 0.2,
   },
 ];

@@ -450,6 +450,29 @@ def export_catalog_preview_cmd(
     typer.echo(f"atlas-etl {__version__}: wrote {path}")
 
 
+@app.command("export-phase8-goldens")
+def export_phase8_goldens_cmd(
+    out: Annotated[
+        str | None,
+        typer.Option(
+            "--out",
+            help="Output JSON (default: core/fixtures/phase8 + app/public/meta)",
+        ),
+    ] = None,
+) -> None:
+    """Export COL HS64 2023 ranking golden for Phase 8 E2E / Vitest."""
+    from pathlib import Path
+
+    from imsatlas_etl.export_phase8_goldens import write_phase8_goldens
+
+    try:
+        path = write_phase8_goldens(Path(out) if out else None)
+    except Exception as exc:  # noqa: BLE001 — surface imsfe failures
+        typer.secho(str(exc), fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=1) from exc
+    typer.echo(f"atlas-etl {__version__}: wrote {path}")
+
+
 @app.command("export-phase6-goldens")
 def export_phase6_goldens_cmd(
     out: Annotated[

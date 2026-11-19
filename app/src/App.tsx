@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, Route, Routes } from "react-router-dom";
 import { ConfigPanel } from "./components/ConfigPanel";
+import { Builder } from "./pages/Builder";
 import { Catalog } from "./pages/Catalog";
 import { Home } from "./pages/Home";
+import { Ranking } from "./pages/Ranking";
 import { StubView } from "./pages/StubView";
 import { AnalysisProvider } from "./state/AnalysisContext";
 import { useAnalysis } from "./state/useAnalysis";
@@ -98,8 +100,8 @@ function AppShell() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/catalog" element={<Catalog />} />
-            <Route path="/builder" element={<StubView view="builder" />} />
-            <Route path="/ranking" element={<StubView view="ranking" />} />
+            <Route path="/builder" element={<Builder />} />
+            <Route path="/ranking" element={<Ranking />} />
             <Route path="/matrix" element={<StubView view="matrix" />} />
             <Route path="/map" element={<StubView view="map" />} />
             <Route path="/uncertainty" element={<StubView view="uncertainty" />} />
