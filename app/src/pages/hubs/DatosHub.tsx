@@ -36,6 +36,12 @@ const LINKS: {
     bodyKey: "hubDatosImsfeImportBody",
   },
   {
+    view: "ai_verify",
+    icon: Shield,
+    titleKey: "hubDatosAiVerify",
+    bodyKey: "hubDatosAiVerifyBody",
+  },
+  {
     view: "status",
     icon: GitBranch,
     titleKey: "hubDatosStatus",

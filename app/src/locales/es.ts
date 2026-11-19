@@ -561,6 +561,31 @@ const es = {
   hubDatosImsfeImport: "Importar IMSFE",
   hubDatosImsfeImportBody:
     "Reproducir puntuaciones de un libro Excel vía informe JSON anonimizado.",
+  hubDatosAiVerify: "Verificar candidatos IA",
+  hubDatosAiVerifyBody:
+    "CSV local de valores propuestos; solo verificados entran al ranking.",
+  aiVerifyIntro:
+    "Cargue candidatos (IA o fuente secundaria) como CSV. Atlas no llama a ninguna IA; solo verifica en el navegador.",
+  aiVerifyLocalOnly:
+    "Los candidatos no salen del navegador. ai_candidate y rejected nunca entran en el cálculo.",
+  aiVerifyLoadCsv: "CSV (variable_id,iso3,year,value,source_url,origin)",
+  aiVerifyInitials: "Iniciales del verificador",
+  aiVerifyErrorCsv: "CSV inválido o vacío.",
+  aiVerifyGate: "Candidatos pendientes: {nCand}. Celdas computables: {nOk}.",
+  aiVerifyVar: "Variable",
+  aiVerifyValue: "Valor",
+  aiVerifyState: "Estado",
+  aiVerifyActions: "Veredicto",
+  aiVerifyOk: "Correcto",
+  aiVerifyDecimal: "Error de decimales",
+  aiVerifyDifferent: "Valor distinto",
+  aiVerifyNoSource: "Sin fuente",
+  aiVerifyAgreement: "Informe de acuerdo",
+  aiVerifyTolerance: "Tolerancia",
+  aiVerifyLabelStat: "Estadístico para etiqueta Landis–Koch",
+  aiVerifyNoAgreement: "Verifique pares para generar kappa / PABAK / AC1.",
+  aiVerifyExport: "Exportar informe",
+  aiVerifyClear: "Borrar candidatos",
   byodIntro:
     "Sube un CSV (iso3, year, value[, iso3_d]) como variable nueva. Solo se procesa en este navegador.",
   byodLocalOnly:

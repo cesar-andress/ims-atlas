@@ -554,6 +554,31 @@ export const en = {
   hubDatosImsfeImport: "IMSFE import",
   hubDatosImsfeImportBody:
     "Reproduce workbook scores via an anonymised JSON import report.",
+  hubDatosAiVerify: "Verify AI candidates",
+  hubDatosAiVerifyBody:
+    "Local CSV of proposed values; only verified cells enter the ranking.",
+  aiVerifyIntro:
+    "Load candidates (AI or secondary source) as CSV. Atlas does not call any AI; verification stays in the browser.",
+  aiVerifyLocalOnly:
+    "Candidates never leave the browser. ai_candidate and rejected never enter the computation.",
+  aiVerifyLoadCsv: "CSV (variable_id,iso3,year,value,source_url,origin)",
+  aiVerifyInitials: "Verifier initials",
+  aiVerifyErrorCsv: "Invalid or empty CSV.",
+  aiVerifyGate: "Pending candidates: {nCand}. Computable cells: {nOk}.",
+  aiVerifyVar: "Variable",
+  aiVerifyValue: "Value",
+  aiVerifyState: "State",
+  aiVerifyActions: "Verdict",
+  aiVerifyOk: "Correct",
+  aiVerifyDecimal: "Decimal error",
+  aiVerifyDifferent: "Different value",
+  aiVerifyNoSource: "No source",
+  aiVerifyAgreement: "Agreement report",
+  aiVerifyTolerance: "Tolerance",
+  aiVerifyLabelStat: "Statistic for Landis–Koch label",
+  aiVerifyNoAgreement: "Verify pairs to generate kappa / PABAK / AC1.",
+  aiVerifyExport: "Export report",
+  aiVerifyClear: "Clear candidates",
   byodIntro:
     "Upload a CSV (iso3, year, value[, iso3_d]) as a new variable. Processed only in this browser.",
   byodLocalOnly:

@@ -68,6 +68,30 @@ export {
 } from "./winnerSensitivity.js";
 
 export {
+  assertNoAiInScores,
+  cellsToScoreMap,
+  filterComputableCells,
+  isComputableState,
+  COMPUTABLE_STATES,
+  type DataCell,
+  type DataCellState,
+  type VerificationVerdict,
+} from "./dataCellState.js";
+
+export {
+  buildAgreementReport,
+  cohensKappaNominal,
+  gwetAc1,
+  hitRate,
+  landisKochFromKappa,
+  pabak,
+  type AgreementPair,
+  type AgreementReport,
+  type AgreementStatId,
+  type LandisKochLabel,
+} from "./agreementStats.js";
+
+export {
   applyZeroPolicy,
   countRankChanges,
   culturalDistanceByKind,

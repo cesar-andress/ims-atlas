@@ -46,6 +46,9 @@ const Byod = lazy(() => import("./pages/Byod").then((m) => ({ default: m.Byod })
 const ImsfeImport = lazy(() =>
   import("./pages/ImsfeImport").then((m) => ({ default: m.ImsfeImport })),
 );
+const AiVerify = lazy(() =>
+  import("./pages/AiVerify").then((m) => ({ default: m.AiVerify })),
+);
 const Docs = lazy(() => import("./pages/Docs").then((m) => ({ default: m.Docs })));
 const PaperSupport = lazy(() =>
   import("./pages/PaperSupport").then((m) => ({ default: m.PaperSupport })),
@@ -191,6 +194,7 @@ function AppShell() {
           <Route path="/cite" element={<CiteExport />} />
           <Route path="/byod" element={<Byod />} />
           <Route path="/imsfe_import" element={<ImsfeImport />} />
+          <Route path="/ai_verify" element={<AiVerify />} />
           <Route path="/docs" element={<Docs />} />
           <Route path="/paper" element={<PaperSupport />} />
           <Route path="/changelog" element={<Changelog />} />
