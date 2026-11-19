@@ -54,9 +54,8 @@
         "transform",
         "unit",
         "source",
-        "source_url",
+        "source_ids",
         "citation",
-        "licence",
         "redistributable",
         "years",
         "frequency",
@@ -98,11 +97,31 @@
           "enum": ["none", "log", "log1p"]
         },
         "unit": { "type": "string", "minLength": 1 },
-        "source": { "type": "string", "minLength": 1 },
-        "source_url": { "type": "string", "minLength": 1 },
+        "source": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable source label for UI; machine ids live in source_ids."
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,63}$"
+          },
+          "description": "One or more catalog/sources.yaml ids; gate uses the most restrictive."
+        },
         "citation": { "type": "string", "minLength": 1 },
-        "licence": { "type": "string", "minLength": 1 },
         "redistributable": { "type": "boolean" },
+        "rights": {
+          "type": "object",
+          "description": "Optional per-variable rights override; requires override_reason.",
+          "required": ["override_reason"],
+          "properties": {
+            "override_reason": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": true
+        },
         "years": {
           "type": "array",
           "minItems": 2,

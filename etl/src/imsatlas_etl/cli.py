@@ -13,8 +13,17 @@ from imsatlas_etl.catalog import (
     load_catalog,
     write_licenses_md,
 )
-from imsatlas_etl.paths import catalog_yaml_path, licenses_md_path
+from imsatlas_etl.paths import catalog_yaml_path, licenses_md_path, rights_md_path
 from imsatlas_etl.port_catalog import build_catalog_from_backtest, write_catalog_yaml
+from imsatlas_etl.rights import (
+    rights_verify,
+    write_rights_md,
+)
+from imsatlas_etl.sources import (
+    SourcesValidationError,
+    assert_valid_sources,
+    load_sources,
+)
 from imsatlas_etl.verify import verify_variable
 from imsatlas_etl.wb_indicators import check_live_all_catalog_codes
 
@@ -102,6 +111,51 @@ def check_live() -> None:
             typer.secho(problem, fg=typer.colors.RED, err=True)
         raise typer.Exit(code=1)
     typer.echo(f"atlas-etl {__version__}: check-live ok (all WB codes found)")
+
+
+@app.command("rights-report")
+def rights_report() -> None:
+    """Validate sources + catalog and write catalog/RIGHTS.md."""
+    try:
+        assert_valid_sources(load_sources())
+        assert_valid_catalog(load_catalog())
+        out = write_rights_md()
+        write_licenses_md()
+    except (CatalogValidationError, SourcesValidationError) as exc:
+        typer.secho(str(exc), fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=1) from exc
+    typer.echo(f"atlas-etl {__version__}: wrote {out}")
+
+
+@app.command("rights-verify")
+def rights_verify_cmd(
+    source_id: Annotated[str, typer.Argument(help="Source id in sources.yaml")],
+    by: Annotated[
+        str,
+        typer.Option("--by", help="Human name recording the rights check"),
+    ],
+    on: Annotated[
+        str | None,
+        typer.Option("--on", help="UTC date YYYY-MM-DD (default: today)"),
+    ] = None,
+    note: Annotated[
+        str | None,
+        typer.Option("--note", help="Optional paraphrase of the relevant clause"),
+    ] = None,
+) -> None:
+    """Human-only: fetch terms page, store sha256, set evidence.checked_by/on."""
+    try:
+        result = rights_verify(source_id, by=by, on=on, note=note)
+        write_rights_md()
+    except SourcesValidationError as exc:
+        typer.secho(str(exc), fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=1) from exc
+    typer.echo(
+        f"atlas-etl {__version__}: rights-verify {result['id']} "
+        f"by {result['checked_by']} on {result['checked_on']} "
+        f"sha256={result['snapshot_sha256'][:16]}… "
+        f"(rights flags still need human yes/no edits; see {rights_md_path()})",
+    )
 
 
 @app.command("build")

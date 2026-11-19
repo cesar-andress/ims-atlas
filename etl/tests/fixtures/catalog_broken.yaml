@@ -12,9 +12,8 @@ variables:
     transform: none
     unit: index
     source: Nowhere
-    source_url: https://example.invalid/
+    source_ids: [nowhere]
     citation: none
-    licence: UNKNOWN
     redistributable: false
     years: [2020, 2019]
     frequency: annual
@@ -32,9 +31,8 @@ variables:
     transform: none
     unit: index
     source: Nowhere
-    source_url: https://example.invalid/
+    source_ids: [nowhere]
     citation: none
-    licence: UNKNOWN
     redistributable: true
     years: [2012, 2023]
     frequency: annual

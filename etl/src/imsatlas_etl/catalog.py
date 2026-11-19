@@ -14,6 +14,7 @@ from imsatlas_etl.paths import (
     catalog_yaml_path,
     licenses_md_path,
 )
+from imsatlas_etl.sources import load_sources, validate_sources
 
 ALLOWED_FACTORS = frozenset(
     {
@@ -112,11 +113,53 @@ def validate_catalog(
                 f"{prefix}: redistributable true cannot set byod_only true",
             )
 
+        source_ids = var.get("source_ids")
+        if not isinstance(source_ids, list) or not source_ids:
+            errors.append(f"{prefix}: source_ids must be a non-empty list")
+        elif any(not isinstance(sid, str) or not sid for sid in source_ids):
+            errors.append(f"{prefix}: source_ids entries must be non-empty strings")
+
+        rights_override = var.get("rights")
+        if rights_override is not None:
+            if not isinstance(rights_override, dict):
+                errors.append(f"{prefix}: rights override must be an object")
+            elif (
+                not isinstance(rights_override.get("override_reason"), str)
+                or not str(
+                    rights_override.get("override_reason", ""),
+                ).strip()
+            ):
+                errors.append(f"{prefix}: rights override requires override_reason")
+
         years = var.get("years")
         if isinstance(years, list) and len(years) == 2:
             start, end = years
             if isinstance(start, int) and isinstance(end, int) and start > end:
                 errors.append(f"{prefix}: years start > end")
+
+    # Cross-check source_ids against sources.yaml when present.
+    sources_path = catalog_yaml_path().parent / "sources.yaml"
+    if sources_path.is_file():
+        try:
+            sources_data = load_sources(sources_path)
+            source_errors = validate_sources(sources_data)
+            errors.extend(f"sources.yaml: {e}" for e in source_errors)
+            known = {
+                s["id"]
+                for s in sources_data.get("sources", [])
+                if isinstance(s, dict) and isinstance(s.get("id"), str)
+            }
+            for index, var in enumerate(variables):
+                if not isinstance(var, dict):
+                    continue
+                for sid in var.get("source_ids") or []:
+                    if sid not in known:
+                        errors.append(
+                            f"variables[{index}]({var.get('id')}): "
+                            f"unknown source_id {sid!r}",
+                        )
+        except Exception as exc:  # noqa: BLE001 — surface as validation error
+            errors.append(f"sources.yaml: failed to load ({exc})")
 
     return errors
 
@@ -134,12 +177,24 @@ def assert_valid_catalog(
 
 
 def render_licenses_md(data: dict[str, Any]) -> str:
+    licence_by_source: dict[str, str] = {}
+    sources_path = catalog_yaml_path().parent / "sources.yaml"
+    if sources_path.is_file():
+        sources_data = load_sources(sources_path)
+        for source in sources_data.get("sources", []):
+            if isinstance(source, dict) and isinstance(source.get("id"), str):
+                rights = source.get("rights") or {}
+                licence_by_source[source["id"]] = str(
+                    rights.get("licence_id", "UNKNOWN"),
+                )
+
     lines = [
         "# Variable licences",
         "",
-        "Generated from `catalog/variables.yaml`. Do not edit by hand.",
+        "Generated from `catalog/variables.yaml` + `catalog/sources.yaml`. "
+        "Do not edit by hand. See also `catalog/RIGHTS.md` for the gate.",
         "",
-        "| Variable | Source | Licence | Redistributable | Citation |",
+        "| Variable | source_ids | Licence(s) | Redistributable | Citation |",
         "| --- | --- | --- | --- | --- |",
     ]
     for var in data.get("variables", []):
@@ -147,11 +202,13 @@ def render_licenses_md(data: dict[str, Any]) -> str:
             continue
         redistributable = "yes" if var.get("redistributable") else "no (BYOD)"
         citation = str(var.get("citation", "")).replace("|", "\\|")
+        ids = var.get("source_ids") or []
+        licences = "; ".join(licence_by_source.get(sid, "UNKNOWN") for sid in ids)
         lines.append(
-            "| {id} | {source} | {licence} | {redist} | {citation} |".format(
+            "| {id} | {sids} | {licence} | {redist} | {citation} |".format(
                 id=var.get("id", ""),
-                source=var.get("source", ""),
-                licence=var.get("licence", ""),
+                sids=",".join(ids),
+                licence=licences,
                 redist=redistributable,
                 citation=citation,
             ),

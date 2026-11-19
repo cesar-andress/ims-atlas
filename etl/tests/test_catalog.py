@@ -101,7 +101,7 @@ def test_redistributable_false_requires_byod() -> None:
 def test_licenses_md_render_contains_table() -> None:
     data = load_catalog()
     md = render_licenses_md(data)
-    assert "| Variable | Source | Licence |" in md
+    assert "| Variable | source_ids | Licence(s) |" in md
     assert "IMPV" in md
     licenses_path = catalog_dir() / "LICENSES.md"
     assert licenses_path.is_file()

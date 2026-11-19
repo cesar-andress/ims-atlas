@@ -35,6 +35,37 @@ NAME_ES: dict[str, str] = {
     "REEXP": "Intensidad de reexportación (capítulo X_j / M_j)",
 }
 
+
+SOURCE_IDS: dict[str, list[str]] = {
+    "IMPV": ["baci"],
+    "IMPC": ["baci", "worldbank_wdi"],
+    "GRW": ["baci"],
+    "GDPPC": ["worldbank_wdi"],
+    "DIST": ["cepi_gravity"],
+    "TARIF": ["wits_trains"],
+    "FTA": ["cepi_gravity"],
+    "LPI": ["worldbank_lpi"],
+    "ASIASH": ["baci"],
+    "HHI": ["baci"],
+    "UVGAP": ["baci"],
+    "CULT": ["hofstede"],
+    "LANG": ["cepi_gravity"],
+    "INFL": ["worldbank_wdi"],
+    "UNEMP": ["worldbank_wdi"],
+    "GOV": ["worldbank_wgi"],
+    "EOC": ["worldbank_wdi"],
+    "REEXP": ["baci"],
+    "ITU_IDI": ["itu_datahub"],
+    "EF_EPI": ["ef_epi"],
+    "ODIN": ["odin"],
+    "GEDI": ["gedi"],
+    "GII": ["wipo_gii"],
+    "STARTUPBLINK": ["startupblink"],
+    "EPI": ["yale_epi"],
+    "CO2PC": ["worldbank_wdi"],
+    "PLI": ["worldbank_wdi"],
+}
+
 PRODUCT_IDS = frozenset(
     {"IMPV", "IMPC", "GRW", "ASIASH", "HHI", "UVGAP", "REEXP", "TARIF"},
 )
@@ -251,9 +282,8 @@ def transform_backtest_variable(raw: dict[str, Any]) -> dict[str, Any]:
         "transform": str(raw["transform"]),
         "unit": str(raw["unit"]),
         "source": str(raw["source"]),
-        "source_url": meta["source_url"],
+        "source_ids": list(SOURCE_IDS[var_id]),
         "citation": meta["citation"],
-        "licence": meta["licence"],
         "redistributable": bool(meta["redistributable"]),
         "years": list(DEFAULT_YEARS),
         "frequency": meta["frequency"],
@@ -284,12 +314,11 @@ def new_draft_variables() -> list[dict[str, Any]]:
             "transform": "none",
             "unit": "index",
             "source": "ITU",
-            "source_url": "https://datahub.itu.int/about/",
+            "source_ids": ["itu_datahub"],
             "citation": (
                 "International Telecommunication Union. ICT Development Index / "
                 "ITU DataHub."
             ),
-            "licence": "CC-BY-NC-SA-3.0-IGO",
             "redistributable": False,
             "byod_only": True,
             "years": [2023, 2026],
@@ -314,9 +343,8 @@ def new_draft_variables() -> list[dict[str, Any]]:
             "transform": "none",
             "unit": "index",
             "source": "EF",
-            "source_url": "https://www.ef.com/wwen/epi/",
+            "source_ids": ["ef_epi"],
             "citation": "EF Education First. EF English Proficiency Index.",
-            "licence": "UNKNOWN",
             "redistributable": False,
             "byod_only": True,
             "years": [2011, 2026],
@@ -341,9 +369,8 @@ def new_draft_variables() -> list[dict[str, Any]]:
             "transform": "none",
             "unit": "index",
             "source": "Open Data Watch",
-            "source_url": "https://odin.opendatawatch.com/",
+            "source_ids": ["odin"],
             "citation": "Open Data Watch. Open Data Inventory (ODIN).",
-            "licence": "UNKNOWN",
             "redistributable": False,
             "byod_only": True,
             "years": [2015, 2024],
@@ -369,9 +396,8 @@ def new_draft_variables() -> list[dict[str, Any]]:
             "transform": "none",
             "unit": "index",
             "source": "GEDI Institute",
-            "source_url": "http://thegedi.org/datasets/",
+            "source_ids": ["gedi"],
             "citation": "The GEDI Institute. Global Entrepreneurship Index (GEI).",
-            "licence": "UNKNOWN",
             "redistributable": False,
             "byod_only": True,
             "years": [2006, 2019],
@@ -396,12 +422,11 @@ def new_draft_variables() -> list[dict[str, Any]]:
             "transform": "none",
             "unit": "index",
             "source": "WIPO",
-            "source_url": "https://www.wipo.int/global_innovation_index/en/",
+            "source_ids": ["wipo_gii"],
             "citation": (
                 "World Intellectual Property Organization (WIPO). "
                 "Global Innovation Index."
             ),
-            "licence": "CC-BY-4.0",
             "redistributable": True,
             "years": [2013, 2026],
             "frequency": "annual",
@@ -425,9 +450,8 @@ def new_draft_variables() -> list[dict[str, Any]]:
             "transform": "none",
             "unit": "index",
             "source": "StartupBlink",
-            "source_url": "https://www.startupblink.com/",
+            "source_ids": ["startupblink"],
             "citation": "StartupBlink. Global Startup Ecosystem Index.",
-            "licence": "UNKNOWN",
             "redistributable": False,
             "byod_only": True,
             "years": [2020, 2026],
@@ -449,13 +473,12 @@ def new_draft_variables() -> list[dict[str, Any]]:
             "transform": "none",
             "unit": "index",
             "source": "Yale EPI",
-            "source_url": "https://epi.yale.edu/downloads/epi2026",
+            "source_ids": ["yale_epi"],
             "citation": (
                 "Wendling, Z. A., Emerson, J. W., Esty, D. C., de Sherbinin, A., "
                 "Block, S., et al. (2026). 2026 Environmental Performance Index. "
                 "Yale Center for Environmental Law & Policy."
             ),
-            "licence": "CC-BY-NC-SA-4.0",
             "redistributable": False,
             "byod_only": True,
             "years": [2006, 2026],
@@ -481,12 +504,11 @@ def new_draft_variables() -> list[dict[str, Any]]:
             "unit": "t CO2e per capita",
             "source": "WB",
             "code": "EN.GHG.CO2.PC.CE.AR5",
-            "source_url": ("https://data.worldbank.org/indicator/EN.GHG.CO2.PC.CE.AR5"),
+            "source_ids": ["worldbank_wdi"],
             "citation": (
                 "World Bank. World Development Indicators. EN.GHG.CO2.PC.CE.AR5 "
                 "(CO2 emissions excluding LULUCF per capita)."
             ),
-            "licence": "CC-BY-4.0",
             "redistributable": True,
             "years": [2012, 2023],
             "frequency": "annual",
@@ -511,11 +533,10 @@ def new_draft_variables() -> list[dict[str, Any]]:
             "transform": "none",
             "unit": "index (USA=100)",
             "source": "WB ICP/WDI",
-            "source_url": "https://data.worldbank.org/indicator/PA.NUS.PRVT.PLI",
+            "source_ids": ["worldbank_wdi"],
             "citation": (
                 "World Bank. World Development Indicators / ICP. PA.NUS.PRVT.PLI."
             ),
-            "licence": "CC-BY-4.0",
             "redistributable": True,
             "years": [2012, 2023],
             "frequency": "annual",

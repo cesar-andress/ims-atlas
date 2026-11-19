@@ -1,0 +1,218 @@
+[
+  {
+    "id": "all_unknown_byod",
+    "source_rights": {
+      "licence_id": "UNKNOWN",
+      "use_research": "unknown",
+      "redistribute_raw": "unknown",
+      "redistribute_derived": "unknown",
+      "commercial_use": "unknown",
+      "attribution_required": "unknown",
+      "share_alike": "unknown",
+      "no_derivatives": "unknown",
+      "evidence": {
+        "checked_by": null,
+        "checked_on": null,
+        "terms_url": "https://example.test/terms",
+        "snapshot_sha256": null
+      }
+    },
+    "variable": null,
+    "deployment": { "commercial_context": true },
+    "expected_decision": "byod_only"
+  },
+  {
+    "id": "use_research_no_local",
+    "source_rights": {
+      "licence_id": "LicenseRef-Private",
+      "use_research": "no",
+      "redistribute_raw": "no",
+      "redistribute_derived": "no",
+      "commercial_use": "no",
+      "attribution_required": "yes",
+      "share_alike": "no",
+      "no_derivatives": "no",
+      "evidence": {
+        "checked_by": "Alice",
+        "checked_on": "2026-11-19",
+        "terms_url": "https://example.test/terms",
+        "snapshot_sha256": "abc"
+      }
+    },
+    "variable": null,
+    "deployment": { "commercial_context": true },
+    "expected_decision": "local_only"
+  },
+  {
+    "id": "ship_raw_cc_by",
+    "source_rights": {
+      "licence_id": "CC-BY-4.0",
+      "use_research": "yes",
+      "redistribute_raw": "yes",
+      "redistribute_derived": "yes",
+      "commercial_use": "yes",
+      "attribution_required": "yes",
+      "share_alike": "no",
+      "no_derivatives": "no",
+      "evidence": {
+        "checked_by": "Alice",
+        "checked_on": "2026-11-19",
+        "terms_url": "https://example.test/terms",
+        "snapshot_sha256": "deadbeef"
+      }
+    },
+    "variable": null,
+    "deployment": { "commercial_context": true },
+    "expected_decision": "ship_raw"
+  },
+  {
+    "id": "ship_derived_only",
+    "source_rights": {
+      "licence_id": "LicenseRef-DerivedOK",
+      "use_research": "yes",
+      "redistribute_raw": "no",
+      "redistribute_derived": "yes",
+      "commercial_use": "yes",
+      "attribution_required": "yes",
+      "share_alike": "no",
+      "no_derivatives": "no",
+      "evidence": {
+        "checked_by": "Bob",
+        "checked_on": "2026-11-19",
+        "terms_url": "https://example.test/terms",
+        "snapshot_sha256": "cafe"
+      }
+    },
+    "variable": null,
+    "deployment": { "commercial_context": true },
+    "expected_decision": "ship_derived"
+  },
+  {
+    "id": "no_derivatives_blocks_derived",
+    "source_rights": {
+      "licence_id": "CC-BY-ND-4.0",
+      "use_research": "yes",
+      "redistribute_raw": "no",
+      "redistribute_derived": "yes",
+      "commercial_use": "yes",
+      "attribution_required": "yes",
+      "share_alike": "no",
+      "no_derivatives": "yes",
+      "evidence": {
+        "checked_by": "Alice",
+        "checked_on": "2026-11-19",
+        "terms_url": "https://example.test/terms",
+        "snapshot_sha256": "nd"
+      }
+    },
+    "variable": null,
+    "deployment": { "commercial_context": true },
+    "expected_decision": "byod_only"
+  },
+  {
+    "id": "commercial_no_under_commercial_context",
+    "source_rights": {
+      "licence_id": "CC-BY-NC-4.0",
+      "use_research": "yes",
+      "redistribute_raw": "yes",
+      "redistribute_derived": "yes",
+      "commercial_use": "no",
+      "attribution_required": "yes",
+      "share_alike": "no",
+      "no_derivatives": "no",
+      "evidence": {
+        "checked_by": "Alice",
+        "checked_on": "2026-11-19",
+        "terms_url": "https://example.test/terms",
+        "snapshot_sha256": "nc"
+      }
+    },
+    "variable": null,
+    "deployment": { "commercial_context": true },
+    "expected_decision": "byod_only"
+  },
+  {
+    "id": "commercial_no_ok_when_non_commercial_host",
+    "source_rights": {
+      "licence_id": "CC-BY-NC-4.0",
+      "use_research": "yes",
+      "redistribute_raw": "yes",
+      "redistribute_derived": "yes",
+      "commercial_use": "no",
+      "attribution_required": "yes",
+      "share_alike": "no",
+      "no_derivatives": "no",
+      "evidence": {
+        "checked_by": "Alice",
+        "checked_on": "2026-11-19",
+        "terms_url": "https://example.test/terms",
+        "snapshot_sha256": "nc"
+      }
+    },
+    "variable": null,
+    "deployment": { "commercial_context": false },
+    "expected_decision": "ship_raw"
+  },
+  {
+    "id": "multi_source_most_restrictive",
+    "source_rights": [
+      {
+        "licence_id": "CC-BY-4.0",
+        "use_research": "yes",
+        "redistribute_raw": "yes",
+        "redistribute_derived": "yes",
+        "commercial_use": "yes",
+        "attribution_required": "yes",
+        "share_alike": "no",
+        "no_derivatives": "no",
+        "evidence": {
+          "checked_by": "Alice",
+          "checked_on": "2026-11-19",
+          "terms_url": "https://example.test/a",
+          "snapshot_sha256": "a"
+        }
+      },
+      {
+        "licence_id": "UNKNOWN",
+        "use_research": "unknown",
+        "redistribute_raw": "unknown",
+        "redistribute_derived": "unknown",
+        "commercial_use": "unknown",
+        "attribution_required": "unknown",
+        "share_alike": "unknown",
+        "no_derivatives": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "terms_url": "https://example.test/b",
+          "snapshot_sha256": null
+        }
+      }
+    ],
+    "variable": null,
+    "deployment": { "commercial_context": true },
+    "expected_decision": "byod_only"
+  },
+  {
+    "id": "missing_evidence_blocks_ship",
+    "source_rights": {
+      "licence_id": "CC-BY-4.0",
+      "use_research": "yes",
+      "redistribute_raw": "yes",
+      "redistribute_derived": "yes",
+      "commercial_use": "yes",
+      "attribution_required": "yes",
+      "share_alike": "no",
+      "no_derivatives": "no",
+      "evidence": {
+        "checked_by": null,
+        "checked_on": null,
+        "terms_url": "https://example.test/terms",
+        "snapshot_sha256": null
+      }
+    },
+    "variable": null,
+    "deployment": { "commercial_context": true },
+    "expected_decision": "byod_only"
+  }
+]

@@ -1,0 +1,7 @@
+# Human deployment context for atlas.aiserv.es (SPEC §10.2).
+# commercial_context=true is conservative: the site is hosted by a company.
+commercial_context: true
+site: atlas.aiserv.es
+notes: >
+  Hosted by AISERV SYSTEMS SLU. Treat redistribution rules as commercial-context
+  until a human explicitly sets commercial_context=false.

@@ -1,6 +1,7 @@
 # IMS Atlas variable catalog (SPEC §4).
 # Ported entries are transformed from pinned imsfe/ims-backtest config/variables.yaml (do not retype by hand).
 # New SPEC §4 variables are status: draft. Licence UNKNOWN => redistributable false / BYOD.
+# Licence / terms live in catalog/sources.yaml; variables reference source_ids (SPEC §10.1).
 # coverage_countries is filled by ETL later.
 factors:
 - demand
@@ -25,10 +26,8 @@ variables:
   transform: log
   unit: USD
   source: BACI
-  source_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37
   citation: 'Gaulier, G. and Zignago, S. (2010). BACI: International Trade Database at the Product-Level.
     The 1994-2007 Version. CEPII Working Paper 2010-23.'
-  licence: Etalab-2.0
   redistributable: true
   years:
   - 2012
@@ -40,6 +39,8 @@ variables:
   status: draft
   code: value
   origin_specific: false
+  source_ids: &id001
+  - baci
 - id: IMPC
   name:
     en: HS chapter imports per capita
@@ -50,10 +51,8 @@ variables:
   transform: log
   unit: USD per capita
   source: BACI+WB
-  source_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37
   citation: 'BACI (CEPII) import values combined with World Bank population (SP.POP.TOTL). BACI: Gaulier
     & Zignago (2010); WDI: World Bank.'
-  licence: Etalab-2.0; CC-BY-4.0
   redistributable: true
   years:
   - 2012
@@ -65,6 +64,9 @@ variables:
   status: draft
   code: value/SP.POP.TOTL
   origin_specific: false
+  source_ids:
+  - baci
+  - worldbank_wdi
 - id: GRW
   name:
     en: HS chapter import growth (3-year CAGR)
@@ -75,9 +77,7 @@ variables:
   transform: none
   unit: share
   source: BACI
-  source_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37
   citation: Derived from CEPII BACI (Gaulier & Zignago, 2010), HS chapter imports.
-  licence: Etalab-2.0
   redistributable: true
   years:
   - 2012
@@ -89,6 +89,7 @@ variables:
   status: draft
   code: cagr_3y
   origin_specific: false
+  source_ids: *id001
 - id: GDPPC
   name:
     en: GDP per capita PPP
@@ -99,9 +100,7 @@ variables:
   transform: log
   unit: constant international USD
   source: WB
-  source_url: https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD
   citation: World Bank. World Development Indicators. NY.GDP.PCAP.PP.KD.
-  licence: CC-BY-4.0
   redistributable: true
   years:
   - 2012
@@ -113,6 +112,8 @@ variables:
   status: draft
   code: NY.GDP.PCAP.PP.KD
   origin_specific: false
+  source_ids: &id003
+  - worldbank_wdi
 - id: DIST
   name:
     en: Population-weighted distance
@@ -123,10 +124,8 @@ variables:
   transform: log
   unit: km
   source: CEPII Gravity
-  source_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=8
   citation: Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database. CEPII Working Paper
     2022-05.
-  licence: Etalab-2.0
   redistributable: true
   years:
   - 2012
@@ -138,6 +137,8 @@ variables:
   status: draft
   code: distw_harmonic
   origin_specific: true
+  source_ids: &id002
+  - cepi_gravity
 - id: TARIF
   name:
     en: Applied preferential tariff (AHS), origin to destination
@@ -148,9 +149,7 @@ variables:
   transform: none
   unit: percent
   source: WITS/TRAINS
-  source_url: https://wits.worldbank.org/
   citation: World Bank / UNCTAD WITS-TRAINS applied preferential tariff (AHS).
-  licence: UNKNOWN
   redistributable: false
   years:
   - 2012
@@ -164,6 +163,8 @@ variables:
   code: AHS
   origin_specific: true
   byod_only: true
+  source_ids:
+  - wits_trains
 - id: FTA
   name:
     en: Preferential trade agreement in force
@@ -174,10 +175,8 @@ variables:
   transform: none
   unit: binary
   source: CEPII Gravity
-  source_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=8
   citation: Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database. CEPII Working Paper
     2022-05.
-  licence: Etalab-2.0
   redistributable: true
   years:
   - 2012
@@ -189,6 +188,7 @@ variables:
   status: draft
   code: fta_wto
   origin_specific: true
+  source_ids: *id002
 - id: LPI
   name:
     en: Logistics Performance Index (overall)
@@ -199,9 +199,7 @@ variables:
   transform: none
   unit: index
   source: WB
-  source_url: https://data.worldbank.org/indicator/LP.LPI.OVRL.XQ
   citation: World Bank. Logistics Performance Index. LP.LPI.OVRL.XQ.
-  licence: CC-BY-4.0
   redistributable: true
   years:
   - 2012
@@ -213,6 +211,8 @@ variables:
   status: draft
   code: LP.LPI.OVRL.XQ
   origin_specific: false
+  source_ids:
+  - worldbank_lpi
 - id: ASIASH
   name:
     en: China+Vietnam share of destination HS imports
@@ -223,9 +223,7 @@ variables:
   transform: none
   unit: share
   source: BACI
-  source_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37
   citation: Derived from CEPII BACI (Gaulier & Zignago, 2010).
-  licence: Etalab-2.0
   redistributable: true
   years:
   - 2012
@@ -237,6 +235,7 @@ variables:
   status: draft
   code: chn_vnm_share
   origin_specific: false
+  source_ids: *id001
 - id: HHI
   name:
     en: Supplier concentration (HHI) in destination HS imports
@@ -247,9 +246,7 @@ variables:
   transform: none
   unit: index
   source: BACI
-  source_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37
   citation: Derived from CEPII BACI (Gaulier & Zignago, 2010).
-  licence: Etalab-2.0
   redistributable: true
   years:
   - 2012
@@ -261,6 +258,7 @@ variables:
   status: draft
   code: hhi_suppliers
   origin_specific: false
+  source_ids: *id001
 - id: UVGAP
   name:
     en: Absolute log unit-value gap (destination imports vs origin exports)
@@ -271,9 +269,7 @@ variables:
   transform: none
   unit: log USD per ton
   source: BACI
-  source_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37
   citation: Derived from CEPII BACI (Gaulier & Zignago, 2010).
-  licence: Etalab-2.0
   redistributable: true
   years:
   - 2012
@@ -285,6 +281,7 @@ variables:
   status: draft
   code: uv_gap
   origin_specific: true
+  source_ids: *id001
 - id: CULT
   name:
     en: Cultural distance (Kogut-Singh, Hofstede 6 dimensions)
@@ -295,10 +292,8 @@ variables:
   transform: none
   unit: index
   source: Hofstede
-  source_url: https://geerthofstede.com/research-and-vsm/dimension-data-matrix/
   citation: Hofstede dimension scores (6 dimensions). geerthofstede.com dimension data matrix; cultural
     distance via Kogut-Singh.
-  licence: UNKNOWN
   redistributable: false
   years:
   - 2012
@@ -312,6 +307,8 @@ variables:
   code: kogut_singh_6
   origin_specific: true
   byod_only: true
+  source_ids:
+  - hofstede
 - id: LANG
   name:
     en: Common official language
@@ -322,10 +319,8 @@ variables:
   transform: none
   unit: binary
   source: CEPII Gravity
-  source_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=8
   citation: Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database. CEPII Working Paper
     2022-05.
-  licence: Etalab-2.0
   redistributable: true
   years:
   - 2012
@@ -337,6 +332,7 @@ variables:
   status: draft
   code: comlang_off
   origin_specific: true
+  source_ids: *id002
 - id: INFL
   name:
     en: Inflation deviation from 2 percent
@@ -347,9 +343,7 @@ variables:
   transform: none
   unit: percentage points
   source: WB
-  source_url: https://data.worldbank.org/indicator/FP.CPI.TOTL.ZG
   citation: World Bank. World Development Indicators. FP.CPI.TOTL.ZG.
-  licence: CC-BY-4.0
   redistributable: true
   years:
   - 2012
@@ -361,6 +355,7 @@ variables:
   status: draft
   code: FP.CPI.TOTL.ZG
   origin_specific: false
+  source_ids: *id003
 - id: UNEMP
   name:
     en: Unemployment rate
@@ -371,9 +366,7 @@ variables:
   transform: none
   unit: percent
   source: WB
-  source_url: https://data.worldbank.org/indicator/SL.UEM.TOTL.ZS
   citation: World Bank. World Development Indicators. SL.UEM.TOTL.ZS.
-  licence: CC-BY-4.0
   redistributable: true
   years:
   - 2012
@@ -385,6 +378,7 @@ variables:
   status: draft
   code: SL.UEM.TOTL.ZS
   origin_specific: false
+  source_ids: *id003
 - id: GOV
   name:
     en: Mean Worldwide Governance Indicators
@@ -395,9 +389,7 @@ variables:
   transform: none
   unit: estimate
   source: WB WGI
-  source_url: https://www.worldbank.org/en/publication/worldwide-governance-indicators
   citation: World Bank. Worldwide Governance Indicators (mean of six estimate series).
-  licence: CC-BY-4.0
   redistributable: true
   years:
   - 2012
@@ -409,6 +401,8 @@ variables:
   status: draft
   code: VA.EST,PV.EST,GE.EST,RQ.EST,RL.EST,CC.EST
   origin_specific: false
+  source_ids:
+  - worldbank_wgi
 - id: EOC
   name:
     en: External Opening Coefficient (trade/GDP)
@@ -419,9 +413,7 @@ variables:
   transform: none
   unit: percent of GDP
   source: WB
-  source_url: https://data.worldbank.org/indicator/NE.TRD.GNFS.ZS
   citation: World Bank. World Development Indicators. NE.TRD.GNFS.ZS.
-  licence: CC-BY-4.0
   redistributable: true
   years:
   - 2012
@@ -433,6 +425,7 @@ variables:
   status: draft
   code: NE.TRD.GNFS.ZS
   origin_specific: false
+  source_ids: *id003
 - id: REEXP
   name:
     en: Re-export intensity (chapter X_j / M_j)
@@ -443,9 +436,7 @@ variables:
   transform: none
   unit: ratio
   source: BACI
-  source_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37
   citation: Derived from CEPII BACI (Gaulier & Zignago, 2010).
-  licence: Etalab-2.0
   redistributable: true
   years:
   - 2012
@@ -457,6 +448,7 @@ variables:
   status: draft
   code: reexport_ratio
   origin_specific: false
+  source_ids: *id001
 - id: ITU_IDI
   name:
     en: ICT Development Index
@@ -467,9 +459,7 @@ variables:
   transform: none
   unit: index
   source: ITU
-  source_url: https://datahub.itu.int/about/
   citation: International Telecommunication Union. ICT Development Index / ITU DataHub.
-  licence: CC-BY-NC-SA-3.0-IGO
   redistributable: false
   byod_only: true
   years:
@@ -482,6 +472,8 @@ variables:
   notes: 'ITU DataHub About page: CC BY-NC-SA 3.0 IGO (non-commercial). New IDI methodology from 2023
     — do not splice with pre-2023 silently.'
   status: draft
+  source_ids:
+  - itu_datahub
 - id: EF_EPI
   name:
     en: EF English Proficiency Index
@@ -492,9 +484,7 @@ variables:
   transform: none
   unit: index
   source: EF
-  source_url: https://www.ef.com/wwen/epi/
   citation: EF Education First. EF English Proficiency Index.
-  licence: UNKNOWN
   redistributable: false
   byod_only: true
   years:
@@ -506,6 +496,8 @@ variables:
   notes: Official landing opened; redistribution / open-licence terms not stated clearly — treat as proprietary
     BYOD until verified.
   status: draft
+  source_ids:
+  - ef_epi
 - id: ODIN
   name:
     en: Open Data Inventory overall score
@@ -516,9 +508,7 @@ variables:
   transform: none
   unit: index
   source: Open Data Watch
-  source_url: https://odin.opendatawatch.com/
   citation: Open Data Watch. Open Data Inventory (ODIN).
-  licence: UNKNOWN
   redistributable: false
   byod_only: true
   years:
@@ -530,6 +520,8 @@ variables:
   notes: Official site shows a CC BY icon; older ODIN reports cite CC BY 4.0. Current machine-readable
     download terms not confirmed this session — UNKNOWN until a human verifies the download licence.
   status: draft
+  source_ids:
+  - odin
 - id: GEDI
   name:
     en: Global Entrepreneurship Index
@@ -540,9 +532,7 @@ variables:
   transform: none
   unit: index
   source: GEDI Institute
-  source_url: http://thegedi.org/datasets/
   citation: The GEDI Institute. Global Entrepreneurship Index (GEI).
-  licence: UNKNOWN
   redistributable: false
   byod_only: true
   years:
@@ -554,6 +544,8 @@ variables:
   notes: Final GEI issue around 2019; no clear SPDX redistribution licence on the official pages opened
     — BYOD.
   status: draft
+  source_ids:
+  - gedi
 - id: GII
   name:
     en: Global Innovation Index
@@ -564,9 +556,7 @@ variables:
   transform: none
   unit: index
   source: WIPO
-  source_url: https://www.wipo.int/global_innovation_index/en/
   citation: World Intellectual Property Organization (WIPO). Global Innovation Index.
-  licence: CC-BY-4.0
   redistributable: true
   years:
   - 2013
@@ -577,6 +567,8 @@ variables:
   notes: 'GII 2026 publication states CC BY 4.0; confirm the database file carries the same terms before
     status: verified.'
   status: draft
+  source_ids:
+  - wipo_gii
 - id: STARTUPBLINK
   name:
     en: Global Startup Ecosystem Index
@@ -587,9 +579,7 @@ variables:
   transform: none
   unit: index
   source: StartupBlink
-  source_url: https://www.startupblink.com/
   citation: StartupBlink. Global Startup Ecosystem Index.
-  licence: UNKNOWN
   redistributable: false
   byod_only: true
   years:
@@ -600,6 +590,8 @@ variables:
   series_breaks: []
   notes: Likely proprietary; no open licence confirmed — BYOD.
   status: draft
+  source_ids:
+  - startupblink
 - id: EPI
   name:
     en: Environmental Performance Index
@@ -610,10 +602,8 @@ variables:
   transform: none
   unit: index
   source: Yale EPI
-  source_url: https://epi.yale.edu/downloads/epi2026
   citation: Wendling, Z. A., Emerson, J. W., Esty, D. C., de Sherbinin, A., Block, S., et al. (2026).
     2026 Environmental Performance Index. Yale Center for Environmental Law & Policy.
-  licence: CC-BY-NC-SA-4.0
   redistributable: false
   byod_only: true
   years:
@@ -625,6 +615,8 @@ variables:
   notes: 'epi.yale.edu downloads footer and FAQs: CC BY-NC-SA 4.0 — non-commercial; not shipped in the
     public release.'
   status: draft
+  source_ids:
+  - yale_epi
 - id: CO2PC
   name:
     en: CO2 emissions excluding LULUCF per capita (t CO2e/capita)
@@ -636,10 +628,8 @@ variables:
   unit: t CO2e per capita
   source: WB
   code: EN.GHG.CO2.PC.CE.AR5
-  source_url: https://data.worldbank.org/indicator/EN.GHG.CO2.PC.CE.AR5
   citation: World Bank. World Development Indicators. EN.GHG.CO2.PC.CE.AR5 (CO2 emissions excluding LULUCF
     per capita).
-  licence: CC-BY-4.0
   redistributable: true
   years:
   - 2012
@@ -652,6 +642,7 @@ variables:
     not splice with the archived series. series_breaks marks the catalog switch year (not an upstream
     splice).
   status: draft
+  source_ids: *id003
 - id: PLI
   name:
     en: Price level index (households and NPISHs final consumption)
@@ -662,9 +653,7 @@ variables:
   transform: none
   unit: index (USA=100)
   source: WB ICP/WDI
-  source_url: https://data.worldbank.org/indicator/PA.NUS.PRVT.PLI
   citation: World Bank. World Development Indicators / ICP. PA.NUS.PRVT.PLI.
-  licence: CC-BY-4.0
   redistributable: true
   years:
   - 2012
@@ -674,3 +663,5 @@ variables:
   series_breaks: []
   notes: Open price-level replacement for scraped consumer-price baskets. Indicator page states CC BY-4.0.
   status: draft
+  source_ids:
+  - worldbank_wdi

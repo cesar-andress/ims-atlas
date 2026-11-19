@@ -8,7 +8,16 @@ is no backend and no accounts.
 
 ## Status
 
-Phase 0 scaffold (`v0.1.0`). Engine, ETL connectors and data release land in later phases.
+Phase 1b (`v0.1.0`): variable catalog + source registry + licence gate. ETL pipeline
+(check/extract/validate/transform) and browser engine land in later phases.
+
+```bash
+make catalog-validate   # variables.yaml + sources.yaml
+make rights-report      # writes catalog/RIGHTS.md (gate decisions)
+```
+
+Every source currently needs a human `atlas-etl rights-verify <SOURCE> --by "<name>"`
+plus yes/no rights flags before any variable can `ship_*`.
 
 ## Repository layout
 
