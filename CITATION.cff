@@ -2,7 +2,8 @@ cff-version: 1.2.0
 message: "If you use IMS Atlas, please cite it as below."
 type: software
 title: "IMS Atlas: an open tool to build and backtest international market selection indices"
-version: 0.1.0
+version: 1.0.0
+date-released: 2026-11-19
 license: MIT
 repository-code: "https://github.com/cesar-andress/ims-atlas"
 authors:

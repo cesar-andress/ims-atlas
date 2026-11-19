@@ -8,19 +8,23 @@ is no backend and no accounts.
 
 ## Status
 
-Phase 3 (`v0.1.0`): Phase 2b plus connectors/transforms for new catalog variables
-(communication, entrepreneurship, sustainability, PLI), coverage heatmaps, and
-fixture-first BYOD sources. Browser engine UI lands later.
+**v1.0.0** — browser app (ranking, matrix, map, SMAA, backtest, time, cite, BYOD, docs),
+TypeScript `core` with ims-backtest goldens, ETL + licence gate. Live:
+[`https://atlas.aiserv.es`](https://atlas.aiserv.es).
+
+Release notes: [CHANGELOG.md](CHANGELOG.md). Zenodo steps: [docs/ZENODO_RELEASE.md](docs/ZENODO_RELEASE.md).
+Checklist: [docs/V1_CHECKLIST.md](docs/V1_CHECKLIST.md).
 
 ```bash
 make catalog-validate   # variables.yaml + sources.yaml
 make rights-report      # writes catalog/RIGHTS.md (gate decisions)
 make pipeline-fixture   # offline mini-world DAG -> data/curated + status/
-make release-staging    # QA + staging release v0.1.0 + lineage.json
+make release-staging    # QA + staging release (set version in Make / CLI)
 make promote-release BY="Your Name"   # staging -> public
+make figures            # paper screenshots -> paper-figures/ (gitignored)
 ```
 
-Promote: `atlas-etl promote 0.1.0 --by "<name>"` after reviewing staging.
+Promote data: `atlas-etl promote 1.0.0 --by "<name>"` after reviewing staging.
 Weekly check: install `deploy/ims-atlas-check.{service,timer}` on the host.
 
 Every source currently needs a human `atlas-etl rights-verify <SOURCE> --by "<name>"`

@@ -416,6 +416,14 @@ def write_zenodo_dataset_json(
         "license": "other-open",
         "creators": [
             {
+                "name": "Baena-Rojas, Jose Jaime",
+                "orcid": "0000-0002-0915-4087",
+                "affiliation": (
+                    "Pontificia Universidad Católica del Perú; "
+                    "Universidad Internacional de La Rioja"
+                ),
+            },
+            {
                 "name": "Andrés, César",
                 "orcid": "0009-0001-8968-3404",
                 "affiliation": "Universidad Internacional de La Rioja",

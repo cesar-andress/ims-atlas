@@ -1,4 +1,4 @@
-.PHONY: setup lint test e2e build etl pipeline-fixture release-staging promote-release release-data catalog-port catalog-validate check-live rights-report qa lineage coverage-report phase3-report export-phase5-goldens export-phase6-goldens export-phase8-goldens dev cname pin-backtest typecheck
+.PHONY: setup lint test e2e figures build etl pipeline-fixture release-staging promote-release release-data catalog-port catalog-validate check-live rights-report qa lineage coverage-report phase3-report export-phase5-goldens export-phase6-goldens export-phase8-goldens dev cname pin-backtest typecheck
 
 NODE_VERSION := 20
 PNPM ?= pnpm
@@ -38,6 +38,10 @@ e2e:
 	$(PNPM) --filter @ims-atlas/app run build
 	$(PNPM) --filter @ims-atlas/app run e2e
 
+figures:
+	$(PNPM) --filter @ims-atlas/app run build
+	$(PNPM) --filter @ims-atlas/app run figures
+
 build:
 	$(PNPM) run build
 
@@ -75,7 +79,7 @@ export-catalog-preview:
 	cd etl && $(UV) run atlas-etl export-catalog-preview
 
 release-staging:
-	cd etl && $(UV) run atlas-etl release --version 0.1.0 --staging --force
+	cd etl && $(UV) run atlas-etl release --version 1.0.0 --staging --force
 	cd etl && $(UV) run atlas-etl lineage
 	cd etl && $(UV) run atlas-etl qa
 	cd etl && $(UV) run atlas-etl coverage-report
@@ -83,7 +87,7 @@ release-staging:
 
 promote-release:
 	@test -n "$(BY)" || (echo "Usage: make promote-release BY='Your Name'"; exit 1)
-	cd etl && $(UV) run atlas-etl promote 0.1.0 --by "$(BY)" --force
+	cd etl && $(UV) run atlas-etl promote 1.0.0 --by "$(BY)" --force
 
 catalog-port:
 	cd etl && $(UV) sync --extra backtest --group dev

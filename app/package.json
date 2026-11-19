@@ -1,6 +1,6 @@
 {
   "name": "@ims-atlas/app",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "test": "vitest run",
     "e2e": "playwright test",
+    "figures": "node scripts/capture-paper-figures.mjs",
     "lint": "eslint src --max-warnings 0"
   },
   "dependencies": {

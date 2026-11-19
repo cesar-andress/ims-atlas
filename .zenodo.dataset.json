@@ -1,6 +1,11 @@
 {
   "creators": [
     {
+      "affiliation": "Pontificia Universidad Cat\u00f3lica del Per\u00fa; Universidad Internacional de La Rioja",
+      "name": "Baena-Rojas, Jose Jaime",
+      "orcid": "0000-0002-0915-4087"
+    },
+    {
       "affiliation": "Universidad Internacional de La Rioja",
       "name": "Andr\u00e9s, C\u00e9sar",
       "orcid": "0009-0001-8968-3404"
@@ -29,7 +34,7 @@
       "scheme": "url"
     }
   ],
-  "title": "IMS Atlas data release v0.1.0",
+  "title": "IMS Atlas data release v1.0.0",
   "upload_type": "dataset",
-  "version": "0.1.0"
+  "version": "1.0.0"
 }
