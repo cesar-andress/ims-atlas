@@ -5,10 +5,10 @@ from imsatlas_etl.cli import app
 runner = CliRunner()
 
 
-def test_catalog_validate_scaffold() -> None:
-    result = runner.invoke(app, ["catalog-validate"])
+def test_catalog_validate_ok() -> None:
+    result = runner.invoke(app, ["catalog-validate", "--no-write-licenses"])
     assert result.exit_code == 0
-    assert "catalog-validate" in result.stdout
+    assert "catalog-validate ok" in result.stdout
 
 
 def test_build_scaffold() -> None:

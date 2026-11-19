@@ -6,3 +6,6 @@ data
 pnpm-lock.yaml
 uv.lock
 *.md
+catalog/variables.yaml
+catalog/LICENSES.md
+etl/tests/fixtures/**

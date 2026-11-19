@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.aiserv.es/catalog/schema.json",
+  "title": "IMS Atlas variable catalog",
+  "type": "object",
+  "required": ["factors", "variables"],
+  "additionalProperties": false,
+  "properties": {
+    "factors": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "demand",
+          "cost_access",
+          "logistics",
+          "competition",
+          "product_fit",
+          "macro_risk",
+          "institutional",
+          "openness",
+          "communication",
+          "entrepreneurship",
+          "sustainability"
+        ]
+      }
+    },
+    "variables": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/variable" }
+    }
+  },
+  "$defs": {
+    "localizedString": {
+      "type": "object",
+      "required": ["en", "es"],
+      "additionalProperties": false,
+      "properties": {
+        "en": { "type": "string", "minLength": 1 },
+        "es": { "type": "string", "minLength": 1 }
+      }
+    },
+    "variable": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "factor",
+        "level",
+        "direction",
+        "transform",
+        "unit",
+        "source",
+        "source_url",
+        "citation",
+        "licence",
+        "redistributable",
+        "years",
+        "frequency",
+        "coverage_countries",
+        "series_breaks",
+        "notes",
+        "status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}$"
+        },
+        "name": { "$ref": "#/$defs/localizedString" },
+        "factor": {
+          "type": "string",
+          "enum": [
+            "demand",
+            "cost_access",
+            "logistics",
+            "competition",
+            "product_fit",
+            "macro_risk",
+            "institutional",
+            "openness",
+            "communication",
+            "entrepreneurship",
+            "sustainability"
+          ]
+        },
+        "level": {
+          "type": "string",
+          "enum": ["country", "country_product", "bilateral", "bilateral_product"]
+        },
+        "direction": { "type": "string", "enum": ["benefit", "cost"] },
+        "transform": {
+          "type": "string",
+          "enum": ["none", "log", "log1p"]
+        },
+        "unit": { "type": "string", "minLength": 1 },
+        "source": { "type": "string", "minLength": 1 },
+        "source_url": { "type": "string", "minLength": 1 },
+        "citation": { "type": "string", "minLength": 1 },
+        "licence": { "type": "string", "minLength": 1 },
+        "redistributable": { "type": "boolean" },
+        "years": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": { "type": "integer" }
+        },
+        "frequency": {
+          "type": "string",
+          "enum": ["annual", "biennial", "irregular"]
+        },
+        "coverage_countries": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "series_breaks": {
+          "type": "array",
+          "items": { "type": "integer" }
+        },
+        "notes": { "type": "string" },
+        "status": { "type": "string", "enum": ["draft", "verified"] },
+        "byod_only": { "type": "boolean" },
+        "code": { "type": "string" },
+        "origin_specific": { "type": "boolean" }
+      }
+    }
+  }
+}

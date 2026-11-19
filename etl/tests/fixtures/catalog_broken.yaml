@@ -1,0 +1,44 @@
+factors:
+  - demand
+  - not_a_real_factor
+variables:
+  - id: BAD
+    name:
+      en: Broken
+      es: Roto
+    factor: demand
+    level: country
+    direction: benefit
+    transform: none
+    unit: index
+    source: Nowhere
+    source_url: https://example.invalid/
+    citation: none
+    licence: UNKNOWN
+    redistributable: false
+    years: [2020, 2019]
+    frequency: annual
+    coverage_countries: null
+    series_breaks: []
+    notes: missing byod_only despite redistributable false
+    status: weird
+  - id: BAD
+    name:
+      en: Duplicate
+      es: Duplicado
+    factor: demand
+    level: country
+    direction: benefit
+    transform: none
+    unit: index
+    source: Nowhere
+    source_url: https://example.invalid/
+    citation: none
+    licence: UNKNOWN
+    redistributable: true
+    years: [2012, 2023]
+    frequency: annual
+    coverage_countries: null
+    series_breaks: []
+    notes: ""
+    status: draft
