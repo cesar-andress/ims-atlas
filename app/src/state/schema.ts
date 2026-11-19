@@ -18,6 +18,7 @@ const VIEWS = [
   "time",
   "cite",
   "byod",
+  "imsfe_import",
   "docs",
   "paper",
   "changelog",

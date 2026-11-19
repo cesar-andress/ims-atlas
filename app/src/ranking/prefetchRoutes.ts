@@ -14,6 +14,7 @@ const PREFETCH: Partial<Record<ViewId, () => Promise<unknown>>> = {
   cite: () => import("../pages/CiteExport"),
   catalog: () => import("../pages/Catalog"),
   byod: () => import("../pages/Byod"),
+  imsfe_import: () => import("../pages/ImsfeImport"),
   docs: () => import("../pages/Docs"),
   paper: () => import("../pages/PaperSupport"),
   changelog: () => import("../pages/Changelog"),

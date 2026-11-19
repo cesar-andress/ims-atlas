@@ -2,7 +2,7 @@
   "fixture_banner": "Fixture pipeline artefact (mini_world test data). Not a live ingest and not a production data release.",
   "generated_from": "catalog/sources.yaml + status/freshness.json + release manifest",
   "is_fixture": true,
-  "n_sources": 22,
+  "n_sources": 49,
   "schema": "transparency-sources/v1",
   "sources": [
     {
@@ -1038,6 +1038,1275 @@
       "terms_url": "https://www.icontainers.com/",
       "update_cadence": "irregular",
       "version_detection": "user upload date"
+    },
+    {
+      "citation": "World Bank. Doing Business (discontinued).",
+      "endpoints": [
+        {
+          "id": "archive",
+          "method": "GET",
+          "notes": "Discontinued series; last year only.",
+          "template": "https://espanol.doingbusiness.org/es/reports/global-reports/doing-business-2020"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "worldbank_doing_business",
+      "landing_url": "https://archive.doingbusiness.org/en/doingbusiness",
+      "licence_url": "UNKNOWN",
+      "publisher": "World Bank (Doing Business archive)",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets",
+      "update_cadence": "static",
+      "version_detection": "Doing Business 2020 final"
+    },
+    {
+      "citation": "IMF. World Economic Outlook.",
+      "endpoints": [
+        {
+          "id": "datamapper",
+          "method": "GET",
+          "notes": null,
+          "template": "https://www.imf.org/external/datamapper/PCPIPCH@WEO/OEMDC/ADVEC/WEOWORLD"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "imf_weo",
+      "landing_url": "https://www.imf.org/en/Publications/WEO",
+      "licence_url": "UNKNOWN",
+      "publisher": "International Monetary Fund",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.imf.org/en/About/legal-information"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.imf.org/en/About/legal-information",
+      "update_cadence": "annual",
+      "version_detection": "WEO vintage"
+    },
+    {
+      "citation": "WTO. Tariff Download Facility / Tariff Analysis Online.",
+      "endpoints": [
+        {
+          "id": "ttd",
+          "method": "GET",
+          "notes": null,
+          "template": "https://ttd.wto.org/en"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "wto_tariffs",
+      "landing_url": "https://ttd.wto.org/en",
+      "licence_url": "UNKNOWN",
+      "publisher": "World Trade Organization",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.wto.org/english/info_e/termsofuse_e.htm"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.wto.org/english/info_e/termsofuse_e.htm",
+      "update_cadence": "irregular",
+      "version_detection": "WTO TTD update"
+    },
+    {
+      "citation": "WTO. Integrated Trade Intelligence Portal (I-TIP).",
+      "endpoints": [
+        {
+          "id": "itip",
+          "method": "GET",
+          "notes": null,
+          "template": "http://i-tip.wto.org/goods/Forms/MemberView.aspx?data=default"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "wto_itip",
+      "landing_url": "http://i-tip.wto.org/",
+      "licence_url": "UNKNOWN",
+      "publisher": "World Trade Organization",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.wto.org/english/info_e/termsofuse_e.htm"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.wto.org/english/info_e/termsofuse_e.htm",
+      "update_cadence": "irregular",
+      "version_detection": "I-TIP update"
+    },
+    {
+      "citation": "Numbeo. Cost of Living Index.",
+      "endpoints": [
+        {
+          "id": "col",
+          "method": "GET",
+          "notes": "Prefer official CPI/COL where available; BYOD.",
+          "template": "https://www.numbeo.com/cost-of-living/rankings_by_country.jsp"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "numbeo",
+      "landing_url": "https://www.numbeo.com/cost-of-living/",
+      "licence_url": "UNKNOWN",
+      "publisher": "Numbeo",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.numbeo.com/common/terms_of_use.jsp"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.numbeo.com/common/terms_of_use.jsp",
+      "update_cadence": "irregular",
+      "version_detection": "page scrape date (manual)"
+    },
+    {
+      "citation": "PreciosMundi.",
+      "endpoints": [
+        {
+          "id": "home",
+          "method": "GET",
+          "notes": null,
+          "template": "https://preciosmundi.com/"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "preciosmundi",
+      "landing_url": "https://preciosmundi.com/",
+      "licence_url": "UNKNOWN",
+      "publisher": "PreciosMundi",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://preciosmundi.com/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://preciosmundi.com/",
+      "update_cadence": "irregular",
+      "version_detection": "manual"
+    },
+    {
+      "citation": "Global Product Prices.",
+      "endpoints": [
+        {
+          "id": "cooking_oil",
+          "method": "GET",
+          "notes": null,
+          "template": "https://www.globalproductprices.com/rankings/cooking_oil_prices/"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "global_product_prices",
+      "landing_url": "https://www.globalproductprices.com/",
+      "licence_url": "UNKNOWN",
+      "publisher": "GlobalProductPrices",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.globalproductprices.com/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.globalproductprices.com/",
+      "update_cadence": "irregular",
+      "version_detection": "manual"
+    },
+    {
+      "citation": "Sea-Distances.org.",
+      "endpoints": [
+        {
+          "id": "home",
+          "method": "GET",
+          "notes": null,
+          "template": "https://sea-distances.org/"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "sea_distances",
+      "landing_url": "https://sea-distances.org/",
+      "licence_url": "UNKNOWN",
+      "publisher": "Sea-Distances.org",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://sea-distances.org/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://sea-distances.org/",
+      "update_cadence": "static",
+      "version_detection": "manual"
+    },
+    {
+      "citation": "SeaRates distances/time.",
+      "endpoints": [
+        {
+          "id": "distances",
+          "method": "GET",
+          "notes": null,
+          "template": "https://www.searates.com/es/services/distances-time/"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "searates",
+      "landing_url": "https://www.searates.com/",
+      "licence_url": "UNKNOWN",
+      "publisher": "SeaRates",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.searates.com/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.searates.com/",
+      "update_cadence": "irregular",
+      "version_detection": "manual"
+    },
+    {
+      "citation": "NautiCalculator port-to-port distance.",
+      "endpoints": [
+        {
+          "id": "port_distance",
+          "method": "GET",
+          "notes": null,
+          "template": "https://nauticalculator.com/port-to-port-distance/"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "nauticalculator",
+      "landing_url": "https://nauticalculator.com/",
+      "licence_url": "UNKNOWN",
+      "publisher": "NautiCalculator",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://nauticalculator.com/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://nauticalculator.com/",
+      "update_cadence": "static",
+      "version_detection": "manual"
+    },
+    {
+      "citation": "SolAbility. Global Sustainable Competitiveness Index.",
+      "endpoints": [
+        {
+          "id": "gsci",
+          "method": "GET",
+          "notes": null,
+          "template": "https://solability.com/the-global-sustainable-competitiveness-index"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "solability_gsci",
+      "landing_url": "https://solability.com/the-global-sustainable-competitiveness-index",
+      "licence_url": "UNKNOWN",
+      "publisher": "SolAbility",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://solability.com/the-global-sustainable-competitiveness-index"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://solability.com/the-global-sustainable-competitiveness-index",
+      "update_cadence": "annual",
+      "version_detection": "GSCI report year"
+    },
+    {
+      "citation": "Coface. Country risk assessment.",
+      "endpoints": [
+        {
+          "id": "map",
+          "method": "GET",
+          "notes": null,
+          "template": "https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-map"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "coface_country_risk",
+      "landing_url": "https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-map",
+      "licence_url": "UNKNOWN",
+      "publisher": "Coface",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.coface.com/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.coface.com/",
+      "update_cadence": "irregular",
+      "version_detection": "Coface update"
+    },
+    {
+      "citation": "Global Carbon Project. Global Carbon Atlas.",
+      "endpoints": [
+        {
+          "id": "emissions",
+          "method": "GET",
+          "notes": null,
+          "template": "https://globalcarbonatlas.org/emissions/carbon-emissions/"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "global_carbon_atlas",
+      "landing_url": "https://globalcarbonatlas.org/emissions/carbon-emissions/",
+      "licence_url": "UNKNOWN",
+      "publisher": "Global Carbon Atlas",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://globalcarbonatlas.org/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://globalcarbonatlas.org/",
+      "update_cadence": "annual",
+      "version_detection": "atlas vintage"
+    },
+    {
+      "citation": "IEA. Greenhouse gas emissions from energy.",
+      "endpoints": [
+        {
+          "id": "ghg_explorer",
+          "method": "GET",
+          "notes": null,
+          "template": "https://www.iea.org/data-and-statistics/data-tools/greenhouse-gas-emissions-from-energy-data-explorer"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "iea_ghg",
+      "landing_url": "https://www.iea.org/data-and-statistics",
+      "licence_url": "UNKNOWN",
+      "publisher": "International Energy Agency",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.iea.org/terms"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.iea.org/terms",
+      "update_cadence": "annual",
+      "version_detection": "IEA release"
+    },
+    {
+      "citation": "Trade Barrier Index.",
+      "endpoints": [
+        {
+          "id": "home",
+          "method": "GET",
+          "notes": null,
+          "template": "https://www.tradebarrierindex.org/"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "trade_barrier_index",
+      "landing_url": "https://www.tradebarrierindex.org/",
+      "licence_url": "UNKNOWN",
+      "publisher": "Trade Barrier Index",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.tradebarrierindex.org/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.tradebarrierindex.org/",
+      "update_cadence": "irregular",
+      "version_detection": "manual"
+    },
+    {
+      "citation": "World Population Review. Road quality by country.",
+      "endpoints": [
+        {
+          "id": "road_quality",
+          "method": "GET",
+          "notes": "Prefer official road-quality series when available.",
+          "template": "https://worldpopulationreview.com/country-rankings/road-quality-by-country"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "world_population_review",
+      "landing_url": "https://worldpopulationreview.com/",
+      "licence_url": "UNKNOWN",
+      "publisher": "World Population Review",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://worldpopulationreview.com/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://worldpopulationreview.com/",
+      "update_cadence": "irregular",
+      "version_detection": "manual"
+    },
+    {
+      "citation": "International Trade Centre. Trade statistics.",
+      "endpoints": [
+        {
+          "id": "stats",
+          "method": "GET",
+          "notes": null,
+          "template": "https://www.intracen.org/resources/data-and-analysis/trade-statistics"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "itc_trade",
+      "landing_url": "https://www.intracen.org/resources/data-and-analysis/trade-statistics",
+      "licence_url": "UNKNOWN",
+      "publisher": "International Trade Centre",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.intracen.org/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.intracen.org/",
+      "update_cadence": "annual",
+      "version_detection": "ITC release"
+    },
+    {
+      "citation": "ITC. Trade Map.",
+      "endpoints": [
+        {
+          "id": "trademap",
+          "method": "GET",
+          "notes": null,
+          "template": "https://www.trademap.org/"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "itc_trademap",
+      "landing_url": "https://www.trademap.org/",
+      "licence_url": "UNKNOWN",
+      "publisher": "International Trade Centre",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.trademap.org/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.trademap.org/",
+      "update_cadence": "annual",
+      "version_detection": "Trade Map vintage"
+    },
+    {
+      "citation": "UNCTAD. UNCTADstat.",
+      "endpoints": [
+        {
+          "id": "dataviewer",
+          "method": "GET",
+          "notes": null,
+          "template": "https://unctadstat.unctad.org/datacentre/dataviewer/US.TradeMerchTotal"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "unctadstat",
+      "landing_url": "https://unctadstat.unctad.org/",
+      "licence_url": "UNKNOWN",
+      "publisher": "UNCTAD",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://unctadstat.unctad.org/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://unctadstat.unctad.org/",
+      "update_cadence": "annual",
+      "version_detection": "UNCTADstat release"
+    },
+    {
+      "citation": "The Culture Factor. Country comparison tool.",
+      "endpoints": [
+        {
+          "id": "compare",
+          "method": "GET",
+          "notes": null,
+          "template": "https://www.theculturefactor.com/country-comparison-tool"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "culture_factor",
+      "landing_url": "https://www.theculturefactor.com/country-comparison-tool",
+      "licence_url": "UNKNOWN",
+      "publisher": "The Culture Factor Group (Hofstede Insights)",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.theculturefactor.com/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.theculturefactor.com/",
+      "update_cadence": "irregular",
+      "version_detection": "manual"
+    },
+    {
+      "citation": "IndexMundi (aggregator).",
+      "endpoints": [
+        {
+          "id": "csbc",
+          "method": "GET",
+          "notes": "Prefer World Bank official API for IC.IMP.CSBC.CD.",
+          "template": "https://www.indexmundi.com/es/datos/indicadores/IC.IMP.CSBC.CD"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "indexmundi",
+      "landing_url": "https://www.indexmundi.com/",
+      "licence_url": "UNKNOWN",
+      "publisher": "IndexMundi",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.indexmundi.com/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.indexmundi.com/",
+      "update_cadence": "irregular",
+      "version_detection": "manual"
+    },
+    {
+      "citation": "Knoema Atlas.",
+      "endpoints": [
+        {
+          "id": "atlas",
+          "method": "GET",
+          "notes": null,
+          "template": "https://knoema.es/atlas/topics/Ranking-Mundial"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "knoema",
+      "landing_url": "https://knoema.es/atlas/topics/Ranking-Mundial",
+      "licence_url": "UNKNOWN",
+      "publisher": "Knoema",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://knoema.com/terms"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://knoema.com/terms",
+      "update_cadence": "irregular",
+      "version_detection": "manual"
+    },
+    {
+      "citation": "TheGlobalEconomy.com.",
+      "endpoints": [
+        {
+          "id": "unemployment",
+          "method": "GET",
+          "notes": "Prefer World Bank / ILO official series.",
+          "template": "https://www.theglobaleconomy.com/rankings/Unemployment_rate/"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "theglobaleconomy",
+      "landing_url": "https://www.theglobaleconomy.com/",
+      "licence_url": "UNKNOWN",
+      "publisher": "TheGlobalEconomy.com",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.theglobaleconomy.com/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.theglobaleconomy.com/",
+      "update_cadence": "irregular",
+      "version_detection": "manual"
+    },
+    {
+      "citation": "GeoDatos city distances.",
+      "endpoints": [
+        {
+          "id": "distances",
+          "method": "GET",
+          "notes": null,
+          "template": "https://www.geodatos.net/distancias/ciudades"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "geodatos",
+      "landing_url": "https://www.geodatos.net/",
+      "licence_url": "UNKNOWN",
+      "publisher": "GeoDatos",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.geodatos.net/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.geodatos.net/",
+      "update_cadence": "static",
+      "version_detection": "manual"
+    },
+    {
+      "citation": "ProColombia. Ruta exportadora / Colombia Trade tools.",
+      "endpoints": [
+        {
+          "id": "ruta",
+          "method": "GET",
+          "notes": null,
+          "template": "https://ruta-exportadora.procolombia.co/"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "procolombia",
+      "landing_url": "https://ruta-exportadora.procolombia.co/",
+      "licence_url": "UNKNOWN",
+      "publisher": "ProColombia",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://procolombia.co/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://procolombia.co/",
+      "update_cadence": "irregular",
+      "version_detection": "manual"
+    },
+    {
+      "citation": "INAPI. Iniciales pa\u00edses ISO (reference PDF).",
+      "endpoints": [
+        {
+          "id": "iso_pdf",
+          "method": "GET",
+          "notes": null,
+          "template": "https://www.inapi.cl/docs/default-source/default-document-library/iniciales_paises_iso.pdf"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "iso_country_codes_ref",
+      "landing_url": "https://www.inapi.cl/",
+      "licence_url": "UNKNOWN",
+      "publisher": "INAPI Chile (ISO country initials PDF)",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.inapi.cl/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.inapi.cl/",
+      "update_cadence": "static",
+      "version_detection": "PDF revision"
+    },
+    {
+      "citation": "Revista DyO article cited in IMSFE workbook.",
+      "endpoints": [
+        {
+          "id": "article",
+          "method": "GET",
+          "notes": null,
+          "template": "https://www.revistadyo.es/DyO/index.php/dyo/article/view/532/553"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "literature_dyo",
+      "landing_url": "https://www.revistadyo.es/",
+      "licence_url": "UNKNOWN",
+      "publisher": "Revista DyO (method literature)",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Phase A0 workbook citation; rights not human-verified",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.revistadyo.es/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.revistadyo.es/",
+      "update_cadence": "static",
+      "version_detection": "article id"
     }
   ]
 }

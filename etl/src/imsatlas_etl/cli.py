@@ -216,6 +216,56 @@ def link_check_cmd(
     )
 
 
+@app.command("imsfe-import")
+def imsfe_import_cmd(
+    workbook: Annotated[
+        str,
+        typer.Argument(help="Path to an IMSFE/IMSFEM .xlsx (local; never committed)"),
+    ],
+    out: Annotated[
+        str | None,
+        typer.Option(
+            "--out",
+            help="Write anonymised import report JSON (no personal names, no path)",
+        ),
+    ] = None,
+) -> None:
+    """Phase A1: read workbook → final scores + anonymised import report."""
+    import json
+    from pathlib import Path
+
+    from imsatlas_etl.imsfe_workbook import (
+        assert_no_personal_names,
+        read_imsfe_workbook,
+    )
+
+    path = Path(workbook)
+    try:
+        report = read_imsfe_workbook(path)
+        assert_no_personal_names(report)
+    except (OSError, ValueError, AssertionError) as exc:
+        typer.secho(str(exc), fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=1) from exc
+
+    payload = report.to_dict()
+    typer.echo(
+        f"atlas-etl {__version__}: imsfe-import {report.path_label} "
+        f"origin={report.origin} hs={report.hs_code} "
+        f"criteria={report.n_criteria} vars={report.n_variables} "
+        f"experts={report.n_experts} countries={len(report.final_scores)}",
+    )
+    if report.warnings:
+        for w in report.warnings:
+            typer.secho(f"  warning: {w}", fg=typer.colors.YELLOW, err=True)
+    if out:
+        out_path = Path(out)
+        out_path.write_text(
+            json.dumps(payload, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+        typer.echo(f"wrote {out_path}")
+
+
 def _parse_sources(raw: str | None) -> list[str] | None:
     if raw is None or raw.strip() == "" or raw.strip() == "all":
         return None

@@ -1,4 +1,11 @@
-import { Database, GitBranch, Newspaper, Package, Shield } from "lucide-react";
+import {
+  Database,
+  FileSpreadsheet,
+  GitBranch,
+  Newspaper,
+  Package,
+  Shield,
+} from "lucide-react";
 import { PageShell } from "../../components/PageShell";
 import { PermalinkLink } from "../../components/PermalinkLink";
 import { useTranslation } from "../../i18n";
@@ -21,6 +28,12 @@ const LINKS: {
     icon: Shield,
     titleKey: "hubDatosSources",
     bodyKey: "hubDatosSourcesBody",
+  },
+  {
+    view: "imsfe_import",
+    icon: FileSpreadsheet,
+    titleKey: "hubDatosImsfeImport",
+    bodyKey: "hubDatosImsfeImportBody",
   },
   {
     view: "status",

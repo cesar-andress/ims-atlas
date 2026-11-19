@@ -14,6 +14,7 @@ export const SECONDARY_VIEWS: readonly ViewId[] = [
   "docs",
   "cite",
   "byod",
+  "imsfe_import",
   "paper",
   "changelog",
   "catalog",

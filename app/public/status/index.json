@@ -7,7 +7,7 @@
   "latest_run_status": "ok",
   "n_history_runs": 2,
   "n_lineage_edges": 154,
-  "n_sources": 22,
+  "n_sources": 49,
   "n_variables": 45,
   "paths": {
     "freshness": "/status/freshness.json",

@@ -512,6 +512,32 @@ export const en = {
   byodInCitation: "BYOD variables in this analysis",
   download: "Download",
   exports: "Exports",
+  imsfeImportIntro:
+    "Import report from an IMSFE/IMSFEM workbook (no expert names). Generate it with atlas-etl imsfe-import and load it here.",
+  imsfeImportCliHint:
+    "CLI: atlas-etl imsfe-import workbook.xlsx --out report.json. The .xlsx never leaves your machine via this page.",
+  imsfeImportLoad: "Load report JSON",
+  imsfeImportSummary: "Summary",
+  imsfeImportLabel: "Workbook",
+  imsfeImportOrigin: "Origin",
+  imsfeImportHs: "HS code",
+  imsfeImportScale: "Scale",
+  imsfeImportCriteria: "Criteria / variables / experts",
+  imsfeImportExperts: "Labels",
+  imsfeImportWarnings: "Warnings",
+  imsfeImportAssumptions: "Assumptions",
+  imsfeImportScores: "Final scores",
+  imsfeImportCountry: "Country",
+  imsfeImportScore: "Score",
+  imsfeImportDownload: "Download report",
+  imsfeImportErrorInvalidJson: "File is not valid JSON.",
+  imsfeImportErrorPersonal:
+    "Report contains personal names or labels; use Expert 1..n only.",
+  imsfeImportErrorNoScores: "Report has no final scores.",
+  imsfeImportErrorGeneric: "Could not read the import report.",
+  hubDatosImsfeImport: "IMSFE import",
+  hubDatosImsfeImportBody:
+    "Reproduce workbook scores via an anonymised JSON import report.",
   byodIntro:
     "Upload a CSV (iso3, year, value[, iso3_d]) as a new variable. Processed only in this browser.",
   byodLocalOnly:

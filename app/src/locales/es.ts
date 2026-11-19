@@ -519,6 +519,32 @@ const es = {
   byodInCitation: "Variables BYOD en este análisis",
   download: "Descargar",
   exports: "Exportaciones",
+  imsfeImportIntro:
+    "Informe de importación de un libro IMSFE/IMSFEM (sin nombres de expertos). Genérelo con atlas-etl imsfe-import y cárguelo aquí.",
+  imsfeImportCliHint:
+    "CLI: atlas-etl imsfe-import libro.xlsx --out informe.json. El .xlsx no se sube a ningún servidor.",
+  imsfeImportLoad: "Cargar informe JSON",
+  imsfeImportSummary: "Resumen",
+  imsfeImportLabel: "Libro",
+  imsfeImportOrigin: "Origen",
+  imsfeImportHs: "Código HS",
+  imsfeImportScale: "Escala",
+  imsfeImportCriteria: "Criterios / variables / expertos",
+  imsfeImportExperts: "Etiquetas",
+  imsfeImportWarnings: "Avisos",
+  imsfeImportAssumptions: "Supuestos",
+  imsfeImportScores: "Puntuaciones finales",
+  imsfeImportCountry: "País",
+  imsfeImportScore: "Puntuación",
+  imsfeImportDownload: "Descargar informe",
+  imsfeImportErrorInvalidJson: "El archivo no es JSON válido.",
+  imsfeImportErrorPersonal:
+    "El informe contiene nombres o etiquetas personales; use solo Expert 1..n.",
+  imsfeImportErrorNoScores: "El informe no tiene puntuaciones finales.",
+  imsfeImportErrorGeneric: "No se pudo leer el informe de importación.",
+  hubDatosImsfeImport: "Importar IMSFE",
+  hubDatosImsfeImportBody:
+    "Reproducir puntuaciones de un libro Excel vía informe JSON anonimizado.",
   byodIntro:
     "Sube un CSV (iso3, year, value[, iso3_d]) como variable nueva. Solo se procesa en este navegador.",
   byodLocalOnly:
