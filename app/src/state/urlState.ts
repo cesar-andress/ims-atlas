@@ -78,6 +78,9 @@ export function configToSearch(config: AnalysisConfig): string {
   if (config.matrixCutF !== undefined) compact.matrixCutF = config.matrixCutF;
   if (config.matrixMode) compact.matrixMode = config.matrixMode;
   if (config.methodFamily) compact.methodFamily = config.methodFamily;
+  if (config.orderByWeight !== undefined) {
+    compact.orderByWeight = config.orderByWeight;
+  }
   if (config.preselectMode) compact.preselectMode = config.preselectMode;
   if (config.preselectTopN !== undefined) {
     compact.preselectTopN = config.preselectTopN;

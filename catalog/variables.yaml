@@ -1086,3 +1086,122 @@ variables:
   status: draft
   source_ids:
   - hofstede
+# Phase A2 — IMSFEM olive-oil swaps / SUST (status: draft; licence UNKNOWN until human verifies)
+- id: RQBC
+  name:
+    en: Road Quality by Country (RQBC)
+    es: Calidad de carreteras por país (RQBC)
+  factor: logistics
+  level: country
+  direction: benefit
+  transform: none
+  unit: index
+  source: world_population_review
+  citation: Phase A2 IMSFEM 2025 draft. Workbook cites World Population Review road-quality ranking; prefer an official series when available. Licence UNKNOWN.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: Olive-oil LOGI swap for CPTR. Secondary aggregator; BYOD until licence verified.
+  status: draft
+  source_ids:
+  - world_population_review
+- id: ITBI
+  name:
+    en: International Trade Barrier Index (ITBI)
+    es: Índice internacional de barreras al comercio (ITBI)
+  factor: competition
+  level: country
+  direction: cost
+  transform: none
+  unit: index
+  source: trade_barrier_index
+  citation: Phase A2 IMSFEM 2025 draft. Workbook cites tradebarrierindex.org. Licence UNKNOWN.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: Olive-oil COMM swap for CCTI. BYOD until licence verified.
+  status: draft
+  source_ids:
+  - trade_barrier_index
+- id: CADE
+  name:
+    en: Carbon Dioxide (CO2) Emissions (CADE)
+    es: Emisiones de dióxido de carbono (CADE)
+  factor: sustainability
+  level: country
+  direction: cost
+  transform: none
+  unit: Mt CO2e
+  source: worldbank_wdi
+  citation: Phase A2 IMSFEM 2025 draft. Official candidate World Bank EN.GHG.CO2.MT.CE.AR5 (current WDI series, 1970–2024). Workbook also cites Global Carbon Atlas / IEA. Licence not human-verified for Atlas ship gate.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: SUST criterion. Prefer WDI EN.GHG.CO2.MT.CE.AR5 over aggregators; BYOD until rights-verify.
+  status: draft
+  code: EN.GHG.CO2.MT.CE.AR5
+  source_ids:
+  - worldbank_wdi
+  - global_carbon_atlas
+  - iea_ghg
+- id: GLCR
+  name:
+    en: Global Country Risk (GLCR)
+    es: Riesgo país global (GLCR)
+  factor: sustainability
+  level: country
+  direction: cost
+  transform: none
+  unit: index
+  source: coface_country_risk
+  citation: Phase A2 IMSFEM 2025 draft. Workbook cites Coface country risk map. Proprietary; BYOD; licence UNKNOWN.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: Coface; proprietary → BYOD.
+  status: draft
+  source_ids:
+  - coface_country_risk
+- id: GLSI
+  name:
+    en: Global Sustainable Competitiveness Index (GLSI)
+    es: Índice global de competitividad sostenible (GLSI)
+  factor: sustainability
+  level: country
+  direction: benefit
+  transform: none
+  unit: index
+  source: solability_gsci
+  citation: Phase A2 IMSFEM 2025 draft. Workbook cites SolAbility GSCI. Licence UNKNOWN.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: SolAbility GSCI; BYOD until licence verified.
+  status: draft
+  source_ids:
+  - solability_gsci

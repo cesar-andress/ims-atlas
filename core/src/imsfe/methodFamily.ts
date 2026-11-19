@@ -3,7 +3,8 @@
  * Paper table numbers for SMI 2018 must be transcribed by a human — not invented here.
  */
 
-export type MethodFamilyId = "imsfe_2025" | "smi_2018" | "smi_2020";
+export type MethodFamilyId =
+  "imsfe_2025" | "imsfem_2025_olive" | "smi_2018" | "smi_2020";
 
 export type MethodFamilySpec = {
   id: MethodFamilyId;
@@ -14,19 +15,34 @@ export type MethodFamilySpec = {
   nFactors: number;
   nVariables: number;
   defaultNormalization: "ratio_legacy";
+  /** Optional link to Phase A2 criteria-tree preset id. */
+  criteriaTreeId?: "imsfe_2025_footwear" | "imsfem_2025_olive";
   notes: string;
 };
 
 export const METHOD_FAMILIES: Record<MethodFamilyId, MethodFamilySpec> = {
   imsfe_2025: {
     id: "imsfe_2025",
-    labelEn: "IMSFE 2025 (Baena & Cano, 6×3)",
-    labelEs: "IMSFE 2025 (Baena & Cano, 6×3)",
+    labelEn: "IMSFE 2025 footwear (6×3)",
+    labelEs: "IMSFE 2025 calzado (6×3)",
     scaleMax: 10,
     nFactors: 6,
     nVariables: 18,
     defaultNormalization: "ratio_legacy",
+    criteriaTreeId: "imsfe_2025_footwear",
     notes: "Workbook footwear method: expert means, DMP/IMP ratio 0–10, EOC matrix.",
+  },
+  imsfem_2025_olive: {
+    id: "imsfem_2025_olive",
+    labelEn: "IMSFEM 2025 olive oil (7×3, + Sustainability)",
+    labelEs: "IMSFEM 2025 aceite (7×3, + Sostenibilidad)",
+    scaleMax: 10,
+    nFactors: 7,
+    nVariables: 21,
+    defaultNormalization: "ratio_legacy",
+    criteriaTreeId: "imsfem_2025_olive",
+    notes:
+      "Olive-oil workbook: +SUST (CADE/GLCR/GLSI); LOGI uses RQBC; COMM uses ITBI. Aggregated respondent row.",
   },
   smi_2018: {
     id: "smi_2018",

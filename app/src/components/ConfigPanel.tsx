@@ -209,7 +209,7 @@ export function ConfigPanel() {
               onChange={(e) =>
                 setConfig({
                   methodFamily: e.target.value as
-                    "imsfe_2025" | "smi_2018" | "smi_2020",
+                    "imsfe_2025" | "imsfem_2025_olive" | "smi_2018" | "smi_2020",
                   normalization:
                     e.target.value === "smi_2018"
                       ? "ratio_legacy"
@@ -217,10 +217,23 @@ export function ConfigPanel() {
                 })
               }
             >
-              <option value="imsfe_2025">IMSFE 2025 (6×3, 0–10)</option>
+              <option value="imsfe_2025">IMSFE 2025 calzado (6×3, 0–10)</option>
+              <option value="imsfem_2025_olive">
+                IMSFEM 2025 aceite (7×3, + Sostenibilidad)
+              </option>
               <option value="smi_2018">SMI 2018 (4×11, 0–5)</option>
               <option value="smi_2020">SMI 2020+ (5×23, AHP)</option>
             </select>
+          </label>
+
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              data-testid="order-by-weight"
+              checked={config.orderByWeight === true}
+              onChange={(e) => setConfig({ orderByWeight: e.target.checked })}
+            />
+            {t("orderByWeight")}
           </label>
 
           <label>

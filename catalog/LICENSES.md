@@ -49,3 +49,8 @@ Generated from `catalog/variables.yaml` + `catalog/sources.yaml`. Do not edit by
 | GLIN | kof_globalisation | UNKNOWN | no (BYOD) | Phase J IMSFE 2025 draft mapping. KOF; BYOD; licence UNKNOWN. |
 | CPIN | transparency_cpi | UNKNOWN | no (BYOD) | Phase J IMSFE 2025 draft mapping. Transparency CPI; BYOD; licence UNKNOWN. |
 | CUDI | hofstede | UNKNOWN | no (BYOD) | Phase J IMSFE 2025 draft mapping. Sum of \|origin−dest\| Hofstede dims; same family as CULT. |
+| RQBC | world_population_review | UNKNOWN | no (BYOD) | Phase A2 IMSFEM 2025 draft. Workbook cites World Population Review road-quality ranking; prefer an official series when available. Licence UNKNOWN. |
+| ITBI | trade_barrier_index | UNKNOWN | no (BYOD) | Phase A2 IMSFEM 2025 draft. Workbook cites tradebarrierindex.org. Licence UNKNOWN. |
+| CADE | worldbank_wdi,global_carbon_atlas,iea_ghg | CC-BY-4.0; UNKNOWN; UNKNOWN | no (BYOD) | Phase A2 IMSFEM 2025 draft. Official candidate World Bank EN.GHG.CO2.MT.CE.AR5 (current WDI series, 1970–2024). Workbook also cites Global Carbon Atlas / IEA. Licence not human-verified for Atlas ship gate. |
+| GLCR | coface_country_risk | UNKNOWN | no (BYOD) | Phase A2 IMSFEM 2025 draft. Workbook cites Coface country risk map. Proprietary; BYOD; licence UNKNOWN. |
+| GLSI | solability_gsci | UNKNOWN | no (BYOD) | Phase A2 IMSFEM 2025 draft. Workbook cites SolAbility GSCI. Licence UNKNOWN. |

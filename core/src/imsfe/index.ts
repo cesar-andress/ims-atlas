@@ -48,6 +48,21 @@ export {
 } from "./methodFamily.js";
 
 export {
+  CRITERIA_TREE_PRESETS,
+  IMSFEM_2025_OLIVE,
+  IMSFE_2025_FOOTWEAR,
+  orderKeysByWeight,
+  renormalizeWeights,
+  scoreImsfeTree,
+  swapVariableInCriterion,
+  weightedSum,
+  type CriteriaTree,
+  type CriteriaTreePresetId,
+  type ImsfeScoreResult,
+  type RenormalizeResult,
+} from "./criteriaTree.js";
+
+export {
   oneAtATimeWinnerThresholds,
   type WinnerThreshold,
 } from "./winnerSensitivity.js";

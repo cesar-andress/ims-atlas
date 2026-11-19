@@ -97,7 +97,10 @@ export type AnalysisConfig = {
   /** attractiveness×fit (legacy) or IMSFE×EOC (Baena & Cano). */
   matrixMode?: "attractiveness_fit" | "imsfe_eoc" | undefined;
   /** IMSFE / SMI method family preset. */
-  methodFamily?: "imsfe_2025" | "smi_2018" | "smi_2020" | undefined;
+  methodFamily?:
+    "imsfe_2025" | "imsfem_2025_olive" | "smi_2018" | "smi_2020" | undefined;
+  /** Display criteria/variables ordered by weight (Orden definitivo); scores unchanged. */
+  orderByWeight?: boolean | undefined;
   preselectMode?: "top_n" | "cumulative_share" | undefined;
   preselectTopN?: number | undefined;
   preselectCumShare?: number | undefined;
@@ -313,10 +316,15 @@ export function parseAnalysisConfig(input: unknown): AnalysisConfig {
 
   const methodFamily = asEnum(input.methodFamily, [
     "imsfe_2025",
+    "imsfem_2025_olive",
     "smi_2018",
     "smi_2020",
   ] as const);
   if (methodFamily) out.methodFamily = methodFamily;
+
+  if (typeof input.orderByWeight === "boolean") {
+    out.orderByWeight = input.orderByWeight;
+  }
 
   const preselectMode = asEnum(input.preselectMode, [
     "top_n",

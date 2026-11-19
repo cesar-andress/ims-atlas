@@ -471,6 +471,7 @@ const es = {
   quadrant: "Cuadrante",
   presetImsfeBaenaCano: "IMSFE (Baena & Cano)",
   methodFamily: "Familia de método",
+  orderByWeight: "Orden definitivo (por peso; solo pantalla)",
   preselectMode: "Preselección",
   preselectTopN: "Top N importadores",
   preselectCumShare: "Cuota acumulada",

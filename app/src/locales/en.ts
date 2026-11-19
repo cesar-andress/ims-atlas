@@ -464,6 +464,7 @@ export const en = {
   quadrant: "Quadrant",
   presetImsfeBaenaCano: "IMSFE (Baena & Cano)",
   methodFamily: "Method family",
+  orderByWeight: "Definitive order (by weight; display only)",
   preselectMode: "Pre-selection",
   preselectTopN: "Top N importers",
   preselectCumShare: "Cumulative share",
