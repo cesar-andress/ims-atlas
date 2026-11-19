@@ -68,6 +68,49 @@ export {
 } from "./winnerSensitivity.js";
 
 export {
+  COMBINED_SPLITS,
+  combinedRankGrid,
+  combinedScore,
+  normalizeEoc,
+  normalizeImsfe,
+  type CombinedGridRow,
+  type EocNormKind,
+} from "./combinedScore.js";
+
+export {
+  dualPreselect,
+  parseHsCode,
+  preselectByOpenness,
+  warnFewImportersAtHs6,
+  type DualPreselectResult,
+  type HsLevel,
+  type OpennessRow,
+} from "./preselectModes.js";
+
+export {
+  compareExportTables,
+  compareProjects,
+  type ProjectCompareResult,
+  type ProjectSnapshot,
+  type RankChange,
+  type ValueChange,
+} from "./projectCompare.js";
+
+export {
+  evaluateImputationHoldout,
+  imputeCrossSection,
+  imputeLinearInterp,
+  imputeLocf,
+  imputeLogLinearTrend,
+  recommendImputationMethod,
+  type CrossSectionRow,
+  type HoldoutEval,
+  type ImputationMethodId,
+  type ImputationResult,
+  type SeriesPoint,
+} from "./imputation.js";
+
+export {
   assertNoAiInScores,
   cellsToScoreMap,
   filterComputableCells,

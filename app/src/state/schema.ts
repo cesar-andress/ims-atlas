@@ -108,6 +108,20 @@ export type AnalysisConfig = {
   zeroOffsetC?: number | undefined;
   /** Phase A3: cultural distance definition. */
   culturalDistanceKind?: "sum_of_sums" | "sum_abs_diff" | "kogut_singh" | undefined;
+  /** Phase A5: off by default. */
+  imputationMethod?:
+    | "none"
+    | "locf"
+    | "linear_interp"
+    | "log_linear_trend"
+    | "cross_section"
+    | undefined;
+  /** Phase A6: EOC weight a in a·EOC+(1−a)·IMSFE; default 0.5. */
+  combinedEocWeight?: number | undefined;
+  combinedEocNorm?: "ratio_to_max" | "times_5" | undefined;
+  /** Phase A7: dual list pick. */
+  preselectPick?: "imports" | "openness" | "union" | undefined;
+  includeOriginInPreselect?: boolean | undefined;
   preselectMode?: "top_n" | "cumulative_share" | undefined;
   preselectTopN?: number | undefined;
   preselectCumShare?: number | undefined;
@@ -352,6 +366,39 @@ export function parseAnalysisConfig(input: unknown): AnalysisConfig {
     "kogut_singh",
   ] as const);
   if (culturalDistanceKind) out.culturalDistanceKind = culturalDistanceKind;
+
+  const imputationMethod = asEnum(input.imputationMethod, [
+    "none",
+    "locf",
+    "linear_interp",
+    "log_linear_trend",
+    "cross_section",
+  ] as const);
+  if (imputationMethod) out.imputationMethod = imputationMethod;
+
+  const combinedEocWeight = asFiniteNumber(input.combinedEocWeight);
+  if (
+    combinedEocWeight !== undefined &&
+    combinedEocWeight >= 0 &&
+    combinedEocWeight <= 1
+  ) {
+    out.combinedEocWeight = combinedEocWeight;
+  }
+  const combinedEocNorm = asEnum(input.combinedEocNorm, [
+    "ratio_to_max",
+    "times_5",
+  ] as const);
+  if (combinedEocNorm) out.combinedEocNorm = combinedEocNorm;
+
+  const preselectPick = asEnum(input.preselectPick, [
+    "imports",
+    "openness",
+    "union",
+  ] as const);
+  if (preselectPick) out.preselectPick = preselectPick;
+  if (typeof input.includeOriginInPreselect === "boolean") {
+    out.includeOriginInPreselect = input.includeOriginInPreselect;
+  }
 
   const preselectMode = asEnum(input.preselectMode, [
     "top_n",

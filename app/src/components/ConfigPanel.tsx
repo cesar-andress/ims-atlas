@@ -300,6 +300,90 @@ export function ConfigPanel() {
               </select>
             </label>
             <p className="muted small">{t("culturalDistanceHint")}</p>
+            <label>
+              {t("imputationMethod")}
+              <select
+                data-testid="imputation-method"
+                value={config.imputationMethod ?? "none"}
+                onChange={(e) =>
+                  setConfig({
+                    imputationMethod: e.target.value as
+                      | "none"
+                      | "locf"
+                      | "linear_interp"
+                      | "log_linear_trend"
+                      | "cross_section",
+                  })
+                }
+              >
+                <option value="none">{t("imputationNone")}</option>
+                <option value="locf">LOCF</option>
+                <option value="linear_interp">{t("imputationLinear")}</option>
+                <option value="log_linear_trend">{t("imputationTrend")}</option>
+                <option value="cross_section">{t("imputationCross")}</option>
+              </select>
+            </label>
+            <p className="muted small">{t("imputationHint")}</p>
+            <label>
+              {t("combinedEocWeight")}
+              <input
+                type="range"
+                min={0.3}
+                max={0.7}
+                step={0.1}
+                data-testid="combined-eoc-weight"
+                value={config.combinedEocWeight ?? 0.5}
+                onChange={(e) =>
+                  setConfig({ combinedEocWeight: Number(e.target.value) })
+                }
+              />
+              <span className="muted small">
+                {Math.round((config.combinedEocWeight ?? 0.5) * 100)}/
+                {Math.round((1 - (config.combinedEocWeight ?? 0.5)) * 100)}
+              </span>
+            </label>
+            <label>
+              {t("combinedEocNorm")}
+              <select
+                data-testid="combined-eoc-norm"
+                value={config.combinedEocNorm ?? "ratio_to_max"}
+                onChange={(e) =>
+                  setConfig({
+                    combinedEocNorm: e.target.value as "ratio_to_max" | "times_5",
+                  })
+                }
+              >
+                <option value="ratio_to_max">{t("eocNormRatio")}</option>
+                <option value="times_5">{t("eocNormTimes5")}</option>
+              </select>
+            </label>
+            <label>
+              {t("preselectPick")}
+              <select
+                data-testid="preselect-pick"
+                value={config.preselectPick ?? "imports"}
+                onChange={(e) =>
+                  setConfig({
+                    preselectPick: e.target.value as "imports" | "openness" | "union",
+                  })
+                }
+              >
+                <option value="imports">{t("preselectPickImports")}</option>
+                <option value="openness">{t("preselectPickOpenness")}</option>
+                <option value="union">{t("preselectPickUnion")}</option>
+              </select>
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                data-testid="include-origin-preselect"
+                checked={config.includeOriginInPreselect === true}
+                onChange={(e) =>
+                  setConfig({ includeOriginInPreselect: e.target.checked })
+                }
+              />
+              {t("includeOriginInPreselect")}
+            </label>
           </details>
 
           <label>
