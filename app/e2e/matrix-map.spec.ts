@@ -1,12 +1,5 @@
 import { expect, test } from "@playwright/test";
-
-function encodeConfig(config: object): string {
-  return Buffer.from(JSON.stringify(config), "utf8")
-    .toString("base64")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
-}
+import { encodeConfig } from "./_helpers";
 
 const base = {
   v: 1 as const,
@@ -58,5 +51,31 @@ test.describe("Phase 9 matrix + market map", () => {
     expect(stress2).toBe(stress1);
     await expect(page.getByTestId("export-map-png")).toBeVisible();
     await expect(page.getByTestId("export-map-svg")).toBeVisible();
+  });
+
+  test("analysis tabs keep permalink when switching ranking → matrix → map", async ({
+    page,
+  }) => {
+    await page.goto(
+      `/ranking?c=${encodeConfig({ ...base, view: "ranking", compareA: "POL" })}`,
+    );
+    await expect(page.getByTestId("ranking-view")).toBeVisible({ timeout: 15_000 });
+    await expect(page).toHaveURL(/c=/);
+    await expect(page.getByTestId("analysis-tabs")).toBeVisible();
+
+    await page
+      .getByTestId("analysis-tabs")
+      .getByRole("link", { name: /matrix/i })
+      .click();
+    await expect(page.getByTestId("matrix-view")).toBeVisible({ timeout: 15_000 });
+    await expect(page).toHaveURL(/\/matrix\?c=/);
+
+    await page.getByTestId("analysis-tabs").getByRole("link", { name: /map/i }).click();
+    await expect(page.getByTestId("map-view")).toBeVisible({ timeout: 15_000 });
+    await expect(page).toHaveURL(/\/map\?c=/);
+
+    await page.reload();
+    await expect(page.getByTestId("map-view")).toBeVisible({ timeout: 15_000 });
+    await expect(page).toHaveURL(/\/map\?c=/);
   });
 });

@@ -25,10 +25,12 @@ function rankingRequestKey(req: RankingRequest): string {
 export function useRankingModel(): {
   model: RankingViewModel | null;
   error: string | null;
+  loading: boolean;
 } {
   const { config } = useAnalysis();
   const [model, setModel] = useState<RankingViewModel | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const ready = isAnalysisReady(config);
 
   const request = useMemo<RankingRequest>(
@@ -68,18 +70,26 @@ export function useRankingModel(): {
     if (!ready) {
       setModel(null);
       setError(null);
+      setLoading(false);
       return;
     }
     let cancelled = false;
+    // Drop stale results immediately when the request fingerprint changes.
+    setModel(null);
     setError(null);
+    setLoading(true);
     void getCachedRanking(requestRef.current)
       .then((m) => {
-        if (!cancelled) setModel(m);
+        if (!cancelled) {
+          setModel(m);
+          setLoading(false);
+        }
       })
       .catch((err: unknown) => {
         if (!cancelled) {
           setModel(null);
           setError(err instanceof Error ? err.message : String(err));
+          setLoading(false);
         }
       });
     return () => {
@@ -87,5 +97,5 @@ export function useRankingModel(): {
     };
   }, [ready, requestKey]);
 
-  return { model, error };
+  return { model, error, loading };
 }

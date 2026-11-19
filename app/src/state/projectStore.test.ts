@@ -9,7 +9,7 @@ import {
 import type { AnalysisConfig } from "./schema";
 
 describe("projectStore", () => {
-  it("saves and loads from localStorage", () => {
+  it("saves and loads from localStorage; export does not write storage", () => {
     const store = new Map<string, string>();
     const ls = {
       getItem: (k: string) => store.get(k) ?? null,
@@ -29,9 +29,11 @@ describe("projectStore", () => {
     const config: AnalysisConfig = { v: 1, view: "catalog", year: 2020 };
     saveProjectToStorage(config, "demo");
     expect(loadProjectFromStorage()?.view).toBe("catalog");
-    const json = exportProjectJson(config, "demo");
+
     clearProjectStorage();
+    const json = exportProjectJson(config, "demo");
     expect(loadProjectFromStorage()).toBeNull();
+
     const imported = importProjectJson(json);
     expect(imported.year).toBe(2020);
     expect(loadProjectFromStorage()?.year).toBe(2020);

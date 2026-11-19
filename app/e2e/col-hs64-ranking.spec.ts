@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { encodeConfig } from "./_helpers";
 
 const golden = JSON.parse(
   readFileSync(
@@ -14,15 +15,6 @@ const golden = JSON.parse(
 ) as {
   block: { ranking_expert: { iso3: string; score: number; rank: number }[] };
 };
-
-function encodeConfig(config: object): string {
-  const json = JSON.stringify(config);
-  return Buffer.from(json, "utf8")
-    .toString("base64")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
-}
 
 test.describe("COL HS64 2023 IMSFE ranking", () => {
   test("builder → ranking matches ims-backtest top ranks", async ({ page }) => {

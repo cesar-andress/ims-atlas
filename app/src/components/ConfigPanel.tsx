@@ -18,8 +18,14 @@ const FACTOR_ORDER = [
 
 export function ConfigPanel() {
   const { t, i18n } = useTranslation();
-  const { config, setConfig, saveProject, exportProject, importProject } =
-    useAnalysis();
+  const {
+    config,
+    setConfig,
+    replaceConfig,
+    saveProject,
+    exportProject,
+    importProject,
+  } = useAnalysis();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
   const [hsQuery, setHsQuery] = useState(config.hs ?? "");
   const [hsDraft, setHsDraft] = useState(config.hs ?? "");
@@ -78,7 +84,9 @@ export function ConfigPanel() {
           <button
             type="button"
             data-testid="apply-col-hs64"
-            onClick={() => setConfig({ ...COL_HS64_PRESET, view: config.view, lang })}
+            onClick={() =>
+              replaceConfig({ ...COL_HS64_PRESET, view: config.view, lang })
+            }
           >
             {t("presetColHs64")}
           </button>

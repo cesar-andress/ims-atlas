@@ -33,7 +33,7 @@ export function AnalysisPage({
   children,
 }: Props) {
   const { t, i18n } = useTranslation();
-  const { config, setConfig } = useAnalysis();
+  const { config, replaceConfig } = useAnalysis();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
   const ready = isAnalysisReady(config);
 
@@ -70,7 +70,7 @@ export function AnalysisPage({
               type="button"
               data-testid="analysis-load-preset"
               onClick={() =>
-                setConfig({
+                replaceConfig({
                   ...COL_HS64_PRESET,
                   view: config.view,
                   lang: config.lang ?? lang,

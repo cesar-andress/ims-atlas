@@ -7,7 +7,7 @@ import { COL_HS64_PRESET } from "../state/schema";
 
 export function Builder() {
   const { t, i18n } = useTranslation();
-  const { config, setConfig } = useAnalysis();
+  const { config, replaceConfig } = useAnalysis();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
 
   return (
@@ -23,7 +23,7 @@ export function Builder() {
         <button
           type="button"
           data-testid="builder-load-preset"
-          onClick={() => setConfig({ ...COL_HS64_PRESET, view: "builder", lang })}
+          onClick={() => replaceConfig({ ...COL_HS64_PRESET, view: "builder", lang })}
         >
           {t("presetColHs64")}
         </button>{" "}

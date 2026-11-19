@@ -88,6 +88,13 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
     [commit],
   );
 
+  const replaceConfig = useCallback(
+    (next: AnalysisConfig) => {
+      commit({ ...next, v: 1 });
+    },
+    [commit],
+  );
+
   const setView = useCallback(
     (view: ViewId) => {
       commit({ ...configRef.current, view, v: 1 });
@@ -99,6 +106,7 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
     () => ({
       config,
       setConfig,
+      replaceConfig,
       setView,
       saveProject: (label) => {
         saveProjectToStorage(configRef.current, label);
@@ -108,7 +116,7 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
         commit(importProjectJson(json));
       },
     }),
-    [config, commit, setConfig, setView],
+    [config, commit, setConfig, replaceConfig, setView],
   );
 
   return <AnalysisContext.Provider value={value}>{children}</AnalysisContext.Provider>;

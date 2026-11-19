@@ -35,8 +35,14 @@ export function saveProjectToStorage(
   return file;
 }
 
+/** Serialize a project file without touching localStorage. */
 export function exportProjectJson(config: AnalysisConfig, label?: string): string {
-  const file = saveProjectToStorage(config, label);
+  const file: ProjectFile = {
+    kind: "ims-atlas-project",
+    savedAt: new Date().toISOString(),
+    config: AnalysisConfigSchema.parse(config),
+    ...(label !== undefined ? { label } : {}),
+  };
   return `${JSON.stringify(file, null, 2)}\n`;
 }
 
