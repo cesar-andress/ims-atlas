@@ -30,6 +30,33 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 | transparency_cpi | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
 | global_trade_alert | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
 | freight_manual | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| worldbank_doing_business | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| imf_weo | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| wto_tariffs | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| wto_itip | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| numbeo | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| preciosmundi | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| global_product_prices | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| sea_distances | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| searates | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| nauticalculator | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| solability_gsci | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| coface_country_risk | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| global_carbon_atlas | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| iea_ghg | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| trade_barrier_index | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| world_population_review | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| itc_trade | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| itc_trademap | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| unctadstat | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| culture_factor | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| indexmundi | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| knoema | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| theglobaleconomy | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| geodatos | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| procolombia | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| iso_country_codes_ref | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| literature_dyo | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
 
 ## Variables (gate)
 
@@ -105,3 +132,30 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 - `transparency_cpi`
 - `global_trade_alert`
 - `freight_manual`
+- `worldbank_doing_business`
+- `imf_weo`
+- `wto_tariffs`
+- `wto_itip`
+- `numbeo`
+- `preciosmundi`
+- `global_product_prices`
+- `sea_distances`
+- `searates`
+- `nauticalculator`
+- `solability_gsci`
+- `coface_country_risk`
+- `global_carbon_atlas`
+- `iea_ghg`
+- `trade_barrier_index`
+- `world_population_review`
+- `itc_trade`
+- `itc_trademap`
+- `unctadstat`
+- `culture_factor`
+- `indexmundi`
+- `knoema`
+- `theglobaleconomy`
+- `geodatos`
+- `procolombia`
+- `iso_country_codes_ref`
+- `literature_dyo`
