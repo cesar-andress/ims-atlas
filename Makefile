@@ -1,4 +1,4 @@
-.PHONY: setup lint test e2e build etl pipeline-fixture release-staging promote-release release-data catalog-port catalog-validate check-live rights-report qa lineage coverage-report phase3-report export-phase5-goldens dev cname pin-backtest typecheck
+.PHONY: setup lint test e2e build etl pipeline-fixture release-staging promote-release release-data catalog-port catalog-validate check-live rights-report qa lineage coverage-report phase3-report export-phase5-goldens export-phase6-goldens dev cname pin-backtest typecheck
 
 NODE_VERSION := 20
 PNPM ?= pnpm
@@ -62,6 +62,10 @@ phase3-report:
 export-phase5-goldens:
 	cd etl && $(UV) sync --extra backtest --group dev
 	cd etl && $(UV) run atlas-etl export-phase5-goldens
+
+export-phase6-goldens:
+	cd etl && $(UV) sync --extra backtest --group dev
+	cd etl && $(UV) run atlas-etl export-phase6-goldens
 
 release-staging:
 	cd etl && $(UV) run atlas-etl release --version 0.1.0 --staging --force

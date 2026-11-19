@@ -427,6 +427,29 @@ def phase3_report_cmd() -> None:
     typer.echo(f"atlas-etl {__version__}: wrote {path}")
 
 
+@app.command("export-phase6-goldens")
+def export_phase6_goldens_cmd(
+    out: Annotated[
+        str | None,
+        typer.Option(
+            "--out",
+            help="Output JSON (default: core/fixtures/phase6/golden.json)",
+        ),
+    ] = None,
+) -> None:
+    """Export ims-backtest golden fixtures for core/ Vitest (Phase 6)."""
+    from pathlib import Path
+
+    from imsatlas_etl.export_phase6_goldens import write_phase6_goldens
+
+    try:
+        path = write_phase6_goldens(Path(out) if out else None)
+    except Exception as exc:  # noqa: BLE001 — surface imsfe failures
+        typer.secho(str(exc), fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=1) from exc
+    typer.echo(f"atlas-etl {__version__}: wrote {path}")
+
+
 @app.command("export-phase5-goldens")
 def export_phase5_goldens_cmd(
     out: Annotated[

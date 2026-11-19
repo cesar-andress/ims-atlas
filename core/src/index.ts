@@ -71,3 +71,60 @@ export {
   EXPERT_VARIABLE_MEANS,
   LEGACY_FACTOR_MAP,
 } from "./presets/imsfeExpert2025.js";
+
+export {
+  createRng,
+  randomDirichlet,
+  randomGamma,
+  randomNormal,
+  type Rng,
+} from "./rng.js";
+
+export {
+  deterministicWsmScores,
+  dirichletConcentration,
+  pTopK,
+  rankAcceptability,
+  ranksFromScores,
+  runSmaaWsm,
+  sampleBox,
+  sampleDirichlet,
+  sampleHierarchicalWeights,
+  type SamplingMode,
+  type SmaaResult,
+  type WeightStats,
+} from "./smaa.js";
+
+export {
+  aucExt,
+  evaluateRanking,
+  ndcgAtK,
+  precisionAtK,
+  relevanceGains,
+  spearmanCorr,
+  type GainMode,
+} from "./metrics.js";
+
+export { baselineScores, type BaselineName } from "./baselines.js";
+
+export {
+  evaluateBacktestBlock,
+  makeWalkForwardSplit,
+  type BacktestBlock,
+  type BlockMetricRow,
+  type TargetName,
+  type WalkForwardSplit,
+} from "./backtest.js";
+
+export {
+  bootstrapMethodSummary,
+  bootstrapPairedDeltas,
+  type BootstrapSummary,
+  type PairedDelta,
+} from "./bootstrap.js";
+
+export {
+  handleWorkerRequest,
+  type WorkerRequest,
+  type WorkerResponse,
+} from "./workerProtocol.js";
