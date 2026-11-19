@@ -1,0 +1,12 @@
+{
+  "endpoint": "https://api.worldbank.org/v2/indicator/SP.POP.TOTL?format=json",
+  "id": "SP.POP.TOTL",
+  "name": "Population, total",
+  "source": {
+    "id": "2",
+    "value": "World Development Indicators"
+  },
+  "sourceNote": "Recorded fixture for offline tests (Phase 1-fix).",
+  "sourceOrganization": "World Bank",
+  "unit": ""
+}

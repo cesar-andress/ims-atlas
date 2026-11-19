@@ -1,0 +1,12 @@
+{
+  "endpoint": "https://api.worldbank.org/v2/indicator/SL.UEM.TOTL.ZS?format=json",
+  "id": "SL.UEM.TOTL.ZS",
+  "name": "Unemployment, total (% of total labor force) (modeled ILO estimate)",
+  "source": {
+    "id": "2",
+    "value": "World Development Indicators"
+  },
+  "sourceNote": "Recorded fixture for offline tests (Phase 1-fix).",
+  "sourceOrganization": "World Bank",
+  "unit": ""
+}

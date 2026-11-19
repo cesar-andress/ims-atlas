@@ -471,25 +471,31 @@ def new_draft_variables() -> list[dict[str, Any]]:
         {
             "id": "CO2PC",
             "name": {
-                "en": "CO2 emissions (metric tons per capita)",
-                "es": "Emisiones de CO2 (toneladas métricas per cápita)",
+                "en": "CO2 emissions excluding LULUCF per capita (t CO2e/capita)",
+                "es": "Emisiones de CO2 excl. UTCUTS per cápita (t CO2e/cápita)",
             },
             "factor": "sustainability",
             "level": "country",
             "direction": "cost",
             "transform": "none",
-            "unit": "metric tons per capita",
+            "unit": "t CO2e per capita",
             "source": "WB",
-            "source_url": "https://data.worldbank.org/indicator/EN.ATM.CO2E.PC",
-            "citation": "World Bank. World Development Indicators. EN.ATM.CO2E.PC.",
+            "code": "EN.GHG.CO2.PC.CE.AR5",
+            "source_url": ("https://data.worldbank.org/indicator/EN.GHG.CO2.PC.CE.AR5"),
+            "citation": (
+                "World Bank. World Development Indicators. EN.GHG.CO2.PC.CE.AR5 "
+                "(CO2 emissions excluding LULUCF per capita)."
+            ),
             "licence": "CC-BY-4.0",
             "redistributable": True,
             "years": [2012, 2023],
             "frequency": "annual",
             "coverage_countries": None,
-            "series_breaks": [],
+            "series_breaks": [2024],
             "notes": (
-                "Optional sustainability factor; WB Data Catalog default CC-BY-4.0."
+                "Replaces discontinued EN.ATM.CO2E.PC (WDI Database Archives). "
+                "Different source/definition; do not splice with the archived series. "
+                "series_breaks marks the catalog switch year (not an upstream splice)."
             ),
             "status": "draft",
         },

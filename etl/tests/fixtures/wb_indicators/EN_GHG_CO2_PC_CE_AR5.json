@@ -1,0 +1,12 @@
+{
+  "endpoint": "https://api.worldbank.org/v2/indicator/EN.GHG.CO2.PC.CE.AR5?format=json",
+  "id": "EN.GHG.CO2.PC.CE.AR5",
+  "name": "CO2 emissions excluding LULUCF per capita (t CO2e/capita)",
+  "source": {
+    "id": "2",
+    "value": "World Development Indicators"
+  },
+  "sourceNote": "Recorded fixture for offline tests (Phase 1-fix).",
+  "sourceOrganization": "World Bank",
+  "unit": ""
+}

@@ -1,0 +1,12 @@
+{
+  "endpoint": "https://api.worldbank.org/v2/indicator/PV.EST?format=json",
+  "id": "PV.EST",
+  "name": "Political Stability and Absence of Violence/Terrorism: Estimate",
+  "source": {
+    "id": "2",
+    "value": "Worldwide Governance Indicators"
+  },
+  "sourceNote": "Recorded fixture for offline tests (Phase 1-fix).",
+  "sourceOrganization": "World Bank",
+  "unit": ""
+}

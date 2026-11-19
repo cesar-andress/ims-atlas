@@ -29,5 +29,5 @@ Generated from `catalog/variables.yaml`. Do not edit by hand.
 | GII | WIPO | CC-BY-4.0 | yes | World Intellectual Property Organization (WIPO). Global Innovation Index. |
 | STARTUPBLINK | StartupBlink | UNKNOWN | no (BYOD) | StartupBlink. Global Startup Ecosystem Index. |
 | EPI | Yale EPI | CC-BY-NC-SA-4.0 | no (BYOD) | Wendling, Z. A., Emerson, J. W., Esty, D. C., de Sherbinin, A., Block, S., et al. (2026). 2026 Environmental Performance Index. Yale Center for Environmental Law & Policy. |
-| CO2PC | WB | CC-BY-4.0 | yes | World Bank. World Development Indicators. EN.ATM.CO2E.PC. |
+| CO2PC | WB | CC-BY-4.0 | yes | World Bank. World Development Indicators. EN.GHG.CO2.PC.CE.AR5 (CO2 emissions excluding LULUCF per capita). |
 | PLI | WB ICP/WDI | CC-BY-4.0 | yes | World Bank. World Development Indicators / ICP. PA.NUS.PRVT.PLI. |

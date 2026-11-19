@@ -123,9 +123,28 @@
         },
         "notes": { "type": "string" },
         "status": { "type": "string", "enum": ["draft", "verified"] },
-        "byod_only": { "type": "boolean" },
-        "code": { "type": "string" },
-        "origin_specific": { "type": "boolean" }
+        "byod_only": {
+          "type": "boolean",
+          "description": "When true, values are bring-your-own-data only and must never ship in a public release."
+        },
+        "code": {
+          "type": "string",
+          "description": "Upstream series/code (e.g. World Bank indicator id, CEPII column, derived key)."
+        },
+        "origin_specific": {
+          "type": "boolean",
+          "description": "True when the value depends on the chosen origin (bilateral or origin-product)."
+        },
+        "verified_by": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human who set status=verified via atlas-etl verify."
+        },
+        "verified_on": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+          "description": "UTC calendar date (YYYY-MM-DD) when status was set to verified."
+        }
       }
     }
   }

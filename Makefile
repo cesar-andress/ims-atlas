@@ -1,4 +1,4 @@
-.PHONY: setup lint test e2e build etl release-data catalog-port catalog-validate dev cname pin-backtest typecheck
+.PHONY: setup lint test e2e build etl release-data catalog-port catalog-validate check-live dev cname pin-backtest typecheck
 
 NODE_VERSION := 20
 PNPM ?= pnpm
@@ -49,6 +49,9 @@ catalog-port:
 
 catalog-validate:
 	cd etl && $(UV) run atlas-etl catalog-validate
+
+check-live:
+	cd etl && $(UV) run atlas-etl check-live
 
 release-data:
 	cd etl && $(UV) run atlas-etl release

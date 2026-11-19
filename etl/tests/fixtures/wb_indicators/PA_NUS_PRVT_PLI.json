@@ -1,0 +1,12 @@
+{
+  "endpoint": "https://api.worldbank.org/v2/indicator/PA.NUS.PRVT.PLI?format=json",
+  "id": "PA.NUS.PRVT.PLI",
+  "name": "Price level ratio of PPP conversion factor (GDP) to market exchange rate",
+  "source": {
+    "id": "2",
+    "value": "World Development Indicators"
+  },
+  "sourceNote": "Recorded fixture for offline tests (Phase 1-fix).",
+  "sourceOrganization": "World Bank",
+  "unit": ""
+}

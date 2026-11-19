@@ -1,0 +1,12 @@
+{
+  "endpoint": "https://api.worldbank.org/v2/indicator/NY.GDP.PCAP.PP.KD?format=json",
+  "id": "NY.GDP.PCAP.PP.KD",
+  "name": "GDP per capita, PPP (constant 2021 international $)",
+  "source": {
+    "id": "2",
+    "value": "World Development Indicators"
+  },
+  "sourceNote": "Recorded fixture for offline tests (Phase 1-fix).",
+  "sourceOrganization": "World Bank",
+  "unit": ""
+}
