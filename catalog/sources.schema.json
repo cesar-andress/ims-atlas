@@ -46,7 +46,19 @@
             "checked_on": { "type": ["string", "null"] },
             "terms_url": { "type": "string", "minLength": 1 },
             "snapshot_sha256": { "type": ["string", "null"] },
-            "note": { "type": "string" }
+            "note": { "type": "string" },
+            "basis": {
+              "type": "string",
+              "enum": ["public_terms", "subscription", "contract", "written_permission"]
+            },
+            "scope": {
+              "type": "string",
+              "enum": ["use", "redistribute_derived", "redistribute_raw", "commercial"]
+            },
+            "document_ref": {
+              "type": "string",
+              "description": "Human reference only (contract no., email date); never the document body"
+            }
           }
         }
       }
@@ -59,6 +71,7 @@
         "landing_url",
         "terms_url",
         "licence_url",
+        "kind",
         "endpoints",
         "update_cadence",
         "version_detection",
@@ -72,6 +85,38 @@
         "landing_url": { "type": "string", "minLength": 1 },
         "terms_url": { "type": "string", "minLength": 1 },
         "licence_url": { "type": "string", "minLength": 1 },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "official_api",
+            "official_portal",
+            "official_report_pdf",
+            "secondary_aggregator",
+            "commercial_quote_tool",
+            "literature"
+          ]
+        },
+        "cited_in_workbooks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["url", "variables", "workbooks"],
+            "additionalProperties": false,
+            "properties": {
+              "url": { "type": "string", "minLength": 1 },
+              "variables": {
+                "type": "array",
+                "minItems": 1,
+                "items": { "type": "string", "minLength": 1 }
+              },
+              "workbooks": {
+                "type": "array",
+                "minItems": 1,
+                "items": { "type": "string", "minLength": 1 }
+              }
+            }
+          }
+        },
         "endpoints": {
           "type": "array",
           "minItems": 1,

@@ -61,9 +61,15 @@ test.describe("Phase W/U/M GUI flow", () => {
     await page.goto("/");
     const nav = page.getByTestId("main-nav");
     await expect(nav.getByRole("link", { name: "Data", exact: true })).toBeVisible();
-    await expect(nav.getByRole("link", { name: "Variables", exact: true })).toBeVisible();
-    await expect(nav.getByRole("link", { name: "Analysis", exact: true })).toBeVisible();
-    await expect(nav.getByRole("link", { name: "Projects", exact: true })).toBeVisible();
+    await expect(
+      nav.getByRole("link", { name: "Variables", exact: true }),
+    ).toBeVisible();
+    await expect(
+      nav.getByRole("link", { name: "Analysis", exact: true }),
+    ).toBeVisible();
+    await expect(
+      nav.getByRole("link", { name: "Projects", exact: true }),
+    ).toBeVisible();
   });
 
   test("map has choropleth legend + cluster how panel; 0 selects on map-results", async ({

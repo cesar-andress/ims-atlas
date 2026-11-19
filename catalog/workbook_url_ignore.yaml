@@ -1,0 +1,17 @@
+# URLs from WORKBOOK_SOURCES.md that are NOT registered as data sources.
+# Every other URL must appear under a source's cited_in_workbooks.
+ignore:
+  - url: "https://www.google.es/books/edition/A_Globalizing_World/v5Zj325gmzgC?hl=es&gbpv=1&dq=A+globalizing+world%3F:+culture,+economics,+politics&printsec=frontcover"
+    reason: "Google Books literature reference — not a data source"
+  - url: "https://www.google.es/books/edition/Advances_on_International_Economics/4XnWCgAAQBAJ?hl=es&gbpv=1&dq=%22trade+openness+ratio%22+formula&pg=PA249&printsec=frontcover"
+    reason: "Google Books literature reference — not a data source"
+  - url: "https://www.google.es/books/edition/Trade_Openness_and_China_s_Economic_Deve/2xu_DwAAQBAJ?hl=es&gbpv=1&dq=%22trade+openness+ratio%22&pg=PT288&printsec=frontcover"
+    reason: "Google Books literature reference — not a data source"
+  - url: "https://www.researchgate.net/profile/Marlen-Ramirez-2/publication/340608083_INTERNACIONALIZACION_DE_LA_INVESTIGACION_EN_LAS_CIENCIAS_SOCIALES/links/5e949a5c4585150839dadb62/INTERNACIONALIZACION-DE-LA-INVESTIGACION-EN-LAS-CIENCIAS-SOCIALES.pdf"
+    reason: "ResearchGate PDF of literature — not a data source"
+  - url: "https://www.researchgate.net/profile/Marlen-Ramirez-2/publication/340608083_INTERNACIONALIZACION_DE_LA_INVESTIGACION_EN_LAS_CIENCIAS_SOCIALES/links/5e949a5c4585150839dadb62/INTERNACIONALIZACION-DE-LA-INVESTIGACION-EN-LAS-CIENCIAS-SOCIALES.pdf#page=9"
+    reason: "ResearchGate PDF fragment — not a data source"
+  - url: "http://bit.ly/3BTPVRi"
+    reason: "URL shortener; resolve manually before registering as source"
+  - url: "https://bit.ly/3EOF9cc"
+    reason: "URL shortener; resolve manually before registering as source"

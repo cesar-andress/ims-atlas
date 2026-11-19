@@ -1,4 +1,4 @@
-"""Explicit per-source allow-list for landing_url hosts (Phase L)."""
+"""Explicit per-source allow-list for landing_url hosts (Phase L / A0)."""
 
 from __future__ import annotations
 
@@ -10,6 +10,9 @@ LANDING_HOST_ALLOWLIST: dict[str, frozenset[str]] = {
     "worldbank_wdi": frozenset({"databank.worldbank.org"}),
     "worldbank_wgi": frozenset({"www.worldbank.org"}),
     "worldbank_lpi": frozenset({"lpi.worldbank.org"}),
+    "worldbank_doing_business": frozenset(
+        {"archive.doingbusiness.org", "espanol.doingbusiness.org"},
+    ),
     "baci": frozenset({"www.cepii.fr"}),
     "cepi_gravity": frozenset({"www.cepii.fr"}),
     "wits_trains": frozenset({"wits.worldbank.org"}),
@@ -21,7 +24,6 @@ LANDING_HOST_ALLOWLIST: dict[str, frozenset[str]] = {
     "wipo_gii": frozenset({"www.wipo.int"}),
     "startupblink": frozenset({"www.startupblink.com"}),
     "yale_epi": frozenset({"epi.yale.edu"}),
-    # Phase J IMSFE workbook candidates (licence UNKNOWN until human verify)
     "heritage_ief": frozenset({"www.heritage.org"}),
     "fragile_states_index": frozenset({"fragilestatesindex.org"}),
     "inform_risk": frozenset({"drmkc.jrc.ec.europa.eu"}),
@@ -30,6 +32,33 @@ LANDING_HOST_ALLOWLIST: dict[str, frozenset[str]] = {
     "transparency_cpi": frozenset({"www.transparency.org"}),
     "global_trade_alert": frozenset({"globaltradealert.org"}),
     "freight_manual": frozenset({"www.icontainers.com"}),
+    # Phase A0 workbook publishers
+    "imf_weo": frozenset({"www.imf.org"}),
+    "wto_tariffs": frozenset({"ttd.wto.org", "tariffdata.wto.org"}),
+    "wto_itip": frozenset({"i-tip.wto.org"}),
+    "numbeo": frozenset({"www.numbeo.com"}),
+    "preciosmundi": frozenset({"preciosmundi.com"}),
+    "global_product_prices": frozenset({"www.globalproductprices.com"}),
+    "sea_distances": frozenset({"sea-distances.org"}),
+    "searates": frozenset({"www.searates.com"}),
+    "nauticalculator": frozenset({"nauticalculator.com"}),
+    "solability_gsci": frozenset({"solability.com"}),
+    "coface_country_risk": frozenset({"www.coface.com"}),
+    "global_carbon_atlas": frozenset({"globalcarbonatlas.org"}),
+    "iea_ghg": frozenset({"www.iea.org"}),
+    "trade_barrier_index": frozenset({"www.tradebarrierindex.org"}),
+    "world_population_review": frozenset({"worldpopulationreview.com"}),
+    "itc_trade": frozenset({"www.intracen.org"}),
+    "itc_trademap": frozenset({"www.trademap.org"}),
+    "unctadstat": frozenset({"unctadstat.unctad.org"}),
+    "culture_factor": frozenset({"www.theculturefactor.com"}),
+    "indexmundi": frozenset({"www.indexmundi.com"}),
+    "knoema": frozenset({"knoema.es", "knoema.com"}),
+    "theglobaleconomy": frozenset({"www.theglobaleconomy.com"}),
+    "geodatos": frozenset({"www.geodatos.net"}),
+    "procolombia": frozenset({"ruta-exportadora.procolombia.co", "procolombia.co"}),
+    "iso_country_codes_ref": frozenset({"www.inapi.cl"}),
+    "literature_dyo": frozenset({"www.revistadyo.es"}),
 }
 
 

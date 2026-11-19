@@ -135,7 +135,7 @@ def rights_verify_cmd(
     source_id: Annotated[str, typer.Argument(help="Source id in sources.yaml")],
     by: Annotated[
         str,
-        typer.Option("--by", help="Human name recording the rights check"),
+        typer.Option("--by", help="Human name / initials recording the rights check"),
     ],
     on: Annotated[
         str | None,
@@ -145,19 +145,74 @@ def rights_verify_cmd(
         str | None,
         typer.Option("--note", help="Optional paraphrase of the relevant clause"),
     ] = None,
+    basis: Annotated[
+        str | None,
+        typer.Option(
+            "--basis",
+            help="public_terms | subscription | contract | written_permission",
+        ),
+    ] = None,
+    scope: Annotated[
+        str | None,
+        typer.Option(
+            "--scope",
+            help="use | redistribute_derived | redistribute_raw | commercial",
+        ),
+    ] = None,
+    document: Annotated[
+        str | None,
+        typer.Option(
+            "--document",
+            help="Reference only (contract no., email date); never paste secrets",
+        ),
+    ] = None,
+    no_fetch: Annotated[
+        bool,
+        typer.Option("--no-fetch", help="Skip downloading terms_url"),
+    ] = False,
 ) -> None:
-    """Human-only: fetch terms page, store sha256, set evidence.checked_by/on."""
+    """Human-only: record basis/scope/document ref + optional terms snapshot."""
     try:
-        result = rights_verify(source_id, by=by, on=on, note=note)
+        result = rights_verify(
+            source_id,
+            by=by,
+            on=on,
+            note=note,
+            basis=basis,
+            scope=scope,
+            document=document,
+            fetch=not no_fetch,
+        )
         write_rights_md()
     except SourcesValidationError as exc:
         typer.secho(str(exc), fg=typer.colors.RED, err=True)
         raise typer.Exit(code=1) from exc
+    sha = result.get("snapshot_sha256") or "none"
+    sha_short = sha[:16] + "…" if isinstance(sha, str) and len(sha) > 16 else sha
     typer.echo(
         f"atlas-etl {__version__}: rights-verify {result['id']} "
         f"by {result['checked_by']} on {result['checked_on']} "
-        f"sha256={result['snapshot_sha256'][:16]}… "
-        f"(rights flags still need human yes/no edits; see {rights_md_path()})",
+        f"basis={result.get('basis')} scope={result.get('scope')} "
+        f"sha256={sha_short} "
+        f"(yes/no rights flags still need human edits; see {rights_md_path()})",
+    )
+
+
+@app.command("link-check")
+def link_check_cmd(
+    offline: Annotated[
+        bool,
+        typer.Option("--offline", help="Do not hit the network; write stub report"),
+    ] = False,
+) -> None:
+    """Probe workbook + landing URLs → status/link_check.json."""
+    from imsatlas_etl.link_check import run_link_check
+
+    report = run_link_check(offline=offline)
+    typer.echo(
+        f"atlas-etl {__version__}: link-check "
+        f"{report['n_checked']} urls, {report['n_dead_or_error']} dead/error "
+        f"→ status/link_check.json",
     )
 
 

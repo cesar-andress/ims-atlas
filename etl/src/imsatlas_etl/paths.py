@@ -55,3 +55,7 @@ def deployment_yaml_path() -> Path:
 
 def terms_snapshots_dir() -> Path:
     return repo_root() / "data" / "local" / "terms_snapshots"
+
+
+def status_dir() -> Path:
+    return repo_root() / "status"

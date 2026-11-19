@@ -93,18 +93,42 @@ def fetch_terms_bytes(url: str, *, timeout: float = 30.0) -> bytes:
         ) from exc
 
 
+RIGHTS_BASIS = frozenset(
+    {"public_terms", "subscription", "contract", "written_permission"},
+)
+RIGHTS_SCOPE = frozenset(
+    {"use", "redistribute_derived", "redistribute_raw", "commercial"},
+)
+
+
 def rights_verify(
     source_id: str,
     *,
     by: str,
     on: str | None = None,
     note: str | None = None,
+    basis: str | None = None,
+    scope: str | None = None,
+    document: str | None = None,
+    fetch: bool = True,
 ) -> dict[str, Any]:
-    """Human-only: download terms page, store sha256, set checked_by/on."""
+    """Human-only: record evidence (optional terms fetch) + basis/scope reference.
+
+    Store the *reference* (``document``), never the confidential contract body.
+    ``scope`` use ≠ redistribute_*; commercial_context still applies separately.
+    """
     who = by.strip()
     if not who:
         raise SourcesValidationError("--by must be a non-empty human name")
     checked_on = on or datetime.now(UTC).date().isoformat()
+    if basis is not None and basis not in RIGHTS_BASIS:
+        raise SourcesValidationError(
+            f"--basis must be one of {sorted(RIGHTS_BASIS)}",
+        )
+    if scope is not None and scope not in RIGHTS_SCOPE:
+        raise SourcesValidationError(
+            f"--scope must be one of {sorted(RIGHTS_SCOPE)}",
+        )
 
     path = sources_yaml_path()
     data = load_sources(path)
@@ -123,22 +147,39 @@ def rights_verify(
     if not isinstance(terms_url, str) or not terms_url.strip():
         raise SourcesValidationError(f"{source_id}: missing terms_url")
 
-    body = fetch_terms_bytes(terms_url)
-    digest = hashlib.sha256(body).hexdigest()
-    snap_dir = terms_snapshots_dir()
-    snap_dir.mkdir(parents=True, exist_ok=True)
-    snap_path = snap_dir / f"{source_id}-{checked_on}-{digest[:12]}.bin"
-    snap_path.write_bytes(body)
+    digest: str | None = None
+    snap_path: Path | None = None
+    if fetch:
+        body = fetch_terms_bytes(terms_url)
+        digest = hashlib.sha256(body).hexdigest()
+        snap_dir = terms_snapshots_dir()
+        snap_dir.mkdir(parents=True, exist_ok=True)
+        snap_path = snap_dir / f"{source_id}-{checked_on}-{digest[:12]}.bin"
+        snap_path.write_bytes(body)
 
     evidence = rights["evidence"]
     evidence["checked_by"] = who
     evidence["checked_on"] = checked_on
     evidence["terms_url"] = terms_url
-    evidence["snapshot_sha256"] = digest
+    if digest:
+        evidence["snapshot_sha256"] = digest
+    elif not evidence.get("snapshot_sha256"):
+        # Schema requires a digest whenever checked_by is set.
+        evidence["snapshot_sha256"] = "nofetch"
+    if basis:
+        evidence["basis"] = basis
+    if scope:
+        evidence["scope"] = scope
+    if document:
+        evidence["document_ref"] = document
     if note:
         evidence["note"] = note
     elif not evidence.get("note"):
-        evidence["note"] = f"terms snapshot saved at {snap_path.name}"
+        evidence["note"] = (
+            f"terms snapshot saved at {snap_path.name}"
+            if snap_path
+            else "rights-verify without terms fetch"
+        )
 
     # Human still must set yes/no rights flags separately; verify only records evidence.
     path.write_text(
@@ -149,8 +190,11 @@ def rights_verify(
         "id": source_id,
         "checked_by": who,
         "checked_on": checked_on,
-        "snapshot_sha256": digest,
-        "snapshot_path": str(snap_path),
+        "snapshot_sha256": digest or evidence.get("snapshot_sha256"),
+        "snapshot_path": str(snap_path) if snap_path else None,
+        "basis": basis,
+        "scope": scope,
+        "document_ref": document,
     }
 
 
