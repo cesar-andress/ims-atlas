@@ -1,59 +1,23 @@
-import { useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FactorBars } from "../components/FactorBars";
-import { WorldChoropleth } from "../components/WorldChoropleth";
-import { computeRanking, type RankingViewModel } from "../ranking/rankingEngine";
+import { useRankingModel } from "../ranking/useRankingModel";
 import { useAnalysis } from "../state/useAnalysis";
+
+const WorldChoropleth = lazy(() =>
+  import("../components/WorldChoropleth").then((m) => ({
+    default: m.WorldChoropleth,
+  })),
+);
+const FactorBars = lazy(() =>
+  import("../components/FactorBars").then((m) => ({ default: m.FactorBars })),
+);
 
 export function Ranking() {
   const { t } = useTranslation();
   const { config, setConfig } = useAnalysis();
-  const [model, setModel] = useState<RankingViewModel | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const { model, error } = useRankingModel();
   const [sortKey, setSortKey] = useState<"rank" | "score" | "iso3">("rank");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
-
-  useEffect(() => {
-    let cancelled = false;
-    setError(null);
-    void computeRanking({
-      origin: config.origin,
-      hs: config.hs,
-      year: config.year,
-      region: config.region,
-      minImports: config.minImports,
-      variableIds: config.variableIds,
-      normalization: config.normalization,
-      mcdm: config.mcdm,
-      weightScheme: config.weightScheme,
-      missingThreshold: config.missingThreshold,
-      factorWeights: config.factorWeights,
-    })
-      .then((m) => {
-        if (!cancelled) setModel(m);
-      })
-      .catch((err: unknown) => {
-        if (!cancelled) {
-          setModel(null);
-          setError(err instanceof Error ? err.message : String(err));
-        }
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [
-    config.origin,
-    config.hs,
-    config.year,
-    config.region,
-    config.minImports,
-    config.variableIds,
-    config.normalization,
-    config.mcdm,
-    config.weightScheme,
-    config.missingThreshold,
-    config.factorWeights,
-  ]);
 
   const sorted = useMemo(() => {
     if (!model) return [];
@@ -179,11 +143,13 @@ export function Ranking() {
             </div>
 
             <div className="ranking-side">
-              <WorldChoropleth
-                rows={model.ranking}
-                selected={selectedIso}
-                onSelect={(iso3) => setConfig({ compareA: iso3 })}
-              />
+              <Suspense fallback={<p className="muted">{t("loading")}</p>}>
+                <WorldChoropleth
+                  rows={model.ranking}
+                  selected={selectedIso}
+                  onSelect={(iso3) => setConfig({ compareA: iso3 })}
+                />
+              </Suspense>
               <p className="licence-note" data-testid="map-licence">
                 {t("mapLicence")}
               </p>
@@ -223,17 +189,19 @@ export function Ranking() {
               </div>
 
               {selectedIso && factors.length > 0 ? (
-                <FactorBars
-                  title={selectedIso}
-                  factors={factors}
-                  values={model.factorScores[selectedIso] ?? {}}
-                  {...(compareIso
-                    ? {
-                        compare: model.factorScores[compareIso] ?? {},
-                        compareLabel: compareIso,
-                      }
-                    : {})}
-                />
+                <Suspense fallback={null}>
+                  <FactorBars
+                    title={selectedIso}
+                    factors={factors}
+                    values={model.factorScores[selectedIso] ?? {}}
+                    {...(compareIso
+                      ? {
+                          compare: model.factorScores[compareIso] ?? {},
+                          compareLabel: compareIso,
+                        }
+                      : {})}
+                  />
+                </Suspense>
               ) : null}
 
               {selectedIso && compareIso ? (

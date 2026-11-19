@@ -4,7 +4,7 @@ import { buildStrategicMatrix, type MarketLayoutResult } from "@ims-atlas/core";
 import { MarketMapCanvas } from "../components/MarketMapCanvas";
 import { useRankingModel } from "../ranking/useRankingModel";
 import { useAnalysis } from "../state/useAnalysis";
-import { runEngineWorker } from "../workers/runWorker";
+import { runMarketLayoutWorker } from "../workers/runWorker";
 
 export function MarketMap() {
   const { t } = useTranslation();
@@ -24,7 +24,7 @@ export function MarketMap() {
     }
     let cancelled = false;
     setLayoutError(null);
-    void runEngineWorker({
+    void runMarketLayoutWorker({
       type: "market_layout",
       id: `layout-${clusterK}-${mapSeed}`,
       candidates: model.prepared.candidates,
@@ -33,8 +33,8 @@ export function MarketMap() {
       k: clusterK,
       seed: mapSeed,
     })
-      .then((res) => {
-        if (!cancelled && res.type === "market_layout") setLayout(res.result);
+      .then((result) => {
+        if (!cancelled) setLayout(result);
       })
       .catch((err: unknown) => {
         if (!cancelled) {

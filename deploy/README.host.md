@@ -29,6 +29,12 @@ Catalogue entry: [aiserv-applications](https://github.com/cesar-andress/aiserv-a
 
 Edge: [aiserv-server](https://github.com/cesar-andress/aiserv-server) `caddy/Caddyfile` → `./scripts/deploy-caddy.sh` on vpn-server.
 
+## Performance notes
+
+Vite emits route/vendor chunks and precompressed `.gz` siblings. nginx uses
+`gzip_static` + long-lived `Cache-Control` for `/assets/*` (immutable hashes).
+Home does not download MapLibre/ECharts until Ranking/Matrix/Map are opened.
+
 ## Update (git only)
 
 ```bash

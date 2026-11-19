@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
-import maplibregl, { type Map as MapLibreMap } from "maplibre-gl";
-import "maplibre-gl/dist/maplibre-gl.css";
+import type { Map as MapLibreMap } from "maplibre-gl";
 
 /** Natural Earth 110m admin-0 countries (public domain) via jsDelivr. */
 export const NE_GEOJSON_URL =
@@ -16,7 +15,6 @@ type Props = {
 };
 
 function scoreColor(t: number): string {
-  // green → yellow → muted (t in [0,1], higher = better)
   const r = Math.round(20 + (220 - 20) * (1 - t));
   const g = Math.round(95 + (180 - 95) * t);
   const b = Math.round(74 + (40 - 74) * (1 - t));
@@ -24,80 +22,91 @@ function scoreColor(t: number): string {
 }
 
 /**
- * MapLibre choropleth. Uses Natural Earth via world-atlas TopoJSON served as
- * GeoJSON countries-110m from jsDelivr (Natural Earth: public domain).
+ * MapLibre choropleth (lazy-loads maplibre-gl + CSS on mount).
  * Licence note must remain visible in the parent view.
  */
 export function WorldChoropleth({ rows, selected, onSelect }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const rowsRef = useRef(rows);
+  const onSelectRef = useRef(onSelect);
   rowsRef.current = rows;
+  onSelectRef.current = onSelect;
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
+    let cancelled = false;
+    let map: MapLibreMap | null = null;
 
-    const map = new maplibregl.Map({
-      container: containerRef.current,
-      style: {
-        version: 8,
-        sources: {
-          ne: {
-            type: "geojson",
-            data: NE_GEOJSON_URL,
+    void (async () => {
+      const maplibregl = (await import("maplibre-gl")).default;
+      await import("maplibre-gl/dist/maplibre-gl.css");
+      if (cancelled || !containerRef.current) return;
+
+      map = new maplibregl.Map({
+        container: containerRef.current,
+        style: {
+          version: 8,
+          sources: {
+            ne: {
+              type: "geojson",
+              data: NE_GEOJSON_URL,
+            },
           },
+          layers: [
+            {
+              id: "bg",
+              type: "background",
+              paint: { "background-color": "#e8ebe8" },
+            },
+            {
+              id: "countries-fill",
+              type: "fill",
+              source: "ne",
+              paint: {
+                "fill-color": "#c8ccc8",
+                "fill-opacity": 0.95,
+              },
+            },
+            {
+              id: "countries-line",
+              type: "line",
+              source: "ne",
+              paint: {
+                "line-color": "#6a6e6a",
+                "line-width": 0.4,
+              },
+            },
+          ],
         },
-        layers: [
-          {
-            id: "bg",
-            type: "background",
-            paint: { "background-color": "#e8ebe8" },
-          },
-          {
-            id: "countries-fill",
-            type: "fill",
-            source: "ne",
-            paint: {
-              "fill-color": "#c8ccc8",
-              "fill-opacity": 0.95,
-            },
-          },
-          {
-            id: "countries-line",
-            type: "line",
-            source: "ne",
-            paint: {
-              "line-color": "#6a6e6a",
-              "line-width": 0.4,
-            },
-          },
-        ],
-      },
-      center: [10, 20],
-      zoom: 1.2,
-      attributionControl: {},
-    });
+        center: [10, 20],
+        zoom: 1.2,
+        attributionControl: {},
+      });
 
-    map.addControl(
-      new maplibregl.NavigationControl({ showCompass: false }),
-      "top-right",
-    );
+      map.addControl(
+        new maplibregl.NavigationControl({ showCompass: false }),
+        "top-right",
+      );
 
-    map.on("load", () => {
-      applyColors(map, rowsRef.current, selected);
-    });
+      map.on("load", () => {
+        if (map) applyColors(map, rowsRef.current, selected);
+      });
 
-    map.on("click", "countries-fill", (e) => {
-      const f = e.features?.[0];
-      const iso =
-        (f?.properties?.ADM0_A3 as string | undefined) ??
-        (f?.properties?.ISO_A3 as string | undefined);
-      if (iso && onSelect) onSelect(iso);
-    });
+      map.on("click", "countries-fill", (e) => {
+        const f = e.features?.[0];
+        const iso =
+          (f?.properties?.ADM0_A3 as string | undefined) ??
+          (f?.properties?.ISO_A3 as string | undefined);
+        if (iso && onSelectRef.current) onSelectRef.current(iso);
+      });
 
-    mapRef.current = map;
+      mapRef.current = map;
+    })();
+
     return () => {
-      map.remove();
+      cancelled = true;
+      map?.remove();
       mapRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- mount once

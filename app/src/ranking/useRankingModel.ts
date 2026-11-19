@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAnalysis } from "../state/useAnalysis";
-import { computeRanking, type RankingViewModel } from "./rankingEngine";
+import { getCachedRanking } from "./rankingCache";
+import type { RankingViewModel } from "./rankingEngine";
 
 /** Shared ranking model for Ranking / Matrix / Market map views. */
 export function useRankingModel(): {
@@ -14,7 +15,7 @@ export function useRankingModel(): {
   useEffect(() => {
     let cancelled = false;
     setError(null);
-    void computeRanking({
+    void getCachedRanking({
       origin: config.origin,
       hs: config.hs,
       year: config.year,

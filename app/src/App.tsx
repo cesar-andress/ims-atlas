@@ -1,18 +1,31 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, Route, Routes } from "react-router-dom";
-import { ConfigPanel } from "./components/ConfigPanel";
-import { Builder } from "./pages/Builder";
-import { Catalog } from "./pages/Catalog";
 import { Home } from "./pages/Home";
-import { MarketMap } from "./pages/MarketMap";
-import { Matrix } from "./pages/Matrix";
-import { Ranking } from "./pages/Ranking";
 import { StubView } from "./pages/StubView";
 import { AnalysisProvider } from "./state/AnalysisContext";
 import { useAnalysis } from "./state/useAnalysis";
 import type { ViewId } from "./state/schema";
 import { applyTheme, readStoredTheme, type ThemeMode } from "./theme";
+
+const ConfigPanel = lazy(() =>
+  import("./components/ConfigPanel").then((m) => ({ default: m.ConfigPanel })),
+);
+const Builder = lazy(() =>
+  import("./pages/Builder").then((m) => ({ default: m.Builder })),
+);
+const Catalog = lazy(() =>
+  import("./pages/Catalog").then((m) => ({ default: m.Catalog })),
+);
+const Ranking = lazy(() =>
+  import("./pages/Ranking").then((m) => ({ default: m.Ranking })),
+);
+const Matrix = lazy(() =>
+  import("./pages/Matrix").then((m) => ({ default: m.Matrix })),
+);
+const MarketMap = lazy(() =>
+  import("./pages/MarketMap").then((m) => ({ default: m.MarketMap })),
+);
 
 const REPO_URL = "https://github.com/cesar-andress/ims-atlas";
 const BACKTEST_URL = "https://github.com/cesar-andress/ims-backtest";
@@ -32,6 +45,35 @@ const NAV: ViewId[] = [
   "docs",
 ];
 
+/** Warm heavy route chunks after first paint (idle). */
+function prefetchHeavyRoutes(): void {
+  const run = () => {
+    void import("./pages/Ranking");
+    void import("./pages/Matrix");
+    void import("./pages/MarketMap");
+    void import("./components/ConfigPanel");
+  };
+  const ric = (
+    window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+    }
+  ).requestIdleCallback;
+  if (typeof ric === "function") {
+    ric(() => run(), { timeout: 2500 });
+  } else {
+    setTimeout(run, 1200);
+  }
+}
+
+function RouteFallback() {
+  const { t } = useTranslation();
+  return (
+    <p className="muted" data-testid="route-loading">
+      {t("loading")}
+    </p>
+  );
+}
+
 function AppShell() {
   const { t, i18n } = useTranslation();
   const { config, setView, setConfig } = useAnalysis();
@@ -48,6 +90,10 @@ function AppShell() {
       void i18n.changeLanguage(config.lang);
     }
   }, [config.lang, i18n]);
+
+  useEffect(() => {
+    prefetchHeavyRoutes();
+  }, []);
 
   const showConfig = config.view !== "home" && config.view !== "docs";
 
@@ -66,6 +112,12 @@ function AppShell() {
               to={view === "home" ? "/" : `/${view}`}
               className={config.view === view ? "active" : undefined}
               onClick={() => setView(view)}
+              onMouseEnter={() => {
+                if (view === "ranking") void import("./pages/Ranking");
+                if (view === "matrix") void import("./pages/Matrix");
+                if (view === "map") void import("./pages/MarketMap");
+                if (view === "catalog") void import("./pages/Catalog");
+              }}
             >
               {t(`nav.${view}`)}
             </Link>
@@ -97,22 +149,28 @@ function AppShell() {
         </div>
       </header>
       <div className={`workspace ${showConfig ? "with-config" : ""}`}>
-        {showConfig ? <ConfigPanel /> : null}
+        {showConfig ? (
+          <Suspense fallback={null}>
+            <ConfigPanel />
+          </Suspense>
+        ) : null}
         <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/catalog" element={<Catalog />} />
-            <Route path="/builder" element={<Builder />} />
-            <Route path="/ranking" element={<Ranking />} />
-            <Route path="/matrix" element={<Matrix />} />
-            <Route path="/map" element={<MarketMap />} />
-            <Route path="/uncertainty" element={<StubView view="uncertainty" />} />
-            <Route path="/backtest" element={<StubView view="backtest" />} />
-            <Route path="/time" element={<StubView view="time" />} />
-            <Route path="/cite" element={<StubView view="cite" />} />
-            <Route path="/byod" element={<StubView view="byod" />} />
-            <Route path="/docs" element={<StubView view="docs" />} />
-          </Routes>
+          <Suspense fallback={<RouteFallback />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/catalog" element={<Catalog />} />
+              <Route path="/builder" element={<Builder />} />
+              <Route path="/ranking" element={<Ranking />} />
+              <Route path="/matrix" element={<Matrix />} />
+              <Route path="/map" element={<MarketMap />} />
+              <Route path="/uncertainty" element={<StubView view="uncertainty" />} />
+              <Route path="/backtest" element={<StubView view="backtest" />} />
+              <Route path="/time" element={<StubView view="time" />} />
+              <Route path="/cite" element={<StubView view="cite" />} />
+              <Route path="/byod" element={<StubView view="byod" />} />
+              <Route path="/docs" element={<StubView view="docs" />} />
+            </Routes>
+          </Suspense>
         </main>
       </div>
       <footer className="site-footer">

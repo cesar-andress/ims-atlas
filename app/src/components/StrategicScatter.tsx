@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import * as echarts from "echarts/core";
-import { ScatterChart, LineChart } from "echarts/charts";
+import { ScatterChart } from "echarts/charts";
 import {
   GridComponent,
   TooltipComponent,
@@ -12,7 +12,6 @@ import type { StrategicMatrixResult } from "@ims-atlas/core";
 
 echarts.use([
   ScatterChart,
-  LineChart,
   GridComponent,
   TooltipComponent,
   MarkLineComponent,
