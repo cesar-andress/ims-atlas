@@ -7,7 +7,19 @@ import {
   type ReactNode,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useToast } from "./toastContext";
 import { AnalysisContext, type AnalysisContextValue } from "./analysisContextBase";
+import type { AtlasProject } from "./projectModel";
+import { defaultNameFromConfig } from "./projectModel";
+import {
+  exportProjectJson,
+  importAtlasProjectJson,
+  importProjectJson,
+  loadProjectFromStorage,
+  persistActiveProject,
+  projectFromConfig,
+} from "./projectStore";
+import { saveDraft, upsertProject } from "./projectIdb";
 import { DEFAULT_CONFIG, type AnalysisConfig, type ViewId } from "./schema";
 import {
   configToSearch,
@@ -16,12 +28,6 @@ import {
   pathForView,
   viewFromPath,
 } from "./urlState";
-import {
-  exportProjectJson,
-  importProjectJson,
-  loadProjectFromStorage,
-  saveProjectToStorage,
-} from "./projectStore";
 
 function sameConfig(a: AnalysisConfig, b: AnalysisConfig): boolean {
   return JSON.stringify(a) === JSON.stringify(b);
@@ -34,6 +40,7 @@ function sameConfig(a: AnalysisConfig, b: AnalysisConfig): boolean {
 export function AnalysisProvider({ children }: { children: ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const toast = useToast();
   const [config, setConfigState] = useState<AnalysisConfig>(() => {
     const view = viewFromPath(location.pathname);
     const focusVariable = focusVariableFromPath(location.pathname);
@@ -52,8 +59,14 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
       }
     );
   });
+  const [activeProject, setActiveProject] = useState<AtlasProject | null>(null);
+  const [dirty, setDirty] = useState(false);
   const configRef = useRef(config);
   configRef.current = config;
+  const activeRef = useRef(activeProject);
+  activeRef.current = activeProject;
+  const dirtyRef = useRef(dirty);
+  dirtyRef.current = dirty;
 
   useEffect(() => {
     const view = viewFromPath(location.pathname);
@@ -83,7 +96,6 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
     };
     setConfigState((prev) => (sameConfig(prev, next) ? prev : next));
 
-    // Permalink said another view: keep path as source of truth and rewrite ?c=.
     if (
       parsed.view !== view ||
       (focusVariable && parsed.focusVariable !== focusVariable)
@@ -99,9 +111,10 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
   }, [location.pathname, location.search, navigate]);
 
   const commit = useCallback(
-    (next: AnalysisConfig) => {
+    (next: AnalysisConfig, opts?: { markDirty?: boolean }) => {
       if (sameConfig(configRef.current, next)) return;
       setConfigState(next);
+      if (opts?.markDirty !== false) setDirty(true);
       navigate({
         pathname: pathForView(next.view, next.focusVariable),
         search: configToSearch(next),
@@ -126,10 +139,47 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
 
   const setView = useCallback(
     (view: ViewId) => {
-      commit({ ...configRef.current, view, v: 1 });
+      commit({ ...configRef.current, view, v: 1 }, { markDirty: false });
     },
     [commit],
   );
+
+  // Autosave draft every 8s when dirty.
+  useEffect(() => {
+    if (!dirty) return;
+    const t = window.setInterval(() => {
+      const proj = projectFromConfig(
+        configRef.current,
+        activeRef.current?.name,
+        activeRef.current,
+      );
+      saveDraft(proj);
+    }, 8000);
+    return () => window.clearInterval(t);
+  }, [dirty]);
+
+  // Ctrl/Cmd+S
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (!(e.ctrlKey || e.metaKey) || e.key.toLowerCase() !== "s") return;
+      e.preventDefault();
+      void (async () => {
+        const proj = projectFromConfig(
+          configRef.current,
+          activeRef.current?.name ?? defaultNameFromConfig(configRef.current),
+          activeRef.current,
+        );
+        const saved = await persistActiveProject(proj);
+        setActiveProject(saved);
+        setDirty(false);
+        toast.push(
+          configRef.current.lang === "es" ? "Proyecto guardado" : "Project saved",
+        );
+      })();
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [toast]);
 
   const value = useMemo<AnalysisContextValue>(
     () => ({
@@ -137,15 +187,69 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
       setConfig,
       replaceConfig,
       setView,
-      saveProject: (label) => {
-        saveProjectToStorage(configRef.current, label);
+      activeProject,
+      dirty,
+      saveProject: async (label) => {
+        const name =
+          label?.trim() ||
+          activeRef.current?.name ||
+          defaultNameFromConfig(configRef.current);
+        const proj = projectFromConfig(configRef.current, name, activeRef.current);
+        const saved = await persistActiveProject(proj);
+        setActiveProject(saved);
+        setDirty(false);
+        toast.push(
+          configRef.current.lang === "es" ? "Proyecto guardado" : "Project saved",
+        );
       },
-      exportProject: () => exportProjectJson(configRef.current),
+      exportProject: () => {
+        if (activeRef.current) {
+          const merged = projectFromConfig(
+            configRef.current,
+            activeRef.current.name,
+            activeRef.current,
+          );
+          return exportProjectJson(merged.config, merged.name);
+        }
+        return exportProjectJson(configRef.current);
+      },
       importProject: (json) => {
-        commit(importProjectJson(json));
+        void (async () => {
+          try {
+            const project = importAtlasProjectJson(json);
+            const saved = await upsertProject(project);
+            setActiveProject(saved);
+            setDirty(false);
+            commit(
+              { ...saved.config, view: configRef.current.view },
+              { markDirty: false },
+            );
+            toast.push(
+              configRef.current.lang === "es"
+                ? "Proyecto importado"
+                : "Project imported",
+            );
+          } catch {
+            commit(importProjectJson(json), { markDirty: false });
+            toast.push(
+              configRef.current.lang === "es"
+                ? "Proyecto importado"
+                : "Project imported",
+            );
+          }
+        })();
+      },
+      openProject: (project) => {
+        setActiveProject(project);
+        setDirty(false);
+        commit({ ...project.config, view: "project_dashboard" }, { markDirty: false });
+      },
+      clearActiveProject: () => {
+        setActiveProject(null);
+        setDirty(false);
       },
     }),
-    [config, commit, setConfig, replaceConfig, setView],
+    [config, setConfig, replaceConfig, setView, activeProject, dirty, commit, toast],
   );
 
   return <AnalysisContext.Provider value={value}>{children}</AnalysisContext.Provider>;

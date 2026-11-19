@@ -32,8 +32,7 @@ export function compareRankings(
     rankRecA[r.iso3] = r.rank;
     rankRecB[r.iso3] = mapB.get(r.iso3)!.rank;
   }
-  const spearman =
-    shared.length >= 2 ? spearmanCorr(rankRecA, rankRecB) : Number.NaN;
+  const spearman = shared.length >= 2 ? spearmanCorr(rankRecA, rankRecB) : Number.NaN;
 
   const topA = new Set(
     [...a]

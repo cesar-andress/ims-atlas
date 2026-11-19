@@ -1,3 +1,17 @@
+/**
+ * Compatibility layer + helpers around the Phase G project library.
+ * Legacy single-slot localStorage APIs remain for older tests/callers.
+ */
+
+import {
+  createEmptyProject,
+  migrateToAtlasProject,
+  parseAtlasProject,
+  plainErrorMessage,
+  serializeAtlasProject,
+  type AtlasProject,
+} from "./projectModel";
+import { getProject, listProjects, saveDraft, upsertProject } from "./projectIdb";
 import {
   AnalysisConfigSchema,
   ProjectFileSchema,
@@ -35,7 +49,7 @@ export function saveProjectToStorage(
   return file;
 }
 
-/** Serialize a project file without touching localStorage. */
+/** Serialize a project file without touching storage (legacy shape). */
 export function exportProjectJson(config: AnalysisConfig, label?: string): string {
   const file: ProjectFile = {
     kind: "ims-atlas-project",
@@ -46,11 +60,28 @@ export function exportProjectJson(config: AnalysisConfig, label?: string): strin
   return `${JSON.stringify(file, null, 2)}\n`;
 }
 
+export function exportAtlasJson(project: AtlasProject): string {
+  return serializeAtlasProject(project);
+}
+
 export function importProjectJson(text: string): AnalysisConfig {
-  const parsed = ProjectFileSchema.parse(JSON.parse(text));
-  const config = AnalysisConfigSchema.parse(parsed.config);
-  saveProjectToStorage(config, parsed.label);
-  return config;
+  const raw = JSON.parse(text) as unknown;
+  try {
+    const project = migrateToAtlasProject(raw);
+    void upsertProject(project);
+    saveProjectToStorage(project.config, project.name);
+    return project.config;
+  } catch {
+    const parsed = ProjectFileSchema.parse(raw);
+    const config = AnalysisConfigSchema.parse(parsed.config);
+    saveProjectToStorage(config, parsed.label);
+    return config;
+  }
+}
+
+export function importAtlasProjectJson(text: string): AtlasProject {
+  const project = migrateToAtlasProject(JSON.parse(text));
+  return project;
 }
 
 export function clearProjectStorage(): void {
@@ -58,3 +89,51 @@ export function clearProjectStorage(): void {
     localStorage.removeItem(STORAGE_KEY);
   }
 }
+
+export async function persistActiveProject(
+  project: AtlasProject,
+): Promise<AtlasProject> {
+  const saved = await upsertProject({
+    ...project,
+    updatedAt: new Date().toISOString(),
+  });
+  saveProjectToStorage(saved.config, saved.name);
+  saveDraft(saved);
+  return saved;
+}
+
+export function projectFromConfig(
+  config: AnalysisConfig,
+  name?: string,
+  existing?: AtlasProject | null,
+): AtlasProject {
+  if (existing) {
+    const next: AtlasProject = {
+      ...existing,
+      name: name?.trim() || existing.name,
+      config: AnalysisConfigSchema.parse(config),
+      updatedAt: new Date().toISOString(),
+    };
+    const yFrom = existing.yearFrom ?? config.year;
+    const yTo = existing.yearTo ?? config.year;
+    if (yFrom !== undefined) next.yearFrom = yFrom;
+    if (yTo !== undefined) next.yearTo = yTo;
+    return next;
+  }
+  const partial: Partial<AtlasProject> & { config: AnalysisConfig } = { config };
+  const trimmed = name?.trim();
+  if (trimmed) partial.name = trimmed;
+  if (config.year !== undefined) {
+    partial.yearFrom = config.year;
+    partial.yearTo = config.year;
+  }
+  return createEmptyProject(partial);
+}
+
+export {
+  listProjects,
+  getProject,
+  parseAtlasProject,
+  plainErrorMessage,
+  createEmptyProject,
+};

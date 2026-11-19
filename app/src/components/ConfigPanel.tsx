@@ -640,17 +640,24 @@ export function ConfigPanel() {
           </label>
 
           <div className="config-actions">
-            <button type="button" onClick={() => saveProject("local")}>
+            <button
+              type="button"
+              data-testid="save-project"
+              onClick={() => void saveProject()}
+            >
               {t("saveProject")}
             </button>
             <button
               type="button"
+              data-testid="export-project"
               onClick={() => {
-                const blob = new Blob([exportProject()], { type: "application/json" });
+                const blob = new Blob([exportProject()], {
+                  type: "application/json",
+                });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement("a");
                 a.href = url;
-                a.download = "ims-atlas-project.json";
+                a.download = "project.atlas.json";
                 a.click();
                 URL.revokeObjectURL(url);
               }}
@@ -661,15 +668,21 @@ export function ConfigPanel() {
               {t("importProject")}
               <input
                 type="file"
-                accept="application/json,.json"
+                accept="application/json,.json,.atlas.json"
+                data-testid="import-project"
                 onChange={async (e) => {
                   const file = e.target.files?.[0];
                   if (!file) return;
-                  const text = await file.text();
-                  importProject(text);
+                  try {
+                    const text = await file.text();
+                    importProject(text);
+                  } catch (err) {
+                    window.alert(err instanceof Error ? err.message : String(err));
+                  }
                 }}
               />
             </label>
+            <PermalinkLink view="projects">{t("nav.projects")}</PermalinkLink>
           </div>
         </div>
       </details>

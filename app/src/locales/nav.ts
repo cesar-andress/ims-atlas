@@ -20,6 +20,10 @@ export const navEn = {
   factors: "Factors",
   compare: "Compare",
   norm_lab: "Norm lab",
+  projects: "Projects",
+  project_variables: "Project variables",
+  project_coverage: "Coverage check",
+  project_dashboard: "Project dashboard",
   privacy: "Privacy",
 } as const;
 
@@ -45,5 +49,9 @@ export const navEs = {
   factors: "Factores",
   compare: "Comparar",
   norm_lab: "Lab. normalización",
+  projects: "Proyectos",
+  project_variables: "Variables del proyecto",
+  project_coverage: "Cobertura",
+  project_dashboard: "Panel del proyecto",
   privacy: "Privacidad",
 } as const;

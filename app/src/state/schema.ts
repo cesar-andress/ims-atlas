@@ -24,6 +24,10 @@ const VIEWS = [
   "factors",
   "compare",
   "norm_lab",
+  "projects",
+  "project_variables",
+  "project_coverage",
+  "project_dashboard",
 ] as const;
 
 export type ViewId = (typeof VIEWS)[number];

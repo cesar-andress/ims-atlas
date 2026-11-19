@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { AppShellFrame } from "./components/AppChrome";
+import { ToastProvider } from "./components/ToastHost";
 import { Home } from "./pages/Home";
 import { RankingModelProvider } from "./ranking/RankingModelContext";
 import { prefetchCriticalRoutes } from "./ranking/prefetchRoutes";
@@ -50,6 +51,24 @@ const Compare = lazy(() =>
 );
 const NormLab = lazy(() =>
   import("./pages/NormLab").then((m) => ({ default: m.NormLab })),
+);
+const Projects = lazy(() =>
+  import("./pages/Projects").then((m) => ({ default: m.Projects })),
+);
+const ProjectVariables = lazy(() =>
+  import("./pages/ProjectVariables").then((m) => ({
+    default: m.ProjectVariables,
+  })),
+);
+const ProjectCoverage = lazy(() =>
+  import("./pages/ProjectCoverage").then((m) => ({
+    default: m.ProjectCoverage,
+  })),
+);
+const ProjectDashboard = lazy(() =>
+  import("./pages/ProjectDashboard").then((m) => ({
+    default: m.ProjectDashboard,
+  })),
 );
 const DataStatus = lazy(() =>
   import("./pages/transparency/DataStatus").then((m) => ({ default: m.DataStatus })),
@@ -124,6 +143,10 @@ function AppShell() {
           <Route path="/factors" element={<Factors />} />
           <Route path="/compare" element={<Compare />} />
           <Route path="/norm_lab" element={<NormLab />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/project_variables" element={<ProjectVariables />} />
+          <Route path="/project_coverage" element={<ProjectCoverage />} />
+          <Route path="/project_dashboard" element={<ProjectDashboard />} />
           <Route path="/status" element={<DataStatus />} />
           <Route path="/data/sources" element={<DataSources />} />
           <Route path="/data/variables/:id" element={<DataVariable />} />
@@ -139,10 +162,12 @@ function AppShell() {
 
 export function App() {
   return (
-    <AnalysisProvider>
-      <RankingModelProvider>
-        <AppShell />
-      </RankingModelProvider>
-    </AnalysisProvider>
+    <ToastProvider>
+      <AnalysisProvider>
+        <RankingModelProvider>
+          <AppShell />
+        </RankingModelProvider>
+      </AnalysisProvider>
+    </ToastProvider>
   );
 }

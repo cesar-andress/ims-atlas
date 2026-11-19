@@ -17,7 +17,7 @@ const BACKTEST_URL = "https://github.com/cesar-andress/ims-backtest";
 /** View: site header + footer around the workspace. */
 export function AppHeader() {
   const { t, i18n } = useTranslation();
-  const { config, setConfig } = useAnalysis();
+  const { config, setConfig, dirty, activeProject } = useAnalysis();
   const [theme, setTheme] = useState<ThemeMode>(() =>
     typeof document === "undefined" ? "light" : readStoredTheme(),
   );
@@ -37,6 +37,25 @@ export function AppHeader() {
     <header className="topbar" data-testid="site-header">
       <div className="brand">
         <PermalinkLink view="home">{t("appName")}</PermalinkLink>
+        {activeProject ? (
+          <span className="project-name-chip" data-testid="header-project-name">
+            {" · "}
+            {activeProject.name}
+            {dirty ? (
+              <span
+                className="unsaved-dot"
+                data-testid="unsaved-dot"
+                title={t("projectUnsaved")}
+              />
+            ) : null}
+          </span>
+        ) : dirty ? (
+          <span
+            className="unsaved-dot"
+            data-testid="unsaved-dot"
+            title={t("projectUnsaved")}
+          />
+        ) : null}
       </div>
       <AppNav />
       <UpdatesNewsPill />
