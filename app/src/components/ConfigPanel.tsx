@@ -583,10 +583,14 @@ export function ConfigPanel() {
               <option value="minmax">minmax</option>
               <option value="ratio_legacy">ratio_legacy</option>
               <option value="zscore">zscore</option>
+              <option value="robust_z">robust_z</option>
               <option value="rank">rank</option>
               <option value="log_minmax">log_minmax</option>
             </select>
           </label>
+          <p className="muted small">
+            <PermalinkLink view="norm_lab">{t("normLabOpen")}</PermalinkLink>
+          </p>
 
           <label>
             {t("method")}

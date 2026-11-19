@@ -53,6 +53,15 @@ export function configToSearch(config: AnalysisConfig): string {
   if (config.region) compact.region = config.region;
   if (config.minImports !== undefined) compact.minImports = config.minImports;
   if (config.normalization) compact.normalization = config.normalization;
+  if (config.labSkew) compact.labSkew = config.labSkew;
+  if (config.labOutlier) compact.labOutlier = config.labOutlier;
+  if (config.labScale) compact.labScale = config.labScale;
+  if (config.labCompareScale) compact.labCompareScale = config.labCompareScale;
+  if (config.labReferenceSet) compact.labReferenceSet = config.labReferenceSet;
+  if (config.labYearPooling) compact.labYearPooling = config.labYearPooling;
+  if (config.labDecorrelate !== undefined) {
+    compact.labDecorrelate = config.labDecorrelate;
+  }
   if (config.mcdm) compact.mcdm = config.mcdm;
   if (config.weightScheme) compact.weightScheme = config.weightScheme;
   if (config.missingThreshold !== undefined) {

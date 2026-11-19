@@ -19,6 +19,7 @@ export const navEn = {
   data_updates: "Updates",
   factors: "Factors",
   compare: "Compare",
+  norm_lab: "Norm lab",
   privacy: "Privacy",
 } as const;
 
@@ -43,5 +44,6 @@ export const navEs = {
   data_updates: "Novedades",
   factors: "Factores",
   compare: "Comparar",
+  norm_lab: "Lab. normalización",
   privacy: "Privacidad",
 } as const;

@@ -37,8 +37,39 @@ export {
   normalizeMinmax,
   normalizeRank,
   normalizeRatioLegacy,
+  normalizeRobustZ,
   normalizeZscore,
 } from "./normalize.js";
+
+export {
+  applyDirectionAfterScale,
+  applySkewTransform,
+  describeReferenceSet,
+  runColumnPipeline,
+  scaleBenefit,
+  winsorize,
+  type ColumnPipelineConfig,
+  type ColumnPipelineResult,
+  type OutlierTreatment,
+  type ReferenceSet,
+  type ScaleMethod,
+  type SkewTransform,
+  type YearPooling,
+} from "./transformPipeline.js";
+
+export {
+  correlationMatrix,
+  highCorrelationWarnings,
+  whitenMatrix,
+  type CorrelationWarning,
+} from "./correlation.js";
+
+export {
+  compareRankings,
+  topBottom,
+  type NormCompareResult,
+  type RankRow,
+} from "./labCompare.js";
 
 export {
   IMSFE_2025_DIRECTION,

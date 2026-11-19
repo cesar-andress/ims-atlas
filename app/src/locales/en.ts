@@ -211,6 +211,31 @@ export const en = {
   parityTop10Factor: "Top 10 by factor",
   parityTop10Combo: "Top 10 combo (total + factor)",
 
+  normLabIntro:
+    "Inspect per-variable transforms (skew → winsor → scale → direction), correlation warnings, and side-by-side rankings under two normalisations.",
+  normLabOpen: "Open normalisation lab →",
+  normLabDocsLink: "Why normalise? (docs)",
+  normLabSkew: "Skew",
+  normLabOutlier: "Outliers",
+  normLabScaleA: "Scale A",
+  normLabScaleB: "Scale B (compare)",
+  normLabReference: "Reference set",
+  normLabPooling: "Year pooling",
+  normLabAdvanced: "Advanced (changes weight meaning)",
+  normLabDecorrelate: "Decorrelate (whitening)",
+  normLabDecorrelateWarn:
+    "Off by default. Whitening changes the meaning of original-variable weights (Jose / IMSFE).",
+  normLabWhitenApplied: "Whitened matrix preview: {rows} × {cols}.",
+  normLabBefore: "Before",
+  normLabAfter: "After",
+  normLabWinsorFlag: "{n} cells winsorised (flagged).",
+  normLabTop5: "Top 5 after pipeline A",
+  normLabBottom5: "Bottom 5 after pipeline A",
+  normLabCompareTitle: "Ranking A vs B (this variable)",
+  normLabTop10Overlap: "Top-10 overlap",
+  normLabCorrTitle: "High correlation warnings (|ρ| ≥ 0.8)",
+  normLabCorrNone: "No pair above the threshold among the chosen variables.",
+
   analysisViews: "Analysis views",
   analysisNeedConfig:
     "Set origin, product (HS) and year in the config panel, or load the demo preset.",
@@ -329,15 +354,31 @@ export const en = {
   docs: {
     section: {
       methods: "Methods",
+      why_normalize: "Why normalise?",
       glossary: "Glossary",
       tutorials: "Tutorials",
       faq: "FAQ and limitations",
+    },
+    why: {
+      p1: "Variables live on different scales (USD, %, 1–5 indices, km), are often skewed, and can measure nearly the same idea twice.",
+      p2: "IMS Atlas uses a fixed per-variable pipeline. Each step is optional and visible in the Norm lab.",
+      step1: "Unit harmonisation (catalog): constant vs current USD, per capita, etc.",
+      step2: "Skew: none / log / log1p for long right tails.",
+      step3: "Outliers: none or winsorise at p1–p99 / p5–p95 (flagged cells).",
+      step4:
+        "Scale: ratio 0–10 (IMSFE), min–max, z-score, robust z (median/MAD), rank.",
+      step5: "Direction (benefit/cost) after scaling — never before.",
+      example:
+        "Worked example: raw [1, 2, 10] → ratio [1, 2, 10], min–max [0, 1.11, 10]. Cost criteria reflect after scaling.",
+      corr: "Pairs with |ρ| ≥ 0.8 trigger a double-counting warning. Whitening stays off by default because it changes weight meaning.",
     },
     methods: {
       p1: "IMS Atlas scores destinations with hierarchical multi-criteria methods on country–year indicators. Time-t features use only data with year ≤ t.",
       p2: "Weights may be equal, manual, expert (IMSFE 2025 means), entropy, or CRITIC. Aggregation includes WSM, TOPSIS, VIKOR, and PROMETHEE II.",
       normTitle: "Normalisation",
       normCost: "(cost criteria use 1 − x′ after benefit-style scaling).",
+      ratioNorm: "max-scaled to 0–10 (IMSFE DMP/IMP style).",
+      robustZNorm: "median and MAD (×1.4826); resistant to outliers.",
       rankNorm:
         "average ranks within the candidate set (higher rank number = better after direction flip).",
       aggTitle: "Aggregation",

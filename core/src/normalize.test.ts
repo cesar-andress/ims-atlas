@@ -5,6 +5,7 @@ import {
   normalizeMinmax,
   normalizeRank,
   normalizeRatioLegacy,
+  normalizeRobustZ,
   normalizeZscore,
 } from "./normalize.js";
 
@@ -39,5 +40,12 @@ describe("normalize", () => {
   it("rank average ties", () => {
     const out = normalizeRank([1, 1, 3], "benefit");
     expect(out[0]).toBeCloseTo(out[1]!, 12);
+  });
+
+  it("robust_z constant is zero and cost flips sign", () => {
+    expect(normalizeRobustZ([4, 4, 4], "benefit")).toEqual([0, 0, 0]);
+    const b = normalizeRobustZ([1, 2, 10], "benefit");
+    const c = normalizeRobustZ([1, 2, 10], "cost");
+    expect(b[0]).toBeCloseTo(-c[0]!, 12);
   });
 });

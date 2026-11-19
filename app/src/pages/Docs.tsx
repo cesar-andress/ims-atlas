@@ -2,7 +2,7 @@ import { useTranslation } from "../i18n";
 import { PageShell } from "../components/PageShell";
 import { PermalinkLink } from "../components/PermalinkLink";
 
-const SECTIONS = ["methods", "glossary", "tutorials", "faq"] as const;
+const SECTIONS = ["methods", "why_normalize", "glossary", "tutorials", "faq"] as const;
 
 /** In-app documentation (methods, glossary, tutorials, FAQ). */
 export function Docs() {
@@ -33,6 +33,9 @@ export function Docs() {
         <h3>{t("docs.methods.normTitle")}</h3>
         <ul>
           <li>
+            <strong>ratio 0–10</strong>: {t("docs.methods.ratioNorm")}
+          </li>
+          <li>
             <strong>min–max</strong>: <code>x′ = (x − min) / (max − min)</code>{" "}
             {t("docs.methods.normCost")}
           </li>
@@ -40,9 +43,15 @@ export function Docs() {
             <strong>z-score</strong>: <code>x′ = (x − μ) / σ</code>
           </li>
           <li>
+            <strong>robust z</strong>: {t("docs.methods.robustZNorm")}
+          </li>
+          <li>
             <strong>rank</strong>: {t("docs.methods.rankNorm")}
           </li>
         </ul>
+        <p className="small">
+          <PermalinkLink view="norm_lab">{t("normLabOpen")}</PermalinkLink>
+        </p>
         <h3>{t("docs.methods.aggTitle")}</h3>
         <p>
           WSM:{" "}
@@ -66,6 +75,28 @@ export function Docs() {
         <p>{t("docs.methods.pliBody")}</p>
         <h3 data-testid="docs-map">{t("docs.methods.mapTitle")}</h3>
         <p>{t("docs.methods.mapBody")}</p>
+      </section>
+
+      <section
+        id="docs-why_normalize"
+        data-testid="docs-why-normalize"
+        aria-labelledby="docs-why-normalize-h"
+      >
+        <h2 id="docs-why-normalize-h">{t("docs.section.why_normalize")}</h2>
+        <p>{t("docs.why.p1")}</p>
+        <p>{t("docs.why.p2")}</p>
+        <ol>
+          <li>{t("docs.why.step1")}</li>
+          <li>{t("docs.why.step2")}</li>
+          <li>{t("docs.why.step3")}</li>
+          <li>{t("docs.why.step4")}</li>
+          <li>{t("docs.why.step5")}</li>
+        </ol>
+        <p>{t("docs.why.example")}</p>
+        <p>{t("docs.why.corr")}</p>
+        <p className="small">
+          <PermalinkLink view="norm_lab">{t("normLabOpen")}</PermalinkLink>
+        </p>
       </section>
 
       <section

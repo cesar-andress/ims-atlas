@@ -3,10 +3,18 @@
  * Scale targets match ims-backtest: [0, 10] for minmax/ratio/rank; z-score unbounded.
  */
 
-import { finiteValues, isFiniteNumber, mean, rankAverage, stdSample } from "./math.js";
+import {
+  finiteValues,
+  isFiniteNumber,
+  mean,
+  median,
+  rankAverage,
+  stdSample,
+} from "./math.js";
 import type { Direction, NormalizationId } from "./types.js";
 
 const CONSTANT_MID_10 = 5.0;
+const MAD_SCALE = 1.4826;
 
 /**
  * IMSFE ratio standardisation (DMP / IMP).
@@ -88,6 +96,25 @@ export function normalizeZscore(
   return direction === "benefit" ? z : z.map((v) => (Number.isFinite(v) ? -v : v));
 }
 
+/** Robust z-score: (x − median) / (1.4826 · MAD); cost flips sign after. */
+export function normalizeRobustZ(
+  series: readonly (number | null)[],
+  direction: Direction,
+): number[] {
+  const vals = series.map((x) => (isFiniteNumber(x) ? x : Number.NaN));
+  const finite = finiteValues(vals);
+  if (finite.length === 0) return vals.map(() => Number.NaN);
+  const med = median(finite);
+  const mad = median(finite.map((v) => Math.abs(v - med)));
+  const denom = mad === 0 ? 0 : mad * MAD_SCALE;
+  const z = vals.map((v) => {
+    if (!Number.isFinite(v)) return Number.NaN;
+    if (denom === 0) return 0;
+    return (v - med) / denom;
+  });
+  return direction === "benefit" ? z : z.map((v) => (Number.isFinite(v) ? -v : v));
+}
+
 export function normalizeRank(
   series: readonly (number | null)[],
   direction: Direction,
@@ -131,6 +158,7 @@ const DISPATCH: Record<
   ratio_legacy: normalizeRatioLegacy,
   minmax: normalizeMinmax,
   zscore: normalizeZscore,
+  robust_z: normalizeRobustZ,
   rank: normalizeRank,
   log_minmax: normalizeLogMinmax,
 };

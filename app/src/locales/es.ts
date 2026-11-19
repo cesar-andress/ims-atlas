@@ -213,6 +213,31 @@ const es = {
   parityTop10Factor: "Top 10 por factor",
   parityTop10Combo: "Top 10 combo (total + factor)",
 
+  normLabIntro:
+    "Inspecciona transformaciones por variable (sesgo → winsor → escala → dirección), avisos de correlación y rankings lado a lado bajo dos normalizaciones.",
+  normLabOpen: "Abrir laboratorio de normalización →",
+  normLabDocsLink: "¿Por qué normalizar? (docs)",
+  normLabSkew: "Sesgo",
+  normLabOutlier: "Outliers",
+  normLabScaleA: "Escala A",
+  normLabScaleB: "Escala B (comparar)",
+  normLabReference: "Conjunto de referencia",
+  normLabPooling: "Agrupación temporal",
+  normLabAdvanced: "Avanzado (cambia el significado de los pesos)",
+  normLabDecorrelate: "Decorrelacionar (whitening)",
+  normLabDecorrelateWarn:
+    "Apagado por defecto. El whitening cambia el significado de los pesos sobre variables originales (Jose / IMSFE).",
+  normLabWhitenApplied: "Vista previa blanqueada: {rows} × {cols}.",
+  normLabBefore: "Antes",
+  normLabAfter: "Después",
+  normLabWinsorFlag: "{n} celdas winsorizadas (marcadas).",
+  normLabTop5: "Top 5 tras pipeline A",
+  normLabBottom5: "Bottom 5 tras pipeline A",
+  normLabCompareTitle: "Ranking A vs B (esta variable)",
+  normLabTop10Overlap: "Solape top-10",
+  normLabCorrTitle: "Avisos de correlación alta (|ρ| ≥ 0.8)",
+  normLabCorrNone: "Ningún par supera el umbral entre las variables elegidas.",
+
   analysisViews: "Vistas de análisis",
   analysisNeedConfig:
     "Define origen, producto (HS) y año en el panel, o carga el preset de demostración.",
@@ -332,15 +357,32 @@ const es = {
   docs: {
     section: {
       methods: "Métodos",
+      why_normalize: "¿Por qué normalizar?",
       glossary: "Glosario",
       tutorials: "Tutoriales",
       faq: "FAQ y limitaciones",
+    },
+    why: {
+      p1: "Las variables viven en escalas distintas (USD, %, índices 1–5, km), suelen estar sesgadas y a veces miden casi la misma idea dos veces.",
+      p2: "IMS Atlas usa un pipeline fijo por variable. Cada paso es opcional y visible en el laboratorio de normalización.",
+      step1:
+        "Armonización de unidades (catálogo): USD constante vs corriente, per cápita, etc.",
+      step2: "Sesgo: none / log / log1p para colas largas positivas.",
+      step3: "Outliers: none o winsor p1–p99 / p5–p95 (celdas marcadas).",
+      step4:
+        "Escala: ratio 0–10 (IMSFE), min–max, z-score, robust z (mediana/MAD), rank.",
+      step5: "Dirección (beneficio/coste) después de escalar — nunca antes.",
+      example:
+        "Ejemplo: crudo [1, 2, 10] → ratio [1, 2, 10], min–max [0, 1.11, 10]. Los criterios de coste se reflejan tras escalar.",
+      corr: "Pares con |ρ| ≥ 0.8 avisan de doble conteo. El whitening permanece apagado por defecto porque cambia el significado de los pesos.",
     },
     methods: {
       p1: "IMS Atlas puntúa destinos con métodos multicriterio jerárquicos sobre indicadores país–año. Las features en t usan solo datos con year ≤ t.",
       p2: "Los pesos pueden ser iguales, manuales, expert (medias IMSFE 2025), entropy o CRITIC. La agregación incluye WSM, TOPSIS, VIKOR y PROMETHEE II.",
       normTitle: "Normalización",
       normCost: "(criterios de coste usan 1 − x′ tras el escalado tipo beneficio).",
+      ratioNorm: "escalado al máximo en 0–10 (estilo IMSFE DMP/IMP).",
+      robustZNorm: "mediana y MAD (×1.4826); resistente a outliers.",
       rankNorm:
         "rangos medios en el conjunto de candidatos (mayor rango = mejor tras invertir dirección).",
       aggTitle: "Agregación",

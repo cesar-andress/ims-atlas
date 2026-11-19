@@ -1257,3 +1257,78 @@ button.linkish {
   width: 100%;
   font-size: 0.85rem;
 }
+
+.norm-lab-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  margin: 0.75rem 0 1rem;
+}
+
+.norm-lab-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.norm-lab-hist-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.norm-hist-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.2rem;
+  height: 5rem;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid var(--border, #ccc);
+}
+
+.norm-hist-bar {
+  flex: 1;
+  min-height: 2px;
+  background: var(--accent, #3a6ea5);
+  border-radius: 2px 2px 0 0;
+}
+
+.norm-lab-tables {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.norm-lab-tables table,
+.norm-lab table {
+  width: 100%;
+  font-size: 0.85rem;
+  border-collapse: collapse;
+}
+
+.norm-lab td,
+.norm-lab th {
+  padding: 0.2rem 0.4rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border, #eee);
+}
+
+.norm-lab-delta {
+  background: color-mix(in srgb, var(--accent, #3a6ea5) 12%, transparent);
+}
+
+.norm-lab-advanced {
+  margin: 0.75rem 0 1rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px dashed var(--border, #ccc);
+  border-radius: 0.35rem;
+}
+
+.norm-lab-check {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}

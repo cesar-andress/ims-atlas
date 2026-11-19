@@ -6,6 +6,10 @@ All notable changes to IMS Atlas are documented in this file.
 
 ### Added
 
+- Phase Z normalisation lab: per-variable pipeline (skew → winsor → scale →
+  direction-after), robust z, correlation warnings (|ρ|≥0.8), optional whitening
+  (off by default), Norm lab UI (`/norm_lab`), docs “Why normalise?”, and
+  TS↔Python goldens @ 1e-9 for transforms.
 - Phase J IMSFE faithful mode: pre-selection funnel, DMP/IMP aliases, AHP,
   expert-survey aggregation (Expert 1..n), cultural distance, IMSFE×EOC
   quadrants (Baena & Cano wording), one-at-a-time winner sensitivity, method

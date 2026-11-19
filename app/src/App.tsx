@@ -48,6 +48,9 @@ const Factors = lazy(() =>
 const Compare = lazy(() =>
   import("./pages/Compare").then((m) => ({ default: m.Compare })),
 );
+const NormLab = lazy(() =>
+  import("./pages/NormLab").then((m) => ({ default: m.NormLab })),
+);
 const DataStatus = lazy(() =>
   import("./pages/transparency/DataStatus").then((m) => ({ default: m.DataStatus })),
 );
@@ -120,6 +123,7 @@ function AppShell() {
           <Route path="/docs" element={<Docs />} />
           <Route path="/factors" element={<Factors />} />
           <Route path="/compare" element={<Compare />} />
+          <Route path="/norm_lab" element={<NormLab />} />
           <Route path="/status" element={<DataStatus />} />
           <Route path="/data/sources" element={<DataSources />} />
           <Route path="/data/variables/:id" element={<DataVariable />} />

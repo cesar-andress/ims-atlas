@@ -18,6 +18,7 @@ const TABS: readonly ViewId[] = [
   "backtest",
   "time",
   "cite",
+  "norm_lab",
 ];
 
 /** Shared sub-nav for the analysis workspace. */

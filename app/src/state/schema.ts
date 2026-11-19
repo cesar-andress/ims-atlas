@@ -23,6 +23,7 @@ const VIEWS = [
   "status",
   "factors",
   "compare",
+  "norm_lab",
 ] as const;
 
 export type ViewId = (typeof VIEWS)[number];
@@ -33,9 +34,16 @@ const NORMALIZATIONS = [
   "minmax",
   "ratio_legacy",
   "zscore",
+  "robust_z",
   "rank",
   "log_minmax",
 ] as const;
+
+const LAB_SKEWS = ["none", "log", "log1p"] as const;
+const LAB_OUTLIERS = ["none", "winsor_1_99", "winsor_5_95"] as const;
+const LAB_SCALES = ["ratio", "minmax", "zscore", "robust_z", "rank"] as const;
+const LAB_REFS = ["candidates", "all_countries", "base_year"] as const;
+const LAB_POOLING = ["per_year", "pooled"] as const;
 export type NormalizationId = (typeof NORMALIZATIONS)[number];
 
 const MCDM = ["wsm", "topsis", "vikor", "promethee_ii"] as const;
@@ -58,6 +66,14 @@ export type AnalysisConfig = {
   missingThreshold?: number | undefined;
   variableIds?: string[] | undefined;
   factorWeights?: Record<string, number> | undefined;
+  /** Phase Z lab: skew / outlier / dual scale / reference. */
+  labSkew?: (typeof LAB_SKEWS)[number] | undefined;
+  labOutlier?: (typeof LAB_OUTLIERS)[number] | undefined;
+  labScale?: (typeof LAB_SCALES)[number] | undefined;
+  labCompareScale?: (typeof LAB_SCALES)[number] | undefined;
+  labReferenceSet?: (typeof LAB_REFS)[number] | undefined;
+  labYearPooling?: (typeof LAB_POOLING)[number] | undefined;
+  labDecorrelate?: boolean | undefined;
   compareA?: string | undefined;
   compareB?: string | undefined;
   matrixCutoff?: "median" | "fixed" | undefined;
@@ -199,6 +215,22 @@ export function parseAnalysisConfig(input: unknown): AnalysisConfig {
 
   const normalization = asEnum(input.normalization, NORMALIZATIONS);
   if (normalization) out.normalization = normalization;
+
+  const labSkew = asEnum(input.labSkew, LAB_SKEWS);
+  if (labSkew) out.labSkew = labSkew;
+  const labOutlier = asEnum(input.labOutlier, LAB_OUTLIERS);
+  if (labOutlier) out.labOutlier = labOutlier;
+  const labScale = asEnum(input.labScale, LAB_SCALES);
+  if (labScale) out.labScale = labScale;
+  const labCompareScale = asEnum(input.labCompareScale, LAB_SCALES);
+  if (labCompareScale) out.labCompareScale = labCompareScale;
+  const labReferenceSet = asEnum(input.labReferenceSet, LAB_REFS);
+  if (labReferenceSet) out.labReferenceSet = labReferenceSet;
+  const labYearPooling = asEnum(input.labYearPooling, LAB_POOLING);
+  if (labYearPooling) out.labYearPooling = labYearPooling;
+  if (typeof input.labDecorrelate === "boolean") {
+    out.labDecorrelate = input.labDecorrelate;
+  }
 
   const mcdm = asEnum(input.mcdm, MCDM);
   if (mcdm) out.mcdm = mcdm;

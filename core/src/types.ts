@@ -3,7 +3,7 @@
 export type Direction = "benefit" | "cost";
 
 export type NormalizationId =
-  "minmax" | "ratio_legacy" | "zscore" | "rank" | "log_minmax";
+  "minmax" | "ratio_legacy" | "zscore" | "robust_z" | "rank" | "log_minmax";
 
 export type WeightSchemeId = "equal" | "manual" | "expert_mean" | "entropy" | "critic";
 

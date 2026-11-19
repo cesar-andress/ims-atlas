@@ -15,6 +15,7 @@ const PREFETCH: Partial<Record<ViewId, () => Promise<unknown>>> = {
   catalog: () => import("../pages/Catalog"),
   byod: () => import("../pages/Byod"),
   docs: () => import("../pages/Docs"),
+  norm_lab: () => import("../pages/NormLab"),
   status: () => import("../pages/transparency/DataStatus"),
   data_sources: () => import("../pages/transparency/DataSources"),
   data_variable: () => import("../pages/transparency/DataVariable"),

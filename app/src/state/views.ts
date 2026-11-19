@@ -20,6 +20,7 @@ export const PRIMARY_VIEWS: readonly ViewId[] = [
 
 /** Transparency / pipeline views (SPEC §10.4) under More. */
 export const SECONDARY_VIEWS: readonly ViewId[] = [
+  "norm_lab",
   "status",
   "data_sources",
   "data_variable",
@@ -40,6 +41,7 @@ export const ANALYSIS_VIEWS: readonly ViewId[] = [
   "cite",
   "factors",
   "compare",
+  "norm_lab",
 ] as const;
 
 export function isAnalysisView(view: ViewId): boolean {
