@@ -37,7 +37,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Install Python dependencies
-        run: cd etl && uv sync --group dev
+        run: cd etl && uv sync --extra backtest --group dev
 
       - name: Lint
         run: make lint

@@ -13,3 +13,61 @@ export {
   type SourceRights,
   type YesNoUnknown,
 } from "./gate.js";
+
+export type {
+  Direction,
+  FactorId,
+  HierarchicalWeights,
+  McdmId,
+  MissingDataPolicy,
+  NormalizationId,
+  PreparedBlock,
+  VariableSpec,
+  WeightSchemeId,
+} from "./types.js";
+
+export {
+  normalizeColumn,
+  normalizeLogMinmax,
+  normalizeMatrix,
+  normalizeMinmax,
+  normalizeRank,
+  normalizeRatioLegacy,
+  normalizeZscore,
+} from "./normalize.js";
+
+export {
+  DEFAULT_MISSING_POLICY,
+  InsufficientCandidatesError,
+  prepareBlock,
+  type PrepareBlockInput,
+} from "./missing.js";
+
+export {
+  flatToHierarchical,
+  flatWeights,
+  getWeights,
+  restrictWeights,
+  validateWeights,
+  weightsCriticFlat,
+  weightsEntropyFlat,
+  weightsEqual,
+  weightsExpertMean,
+  weightsManual,
+} from "./weights.js";
+
+export {
+  hierarchicalWsm,
+  score,
+  scorePrometheeIi,
+  scoreTopsis,
+  scoreVikor,
+} from "./mcdm.js";
+
+export { scoreBlock, type ScoreBlockInput, type ScoreBlockResult } from "./score.js";
+
+export {
+  EXPERT_FACTOR_MEANS,
+  EXPERT_VARIABLE_MEANS,
+  LEGACY_FACTOR_MAP,
+} from "./presets/imsfeExpert2025.js";

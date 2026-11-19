@@ -1,4 +1,4 @@
-.PHONY: setup lint test e2e build etl pipeline-fixture release-staging promote-release release-data catalog-port catalog-validate check-live rights-report qa lineage coverage-report phase3-report dev cname pin-backtest typecheck
+.PHONY: setup lint test e2e build etl pipeline-fixture release-staging promote-release release-data catalog-port catalog-validate check-live rights-report qa lineage coverage-report phase3-report export-phase5-goldens dev cname pin-backtest typecheck
 
 NODE_VERSION := 20
 PNPM ?= pnpm
@@ -11,8 +11,8 @@ setup:
 	corepack prepare pnpm@9.15.0 --activate
 	$(PNPM) install
 	$(PNPM) --filter @ims-atlas/app exec playwright install chromium
-	cd etl && $(UV) sync --group dev
-	@echo "setup ok (ims-backtest pin optional: make pin-backtest when tag is set)"
+	cd etl && $(UV) sync --extra backtest --group dev
+	@echo "setup ok (ims-backtest @ config/ims-backtest.json tag)"
 
 cname:
 	node scripts/write-cname.mjs
@@ -31,6 +31,7 @@ typecheck:
 
 test:
 	$(PNPM) run test
+	cd etl && $(UV) sync --extra backtest --group dev
 	cd etl && $(UV) run pytest
 
 e2e:
@@ -57,6 +58,10 @@ coverage-report:
 
 phase3-report:
 	cd etl && $(UV) run atlas-etl phase3-report
+
+export-phase5-goldens:
+	cd etl && $(UV) sync --extra backtest --group dev
+	cd etl && $(UV) run atlas-etl export-phase5-goldens
 
 release-staging:
 	cd etl && $(UV) run atlas-etl release --version 0.1.0 --staging --force

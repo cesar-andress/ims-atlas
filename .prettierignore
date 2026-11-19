@@ -9,3 +9,4 @@ uv.lock
 catalog/variables.yaml
 catalog/LICENSES.md
 etl/tests/fixtures/**
+core/fixtures/
