@@ -70,6 +70,10 @@ export function configToSearch(config: AnalysisConfig): string {
   if (config.clusterK !== undefined) compact.clusterK = config.clusterK;
   if (config.mapSeed !== undefined) compact.mapSeed = config.mapSeed;
   if (config.mapColor) compact.mapColor = config.mapColor;
+  if (config.backtestTarget) compact.backtestTarget = config.backtestTarget;
+  if (config.backtestHorizon !== undefined) {
+    compact.backtestHorizon = config.backtestHorizon;
+  }
   if (config.lang) compact.lang = config.lang;
   return `?${PARAM}=${encodeConfig(AnalysisConfigSchema.parse(compact))}`;
 }

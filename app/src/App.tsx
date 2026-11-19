@@ -32,6 +32,13 @@ const Uncertainty = lazy(() =>
 const Backtest = lazy(() =>
   import("./pages/Backtest").then((m) => ({ default: m.Backtest })),
 );
+const TimeExplorer = lazy(() =>
+  import("./pages/TimeExplorer").then((m) => ({ default: m.TimeExplorer })),
+);
+const CiteExport = lazy(() =>
+  import("./pages/CiteExport").then((m) => ({ default: m.CiteExport })),
+);
+const Byod = lazy(() => import("./pages/Byod").then((m) => ({ default: m.Byod })));
 
 function RouteFallback() {
   const { t } = useTranslation();
@@ -65,6 +72,9 @@ function AppShell() {
           <Route path="/map" element={<MarketMap />} />
           <Route path="/uncertainty" element={<Uncertainty />} />
           <Route path="/backtest" element={<Backtest />} />
+          <Route path="/time" element={<TimeExplorer />} />
+          <Route path="/cite" element={<CiteExport />} />
+          <Route path="/byod" element={<Byod />} />
           {SECONDARY_VIEWS.map((view) => (
             <Route key={view} path={`/${view}`} element={<StubView view={view} />} />
           ))}

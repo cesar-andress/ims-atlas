@@ -96,6 +96,26 @@ const es = {
   looRankSensitivity: "Sensibilidad leave-one-out (panel demo)",
   looHint:
     "Spearman de rangos tras quitar cada variable en el panel demo actual. No es un backtest walk-forward.",
+  timeIntro:
+    "Bump chart de rangos por año para la serie COL · HS64 WSM expert (rangos imsfe).",
+  citeIntro:
+    "Permalink, citas y exportaciones del análisis actual. Los DOI son placeholders hasta Zenodo.",
+  doiPending: "DOI pendientes",
+  configHash: "Hash de configuración",
+  byodInCitation: "Variables BYOD en este análisis",
+  download: "Descargar",
+  exports: "Exportaciones",
+  byodIntro:
+    "Sube un CSV (iso3, year, value[, iso3_d]) como variable nueva. Solo se procesa en este navegador.",
+  byodLocalOnly:
+    "Los datos BYOD no salen del navegador. No se suben y quedan fuera de cualquier publicación de datos.",
+  byodLabel: "Etiqueta",
+  byodDirection: "Dirección",
+  byodFactor: "Factor",
+  byodLoaded: "Variables BYOD cargadas",
+  byodEmpty: "Aún no hay variables BYOD.",
+  byodRemove: "Quitar",
+  byodClear: "Borrar todas",
   nav: navEs,
 } as const;
 

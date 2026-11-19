@@ -10,15 +10,13 @@ export const PRIMARY_VIEWS: readonly ViewId[] = [
   "map",
   "uncertainty",
   "backtest",
-] as const;
-
-/** Later-phase stubs (collapsed under “More”). */
-export const SECONDARY_VIEWS: readonly ViewId[] = [
   "time",
   "cite",
   "byod",
-  "docs",
 ] as const;
+
+/** Later-phase stubs (collapsed under “More”). */
+export const SECONDARY_VIEWS: readonly ViewId[] = ["docs"] as const;
 
 /** Views that share the analysis config panel + ranking model. */
 export const ANALYSIS_VIEWS: readonly ViewId[] = [
@@ -28,6 +26,8 @@ export const ANALYSIS_VIEWS: readonly ViewId[] = [
   "map",
   "uncertainty",
   "backtest",
+  "time",
+  "cite",
 ] as const;
 
 export function isAnalysisView(view: ViewId): boolean {

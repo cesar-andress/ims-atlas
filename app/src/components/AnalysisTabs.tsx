@@ -3,7 +3,15 @@ import { PermalinkLink } from "./PermalinkLink";
 import { useAnalysis } from "../state/useAnalysis";
 import type { ViewId } from "../state/schema";
 
-const TABS: readonly ViewId[] = ["ranking", "matrix", "map", "uncertainty", "backtest"];
+const TABS: readonly ViewId[] = [
+  "ranking",
+  "matrix",
+  "map",
+  "uncertainty",
+  "backtest",
+  "time",
+  "cite",
+];
 
 /** Shared sub-nav for the analysis workspace. */
 export function AnalysisTabs() {
