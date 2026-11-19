@@ -26,7 +26,7 @@
       },
       "id": "worldbank_wdi",
       "landing_url": "https://databank.worldbank.org/source/world-development-indicators",
-      "licence_url": "https://datacatalog.worldbank.org/public-licenses",
+      "licence_url": "UNKNOWN",
       "publisher": "World Bank",
       "release_version": "2026-11-11",
       "rights": {
@@ -35,7 +35,7 @@
         "evidence": {
           "checked_by": null,
           "checked_on": null,
-          "note": "licence_id from World Bank public-licenses page; rights not human-verified",
+          "note": "licence_url datacatalog\u2026/public-licenses returned 404 on 2026-11-19 link-check; licence_id provisional until human re-locates licence page; terms_url still open",
           "snapshot_sha256": null,
           "terms_url": "https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets"
         },
@@ -73,7 +73,7 @@
       },
       "id": "worldbank_wgi",
       "landing_url": "https://www.worldbank.org/en/publication/worldwide-governance-indicators",
-      "licence_url": "https://datacatalog.worldbank.org/public-licenses",
+      "licence_url": "UNKNOWN",
       "publisher": "World Bank",
       "release_version": "2026-09-25",
       "rights": {
@@ -82,7 +82,7 @@
         "evidence": {
           "checked_by": null,
           "checked_on": null,
-          "note": "licence_id from World Bank public-licenses page; rights not human-verified",
+          "note": "licence_url datacatalog\u2026/public-licenses returned 404 on 2026-11-19 link-check; licence_id provisional until human re-locates licence page; terms_url still open",
           "snapshot_sha256": null,
           "terms_url": "https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets"
         },
@@ -120,7 +120,7 @@
       },
       "id": "worldbank_lpi",
       "landing_url": "https://lpi.worldbank.org/",
-      "licence_url": "https://datacatalog.worldbank.org/public-licenses",
+      "licence_url": "UNKNOWN",
       "publisher": "World Bank",
       "release_version": "2026-11-11",
       "rights": {
@@ -129,7 +129,7 @@
         "evidence": {
           "checked_by": null,
           "checked_on": null,
-          "note": "licence_id from World Bank public-licenses page; rights not human-verified",
+          "note": "licence_url datacatalog\u2026/public-licenses returned 404 on 2026-11-19 link-check; licence_id provisional until human re-locates licence page; terms_url still open",
           "snapshot_sha256": null,
           "terms_url": "https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets"
         },

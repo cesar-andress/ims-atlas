@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { AccessBadge } from "../../components/AccessBadge";
+import { ExportMenu } from "../../components/ExportMenu";
 import { TransparencyShell } from "../../components/TransparencyShell";
 import { resolveSourceStore, type StoreKind } from "../../auth/accessStore";
 import { VerifyDatumPanel } from "../../components/VerifyDatumPanel";
@@ -217,7 +218,22 @@ export function DataVariable() {
 
               <h2>{t("coverage")}</h2>
               {selected.coverage ? (
-                <div className="table-scroll">
+                <div className="table-scroll" data-export-surface="table">
+                  <ExportMenu
+                    testIdPrefix="variable-coverage"
+                    kind="table"
+                    title={`Coverage ${selected.id}`}
+                    tableRows={[
+                      [
+                        "iso3",
+                        ...Object.keys(Object.values(selected.coverage)[0] ?? {}),
+                      ],
+                      ...Object.entries(selected.coverage).map(([iso, years]) => [
+                        iso,
+                        ...Object.values(years).map((v) => String(v)),
+                      ]),
+                    ]}
+                  />
                   <table data-testid="coverage-table">
                     <thead>
                       <tr>

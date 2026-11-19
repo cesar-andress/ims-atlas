@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import {
   IMSFE_EOC_QUADRANTS,
   type AxisMode,
@@ -12,6 +13,8 @@ import { useRankingModel } from "../ranking/useRankingModelApi";
 import { useStrategicMatrix } from "../ranking/useStrategicMatrix";
 import { useAnalysis } from "../state/useAnalysis";
 import { useCompareSelection } from "../state/useCompareSelection";
+
+type ChartHandle = { getDataURL: (opts: object) => string };
 
 function quadrantLabel(q: ImsfeEocQuadrant, lang: string | undefined): string {
   const row = IMSFE_EOC_QUADRANTS[q];
@@ -28,6 +31,7 @@ export function Matrix() {
   const mode = config.matrixMode === "imsfe_eoc" ? "imsfe_eoc" : "attractiveness_fit";
   const matrix = useStrategicMatrix(mode === "attractiveness_fit" ? model : null);
   const eocMatrix = useImsfeEocMatrix(mode === "imsfe_eoc" ? model : null);
+  const scatterRef = useRef<ChartHandle | null>(null);
 
   return (
     <AnalysisPage
@@ -187,7 +191,20 @@ export function Matrix() {
               cut A={matrix.cutAttractiveness.toFixed(3)} · cut Fit=
               {matrix.cutFit.toFixed(3)} · n={matrix.points.length}
             </p>
-            <StrategicScatter matrix={matrix} />
+            <div data-export-surface="chart">
+              <ExportMenu
+                testIdPrefix="matrix-scatter"
+                kind="chart"
+                title="Strategic matrix scatter"
+                chartRef={scatterRef}
+              />
+              <StrategicScatter
+                matrix={matrix}
+                onReady={(c) => {
+                  scatterRef.current = c;
+                }}
+              />
+            </div>
             <div data-export-surface="table">
               <ExportMenu
                 testIdPrefix="matrix"

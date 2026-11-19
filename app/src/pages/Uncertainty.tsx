@@ -1,4 +1,4 @@
-import { lazy, Suspense, useMemo } from "react";
+import { lazy, Suspense, useMemo, useRef } from "react";
 import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
 import { ExportMenu } from "../components/ExportMenu";
@@ -16,6 +16,8 @@ const TornadoChart = lazy(() =>
   import("../components/TornadoChart").then((m) => ({ default: m.TornadoChart })),
 );
 
+type ChartHandle = { getDataURL: (opts: object) => string };
+
 export function Uncertainty() {
   const { t } = useTranslation();
   const { model, error: rankError, loading: rankLoading } = useRankingModel();
@@ -23,6 +25,8 @@ export function Uncertainty() {
   const combinedError =
     rankError ?? (smaaError ? analysisErrorMessage(smaaError) : null);
   const loading = rankLoading || smaaLoading;
+  const acceptRef = useRef<ChartHandle | null>(null);
+  const tornadoRef = useRef<ChartHandle | null>(null);
 
   const topRows = useMemo(() => {
     if (!smaaModel) return [];
@@ -69,12 +73,23 @@ export function Uncertainty() {
                   SMAA Dirichlet · n={smaaModel.nSamples} · seed={smaaModel.smaa.seed} ·{" "}
                   {m.prepared.candidates.length} destinations
                 </p>
-                <Suspense fallback={<p className="muted">{t("loading")}</p>}>
-                  <RankAcceptabilityChart
-                    alternatives={smaaModel.smaa.alternatives}
-                    acceptability={smaaModel.smaa.acceptability}
+                <div data-export-surface="chart">
+                  <ExportMenu
+                    testIdPrefix="smaa-accept"
+                    kind="chart"
+                    title="SMAA rank acceptability"
+                    chartRef={acceptRef}
                   />
-                </Suspense>
+                  <Suspense fallback={<p className="muted">{t("loading")}</p>}>
+                    <RankAcceptabilityChart
+                      alternatives={smaaModel.smaa.alternatives}
+                      acceptability={smaaModel.smaa.acceptability}
+                      onReady={(c) => {
+                        acceptRef.current = c;
+                      }}
+                    />
+                  </Suspense>
+                </div>
 
                 <h2>{t("pTopKTable")}</h2>
                 <div className="table-scroll" data-export-surface="table">
@@ -115,19 +130,43 @@ export function Uncertainty() {
                 </div>
 
                 <h2>{t("centralWeights")}</h2>
-                <ul className="central-weights" data-testid="central-weights">
-                  {central.map(([id, w]) => (
-                    <li key={id}>
-                      <code>{id}</code>: {formatScore(w)}
-                    </li>
-                  ))}
-                </ul>
+                <div data-export-surface="table">
+                  <ExportMenu
+                    testIdPrefix="central-weights"
+                    kind="table"
+                    title="SMAA central weights"
+                    tableRows={[
+                      ["id", "weight"],
+                      ...central.map(([id, w]) => [id, String(w)]),
+                    ]}
+                  />
+                  <ul className="central-weights" data-testid="central-weights">
+                    {central.map(([id, w]) => (
+                      <li key={id}>
+                        <code>{id}</code>: {formatScore(w)}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
                 <h2>{t("tornadoTitle")}</h2>
                 <p className="muted small">{t("tornadoHint")}</p>
-                <Suspense fallback={<p className="muted">{t("loading")}</p>}>
-                  <TornadoChart bars={smaaModel.tornado} />
-                </Suspense>
+                <div data-export-surface="chart">
+                  <ExportMenu
+                    testIdPrefix="tornado-chart"
+                    kind="chart"
+                    title="Tornado chart"
+                    chartRef={tornadoRef}
+                  />
+                  <Suspense fallback={<p className="muted">{t("loading")}</p>}>
+                    <TornadoChart
+                      bars={smaaModel.tornado}
+                      onReady={(c) => {
+                        tornadoRef.current = c;
+                      }}
+                    />
+                  </Suspense>
+                </div>
                 <div data-export-surface="table">
                   <ExportMenu
                     testIdPrefix="tornado"

@@ -24,3 +24,8 @@ Public data release cells stay empty until human `rights-verify` + RIGHTS.md OK.
 `https://datacatalog.worldbank.org/public-licenses` returned **404** on 2026-11-19.
 WDI/WGI/LPI `licence_url` set to `UNKNOWN` until a human supplies the current licence page.
 `licence_id: CC-BY-4.0` remains provisional (not human-verified).
+
+## Full L→F map
+
+See `docs/prompts-l-f-status.md`. Code for L→F is in place; remaining blockers above plus
+optional Phase H live BACI product tables after rights.

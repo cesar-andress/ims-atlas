@@ -111,18 +111,20 @@ export function TimeExplorer() {
       controls={
         fixture ? (
           <div className="matrix-controls" data-testid="time-controls">
-            <ChartExportBar
-              testIdPrefix="bump"
-              chartRef={chartRef}
-              pngName="ims-atlas-bump.png"
-              svgName="ims-atlas-bump.svg"
-              title="IMS Atlas bump chart"
-              csv={{
-                filename: "ims-atlas-bump.csv",
-                body: tableRows.map((r) => r.join(",")).join("\n") + "\n",
-              }}
-              className="export-row"
-            />
+            <div data-export-surface="chart">
+              <ChartExportBar
+                testIdPrefix="bump"
+                chartRef={chartRef}
+                pngName="ims-atlas-bump.png"
+                svgName="ims-atlas-bump.svg"
+                title="IMS Atlas bump chart"
+                csv={{
+                  filename: "ims-atlas-bump.csv",
+                  body: tableRows.map((r) => r.join(",")).join("\n") + "\n",
+                }}
+                className="export-row"
+              />
+            </div>
           </div>
         ) : null
       }

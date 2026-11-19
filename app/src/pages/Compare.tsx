@@ -97,7 +97,7 @@ function CompareBody({ model }: { model: RankingViewModel }) {
         </Suspense>
       </section>
 
-      <section data-testid="compare-factor">
+      <section data-testid="compare-factor" data-export-surface="chart">
         <h2>
           {t("parityTop10Factor")}: {factorKey}
         </h2>
@@ -119,7 +119,7 @@ function CompareBody({ model }: { model: RankingViewModel }) {
         </Suspense>
       </section>
 
-      <section data-testid="compare-combo">
+      <section data-testid="compare-combo" data-export-surface="chart">
         <h2>{t("parityTop10Combo")}</h2>
         <ChartExportBar
           testIdPrefix="combo"

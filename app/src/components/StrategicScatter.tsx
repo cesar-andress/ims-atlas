@@ -7,7 +7,7 @@ import {
   MarkLineComponent,
   LegendComponent,
 } from "echarts/components";
-import { CanvasRenderer } from "echarts/renderers";
+import { CanvasRenderer, SVGRenderer } from "echarts/renderers";
 import type { StrategicMatrixResult } from "@ims-atlas/core";
 
 echarts.use([
@@ -17,6 +17,7 @@ echarts.use([
   MarkLineComponent,
   LegendComponent,
   CanvasRenderer,
+  SVGRenderer,
 ]);
 
 const QUAD_COLORS: Record<number, string> = {
@@ -26,14 +27,32 @@ const QUAD_COLORS: Record<number, string> = {
   4: "#b85c38",
 };
 
-type Props = { matrix: StrategicMatrixResult };
+type Props = {
+  matrix: StrategicMatrixResult;
+  onReady?: (chart: echarts.ECharts) => void;
+};
 
-export function StrategicScatter({ matrix }: Props) {
+export function StrategicScatter({ matrix, onReady }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
+  const chartRef = useRef<echarts.ECharts | null>(null);
 
   useEffect(() => {
     if (!ref.current) return;
-    const chart = echarts.init(ref.current);
+    const chart = echarts.init(ref.current, undefined, { renderer: "svg" });
+    chartRef.current = chart;
+    onReady?.(chart);
+    const onResize = () => chart.resize();
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      chart.dispose();
+      chartRef.current = null;
+    };
+  }, [onReady]);
+
+  useEffect(() => {
+    const chart = chartRef.current;
+    if (!chart) return;
     const series = ([1, 2, 3, 4] as const).map((q) => ({
       name: `Q${q}`,
       type: "scatter" as const,
@@ -54,53 +73,49 @@ export function StrategicScatter({ matrix }: Props) {
       },
     }));
 
-    chart.setOption({
-      tooltip: {
-        formatter: (p: {
-          name?: string;
-          value?: number[];
-          seriesName?: string;
-          data?: { rank?: number };
-        }) => {
-          const v = p.value ?? [];
-          return `${p.name}<br/>Fit=${v[0]?.toFixed(3)}<br/>A=${v[1]?.toFixed(3)}<br/>score=${v[2]?.toFixed(3)}<br/>${p.seriesName} · #${p.data?.rank ?? "?"}`;
+    chart.setOption(
+      {
+        tooltip: {
+          formatter: (p: {
+            name?: string;
+            value?: number[];
+            seriesName?: string;
+            data?: { rank?: number };
+          }) => {
+            const v = p.value ?? [];
+            return `${p.name}<br/>Fit=${v[0]?.toFixed(3)}<br/>A=${v[1]?.toFixed(3)}<br/>score=${v[2]?.toFixed(3)}<br/>${p.seriesName} · #${p.data?.rank ?? "?"}`;
+          },
         },
+        legend: { top: 0 },
+        grid: { left: 56, right: 24, top: 40, bottom: 48 },
+        xAxis: {
+          name: "Fit",
+          type: "value",
+          scale: true,
+          splitLine: { show: true },
+        },
+        yAxis: {
+          name: "Attractiveness",
+          type: "value",
+          scale: true,
+          splitLine: { show: true },
+        },
+        series: series.map((s, idx) =>
+          idx === 0
+            ? {
+                ...s,
+                markLine: {
+                  symbol: "none",
+                  lineStyle: { type: "dashed", color: "#666" },
+                  data: [{ xAxis: matrix.cutFit }, { yAxis: matrix.cutAttractiveness }],
+                  label: { show: false },
+                },
+              }
+            : s,
+        ),
       },
-      legend: { top: 0 },
-      grid: { left: 56, right: 24, top: 40, bottom: 48 },
-      xAxis: {
-        name: "Fit",
-        type: "value",
-        scale: true,
-        splitLine: { show: true },
-      },
-      yAxis: {
-        name: "Attractiveness",
-        type: "value",
-        scale: true,
-        splitLine: { show: true },
-      },
-      series: series.map((s, idx) =>
-        idx === 0
-          ? {
-              ...s,
-              markLine: {
-                symbol: "none",
-                lineStyle: { type: "dashed", color: "#666" },
-                data: [{ xAxis: matrix.cutFit }, { yAxis: matrix.cutAttractiveness }],
-                label: { show: false },
-              },
-            }
-          : s,
-      ),
-    });
-
-    const onResize = () => chart.resize();
-    window.addEventListener("resize", onResize);
-    return () => {
-      window.removeEventListener("resize", onResize);
-      chart.dispose();
-    };
+      true,
+    );
   }, [matrix]);
 
   return (

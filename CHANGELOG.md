@@ -11,6 +11,9 @@ All notable changes to IMS Atlas are documented in this file.
   `docs/phase-f-blockers.md` + review notes. **No v1.1.0 git tag** until human confirm.
 - Phase F follow-up: ExportMenu on Backtest, Uncertainty, NormLab, Explore, country
   profile, explore correlation, and Sources tables.
+- L→F gap pass: ExportMenu on remaining tables (SQL, paper T4, coverage, status,
+  releases, pipeline, variable coverage) and chart export for SMAA/tornado/matrix
+  scatter; Compare chart surfaces marked; `docs/prompts-l-f-status.md`.
 - Phase N content: expanded Docs (getting started, non-experts, researchers, IMSFE
   workflow, projects, sources, cite), contextual `?` help drawer, `/paper` T4 tables
   with permalinks, and `/changelog` generated from `CHANGELOG.md`.

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { PageShell } from "../components/PageShell";
+import { ExportMenu } from "../components/ExportMenu";
 import { createDuckDbClient } from "../data/duckdbClient";
 import { useTranslation } from "../i18n";
 import { useAnalysis } from "../state/useAnalysis";
@@ -102,7 +103,20 @@ export function SqlConsole() {
         </p>
       ) : null}
       {rows ? (
-        <div className="explore-table-wrap">
+        <div className="explore-table-wrap" data-export-surface="table">
+          <ExportMenu
+            testIdPrefix="sql"
+            kind="table"
+            title="SQL result"
+            tableRows={[
+              cols,
+              ...rows.map((r) =>
+                cols.map((c) =>
+                  r[c] === null || r[c] === undefined ? "" : String(r[c]),
+                ),
+              ),
+            ]}
+          />
           <table data-testid="sql-result">
             <thead>
               <tr>

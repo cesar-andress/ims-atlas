@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import * as echarts from "echarts/core";
 import { BarChart } from "echarts/charts";
 import { GridComponent, LegendComponent, TooltipComponent } from "echarts/components";
-import { CanvasRenderer } from "echarts/renderers";
+import { CanvasRenderer, SVGRenderer } from "echarts/renderers";
 
 echarts.use([
   BarChart,
@@ -10,6 +10,7 @@ echarts.use([
   LegendComponent,
   TooltipComponent,
   CanvasRenderer,
+  SVGRenderer,
 ]);
 
 type Props = {
@@ -18,6 +19,7 @@ type Props = {
   acceptability: number[][];
   /** Show top-N alternatives by P(rank=1). */
   topN?: number;
+  onReady?: (chart: echarts.ECharts) => void;
 };
 
 /** Stacked rank-acceptability bars (SMAA). */
@@ -25,11 +27,28 @@ export function RankAcceptabilityChart({
   alternatives,
   acceptability,
   topN = 12,
+  onReady,
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
+  const chartRef = useRef<echarts.ECharts | null>(null);
 
   useEffect(() => {
     if (!ref.current) return;
+    const chart = echarts.init(ref.current, undefined, { renderer: "svg" });
+    chartRef.current = chart;
+    onReady?.(chart);
+    const onResize = () => chart.resize();
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      chart.dispose();
+      chartRef.current = null;
+    };
+  }, [onReady]);
+
+  useEffect(() => {
+    const chart = chartRef.current;
+    if (!chart) return;
     const order = alternatives
       .map((iso, i) => ({ iso, i, p1: acceptability[i]?.[0] ?? 0 }))
       .sort((a, b) => b.p1 - a.p1)
@@ -42,25 +61,21 @@ export function RankAcceptabilityChart({
       emphasis: { focus: "series" as const },
       data: order.map((o) => acceptability[o.i]![r] ?? 0),
     }));
-    const chart = echarts.init(ref.current);
-    chart.setOption({
-      tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
-      legend: { type: "scroll", top: 0 },
-      grid: { left: 48, right: 16, top: 40, bottom: 48 },
-      xAxis: {
-        type: "category",
-        data: order.map((o) => o.iso),
-        axisLabel: { rotate: 45 },
+    chart.setOption(
+      {
+        tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
+        legend: { type: "scroll", top: 0 },
+        grid: { left: 48, right: 16, top: 40, bottom: 48 },
+        xAxis: {
+          type: "category",
+          data: order.map((o) => o.iso),
+          axisLabel: { rotate: 45 },
+        },
+        yAxis: { type: "value", max: 1, name: "P(rank)" },
+        series,
       },
-      yAxis: { type: "value", max: 1, name: "P(rank)" },
-      series,
-    });
-    const onResize = () => chart.resize();
-    window.addEventListener("resize", onResize);
-    return () => {
-      window.removeEventListener("resize", onResize);
-      chart.dispose();
-    };
+      true,
+    );
   }, [alternatives, acceptability, topN]);
 
   return (

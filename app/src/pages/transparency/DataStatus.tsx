@@ -1,3 +1,4 @@
+import { ExportMenu } from "../../components/ExportMenu";
 import { FixtureStatusBanner } from "../../components/FixtureStatusBanner";
 import { TransparencyShell } from "../../components/TransparencyShell";
 import {
@@ -96,32 +97,59 @@ export function DataStatus() {
                 {displayCell(data.spot.mismatches)} · unreachable=
                 {displayCell(data.spot.unreachable)}
               </p>
-              <table className="data-table">
-                <thead>
-                  <tr>
-                    <th>{t("spotCheckVariable")}</th>
-                    <th>{t("spotCheckIso")}</th>
-                    <th>{t("spotCheckYear")}</th>
-                    <th>{t("spotCheckExpected")}</th>
-                    <th>{t("spotCheckObserved")}</th>
-                    <th>{t("spotCheckResult")}</th>
-                    <th>{t("spotCheckNote")}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {(data.spot.samples as Record<string, unknown>[]).map((c, i) => (
-                    <tr key={i}>
-                      <td>{displayCell(c.variable_id)}</td>
-                      <td>{displayCell(c.iso3)}</td>
-                      <td>{displayCell(c.year)}</td>
-                      <td>{displayCell(c.release_value)}</td>
-                      <td>{displayCell(c.upstream_value)}</td>
-                      <td>{displayCell(c.status)}</td>
-                      <td>{displayCell(c.detail ?? data.spot.note)}</td>
+              <div data-export-surface="table">
+                <ExportMenu
+                  testIdPrefix="spot-check"
+                  kind="table"
+                  title="Spot check"
+                  tableRows={[
+                    [
+                      "variable_id",
+                      "iso3",
+                      "year",
+                      "release_value",
+                      "upstream_value",
+                      "status",
+                      "detail",
+                    ],
+                    ...(data.spot.samples as Record<string, unknown>[]).map((c) => [
+                      String(c.variable_id ?? ""),
+                      String(c.iso3 ?? ""),
+                      String(c.year ?? ""),
+                      String(c.release_value ?? ""),
+                      String(c.upstream_value ?? ""),
+                      String(c.status ?? ""),
+                      String(c.detail ?? data.spot.note ?? ""),
+                    ]),
+                  ]}
+                />
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>{t("spotCheckVariable")}</th>
+                      <th>{t("spotCheckIso")}</th>
+                      <th>{t("spotCheckYear")}</th>
+                      <th>{t("spotCheckExpected")}</th>
+                      <th>{t("spotCheckObserved")}</th>
+                      <th>{t("spotCheckResult")}</th>
+                      <th>{t("spotCheckNote")}</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {(data.spot.samples as Record<string, unknown>[]).map((c, i) => (
+                      <tr key={i}>
+                        <td>{displayCell(c.variable_id)}</td>
+                        <td>{displayCell(c.iso3)}</td>
+                        <td>{displayCell(c.year)}</td>
+                        <td>{displayCell(c.release_value)}</td>
+                        <td>{displayCell(c.upstream_value)}</td>
+                        <td>{displayCell(c.status)}</td>
+                        <td>{displayCell(c.detail ?? data.spot.note)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </section>
           ) : (
             <p className="muted" data-testid="spot-check-empty">

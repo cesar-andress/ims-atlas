@@ -1,4 +1,5 @@
 import { useTranslation } from "../../i18n";
+import { ExportMenu } from "../../components/ExportMenu";
 import { TransparencyShell } from "../../components/TransparencyShell";
 import { loadManifest, loadReleases } from "../../data/transparency";
 import { displayCell } from "../../formatDisplay";
@@ -37,7 +38,30 @@ export function DataReleases() {
               {data.current}
             </strong>
           </p>
-          <div className="table-scroll">
+          <div className="table-scroll" data-export-surface="table">
+            <ExportMenu
+              testIdPrefix="releases"
+              kind="table"
+              title="Data releases"
+              tableRows={[
+                [
+                  "version",
+                  "created_at",
+                  "promoted_at",
+                  "promoted_by",
+                  "n_included_variables",
+                  "manifest_path",
+                ],
+                ...data.releases.map((r) => [
+                  String(r.version ?? ""),
+                  String(r.created_at ?? ""),
+                  String(r.promoted_at ?? ""),
+                  String(r.promoted_by ?? ""),
+                  String(r.n_included_variables ?? ""),
+                  typeof r.manifest_path === "string" ? r.manifest_path : "",
+                ]),
+              ]}
+            />
             <table data-testid="releases-table">
               <thead>
                 <tr>

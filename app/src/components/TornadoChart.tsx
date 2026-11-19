@@ -2,50 +2,63 @@ import { useEffect, useRef } from "react";
 import * as echarts from "echarts/core";
 import { BarChart } from "echarts/charts";
 import { GridComponent, TooltipComponent } from "echarts/components";
-import { CanvasRenderer } from "echarts/renderers";
+import { CanvasRenderer, SVGRenderer } from "echarts/renderers";
 import type { TornadoBar } from "@ims-atlas/core";
 
-echarts.use([BarChart, GridComponent, TooltipComponent, CanvasRenderer]);
+echarts.use([BarChart, GridComponent, TooltipComponent, CanvasRenderer, SVGRenderer]);
 
 type Props = {
   bars: TornadoBar[];
+  onReady?: (chart: echarts.ECharts) => void;
 };
 
 /** Factor weight ±50% tornado (mean |Δrank|). */
-export function TornadoChart({ bars }: Props) {
+export function TornadoChart({ bars, onReady }: Props) {
   const ref = useRef<HTMLDivElement>(null);
+  const chartRef = useRef<echarts.ECharts | null>(null);
   const factors = bars.filter((b) => b.level === "factor");
 
   useEffect(() => {
     if (!ref.current) return;
-    const labels = factors.map((b) => b.id);
-    const chart = echarts.init(ref.current);
-    chart.setOption({
-      tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
-      grid: { left: 72, right: 24, top: 16, bottom: 32 },
-      xAxis: { type: "value", name: "mean |Δrank|" },
-      yAxis: { type: "category", data: labels, inverse: true },
-      series: [
-        {
-          name: "−50%",
-          type: "bar",
-          data: factors.map((b) => -b.lowDelta),
-          itemStyle: { color: "#6b8cae" },
-        },
-        {
-          name: "+50%",
-          type: "bar",
-          data: factors.map((b) => b.highDelta),
-          itemStyle: { color: "#c45c26" },
-        },
-      ],
-    });
+    const chart = echarts.init(ref.current, undefined, { renderer: "svg" });
+    chartRef.current = chart;
+    onReady?.(chart);
     const onResize = () => chart.resize();
     window.addEventListener("resize", onResize);
     return () => {
       window.removeEventListener("resize", onResize);
       chart.dispose();
+      chartRef.current = null;
     };
+  }, [onReady]);
+
+  useEffect(() => {
+    const chart = chartRef.current;
+    if (!chart) return;
+    const labels = factors.map((b) => b.id);
+    chart.setOption(
+      {
+        tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
+        grid: { left: 72, right: 24, top: 16, bottom: 32 },
+        xAxis: { type: "value", name: "mean |Δrank|" },
+        yAxis: { type: "category", data: labels, inverse: true },
+        series: [
+          {
+            name: "−50%",
+            type: "bar",
+            data: factors.map((b) => -b.lowDelta),
+            itemStyle: { color: "#6b8cae" },
+          },
+          {
+            name: "+50%",
+            type: "bar",
+            data: factors.map((b) => b.highDelta),
+            itemStyle: { color: "#c45c26" },
+          },
+        ],
+      },
+      true,
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps -- factors derived from bars
   }, [bars]);
 

@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useTranslation } from "../../i18n";
+import { ExportMenu } from "../../components/ExportMenu";
 import { TransparencyShell } from "../../components/TransparencyShell";
 import { loadLatestRun, loadLineage } from "../../data/transparency";
 import { useAsyncResource } from "../../state/useAsyncResource";
@@ -112,7 +113,16 @@ export function DataPipeline() {
                 </li>
               ))}
             </ul>
-            <div className="table-scroll">
+            <div className="table-scroll" data-export-surface="table">
+              <ExportMenu
+                testIdPrefix="pipeline-edges"
+                kind="table"
+                title="Pipeline edges"
+                tableRows={[
+                  ["from", "to"],
+                  ...edges.slice(0, 80).map((e) => [e.from, e.to]),
+                ]}
+              />
               <table data-testid="pipeline-edges">
                 <thead>
                   <tr>

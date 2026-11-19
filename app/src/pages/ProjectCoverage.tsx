@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnalysisPage } from "../components/AnalysisPage";
+import { ExportMenu } from "../components/ExportMenu";
 import { PermalinkLink } from "../components/PermalinkLink";
 import { loadCatalogPreview } from "../data/catalogLoader";
 import { useTranslation } from "../i18n";
@@ -113,7 +114,26 @@ function CoverageBody() {
         {lang === "es" ? summary.linesEs[0] : summary.linesEn[0]}
       </p>
       <p className="muted small">{t("projectCoverageHint")}</p>
-      <div className="coverage-scroll">
+      <div className="coverage-scroll" data-export-surface="table">
+        <ExportMenu
+          testIdPrefix="project-coverage"
+          kind="table"
+          title="Project coverage"
+          tableRows={[
+            ["variable_id", "year", "state", "policy"],
+            ...variableIds.flatMap((id) =>
+              years.map((y) => {
+                const cell = cells.find((c) => c.variableId === id && c.year === y);
+                return [
+                  id,
+                  String(y),
+                  cell?.state ?? "missing",
+                  policies[id] ?? "keep",
+                ];
+              }),
+            ),
+          ]}
+        />
         <table data-testid="project-coverage-grid">
           <thead>
             <tr>

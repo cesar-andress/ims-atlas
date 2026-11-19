@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { PageShell } from "../components/PageShell";
+import { ExportMenu } from "../components/ExportMenu";
 import { PermalinkLink } from "../components/PermalinkLink";
 import { HelpButton } from "../components/HelpButton";
 import { loadT4Fixture, type T4Fixture } from "../data/loadT4Fixture";
@@ -84,7 +85,22 @@ export function PaperSupport() {
             {t("nav.ranking")}
           </PermalinkLink>
         </p>
-        <div className="table-scroll">
+        <div className="table-scroll" data-export-surface="table">
+          <ExportMenu
+            testIdPrefix="paper-t4"
+            kind="table"
+            title="Paper T4 NDCG"
+            tableRows={[
+              ["method", "ndcg10", "ci_low", "ci_high", "n"],
+              ...ndcgRows.map((r) => [
+                r.method,
+                String(r.mean),
+                String(r.ci95_low),
+                String(r.ci95_high),
+                String(r.n_blocks),
+              ]),
+            ]}
+          />
           <table data-testid="paper-t4-ndcg">
             <thead>
               <tr>
