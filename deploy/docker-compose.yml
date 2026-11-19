@@ -1,0 +1,17 @@
+# Runtime on vpn-aplicaciones (10.204.0.3). Edge TLS: aiserv-server Caddy.
+# Document root is the Vite build at ../app/dist (built on the host from git).
+services:
+  web:
+    image: nginx:alpine
+    container_name: ims-atlas-web
+    restart: unless-stopped
+    ports:
+      - "10.204.0.3:8121:80"
+    volumes:
+      - ../app/dist:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3

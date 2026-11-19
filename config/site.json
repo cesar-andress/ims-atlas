@@ -1,4 +1,4 @@
 {
-  "domain": "UNKNOWN",
-  "comment": "Single source for the custom domain. Set domain to e.g. aiser.v.example so CNAME becomes atlas.<domain>. Run: make cname"
+  "domain": "aiserv.es",
+  "comment": "Single source for the public hostname: atlas.<domain> (and www.atlas.<domain>). Production edge: vpn-server Caddy → vpn-aplicaciones :8121."
 }

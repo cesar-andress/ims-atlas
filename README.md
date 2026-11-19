@@ -15,12 +15,13 @@ Phase 0 scaffold (`v0.1.0`). Engine, ETL connectors and data release land in lat
 
 | Path | Role |
 |------|------|
-| `app/` | Vite + React static site (GitHub Pages) |
+| `app/` | Vite + React static site |
 | `core/` | Pure TypeScript MCDM / SMAA / backtest library |
 | `etl/` | Python 3.11 (`uv`) data build + `atlas-etl` CLI |
 | `catalog/` | Variable catalog (Phase 1+) |
 | `docs/` | Methods and tutorials (rendered in the app later) |
-| `config/site.json` | Single config value for the custom domain |
+| `deploy/` | nginx + Compose for vpn-aplicaciones |
+| `config/site.json` | Single config value for the public domain |
 
 ## Requirements
 
@@ -35,20 +36,19 @@ make build
 make dev
 ```
 
-## Custom domain (GitHub Pages)
+## Production (AISERV)
 
-1. Set `domain` in [`config/site.json`](config/site.json) (e.g. `example.com` → site host
-   `atlas.example.com`).
-2. Run `make cname` to write `app/public/CNAME`.
-3. Create a DNS **CNAME** record:
-   - Name: `atlas`
-   - Target: `cesar-andress.github.io`
-4. In the GitHub repo: **Settings → Pages → Custom domain** = `atlas.<your-domain>`,
-   then enable **Enforce HTTPS**.
-5. The site must also keep working at
-   `https://cesar-andress.github.io/ims-atlas/` (Pages workflow defaults
-   `VITE_BASE=/ims-atlas/`). After the custom domain is live, set the repository
-   variable `VITE_BASE` to `/` so asset paths match the apex custom host.
+Public hostname: **`https://atlas.aiserv.es`** (DNS A → `51.83.77.173` / vpn-server).
+
+| Layer | Host | Repo / path |
+|-------|------|-------------|
+| Edge TLS + proxy | vpn-server (`10.204.0.1`) | [aiserv-server](https://github.com/cesar-andress/aiserv-server) Caddy → `10.204.0.3:8121` |
+| Static build + nginx | vpn-aplicaciones (`10.204.0.3`) | this repo at `/opt/services/ims-atlas` |
+| Catalogue | vpn-aplicaciones | [aiserv-applications](https://github.com/cesar-andress/aiserv-applications) `sites.yaml` |
+
+Deploy is **git-only** (push → `git pull --ff-only` on the hosts). See [`deploy/README.host.md`](deploy/README.host.md).
+
+`config/site.json` sets `domain: aiserv.es` and drives `app/public/CNAME` (`make cname`). Production builds use `VITE_BASE=/`.
 
 ## Licence
 
