@@ -6,6 +6,9 @@ All notable changes to IMS Atlas are documented in this file.
 
 ### Added
 
+- Phase N content: expanded Docs (getting started, non-experts, researchers, IMSFE
+  workflow, projects, sources, cite), contextual `?` help drawer, `/paper` T4 tables
+  with permalinks, and `/changelog` generated from `CHANGELOG.md`.
 - Phase X exports: shared `ExportMenu` (PNG 1×/2×/4×, SVG, PDF, CSV, XLSX with LEEME
   sheet), Atlas credit in image metadata/SVG, licence gate helpers, full-analysis
   XLSX/ZIP, PDF report, and IMSFE workbook export from Cite & export.

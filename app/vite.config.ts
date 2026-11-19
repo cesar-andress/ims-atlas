@@ -101,6 +101,12 @@ export default defineConfig(({ mode }) => {
   return {
     base,
     plugins: [react(), emitVersionJson(), compressAssets()],
+    server: {
+      fs: {
+        // Phase N Changelog imports repo-root CHANGELOG.md via ?raw.
+        allow: [appRoot, join(appRoot, "..")],
+      },
+    },
     optimizeDeps: {
       exclude: ["@duckdb/duckdb-wasm"],
     },

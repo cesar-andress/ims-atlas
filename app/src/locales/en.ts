@@ -455,18 +455,94 @@ export const en = {
   byodRemove: "Remove",
   byodClear: "Clear all",
   docsIntro:
-    "Methods, glossary, short tutorials, and FAQ on what the backtest does and does not show.",
+    "Getting started, methods, projects, sources, how to cite, and FAQ on what the backtest does and does not show.",
   docsToc: "Documentation sections",
+  helpOpen: "Open help for this panel",
+  helpClose: "Close help",
+  helpReadMore: "Read full docs section",
+  paperIntro:
+    "Main backtest tables from the companion paper fixture (T4), with permalinks to the live views.",
+  paperT4Title: "T4 — NDCG@10 (intensive, horizon 1)",
+  paperMethod: "Method",
+  paperT4Note:
+    "Values are copied from meta/phase10_t4.json (ims-backtest paper outputs). They are not recomputed here.",
+  changelogIntro: "Generated from the repository CHANGELOG.md at build time.",
   skipToContent: "Skip to content",
   mobileReadOnly:
     "Mobile layout is read-only: open this page on a larger screen to edit the analysis config.",
   docs: {
     section: {
+      getting_started: "Getting started (5 min)",
+      non_experts: "Method for non-experts",
+      researchers: "Method for researchers",
+      imsfe_workflow: "IMSFE workflow",
+      projects: "Projects how-to",
       methods: "Methods",
       why_normalize: "Why normalise?",
       glossary: "Glossary",
       tutorials: "Tutorials",
+      sources: "Sources and licences",
+      cite: "How to cite",
       faq: "FAQ and limitations",
+    },
+    helpBlurb: {
+      getting_started:
+        "Set origin, product and year, then open Ranking. Use Explore to browse variables; save work as a Project.",
+      non_experts:
+        "Think of the index as a weighted scorecard of open country indicators. The COL · HS64 footwear example is the worked demo.",
+      researchers:
+        "Formulas, SMAA, and walk-forward backtests live under Methods and the Paper tables page.",
+      imsfe_workflow:
+        "Builder → variables → normalisation → ranking → matrix → cite. Matches the Baena & Cano IMSFE steps in the app.",
+      projects:
+        "Create a project, pick variables, check coverage, then export .atlas.json. Storage is local (IndexedDB).",
+      methods:
+        "Normalisation, aggregation (WSM/TOPSIS/…), missing-data rules, and SMAA are documented here.",
+      why_normalize:
+        "Different scales and skew can dominate scores. The Norm lab shows each pipeline step.",
+      glossary: "Short definitions for IMS, MCDM, NDCG, SMAA, BYOD, and HS codes.",
+      tutorials: "Three short paths: exporter, researcher, and export agency.",
+      sources:
+        "Only redistributable + verified series ship publicly. Open the Sources and Catalog views for licence decisions.",
+      cite: "Use Cite & export for APA/BibTeX/RIS, permalink, and full-analysis downloads.",
+      faq: "Backtests are predictive agreement, not causality. Public data release may still be empty pending rights.",
+    },
+    getting_started: {
+      p1: "About five minutes to a first ranking.",
+      s1: "Open Builder (or Home) and set origin country, HS product, and year.",
+      s2: "Optional: Explore variables and add them to your basket.",
+      s3: "Open Ranking to see destination scores when a panel is available.",
+      s4: "Check the strategic matrix and market map for the same config.",
+      s5: "Save as a Project (Ctrl/Cmd+S) and use Cite & export for a permalink.",
+    },
+    non_experts: {
+      p1: "IMS Atlas ranks foreign markets with open indicators (economy, logistics, access cost, sustainability, …). Weights and missing-data rules are visible; nothing is filled in silently.",
+      example:
+        "Worked example: Colombian footwear (COL · HS64 · 2023). Load the home preset, open Ranking and Matrix, then Compare top destinations. Numbers appear only when the data release (or your BYOD/e2e panel) supplies them.",
+    },
+    researchers: {
+      p1: "Hierarchical MCDM on country–year features (year ≤ t). Normalisation pipelines are deterministic; TS and Python agree on goldens to 1e-9 where deterministic.",
+      refs: "See the Paper tables page for T4 NDCG@10 means and CIs from the companion backtest fixture. Cite the software paper + data DOI placeholders under Cite & export.",
+    },
+    imsfe: {
+      s1: "Choose origin, HS and year in Builder (IMSFE / Baena & Cano preset when available).",
+      s2: "Select the variable set (project variables or basket).",
+      s3: "Review normalisation (ratio 0–10 default) in the Norm lab.",
+      s4: "Read the ranking and factor contributions.",
+      s5: "Place destinations on the IMSFE×EOC strategic matrix.",
+      s6: "Export ranking, full analysis, or IMSFE workbook from Cite & export.",
+    },
+    projects: {
+      p1: "A Project stores origin, product, years, variables, method settings and notes in the browser.",
+      s1: "Create or open a project under Projects; unsaved changes show a header dot.",
+      s2: "Use Project variables and Coverage check before running.",
+      s3: "Export .atlas.json or tables ZIP; import validates the schema.",
+    },
+    sources: {
+      p1: "Each catalog variable has a licence gate (ship_raw / ship_derived / byod_only / local_only). Public releases only include redistributable + verified series. Open Sources for publisher URLs and the decision reason.",
+    },
+    cite: {
+      p1: "Cite & export provides APA, BibTeX, RIS, config hash, permalink, ranking CSV/XLSX, full-analysis ZIP, PDF report, and the IMSFE workbook. Every image export carries the Atlas credit line.",
     },
     why: {
       p1: "Variables live on different scales (USD, %, 1–5 indices, km), are often skewed, and can measure nearly the same idea twice.",
@@ -545,6 +621,9 @@ export const en = {
       a3: "Only variables with redistributable licence and verified status may ship. Others are BYOD or local-only.",
       q4: "Why can Time explorer ranks differ from the Ranking view?",
       a4: "The public data release is still empty (pending). Ranking and Time only show ranks when the same real panel is loaded (or when e2e injects a private fixture). They are not silently spliced from different panels.",
+      limitsTitle: "Known limitations",
+      limitsBody:
+        "Public redistributable panels may be empty until rights-verify. BYOD never leaves the browser. Mobile analysis UI is read-only. Expert names are never shipped. SMAA and map layouts are seeded for reproducibility.",
     },
   },
   nav: navEn,

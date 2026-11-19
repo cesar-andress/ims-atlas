@@ -7,6 +7,7 @@ import { COL_HS64_PRESET } from "../state/schema";
 import { isAnalysisReady } from "../state/views";
 import { AnalysisSummary } from "./AnalysisSummary";
 import { AnalysisTabs } from "./AnalysisTabs";
+import { HelpButton } from "./HelpButton";
 import { PendingReleaseNotice } from "./PendingReleaseNotice";
 import { PermalinkLink } from "./PermalinkLink";
 import { ProductContextBanner } from "./ProductContextBanner";
@@ -62,7 +63,10 @@ export function AnalysisPage({
       aria-labelledby={`${testId}-title`}
     >
       <header className="analysis-page-header">
-        <h1 id={`${testId}-title`}>{t(titleKey)}</h1>
+        <div className="analysis-title-row">
+          <h1 id={`${testId}-title`}>{t(titleKey)}</h1>
+          <HelpButton />
+        </div>
         {intro ? <p className="muted">{intro}</p> : null}
         <AnalysisTabs />
         <ProductContextBanner />

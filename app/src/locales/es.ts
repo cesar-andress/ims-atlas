@@ -461,18 +461,94 @@ const es = {
   byodRemove: "Quitar",
   byodClear: "Borrar todas",
   docsIntro:
-    "Métodos, glosario, tutoriales breves y FAQ sobre lo que el backtest muestra y no muestra.",
+    "Primeros pasos, métodos, proyectos, fuentes, cómo citar y FAQ sobre lo que el backtest muestra y no muestra.",
   docsToc: "Secciones de documentación",
+  helpOpen: "Abrir ayuda de este panel",
+  helpClose: "Cerrar ayuda",
+  helpReadMore: "Leer la sección completa en docs",
+  paperIntro:
+    "Tablas principales del paper (fixture T4) con permalinks a las vistas en vivo.",
+  paperT4Title: "T4 — NDCG@10 (intensive, horizonte 1)",
+  paperMethod: "Método",
+  paperT4Note:
+    "Valores copiados de meta/phase10_t4.json (salidas del paper en ims-backtest). No se recalculan aquí.",
+  changelogIntro: "Generado a partir de CHANGELOG.md del repositorio en el build.",
   skipToContent: "Saltar al contenido",
   mobileReadOnly:
     "En móvil la vista es de solo lectura: usa una pantalla más grande para editar la configuración.",
   docs: {
     section: {
+      getting_started: "Primeros pasos (5 min)",
+      non_experts: "Método para no expertos",
+      researchers: "Método para investigadores",
+      imsfe_workflow: "Flujo IMSFE",
+      projects: "Cómo usar Proyectos",
       methods: "Métodos",
       why_normalize: "¿Por qué normalizar?",
       glossary: "Glosario",
       tutorials: "Tutoriales",
+      sources: "Fuentes y licencias",
+      cite: "Cómo citar",
       faq: "FAQ y limitaciones",
+    },
+    helpBlurb: {
+      getting_started:
+        "Define origen, producto y año; abre Ranking. Explorar sirve para variables; guarda el trabajo como Proyecto.",
+      non_experts:
+        "El índice es un scorecard ponderado de indicadores abiertos. El ejemplo COL · HS64 calzado es la demo trabajada.",
+      researchers:
+        "Fórmulas, SMAA y backtests walk-forward están en Métodos y en Tablas del paper.",
+      imsfe_workflow:
+        "Constructor → variables → normalización → ranking → matriz → citar. Pasos IMSFE Baena & Cano en la app.",
+      projects:
+        "Crea un proyecto, elige variables, revisa cobertura y exporta .atlas.json. Almacenamiento local (IndexedDB).",
+      methods:
+        "Normalización, agregación (WSM/TOPSIS/…), missing y SMAA se documentan aquí.",
+      why_normalize:
+        "Escalas y sesgo distintos pueden dominar. El laboratorio muestra cada paso del pipeline.",
+      glossary: "Definiciones breves de IMS, MCDM, NDCG, SMAA, BYOD y HS.",
+      tutorials: "Tres rutas cortas: exportador, investigador y agencia.",
+      sources:
+        "Solo series redistribuibles + verified van al público. Fuentes y Catálogo muestran la decisión de licencia.",
+      cite: "Citar y exportar ofrece APA/BibTeX/RIS, permalink y descargas del análisis completo.",
+      faq: "El backtest es acuerdo predictivo, no causalidad. El release público puede seguir vacío hasta rights-verify.",
+    },
+    getting_started: {
+      p1: "Unos cinco minutos hasta el primer ranking.",
+      s1: "Abre Constructor (o Inicio) y define país de origen, producto HS y año.",
+      s2: "Opcional: Explorar variables y añadirlas a la cesta.",
+      s3: "Abre Ranking para ver puntuaciones cuando haya panel disponible.",
+      s4: "Revisa la matriz estratégica y el mapa con la misma config.",
+      s5: "Guarda como Proyecto (Ctrl/Cmd+S) y usa Citar y exportar para el permalink.",
+    },
+    non_experts: {
+      p1: "IMS Atlas ordena mercados con indicadores abiertos (economía, logística, acceso, sostenibilidad…). Pesos y reglas de missing son visibles; nada se rellena en silencio.",
+      example:
+        "Ejemplo: calzado colombiano (COL · HS64 · 2023). Carga el preset de inicio, abre Ranking y Matriz, luego Comparar. Los números solo aparecen si el release (o tu BYOD/e2e) aporta el panel.",
+    },
+    researchers: {
+      p1: "MCDM jerárquico sobre features país–año (year ≤ t). Pipelines de normalización deterministas; TS y Python coinciden en goldens a 1e-9 donde aplica.",
+      refs: "La página Tablas del paper muestra medias e IC de NDCG@10 T4 del fixture compañero. Cita el paper de software + DOI de datos bajo Citar y exportar.",
+    },
+    imsfe: {
+      s1: "Elige origen, HS y año en Constructor (preset IMSFE / Baena & Cano si está).",
+      s2: "Selecciona el conjunto de variables (proyecto o cesta).",
+      s3: "Revisa la normalización (ratio 0–10 por defecto) en el laboratorio.",
+      s4: "Lee el ranking y las contribuciones por factor.",
+      s5: "Sitúa destinos en la matriz estratégica IMSFE×EOC.",
+      s6: "Exporta ranking, análisis completo o libro IMSFE desde Citar y exportar.",
+    },
+    projects: {
+      p1: "Un Proyecto guarda origen, producto, años, variables, método y notas en el navegador.",
+      s1: "Crea o abre un proyecto en Proyectos; los cambios sin guardar muestran un punto en la cabecera.",
+      s2: "Usa Variables del proyecto y Cobertura antes de ejecutar.",
+      s3: "Exporta .atlas.json o ZIP de tablas; la importación valida el esquema.",
+    },
+    sources: {
+      p1: "Cada variable del catálogo tiene un gate de licencia (ship_raw / ship_derived / byod_only / local_only). Los releases públicos solo incluyen series redistribuibles + verified. Abre Fuentes para URLs y el motivo de la decisión.",
+    },
+    cite: {
+      p1: "Citar y exportar ofrece APA, BibTeX, RIS, hash de config, permalink, CSV/XLSX, ZIP de análisis completo, informe PDF y libro IMSFE. Cada imagen lleva la línea de crédito Atlas.",
     },
     why: {
       p1: "Las variables viven en escalas distintas (USD, %, índices 1–5, km), suelen estar sesgadas y a veces miden casi la misma idea dos veces.",
@@ -549,6 +625,9 @@ const es = {
       a3: "Solo se publican variables con licencia redistribuible y status verified. El resto es BYOD o local.",
       q4: "¿Por qué Time explorer puede diferir del Ranking?",
       a4: "La publicación de datos pública sigue vacía (pendiente). Ranking y Time solo muestran puestos cuando se carga el mismo panel real (o cuando e2e inyecta un fixture privado). No se empalman paneles distintos en silencio.",
+      limitsTitle: "Limitaciones conocidas",
+      limitsBody:
+        "Los paneles públicos redistribuibles pueden estar vacíos hasta rights-verify. BYOD no sale del navegador. La UI móvil de análisis es de solo lectura. No se publican nombres de expertos. SMAA y mapas usan semilla para reproducibilidad.",
     },
   },
   nav: navEs,

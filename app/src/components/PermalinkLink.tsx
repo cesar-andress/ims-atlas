@@ -9,6 +9,8 @@ type Props = {
   /** Replace base config (e.g. demo preset) instead of merging the current one. */
   replace?: AnalysisConfig | undefined;
   patch?: Partial<AnalysisConfig> | undefined;
+  /** Optional URL hash (without #), e.g. docs-methods. */
+  hash?: string | undefined;
   className?: string | undefined;
   children: ReactNode;
   "data-testid"?: string | undefined;
@@ -23,6 +25,7 @@ export function PermalinkLink({
   view,
   replace,
   patch,
+  hash,
   className,
   children,
   title,
@@ -43,6 +46,7 @@ export function PermalinkLink({
       to={{
         pathname: pathForView(view, next.focusVariable),
         search: configToSearch(next),
+        ...(hash ? { hash: hash.startsWith("#") ? hash : `#${hash}` } : {}),
       }}
       className={className}
       data-testid={testId}

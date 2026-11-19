@@ -15,6 +15,7 @@ import { rankingRequestFromConfig } from "../ranking/rankingRequest";
 import { COL_HS64_PRESET, IMSFE_BAENA_CANO_PRESET } from "../state/schema";
 import { useAnalysis } from "../state/useAnalysis";
 import { isAnalysisReady } from "../state/views";
+import { HelpButton } from "./HelpButton";
 import { PermalinkLink } from "./PermalinkLink";
 
 const FACTOR_ORDER = [
@@ -174,6 +175,9 @@ export function ConfigPanel() {
         </summary>
 
         <div className="config-panel-body">
+          <div className="page-help-row">
+            <HelpButton section="getting_started" />
+          </div>
           <button
             type="button"
             data-testid="apply-col-hs64"

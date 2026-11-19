@@ -62,9 +62,7 @@ test.describe("Phase X export surfaces", () => {
       timeout: 20_000,
     });
     const orphan = await page.evaluate(() => {
-      const surfaces = Array.from(
-        document.querySelectorAll("[data-export-surface]"),
-      );
+      const surfaces = Array.from(document.querySelectorAll("[data-export-surface]"));
       return surfaces
         .filter((el) => {
           const menu =

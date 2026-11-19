@@ -7,6 +7,7 @@ import { PermalinkLink } from "./PermalinkLink";
 import { AccessMenu } from "./AccessMenu";
 import { UpdatesNewsPill } from "./UpdatesNewsPill";
 import { GlobalSearch } from "./GlobalSearch";
+import { HelpDrawer } from "./HelpDrawer";
 import { dataConfig } from "../dataConfig";
 import { useAnalysis } from "../state/useAnalysis";
 import { ensureLanguage, useTranslation } from "../i18n";
@@ -139,6 +140,7 @@ export function AppShellFrame({
         </main>
       </div>
       <AppFooter />
+      <HelpDrawer />
     </div>
   );
 }

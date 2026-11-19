@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { AppShellFrame } from "./components/AppChrome";
 import { ToastProvider } from "./components/ToastHost";
+import { HelpProvider } from "./help/HelpProvider";
 import { Home } from "./pages/Home";
 import { RankingModelProvider } from "./ranking/RankingModelContext";
 import { prefetchCriticalRoutes } from "./ranking/prefetchRoutes";
@@ -43,6 +44,12 @@ const CiteExport = lazy(() =>
 );
 const Byod = lazy(() => import("./pages/Byod").then((m) => ({ default: m.Byod })));
 const Docs = lazy(() => import("./pages/Docs").then((m) => ({ default: m.Docs })));
+const PaperSupport = lazy(() =>
+  import("./pages/PaperSupport").then((m) => ({ default: m.PaperSupport })),
+);
+const Changelog = lazy(() =>
+  import("./pages/Changelog").then((m) => ({ default: m.Changelog })),
+);
 const Factors = lazy(() =>
   import("./pages/Factors").then((m) => ({ default: m.Factors })),
 );
@@ -156,6 +163,8 @@ function AppShell() {
           <Route path="/cite" element={<CiteExport />} />
           <Route path="/byod" element={<Byod />} />
           <Route path="/docs" element={<Docs />} />
+          <Route path="/paper" element={<PaperSupport />} />
+          <Route path="/changelog" element={<Changelog />} />
           <Route path="/factors" element={<Factors />} />
           <Route path="/compare" element={<Compare />} />
           <Route path="/norm_lab" element={<NormLab />} />
@@ -183,11 +192,13 @@ function AppShell() {
 export function App() {
   return (
     <ToastProvider>
-      <AnalysisProvider>
-        <RankingModelProvider>
-          <AppShell />
-        </RankingModelProvider>
-      </AnalysisProvider>
+      <HelpProvider>
+        <AnalysisProvider>
+          <RankingModelProvider>
+            <AppShell />
+          </RankingModelProvider>
+        </AnalysisProvider>
+      </HelpProvider>
     </ToastProvider>
   );
 }

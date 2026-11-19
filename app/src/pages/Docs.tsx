@@ -1,26 +1,154 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useTranslation } from "../i18n";
 import { PageShell } from "../components/PageShell";
 import { PermalinkLink } from "../components/PermalinkLink";
+import { HelpButton } from "../components/HelpButton";
+import { DOCS_SECTIONS } from "../help/docsSections";
 
-const SECTIONS = ["methods", "why_normalize", "glossary", "tutorials", "faq"] as const;
-
-/** In-app documentation (methods, glossary, tutorials, FAQ). */
+/** In-app documentation (Phase N sections). */
 export function Docs() {
   const { t } = useTranslation();
+  const location = useLocation();
+
+  useEffect(() => {
+    const hash = location.hash.replace(/^#/, "");
+    if (!hash) return;
+    const el = document.getElementById(hash);
+    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [location.hash]);
 
   return (
     <PageShell testId="docs-view" titleKey="nav.docs" className="docs-page">
+      <div className="page-help-row">
+        <HelpButton section="getting_started" />
+      </div>
       <p className="muted">{t("docsIntro")}</p>
       <p className="small">
         <a href="/privacidad">{t("nav.privacy")}</a>
+        {" · "}
+        <PermalinkLink view="paper">{t("nav.paper")}</PermalinkLink>
+        {" · "}
+        <PermalinkLink view="changelog">{t("nav.changelog")}</PermalinkLink>
       </p>
       <nav className="docs-toc" aria-label={t("docsToc")} data-testid="docs-toc">
-        {SECTIONS.map((id) => (
+        {DOCS_SECTIONS.map((id) => (
           <a key={id} href={`#docs-${id}`}>
             {t(`docs.section.${id}`)}
           </a>
         ))}
       </nav>
+
+      <section
+        id="docs-getting_started"
+        data-testid="docs-getting-started"
+        aria-labelledby="docs-getting-started-h"
+      >
+        <h2 id="docs-getting-started-h">{t("docs.section.getting_started")}</h2>
+        <p>{t("docs.getting_started.p1")}</p>
+        <ol>
+          <li>{t("docs.getting_started.s1")}</li>
+          <li>{t("docs.getting_started.s2")}</li>
+          <li>{t("docs.getting_started.s3")}</li>
+          <li>{t("docs.getting_started.s4")}</li>
+          <li>{t("docs.getting_started.s5")}</li>
+        </ol>
+        <p className="small">
+          <PermalinkLink view="builder">{t("nav.builder")}</PermalinkLink>
+          {" · "}
+          <PermalinkLink view="explore">{t("nav.explore")}</PermalinkLink>
+        </p>
+      </section>
+
+      <section
+        id="docs-non_experts"
+        data-testid="docs-non-experts"
+        aria-labelledby="docs-non-experts-h"
+      >
+        <h2 id="docs-non-experts-h">{t("docs.section.non_experts")}</h2>
+        <p>{t("docs.non_experts.p1")}</p>
+        <p>{t("docs.non_experts.example")}</p>
+        <p className="small">
+          <PermalinkLink view="ranking">{t("nav.ranking")}</PermalinkLink>
+          {" · "}
+          <PermalinkLink view="matrix">{t("nav.matrix")}</PermalinkLink>
+        </p>
+      </section>
+
+      <section
+        id="docs-researchers"
+        data-testid="docs-researchers"
+        aria-labelledby="docs-researchers-h"
+      >
+        <h2 id="docs-researchers-h">{t("docs.section.researchers")}</h2>
+        <p>{t("docs.researchers.p1")}</p>
+        <p>
+          WSM:{" "}
+          <code>
+            S<sub>i</sub> = Σ<sub>j</sub> w<sub>j</sub> · x′
+            <sub>ij</sub>
+          </code>
+        </p>
+        <p>{t("docs.researchers.refs")}</p>
+        <p className="small">
+          <PermalinkLink view="paper">{t("nav.paper")}</PermalinkLink>
+          {" · "}
+          <PermalinkLink view="backtest">{t("nav.backtest")}</PermalinkLink>
+        </p>
+      </section>
+
+      <section
+        id="docs-imsfe_workflow"
+        data-testid="docs-imsfe-workflow"
+        aria-labelledby="docs-imsfe-workflow-h"
+      >
+        <h2 id="docs-imsfe-workflow-h">{t("docs.section.imsfe_workflow")}</h2>
+        <ol>
+          <li>
+            {t("docs.imsfe.s1")}{" "}
+            <PermalinkLink view="builder">{t("nav.builder")}</PermalinkLink>
+          </li>
+          <li>
+            {t("docs.imsfe.s2")}{" "}
+            <PermalinkLink view="project_variables">
+              {t("nav.project_variables")}
+            </PermalinkLink>
+          </li>
+          <li>
+            {t("docs.imsfe.s3")}{" "}
+            <PermalinkLink view="norm_lab">{t("nav.norm_lab")}</PermalinkLink>
+          </li>
+          <li>
+            {t("docs.imsfe.s4")}{" "}
+            <PermalinkLink view="ranking">{t("nav.ranking")}</PermalinkLink>
+          </li>
+          <li>
+            {t("docs.imsfe.s5")}{" "}
+            <PermalinkLink view="matrix">{t("nav.matrix")}</PermalinkLink>
+          </li>
+          <li>
+            {t("docs.imsfe.s6")}{" "}
+            <PermalinkLink view="cite">{t("nav.cite")}</PermalinkLink>
+          </li>
+        </ol>
+      </section>
+
+      <section
+        id="docs-projects"
+        data-testid="docs-projects"
+        aria-labelledby="docs-projects-h"
+      >
+        <h2 id="docs-projects-h">{t("docs.section.projects")}</h2>
+        <p>{t("docs.projects.p1")}</p>
+        <ol>
+          <li>{t("docs.projects.s1")}</li>
+          <li>{t("docs.projects.s2")}</li>
+          <li>{t("docs.projects.s3")}</li>
+        </ol>
+        <p className="small">
+          <PermalinkLink view="projects">{t("nav.projects")}</PermalinkLink>
+        </p>
+      </section>
 
       <section
         id="docs-methods"
@@ -164,6 +292,28 @@ export function Docs() {
         </article>
       </section>
 
+      <section
+        id="docs-sources"
+        data-testid="docs-sources"
+        aria-labelledby="docs-sources-h"
+      >
+        <h2 id="docs-sources-h">{t("docs.section.sources")}</h2>
+        <p>{t("docs.sources.p1")}</p>
+        <p className="small">
+          <PermalinkLink view="data_sources">{t("nav.data_sources")}</PermalinkLink>
+          {" · "}
+          <PermalinkLink view="catalog">{t("nav.catalog")}</PermalinkLink>
+        </p>
+      </section>
+
+      <section id="docs-cite" data-testid="docs-cite" aria-labelledby="docs-cite-h">
+        <h2 id="docs-cite-h">{t("docs.section.cite")}</h2>
+        <p>{t("docs.cite.p1")}</p>
+        <p className="small">
+          <PermalinkLink view="cite">{t("nav.cite")}</PermalinkLink>
+        </p>
+      </section>
+
       <section id="docs-faq" data-testid="docs-faq" aria-labelledby="docs-faq-h">
         <h2 id="docs-faq-h">{t("docs.section.faq")}</h2>
         <h3>{t("docs.faq.q1")}</h3>
@@ -174,6 +324,8 @@ export function Docs() {
         <p>{t("docs.faq.a3")}</p>
         <h3>{t("docs.faq.q4")}</h3>
         <p>{t("docs.faq.a4")}</p>
+        <h3>{t("docs.faq.limitsTitle")}</h3>
+        <p>{t("docs.faq.limitsBody")}</p>
       </section>
     </PageShell>
   );

@@ -15,6 +15,8 @@ const VIEWS = [
   "cite",
   "byod",
   "docs",
+  "paper",
+  "changelog",
   "data_sources",
   "data_variable",
   "data_pipeline",

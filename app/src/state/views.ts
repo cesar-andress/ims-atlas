@@ -29,6 +29,8 @@ export const SECONDARY_VIEWS: readonly ViewId[] = [
   "project_variables",
   "project_coverage",
   "norm_lab",
+  "paper",
+  "changelog",
   "status",
   "data_sources",
   "data_variable",
