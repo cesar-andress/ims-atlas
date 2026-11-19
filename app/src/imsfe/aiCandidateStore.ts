@@ -69,18 +69,21 @@ export function clearAiCandidates(): void {
 }
 
 export function toDataCells(rows: readonly AiCandidateRow[]): DataCell[] {
-  return rows.map((r) => ({
-    variableId: r.variableId,
-    iso3: r.iso3,
-    year: r.year,
-    value: r.value,
-    state: r.state,
-    sourceUrl: r.sourceUrl,
-    origin: r.origin,
-    verifiedBy: r.verifiedBy,
-    verifiedOn: r.verifiedOn,
-    verdict: r.verdict,
-  }));
+  return rows.map((r) => {
+    const cell: DataCell = {
+      variableId: r.variableId,
+      iso3: r.iso3,
+      year: r.year,
+      value: r.value,
+      state: r.state,
+      sourceUrl: r.sourceUrl,
+      origin: r.origin,
+    };
+    if (r.verifiedBy !== undefined) cell.verifiedBy = r.verifiedBy;
+    if (r.verifiedOn !== undefined) cell.verifiedOn = r.verifiedOn;
+    if (r.verdict !== undefined) cell.verdict = r.verdict;
+    return cell;
+  });
 }
 
 export type ParseCandidatesResult =
