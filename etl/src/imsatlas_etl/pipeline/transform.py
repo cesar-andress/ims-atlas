@@ -11,6 +11,7 @@ import pandas as pd
 from imsatlas_etl.connectors import baci, gravity, hofstede, wits
 from imsatlas_etl.connectors import worldbank as wb
 from imsatlas_etl.pipeline.io_paths import curated_dir, freshness_path, raw_source_dir
+from imsatlas_etl.pipeline.variables_build import write_variables_country_year
 
 
 def _versions(*, root: Path | None) -> dict[str, str]:
@@ -129,6 +130,7 @@ def run_transform(
     bilateral = build_bilateral_year(root=root)
     trades = build_trade_tables(root=root)
 
+    variables = write_variables_country_year(root=root)
     counts = {
         "country_year": _write_parquet(country, out_dir / "country_year.parquet"),
         "bilateral_year": _write_parquet(
@@ -141,5 +143,10 @@ def run_transform(
             trades["trade_hs6"],
             out_dir / "trade_hs6",
         ),
+        "variables_country_year": variables["rows"],
     }
-    return {"curated_dir": str(out_dir), "row_counts": counts}
+    return {
+        "curated_dir": str(out_dir),
+        "row_counts": counts,
+        "variables_meta": variables["meta"],
+    }

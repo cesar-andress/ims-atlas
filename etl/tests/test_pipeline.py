@@ -37,22 +37,25 @@ def test_offline_pipeline_exact_curated(work_root: Path) -> None:
     assert "transform" in log["steps"]
 
     freshness = json.loads(freshness_path(root=work_root).read_text(encoding="utf-8"))
-    assert len(freshness["sources"]) == 7
+    assert len(freshness["sources"]) == 14
     assert all(row["upstream_version"] == "mini-2022" for row in freshness["sources"])
 
     country = pd.read_parquet(curated_dir(root=work_root) / "country_year.parquet")
     bilateral = pd.read_parquet(curated_dir(root=work_root) / "bilateral_year.parquet")
     hs2 = pd.read_parquet(curated_dir(root=work_root) / "trade_hs2.parquet")
     hs4 = pd.read_parquet(curated_dir(root=work_root) / "trade_hs4.parquet")
+    variables = pd.read_parquet(
+        curated_dir(root=work_root) / "variables_country_year.parquet",
+    )
 
-    assert log["steps"]["transform"]["row_counts"] == {
-        "country_year": 9,
-        "bilateral_year": 18,
-        "trade_hs2": 36,  # each hs6 maps to distinct hs2 pairs? 2 products -> 2 hs2?
-        # 870323 -> 87, 847130 -> 84: 3 years * 6 directed pairs * 2 hs2 = 36
-        "trade_hs4": 36,
-        "trade_hs6": 36,
-    }
+    counts = log["steps"]["transform"]["row_counts"]
+    assert counts["country_year"] == 9
+    assert counts["bilateral_year"] == 18
+    assert counts["trade_hs2"] == 36
+    assert counts["trade_hs4"] == 36
+    assert counts["trade_hs6"] == 36
+    assert counts["variables_country_year"] == 9
+    assert {"CO2PC", "PLI", "ITU_IDI", "GII"}.issubset(set(variables.columns))
     assert len(country) == 9
     assert set(country["iso3"]) == {"ESP", "MEX", "CHL"}
     assert set(country["year"]) == {2020, 2021, 2022}

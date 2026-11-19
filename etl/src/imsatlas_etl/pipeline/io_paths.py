@@ -14,6 +14,24 @@ PIPELINE_SOURCES = (
     "cepi_gravity",
     "wits_trains",
     "hofstede",
+    # Phase 3 index sources (fixture-first; mostly BYOD until rights verified)
+    "itu_datahub",
+    "ef_epi",
+    "odin",
+    "gedi",
+    "wipo_gii",
+    "startupblink",
+    "yale_epi",
+)
+
+PHASE3_INDEX_SOURCES = (
+    "itu_datahub",
+    "ef_epi",
+    "odin",
+    "gedi",
+    "wipo_gii",
+    "startupblink",
+    "yale_epi",
 )
 
 

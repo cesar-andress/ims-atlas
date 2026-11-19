@@ -92,6 +92,23 @@ def _variable_gates() -> list[dict[str, Any]]:
     return rows
 
 
+def _strip_non_ship_variable_columns(
+    release_root: Path,
+    gates: list[dict],
+) -> None:
+    """Drop BYOD / non-ship variable id columns before publishing."""
+    denied = {g["id"] for g in gates if not g["included"]}
+    path = release_root / "variables_country_year.parquet"
+    if not path.is_file() or not denied:
+        return
+    frame = pd.read_parquet(path)
+    keep = [c for c in frame.columns if c not in denied]
+    frame[keep].to_parquet(path, index=False)
+    meta_path = release_root / "variables_country_year.meta.json"
+    if meta_path.is_file():
+        meta_path.unlink()
+
+
 def _assert_no_denied_variable_columns(release_root: Path, gates: list[dict]) -> None:
     """Fail if a released parquet contains a column equal to a non-ship variable id."""
     denied = {g["id"] for g in gates if not g["included"]}
@@ -169,6 +186,7 @@ def run_release(
     _copy_curated(cur, dest)
 
     gates = _variable_gates()
+    _strip_non_ship_variable_columns(dest, gates)
     _assert_no_denied_variable_columns(dest, gates)
 
     files_meta: list[dict[str, Any]] = []

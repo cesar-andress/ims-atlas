@@ -397,6 +397,32 @@ def promote_cmd(
     )
 
 
+@app.command("coverage-report")
+def coverage_report_cmd() -> None:
+    """Write countries×years coverage CSV+PNG under status/coverage/."""
+    from imsatlas_etl.pipeline.coverage import run_coverage_reports
+
+    try:
+        result = run_coverage_reports()
+    except FileNotFoundError as exc:
+        typer.secho(str(exc), fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=1) from exc
+    ok = sum(1 for r in result["reports"] if r.get("status") == "ok")
+    typer.echo(
+        f"atlas-etl {__version__}: coverage-report ok "
+        f"({ok}/{len(result['reports'])}) -> {result['out_dir']}",
+    )
+
+
+@app.command("phase3-report")
+def phase3_report_cmd() -> None:
+    """Write status/phase3_variables.md summary for new variables."""
+    from imsatlas_etl.pipeline.phase3_report import write_phase3_report
+
+    path = write_phase3_report()
+    typer.echo(f"atlas-etl {__version__}: wrote {path}")
+
+
 @app.command("check-alert")
 def check_alert_cmd(
     fixture_root: Annotated[

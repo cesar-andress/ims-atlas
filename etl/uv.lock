@@ -438,6 +438,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "jsonschema" },
+    { name = "matplotlib" },
     { name = "numpy" },
     { name = "pandas" },
     { name = "pandera" },
@@ -464,6 +465,7 @@ dev = [
 requires-dist = [
     { name = "imsfe", marker = "extra == 'backtest'", git = "https://github.com/cesar-andress/ims-backtest.git?rev=v0.2.0" },
     { name = "jsonschema", specifier = ">=4.23" },
+    { name = "matplotlib", specifier = ">=3.8" },
     { name = "numpy", specifier = ">=1.26" },
     { name = "pandas", specifier = ">=3.1.1" },
     { name = "pandera", specifier = ">=0.36.0" },

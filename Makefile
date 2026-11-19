@@ -1,4 +1,4 @@
-.PHONY: setup lint test e2e build etl pipeline-fixture release-staging promote-release release-data catalog-port catalog-validate check-live rights-report qa lineage dev cname pin-backtest typecheck
+.PHONY: setup lint test e2e build etl pipeline-fixture release-staging promote-release release-data catalog-port catalog-validate check-live rights-report qa lineage coverage-report phase3-report dev cname pin-backtest typecheck
 
 NODE_VERSION := 20
 PNPM ?= pnpm
@@ -52,10 +52,18 @@ qa:
 lineage:
 	cd etl && $(UV) run atlas-etl lineage
 
+coverage-report:
+	cd etl && $(UV) run atlas-etl coverage-report
+
+phase3-report:
+	cd etl && $(UV) run atlas-etl phase3-report
+
 release-staging:
 	cd etl && $(UV) run atlas-etl release --version 0.1.0 --staging --force
 	cd etl && $(UV) run atlas-etl lineage
 	cd etl && $(UV) run atlas-etl qa
+	cd etl && $(UV) run atlas-etl coverage-report
+	cd etl && $(UV) run atlas-etl phase3-report
 
 promote-release:
 	@test -n "$(BY)" || (echo "Usage: make promote-release BY='Your Name'"; exit 1)

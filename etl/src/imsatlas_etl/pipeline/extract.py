@@ -6,9 +6,13 @@ import json
 from pathlib import Path
 from typing import Any
 
-from imsatlas_etl.connectors import baci, gravity, hofstede, wits
+from imsatlas_etl.connectors import baci, country_index, gravity, hofstede, wits
 from imsatlas_etl.connectors import worldbank as wb
-from imsatlas_etl.pipeline.io_paths import PIPELINE_SOURCES, freshness_path
+from imsatlas_etl.pipeline.io_paths import (
+    PHASE3_INDEX_SOURCES,
+    PIPELINE_SOURCES,
+    freshness_path,
+)
 
 
 def _versions_from_freshness(
@@ -76,6 +80,14 @@ def extract_source(
         )
     if source_id == "wits_trains":
         return wits.extract_from_fixture(
+            version,
+            fixture_root=fixture_root,
+            root=root,
+            force=force,
+        )
+    if source_id in PHASE3_INDEX_SOURCES:
+        return country_index.extract_from_fixture(
+            source_id,
             version,
             fixture_root=fixture_root,
             root=root,

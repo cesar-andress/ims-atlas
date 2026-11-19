@@ -1,0 +1,10 @@
+country_name,iso3,year,value
+Spain,,2020,50.0
+Spain,,2021,51.0
+Spain,,2022,52.0
+Mexico,MEX,2020,51.0
+Mexico,MEX,2021,52.0
+Mexico,MEX,2022,53.0
+Chile,CHL,2020,52.0
+Chile,CHL,2021,53.0
+Chile,CHL,2022,54.0

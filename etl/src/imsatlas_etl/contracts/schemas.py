@@ -72,6 +72,17 @@ tariffs_schema = DataFrameSchema(
     coerce=True,
 )
 
+# After ISO3 mapping; raw CSV may still carry country_name (validated in loader).
+index_values_schema = DataFrameSchema(
+    {
+        "iso3": ISO3,
+        "year": YEAR,
+        "value": Column(float, nullable=True, coerce=True),
+    },
+    strict=True,
+    coerce=True,
+)
+
 RAW_CONTRACTS: dict[str, pa.DataFrameSchema] = {
     "worldbank_wdi": indicators_schema,
     "worldbank_wgi": indicators_schema,
@@ -80,4 +91,11 @@ RAW_CONTRACTS: dict[str, pa.DataFrameSchema] = {
     "cepi_gravity": bilateral_schema,
     "hofstede": hofstede_schema,
     "wits_trains": tariffs_schema,
+    "itu_datahub": index_values_schema,
+    "ef_epi": index_values_schema,
+    "odin": index_values_schema,
+    "gedi": index_values_schema,
+    "wipo_gii": index_values_schema,
+    "startupblink": index_values_schema,
+    "yale_epi": index_values_schema,
 }

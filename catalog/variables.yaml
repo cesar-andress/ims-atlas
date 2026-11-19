@@ -653,6 +653,7 @@ variables:
   transform: none
   unit: index (USA=100)
   source: WB ICP/WDI
+  code: PA.NUS.PRVT.PLI
   citation: World Bank. World Development Indicators / ICP. PA.NUS.PRVT.PLI.
   redistributable: true
   years:

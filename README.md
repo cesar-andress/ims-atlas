@@ -8,8 +8,9 @@ is no backend and no accounts.
 
 ## Status
 
-Phase 2b (`v0.1.0`): catalog, rights gate, offline ETL, QA, staging release, lineage,
-and weekly freshness check units. Browser engine UI for data pages lands later.
+Phase 3 (`v0.1.0`): Phase 2b plus connectors/transforms for new catalog variables
+(communication, entrepreneurship, sustainability, PLI), coverage heatmaps, and
+fixture-first BYOD sources. Browser engine UI lands later.
 
 ```bash
 make catalog-validate   # variables.yaml + sources.yaml

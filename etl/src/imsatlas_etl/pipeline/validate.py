@@ -8,10 +8,11 @@ from typing import Any
 
 import pandera.errors as pa_errors
 
-from imsatlas_etl.connectors import baci, gravity, hofstede, wits
+from imsatlas_etl.connectors import baci, country_index, gravity, hofstede, wits
 from imsatlas_etl.connectors import worldbank as wb
 from imsatlas_etl.contracts.schemas import RAW_CONTRACTS
 from imsatlas_etl.pipeline.io_paths import (
+    PHASE3_INDEX_SOURCES,
     PIPELINE_SOURCES,
     freshness_path,
     raw_source_dir,
@@ -39,6 +40,14 @@ def _load_raw(source_id: str, version: str, *, root: Path | None):
         return hofstede.load_raw_dimensions(directory / "dimensions.csv")
     if source_id == "wits_trains":
         return wits.load_raw_tariffs(directory / "tariffs.csv")
+    if source_id in PHASE3_INDEX_SOURCES:
+        frame, unmatched = country_index.load_raw_values(directory / "values.csv")
+        if unmatched:
+            raise ValueError(
+                f"{source_id}: {len(unmatched)} unmatched country names "
+                f"(explicit ISO3 map only): {unmatched[:5]}",
+            )
+        return frame
     raise ValueError(source_id)
 
 

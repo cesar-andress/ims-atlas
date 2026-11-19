@@ -16,6 +16,7 @@ dependencies = [
   "pandera>=0.36.0",
   "requests>=2.34.2",
   "numpy>=1.26",
+  "matplotlib>=3.8",
 ]
 
 [project.optional-dependencies]
