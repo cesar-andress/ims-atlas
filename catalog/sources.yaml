@@ -523,10 +523,10 @@ sources:
   licence_url: https://creativecommons.org/licenses/by-nc-sa/4.0/
   endpoints:
   - id: scores
-    template: https://epi.yale.edu/
+    template: https://epi.yale.edu/sites/default/files/2026-09/epi2026results2026-07-07.xlsx
     method: GET
   update_cadence: biennial
-  version_detection: EPI edition year
+  version_detection: EPI edition year + Last-Modified of results XLSX
   citation: Yale Center for Environmental Law & Policy. Environmental Performance
     Index.
   rights:

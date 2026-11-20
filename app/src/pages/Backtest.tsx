@@ -144,7 +144,6 @@ export function Backtest() {
               {fixture.provenance}
             </p>
 
-            <h2>{t("ndcgByMethod")}</h2>
             {focalNdgc ? (
               <p data-testid="focal-ndcg">
                 {fixture.focal_method} · NDCG@10 ={" "}
@@ -156,45 +155,55 @@ export function Backtest() {
                 {focalNdgc.n_blocks}
               </p>
             ) : null}
-            <div className="table-scroll" data-export-surface="table">
-              <ExportMenu
-                testIdPrefix="t4-metrics"
-                kind="table"
-                title="T4 NDCG@10 metrics"
-                tableRows={[
-                  ["method", "ndcg10", "ci_low", "ci_high", "n"],
-                  ...metricRows.map((r) => [
-                    r.method,
-                    String(r.mean),
-                    String(r.ci95_low),
-                    String(r.ci95_high),
-                    String(r.n_blocks),
-                  ]),
-                ]}
-              />
-              <table data-testid="t4-metrics-table">
-                <thead>
-                  <tr>
-                    <th>Method</th>
-                    <th>NDCG@10</th>
-                    <th>CI low</th>
-                    <th>CI high</th>
-                    <th>n</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {metricRows.map((r) => (
-                    <tr key={r.method} data-method={r.method}>
-                      <td>{r.method}</td>
-                      <td data-mean={String(r.mean)}>{formatScore(r.mean)}</td>
-                      <td>{formatScore(r.ci95_low)}</td>
-                      <td>{formatScore(r.ci95_high)}</td>
-                      <td>{r.n_blocks}</td>
+            <section
+              className="results-card backtest-table-card"
+              data-export-surface="table"
+            >
+              <div className="bump-table-head">
+                <h2>{t("ndcgByMethod")}</h2>
+                <ExportMenu
+                  testIdPrefix="t4-metrics"
+                  kind="table"
+                  title="T4 NDCG@10 metrics"
+                  tableRows={[
+                    ["method", "ndcg10", "ci_low", "ci_high", "n"],
+                    ...metricRows.map((r) => [
+                      r.method,
+                      String(r.mean),
+                      String(r.ci95_low),
+                      String(r.ci95_high),
+                      String(r.n_blocks),
+                    ]),
+                  ]}
+                />
+              </div>
+              <div className="table-scroll bump-table-scroll">
+                <table className="bump-table" data-testid="t4-metrics-table">
+                  <thead>
+                    <tr>
+                      <th>Method</th>
+                      <th>NDCG@10</th>
+                      <th>CI low</th>
+                      <th>CI high</th>
+                      <th>n</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {metricRows.map((r) => (
+                      <tr key={r.method} data-method={r.method}>
+                        <td>{r.method}</td>
+                        <td data-mean={String(r.mean)} className="font-tabular">
+                          {formatScore(r.mean)}
+                        </td>
+                        <td className="font-tabular">{formatScore(r.ci95_low)}</td>
+                        <td className="font-tabular">{formatScore(r.ci95_high)}</td>
+                        <td className="font-tabular">{r.n_blocks}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
 
             {paperPreset && colRow ? (
               <p className="muted" data-testid="col-hs64-ndcg">
@@ -210,122 +219,145 @@ export function Backtest() {
               </p>
             ) : null}
 
-            <h2>{t("pairedLift")}</h2>
-            <div className="table-scroll" data-export-surface="table">
-              <ExportMenu
-                testIdPrefix="t4-lift"
-                kind="table"
-                title="T4 paired lift"
-                tableRows={[
-                  ["baseline", "delta_mean", "ci_low", "ci_high"],
-                  ...liftRows.map((r) => [
-                    r.baseline,
-                    String(r.delta_mean),
-                    String(r.ci95_low),
-                    String(r.ci95_high),
-                  ]),
-                ]}
-              />
-              <table data-testid="t4-lift-table">
-                <thead>
-                  <tr>
-                    <th>Baseline</th>
-                    <th>Δ mean</th>
-                    <th>CI low</th>
-                    <th>CI high</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {liftRows.map((r) => (
-                    <tr key={r.baseline} data-baseline={r.baseline}>
-                      <td>{r.baseline}</td>
-                      <td data-delta={String(r.delta_mean)}>
-                        {formatScore(r.delta_mean)}
-                      </td>
-                      <td>{formatScore(r.ci95_low)}</td>
-                      <td>{formatScore(r.ci95_high)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            <h2>{t("variableValue")}</h2>
-            <p className="muted small">{t("variableValueHint")}</p>
-            <div className="table-scroll" data-export-surface="table">
-              <ExportMenu
-                testIdPrefix="t6-ablation"
-                kind="table"
-                title="T6 ablation"
-                tableRows={[
-                  ["contrast", "delta_ndcg10", "ci_low", "ci_high"],
-                  ...fixture.ablation.map((r) => [
-                    r.contrast,
-                    String(r.delta_mean),
-                    String(r.ci95_low),
-                    String(r.ci95_high),
-                  ]),
-                ]}
-              />
-              <table data-testid="t6-ablation-table">
-                <thead>
-                  <tr>
-                    <th>Contrast</th>
-                    <th>Δ NDCG@10</th>
-                    <th>CI low</th>
-                    <th>CI high</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {fixture.ablation.map((r) => (
-                    <tr key={r.contrast} data-contrast={r.contrast}>
-                      <td>{r.contrast}</td>
-                      <td data-delta={String(r.delta_mean)}>
-                        {formatScore(r.delta_mean)}
-                      </td>
-                      <td>{formatScore(r.ci95_low)}</td>
-                      <td>{formatScore(r.ci95_high)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            <h3>{t("looRankSensitivity")}</h3>
-            <p className="muted small">{t("looHint")}</p>
-            {model ? (
-              <div className="table-scroll" data-export-surface="table">
+            <section
+              className="results-card backtest-table-card"
+              data-export-surface="table"
+            >
+              <div className="bump-table-head">
+                <h2>{t("pairedLift")}</h2>
                 <ExportMenu
-                  testIdPrefix="loo"
+                  testIdPrefix="t4-lift"
                   kind="table"
-                  title="Leave-one-out Spearman"
+                  title="T4 paired lift"
                   tableRows={[
-                    ["variable_dropped", "spearman"],
-                    ...loo.map((r) => [r.variable, String(r.spearman)]),
+                    ["baseline", "delta_mean", "ci_low", "ci_high"],
+                    ...liftRows.map((r) => [
+                      r.baseline,
+                      String(r.delta_mean),
+                      String(r.ci95_low),
+                      String(r.ci95_high),
+                    ]),
                   ]}
                 />
-                <table data-testid="loo-table">
+              </div>
+              <div className="table-scroll bump-table-scroll">
+                <table className="bump-table" data-testid="t4-lift-table">
                   <thead>
                     <tr>
-                      <th>Variable dropped</th>
-                      <th>Spearman vs full</th>
+                      <th>Baseline</th>
+                      <th>Δ mean</th>
+                      <th>CI low</th>
+                      <th>CI high</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {loo.map((r) => (
-                      <tr key={r.variable} data-variable={r.variable}>
-                        <td>{r.variable}</td>
-                        <td>{formatScore(r.spearman)}</td>
+                    {liftRows.map((r) => (
+                      <tr key={r.baseline} data-baseline={r.baseline}>
+                        <td>{r.baseline}</td>
+                        <td data-delta={String(r.delta_mean)} className="font-tabular">
+                          {formatScore(r.delta_mean)}
+                        </td>
+                        <td className="font-tabular">{formatScore(r.ci95_low)}</td>
+                        <td className="font-tabular">{formatScore(r.ci95_high)}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-            ) : (
-              <p className="muted small" data-testid="loo-unavailable">
-                {t("dataReleasePending")}
-              </p>
-            )}
+            </section>
+
+            <section
+              className="results-card backtest-table-card"
+              data-export-surface="table"
+            >
+              <div className="bump-table-head">
+                <h2>{t("variableValue")}</h2>
+                <ExportMenu
+                  testIdPrefix="t6-ablation"
+                  kind="table"
+                  title="T6 ablation"
+                  tableRows={[
+                    ["contrast", "delta_ndcg10", "ci_low", "ci_high"],
+                    ...fixture.ablation.map((r) => [
+                      r.contrast,
+                      String(r.delta_mean),
+                      String(r.ci95_low),
+                      String(r.ci95_high),
+                    ]),
+                  ]}
+                />
+              </div>
+              <p className="muted small bump-table-hint">{t("variableValueHint")}</p>
+              <div className="table-scroll bump-table-scroll">
+                <table className="bump-table" data-testid="t6-ablation-table">
+                  <thead>
+                    <tr>
+                      <th>Contrast</th>
+                      <th>Δ NDCG@10</th>
+                      <th>CI low</th>
+                      <th>CI high</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {fixture.ablation.map((r) => (
+                      <tr key={r.contrast} data-contrast={r.contrast}>
+                        <td>{r.contrast}</td>
+                        <td data-delta={String(r.delta_mean)} className="font-tabular">
+                          {formatScore(r.delta_mean)}
+                        </td>
+                        <td className="font-tabular">{formatScore(r.ci95_low)}</td>
+                        <td className="font-tabular">{formatScore(r.ci95_high)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section
+              className="results-card backtest-table-card"
+              data-export-surface="table"
+            >
+              <div className="bump-table-head">
+                <h2>{t("looRankSensitivity")}</h2>
+                {model ? (
+                  <ExportMenu
+                    testIdPrefix="loo"
+                    kind="table"
+                    title="Leave-one-out Spearman"
+                    tableRows={[
+                      ["variable_dropped", "spearman"],
+                      ...loo.map((r) => [r.variable, String(r.spearman)]),
+                    ]}
+                  />
+                ) : null}
+              </div>
+              <p className="muted small bump-table-hint">{t("looHint")}</p>
+              {model ? (
+                <div className="table-scroll bump-table-scroll">
+                  <table className="bump-table" data-testid="loo-table">
+                    <thead>
+                      <tr>
+                        <th>Variable dropped</th>
+                        <th>Spearman vs full</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {loo.map((r) => (
+                        <tr key={r.variable} data-variable={r.variable}>
+                          <td>{r.variable}</td>
+                          <td className="font-tabular">{formatScore(r.spearman)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <p className="muted small" data-testid="loo-unavailable">
+                  {t("dataReleasePending")}
+                </p>
+              )}
+            </section>
           </div>
         ) : (
           <p className="muted">{t("loading")}</p>

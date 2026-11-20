@@ -7,7 +7,8 @@ Where a human downloads it: <https://wits.worldbank.org/> (landing page from `ca
 ## What to place here
 
 Nothing to download by hand: the live extract calls the WITS TRN SDMX API. It needs a
-scope file `config/wits_trains.json` that you write (not shipped):
+scope file `config/wits_trains.json` that you write (not shipped). Start from
+`config/examples/wits_trains.json.example` (COL · HS 64 · main destinations):
 
 ```json
 {

@@ -38,6 +38,7 @@ HOURLY_LIVE_SOURCES = (
     "vat_rates",
     "kof_globalisation",
     "fragile_states_index",
+    "yale_epi",
 )
 
 # EXTRA-4: also report these in freshness.json as ok / falta fichero / no conectada.

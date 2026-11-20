@@ -105,6 +105,7 @@ def _live_probe(source_id: str, *, root: Path | None) -> dict[str, Any]:
         vat_rates,
         wipo_gii,
         wits,
+        yale_epi,
     )
     from imsatlas_etl.connectors import worldbank as wb
     from imsatlas_etl.connectors.step3 import has_manual_drop
@@ -148,6 +149,13 @@ def _live_probe(source_id: str, *, root: Path | None) -> dict[str, Any]:
                 "note": note,
             }
         return fragile_states.probe_version()
+    if source_id == "yale_epi":
+        if has_manual_drop(source_id, root=root):
+            return {
+                "upstream_version": manual_drop.live_version(source_id, root=root),
+                "note": note,
+            }
+        return yale_epi.probe_version()
     step3 = {
         "inform_risk": inform,
         "transparency_cpi": cpi,

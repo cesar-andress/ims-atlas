@@ -1,0 +1,27 @@
+{
+  "version": "col-hs64-2020-2023",
+  "reporters": [
+    "USA",
+    "DEU",
+    "CHN",
+    "NLD",
+    "FRA",
+    "GBR",
+    "ESP",
+    "ITA",
+    "CAN",
+    "MEX",
+    "BRA",
+    "CHL",
+    "PER",
+    "ECU",
+    "PAN",
+    "CRI",
+    "JPN",
+    "KOR",
+    "AUS"
+  ],
+  "partners": ["COL"],
+  "years": [2020, 2023],
+  "hs_chapters": ["64"]
+}

@@ -22,6 +22,7 @@ from imsatlas_etl.connectors import (
     vat_rates,
     wipo_gii,
     wits,
+    yale_epi,
 )
 from imsatlas_etl.connectors import worldbank as wb
 from imsatlas_etl.pipeline.io_paths import (
@@ -89,8 +90,10 @@ def _extract_live(
         return kof_globalisation.extract_live(version, root=root, force=force)
     if source_id == "fragile_states_index":
         return fragile_states.extract_live(version, root=root, force=force)
+    if source_id == "yale_epi":
+        return yale_epi.extract_live(version, root=root, force=force)
     # Step 3: live file download unless a manual drop is in place; sources with
-    # no verified auto-fetch (unctadstat, yale_epi, …) fall through to manual_drop.
+    # no verified auto-fetch (unctadstat, …) fall through to manual_drop.
     step3 = {
         "inform_risk": inform.extract_live,
         "transparency_cpi": cpi.extract_live,
