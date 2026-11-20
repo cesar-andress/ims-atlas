@@ -5,7 +5,7 @@ const VIEWS = [
   { path: "/", view: "home", testId: "home-view" },
   { path: "/datos", view: "datos", testId: "datos-hub" },
   { path: "/variables", view: "variables", testId: "variables-hub" },
-  { path: "/analisis", view: "analisis", testId: "analisis-gallery" },
+  { path: "/analisis", view: "analisis", testId: "results-shell" },
   { path: "/status", view: "status", testId: "data-status-view" },
   { path: "/docs", view: "docs", testId: "docs-view" },
 ] as const;

@@ -230,11 +230,14 @@ export async function deleteProject(id: string): Promise<void> {
   else memory.delete(id);
 }
 
-export async function duplicateProject(id: string): Promise<AtlasProject> {
+export async function duplicateProject(
+  id: string,
+  copySuffix = "copy",
+): Promise<AtlasProject> {
   const src = await getProject(id);
   if (!src) throw new Error("Project not found.");
   const copy = createEmptyProject({
-    name: `${src.name} (copy)`,
+    name: `${src.name} (${copySuffix})`,
     config: src.config,
     ...(src.description !== undefined ? { description: src.description } : {}),
     ...(src.yearFrom !== undefined ? { yearFrom: src.yearFrom } : {}),

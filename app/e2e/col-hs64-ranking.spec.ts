@@ -47,12 +47,8 @@ test.describe("COL HS64 2023 IMSFE ranking", () => {
     };
     await page.goto(`/variables?c=${encodeConfig({ ...config, view: "variables" })}`);
     await expect(page.getByTestId("variables-hub")).toBeVisible();
-    await expect(page.getByTestId("variables-summary-bar")).toContainText("COL");
-    await page
-      .getByTestId("main-nav")
-      .getByRole("link", { name: /Analysis|Análisis/i })
-      .click();
-    await page.getByTestId("study-open-ranking").click();
+    await expect(page.getByTestId("project-chips")).toContainText("Colombia");
+    await page.getByTestId("step-resultados").click();
     await expect(page.getByTestId("ranking-view")).toBeVisible({ timeout: 15_000 });
     await expect(page.getByTestId("ranking-table")).toBeVisible({ timeout: 15_000 });
 

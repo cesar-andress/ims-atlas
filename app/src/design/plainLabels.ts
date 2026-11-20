@@ -30,3 +30,12 @@ export function methodPlainLabel(
   }
   return id;
 }
+
+/** Method family names are proper names of published methods (same in ES and EN). */
+export function methodFamilyLabel(family: string | undefined): string | null {
+  if (family === "imsfe_2025") return "Baena & Cano (IMSFE)";
+  if (family === "imsfem_2025_olive") return "Baena & Cano (IMSFEM)";
+  if (family === "smi_2018") return "SMI 2018";
+  if (family === "smi_2020") return "SMI 2020+";
+  return null;
+}

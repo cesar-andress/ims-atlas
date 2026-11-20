@@ -29,6 +29,12 @@ import {
   viewFromPath,
 } from "./urlState";
 
+function uiIsSpanish(lang: AnalysisConfig["lang"]): boolean {
+  const current =
+    lang ?? (typeof document !== "undefined" ? document.documentElement.lang : "es");
+  return current.startsWith("es");
+}
+
 function sameConfig(a: AnalysisConfig, b: AnalysisConfig): boolean {
   return JSON.stringify(a) === JSON.stringify(b);
 }
@@ -144,6 +150,13 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
     [commit],
   );
 
+  const setLang = useCallback(
+    (lang: "en" | "es") => {
+      commit({ ...configRef.current, lang, v: 1 }, { markDirty: false });
+    },
+    [commit],
+  );
+
   // Autosave draft every 8s when dirty.
   useEffect(() => {
     if (!dirty) return;
@@ -173,7 +186,7 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
         setActiveProject(saved);
         setDirty(false);
         toast.push(
-          configRef.current.lang === "es" ? "Proyecto guardado" : "Project saved",
+          uiIsSpanish(configRef.current.lang) ? "Proyecto guardado" : "Project saved",
         );
       })();
     }
@@ -187,6 +200,7 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
       setConfig,
       replaceConfig,
       setView,
+      setLang,
       activeProject,
       dirty,
       saveProject: async (label) => {
@@ -199,7 +213,7 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
         setActiveProject(saved);
         setDirty(false);
         toast.push(
-          configRef.current.lang === "es" ? "Proyecto guardado" : "Project saved",
+          uiIsSpanish(configRef.current.lang) ? "Proyecto guardado" : "Project saved",
         );
       },
       exportProject: () => {
@@ -225,31 +239,46 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
               { markDirty: false },
             );
             toast.push(
-              configRef.current.lang === "es"
+              uiIsSpanish(configRef.current.lang)
                 ? "Proyecto importado"
                 : "Project imported",
             );
           } catch {
             commit(importProjectJson(json), { markDirty: false });
             toast.push(
-              configRef.current.lang === "es"
+              uiIsSpanish(configRef.current.lang)
                 ? "Proyecto importado"
                 : "Project imported",
             );
           }
         })();
       },
-      openProject: (project) => {
+      openProject: (project, view = "analisis") => {
         setActiveProject(project);
         setDirty(false);
-        commit({ ...project.config, view: "project_dashboard" }, { markDirty: false });
+        // The UI language is a user preference, not a project property.
+        const lang = configRef.current.lang ?? project.config.lang;
+        commit(
+          { ...project.config, view, ...(lang ? { lang } : {}) },
+          { markDirty: false },
+        );
       },
       clearActiveProject: () => {
         setActiveProject(null);
         setDirty(false);
       },
     }),
-    [config, setConfig, replaceConfig, setView, activeProject, dirty, commit, toast],
+    [
+      config,
+      setConfig,
+      replaceConfig,
+      setView,
+      setLang,
+      activeProject,
+      dirty,
+      commit,
+      toast,
+    ],
   );
 
   return <AnalysisContext.Provider value={value}>{children}</AnalysisContext.Provider>;

@@ -10,6 +10,7 @@ from typing import Any
 
 from imsatlas_etl.access import source_store, source_store_reason
 from imsatlas_etl.catalog import load_catalog
+from imsatlas_etl.gate import gate
 from imsatlas_etl.paths import repo_root
 from imsatlas_etl.pipeline.changes import (
     changes_dir,
@@ -18,6 +19,7 @@ from imsatlas_etl.pipeline.changes import (
     variables_status_fields,
 )
 from imsatlas_etl.pipeline.terms import terms_changed_for_source
+from imsatlas_etl.rights import load_deployment
 from imsatlas_etl.sources import load_sources
 
 FIXTURE_BANNER = (
@@ -140,6 +142,8 @@ def _sources_payload(
                 },
             )
         fr = fresh_by.get(sid) or {}
+        decision = gate(rights, None, load_deployment()).get("decision")
+        licence_id = rights.get("licence_id")
         rows.append(
             {
                 "id": sid,
@@ -147,12 +151,17 @@ def _sources_payload(
                 "landing_url": src.get("landing_url"),
                 "terms_url": src.get("terms_url"),
                 "licence_url": src.get("licence_url"),
+                # Top-level aliases so SPA tables never show stale UNKNOWN when
+                # rights.licence_id is present in the catalog (attested BACI, …).
+                "licence": licence_id,
+                "licence_id": licence_id,
+                "decision": decision,
                 "update_cadence": src.get("update_cadence"),
                 "version_detection": src.get("version_detection"),
                 "citation": src.get("citation"),
                 "endpoints": endpoints,
                 "rights": {
-                    "licence_id": rights.get("licence_id"),
+                    "licence_id": licence_id,
                     "use_research": rights.get("use_research"),
                     "redistribute_raw": rights.get("redistribute_raw"),
                     "redistribute_derived": rights.get("redistribute_derived"),

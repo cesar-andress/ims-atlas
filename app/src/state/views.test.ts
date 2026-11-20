@@ -1,19 +1,30 @@
 import { describe, expect, it } from "vitest";
-import { SECONDARY_GROUPS, SECONDARY_VIEWS } from "./views";
+import {
+  isProjectScreen,
+  PROJECT_STEP_VIEWS,
+  projectStepOf,
+  RESULT_VIEWS,
+} from "./views";
 
-describe("SECONDARY_VIEWS (R2)", () => {
-  it("keeps at most 7 links", () => {
-    expect(SECONDARY_VIEWS.length).toBeLessThanOrEqual(7);
-    expect(SECONDARY_VIEWS.length).toBe(
-      SECONDARY_GROUPS.reduce((n, g) => n + g.views.length, 0),
-    );
+describe("project steps", () => {
+  it("has exactly three steps in order Datos, Variables, Resultados", () => {
+    expect(PROJECT_STEP_VIEWS).toEqual(["datos", "variables", "analisis"]);
+    expect(projectStepOf("datos")).toBe(1);
+    expect(projectStepOf("variables")).toBe(2);
+    expect(projectStepOf("analisis")).toBe(3);
   });
 
-  it("includes advanced_tools hub and excludes project sub-pages", () => {
-    expect(SECONDARY_VIEWS).toContain("advanced_tools");
-    expect(SECONDARY_VIEWS).not.toContain("project_dashboard");
-    expect(SECONDARY_VIEWS).not.toContain("project_variables");
-    expect(SECONDARY_VIEWS).not.toContain("sql");
-    expect(SECONDARY_VIEWS).not.toContain("design");
+  it("maps every result view to step 3 and shows the project bar", () => {
+    for (const view of RESULT_VIEWS) {
+      expect(projectStepOf(view)).toBe(3);
+      expect(isProjectScreen(view)).toBe(true);
+    }
+  });
+
+  it("keeps Home and static pages free of the project bar", () => {
+    for (const view of ["home", "projects", "docs", "data_sources", "cite"] as const) {
+      expect(isProjectScreen(view)).toBe(false);
+      expect(projectStepOf(view)).toBeNull();
+    }
   });
 });

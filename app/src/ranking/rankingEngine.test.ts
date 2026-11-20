@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { beforeAll, describe, expect, it, vi } from "vitest";
-import { computeRanking } from "./rankingEngine";
+import { computeRanking, overrideCriterionWeights } from "./rankingEngine";
 
 const goldenPath = join(
   dirname(fileURLToPath(import.meta.url)),
@@ -84,5 +84,25 @@ describe("rankingEngine COL HS64", () => {
     expect(model.ranking.length).toBeLessThanOrEqual(30);
     expect(model.ranking.length).toBeGreaterThanOrEqual(20);
     expect(model.warnings.some((w) => w.includes("Criteria tree"))).toBe(true);
+  });
+});
+
+describe("overrideCriterionWeights", () => {
+  const base = { COST: 0.5, LOGI: 0.3, COMM: 0.2 };
+
+  it("returns the expert weights untouched when nothing is overridden", () => {
+    expect(overrideCriterionWeights(base, undefined)).toBe(base);
+    expect(overrideCriterionWeights(base, { demand: 1 })).toBe(base);
+  });
+
+  it("normalises manual criterion weights to sum 1", () => {
+    const out = overrideCriterionWeights(base, { COST: 2, LOGI: 1, COMM: 1 });
+    expect(out.COST).toBeCloseTo(0.5, 12);
+    expect(out.LOGI).toBeCloseTo(0.25, 12);
+    expect(out.COMM).toBeCloseTo(0.25, 12);
+  });
+
+  it("falls back to the expert weights when every override is zero", () => {
+    expect(overrideCriterionWeights(base, { COST: 0, LOGI: 0, COMM: 0 })).toBe(base);
   });
 });

@@ -1,41 +1,48 @@
 import type { AnalysisConfig, ViewId } from "./schema";
 
-/** Information flow: Datos · Variables · Análisis · Proyectos. */
-export const PRIMARY_VIEWS: readonly ViewId[] = [
+/** The three project steps: 1 Datos · 2 Variables y pesos · 3 Resultados. */
+export const PROJECT_STEP_VIEWS: readonly ViewId[] = [
   "datos",
   "variables",
   "analisis",
-  "projects",
 ] as const;
 
-/**
- * Secondary “Más” menu — at most 7 links (R2), grouped Datos · Herramientas · Acerca de.
- * Project sub-pages and labs live under advanced_tools or the project itself.
- */
-export const SECONDARY_GROUPS: readonly {
-  labelKey: string;
-  views: readonly ViewId[];
-}[] = [
-  {
-    labelKey: "navGroupDatos",
-    views: ["data_sources", "data_updates", "explore"],
-  },
-  {
-    labelKey: "navGroupTools",
-    views: ["byod", "advanced_tools"],
-  },
-  {
-    labelKey: "navGroupAbout",
-    views: ["docs", "cite"],
-  },
+export type ProjectStep = 1 | 2 | 3;
+
+/** Result screens reachable from the Resultados tabs (and by permalink). */
+export const RESULT_VIEWS: readonly ViewId[] = [
+  "analisis",
+  "ranking",
+  "matrix",
+  "map",
+  "compare",
+  "time",
+  "backtest",
+  "uncertainty",
+  "factors",
 ] as const;
 
-export const SECONDARY_VIEWS: readonly ViewId[] = SECONDARY_GROUPS.flatMap(
-  (g) => g.views,
-);
+/** Project screens show the project bar; bare Home and static pages do not. */
+export function isProjectScreen(view: ViewId): boolean {
+  return (
+    view === "datos" ||
+    view === "variables" ||
+    view === "builder" ||
+    (RESULT_VIEWS as readonly string[]).includes(view)
+  );
+}
+
+/** Which of the three steps a view belongs to (null outside a project step). */
+export function projectStepOf(view: ViewId): ProjectStep | null {
+  if (view === "datos") return 1;
+  if (view === "variables" || view === "builder") return 2;
+  if ((RESULT_VIEWS as readonly string[]).includes(view)) return 3;
+  return null;
+}
 
 /** Views that share the analysis config panel + ranking model. */
 export const ANALYSIS_VIEWS: readonly ViewId[] = [
+  "datos",
   "variables",
   "builder",
   "ranking",
@@ -56,10 +63,6 @@ export const ANALYSIS_VIEWS: readonly ViewId[] = [
 
 export function isAnalysisView(view: ViewId): boolean {
   return (ANALYSIS_VIEWS as readonly string[]).includes(view);
-}
-
-export function isPrimaryView(view: ViewId): boolean {
-  return (PRIMARY_VIEWS as readonly string[]).includes(view);
 }
 
 /** Ranking / matrix / map need origin + HS + year before computing. */

@@ -72,7 +72,7 @@ export function Projects() {
     const { upsertProject } = await import("../state/projectIdb");
     const saved = await upsertProject(project);
     await refresh();
-    openProject(saved);
+    openProject(saved, "project_dashboard");
     toast.push(t("projectCreated"));
   }
 
@@ -80,7 +80,7 @@ export function Projects() {
     const { getProject } = await import("../state/projectIdb");
     const p = await getProject(id);
     if (!p) return;
-    openProject(p);
+    openProject(p, "project_dashboard");
   }
 
   async function onRename(id: string, current: string) {

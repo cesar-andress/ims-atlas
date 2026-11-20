@@ -7,8 +7,6 @@ import {
 } from "@ims-atlas/core";
 import { ExportMenu } from "../ExportMenu";
 import { HelpButton } from "../HelpButton";
-import { PermalinkLink } from "../PermalinkLink";
-import { ProductContextBanner } from "../ProductContextBanner";
 import {
   CRITERION_COLOR,
   CRITERION_LABEL,
@@ -83,7 +81,7 @@ type Props = { model: RankingViewModel };
 export function ResultsDashboard({ model }: Props) {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
-  const { config, activeProject } = useAnalysis();
+  const { config } = useAnalysis();
   const { compareA, selectIso } = useCompareSelection();
   const eoc = useImsfeEocMatrix(model);
   const methodWarnings = useMemo(() => collectMethodWarnings(config), [config]);
@@ -136,12 +134,6 @@ export function ResultsDashboard({ model }: Props) {
     : null;
   const qCopy = selectedQ ? quadrantCopy(selectedQ, lang) : null;
 
-  const projectTitle =
-    activeProject?.name ??
-    `${config.origin ?? "—"} · HS${config.hs ?? "—"} · ${model.ranking.length} ${
-      lang === "es" ? "mercados" : "markets"
-    }`;
-
   const summary =
     lang === "es"
       ? `Para HS${config.hs ?? "—"} desde ${config.origin ?? "—"} (${config.year ?? "—"}), los tres mejores mercados son ${model.ranking
@@ -187,23 +179,8 @@ export function ResultsDashboard({ model }: Props) {
   return (
     <div className="results-dash" data-testid="results-dashboard">
       <header className="results-dash-header" data-testid="results-header">
-        <div className="results-brand">
-          <span className="results-globe" aria-hidden>
-            ◌
-          </span>
-          <strong>IMS Atlas</strong>
-          <span className="results-sep">/</span>
-          <span data-testid="results-project-title">{projectTitle}</span>
-        </div>
         <div className="results-header-actions">
           <HelpButton />
-          <PermalinkLink
-            view="variables"
-            className="btn btn-secondary"
-            data-testid="change-analysis"
-          >
-            {t("changeAnalysis")}
-          </PermalinkLink>
           <ExportMenu
             testIdPrefix="results"
             kind="table"
@@ -221,9 +198,7 @@ export function ResultsDashboard({ model }: Props) {
         <p className="results-notice" data-testid="results-notice" role="status">
           {notice}
         </p>
-      ) : (
-        <ProductContextBanner />
-      )}
+      ) : null}
 
       <div className="results-kpis" data-testid="results-kpis">
         <article className="results-card kpi">
@@ -628,20 +603,6 @@ export function ResultsDashboard({ model }: Props) {
           </ol>
         </section>
       </div>
-
-      <footer className="results-dash-footer" data-testid="results-footer">
-        <span>© IMS Atlas · atlas.aiserv.es · AISERV SYSTEMS SLU</span>
-        <span>
-          {lang === "es" ? "Método:" : "Method:"} Baena-Rojas &amp; Cano ·{" "}
-          <PermalinkLink view="cite">
-            {lang === "es" ? "Cómo citar" : "How to cite"}
-          </PermalinkLink>
-          {" · "}
-          <PermalinkLink view="data_sources">
-            {lang === "es" ? "Fuentes y licencias" : "Sources & licences"}
-          </PermalinkLink>
-        </span>
-      </footer>
     </div>
   );
 }

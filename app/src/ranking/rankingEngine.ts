@@ -231,6 +231,26 @@ function manualWeightsFromResolved(
   return { factors, variablesWithin };
 }
 
+/**
+ * Criterion weights chosen by hand replace the criteria-tree (expert) weights.
+ * Returns `base` unchanged when `override` names none of the tree criteria, so
+ * the default expert path (and the golden fixtures) are not affected.
+ */
+export function overrideCriterionWeights(
+  base: Record<string, number>,
+  override: Record<string, number> | undefined,
+): Record<string, number> {
+  if (!override) return base;
+  const keys = Object.keys(base);
+  if (!keys.some((k) => override[k] !== undefined)) return base;
+  const raw = Object.fromEntries(
+    keys.map((k) => [k, Math.max(0, override[k] ?? 0)] as const),
+  );
+  const sum = Object.values(raw).reduce((a, b) => a + b, 0);
+  if (sum <= 0) return base;
+  return Object.fromEntries(keys.map((k) => [k, raw[k]! / sum] as const));
+}
+
 function buildZeroPolicy(req: RankingRequest): ZeroPolicy {
   const kind = req.zeroPolicy ?? "epsilon";
   if (kind === "minmax") return { kind: "minmax" };
@@ -503,6 +523,12 @@ export async function computeRanking(req: RankingRequest): Promise<RankingViewMo
 
   if (tree && resolvedMeta && resolvedMeta.size > 0) {
     manualWeights = manualWeightsFromResolved(tree, resolvedMeta);
+    if (weightScheme === "manual") {
+      manualWeights = {
+        ...manualWeights,
+        factors: overrideCriterionWeights(manualWeights.factors, req.factorWeights),
+      };
+    }
     weightScheme = "manual";
   } else if (weightScheme === "manual" && req.factorWeights) {
     manualWeights = {

@@ -15,6 +15,8 @@ type Props = {
   children: ReactNode;
   "data-testid"?: string | undefined;
   title?: string | undefined;
+  "aria-current"?: "step" | "page" | undefined;
+  "aria-label"?: string | undefined;
   onClick?: (() => void) | undefined;
   onMouseEnter?: (() => void) | undefined;
   onFocus?: (() => void) | undefined;
@@ -29,6 +31,8 @@ export function PermalinkLink({
   className,
   children,
   title,
+  "aria-current": ariaCurrent,
+  "aria-label": ariaLabel,
   onClick,
   onMouseEnter,
   onFocus,
@@ -51,6 +55,8 @@ export function PermalinkLink({
       className={className}
       data-testid={testId}
       title={title}
+      aria-current={ariaCurrent}
+      aria-label={ariaLabel}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onFocus={onFocus}

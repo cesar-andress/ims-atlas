@@ -21,6 +21,9 @@ export type DocsSectionId = (typeof DOCS_SECTIONS)[number];
 /** Map workspace views to the docs section opened by "?". */
 export const VIEW_HELP_SECTION: Partial<Record<ViewId, DocsSectionId>> = {
   home: "getting_started",
+  datos: "sources",
+  variables: "non_experts",
+  analisis: "non_experts",
   builder: "getting_started",
   catalog: "sources",
   ranking: "non_experts",

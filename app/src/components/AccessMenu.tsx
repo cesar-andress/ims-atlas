@@ -6,6 +6,7 @@ import {
 } from "../auth/accessConfig";
 import { useAccessSession } from "../auth/accessSession";
 import { useTranslation } from "../i18n";
+import { PermalinkLink } from "./PermalinkLink";
 
 function loginUrl(portalUrl: string): string {
   const rd = encodeURIComponent(
@@ -41,8 +42,6 @@ export function AccessMenu() {
     if (!config) return;
     window.location.assign(logoutUrl(config.auth.portal_url));
   }, [config]);
-
-  const adminMailto = config?.admin_mailto ?? "#";
 
   return (
     <div className="access-menu" data-testid="access-menu">
@@ -82,13 +81,6 @@ export function AccessMenu() {
           >
             {t("access.login")}
           </button>
-          <a
-            className="access-request small"
-            href={adminMailto}
-            data-testid="access-request"
-          >
-            {t("access.requestAccess")}
-          </a>
         </>
       ) : (
         <details className="access-user-menu">
@@ -99,6 +91,11 @@ export function AccessMenu() {
             </span>
           </summary>
           <ul className="access-user-actions">
+            <li>
+              <PermalinkLink view="advanced_tools" data-testid="team-tools-link">
+                {t("nav.advanced_tools")}
+              </PermalinkLink>
+            </li>
             <li>
               <button type="button" onClick={onLogout} disabled={!config}>
                 {t("access.logout")}

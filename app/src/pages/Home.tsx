@@ -1,72 +1,256 @@
-import { version as APP_VERSION } from "@ims-atlas/core";
-import { BarChart3, Database, SlidersHorizontal } from "lucide-react";
-import { useTranslation } from "../i18n";
+import { useCallback, useEffect, useState } from "react";
+import { OnboardingTour } from "../components/OnboardingTour";
 import { PageShell } from "../components/PageShell";
 import { PermalinkLink } from "../components/PermalinkLink";
-import { dataConfig, releaseUrl } from "../dataConfig";
+import { hsLabel } from "../data/hsProducts";
+import { countryLabel } from "../design/formatLocale";
+import { useTranslation } from "../i18n";
+import {
+  createEmptyProject,
+  plainErrorMessage,
+  type ProjectListItem,
+} from "../state/projectModel";
+import {
+  getLibraryStatus,
+  getProject,
+  listProjects,
+  upsertProject,
+} from "../state/projectIdb";
+import { importAtlasProjectJson } from "../state/projectStore";
 import { COL_HS64_PRESET } from "../state/schema";
+import { useAnalysis } from "../state/useAnalysis";
+import { isAnalysisReady } from "../state/views";
 
-/** Home = three large steps: Datos → Variables → Análisis. */
-export function Home() {
+const EXAMPLE_SEEDED_KEY = "ims-atlas.example-seeded";
+const FIRST_VISIT_KEY = "ims-atlas.first-visit-dismissed";
+
+function readFlag(key: string): boolean {
+  try {
+    return typeof localStorage !== "undefined" && localStorage.getItem(key) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function writeFlag(key: string): void {
+  try {
+    if (typeof localStorage !== "undefined") localStorage.setItem(key, "1");
+  } catch {
+    /* blocked storage: the hint may show again next visit */
+  }
+}
+
+/** Shared across StrictMode double effects so the example is created once. */
+let seedLock: Promise<void> | null = null;
+
+/** First visit with an empty library: create the worked example project once. */
+async function seedExampleOnce(name: string, lang: "en" | "es"): Promise<void> {
+  if (readFlag(EXAMPLE_SEEDED_KEY)) return;
+  seedLock ??= (async () => {
+    await getLibraryStatus();
+    const existing = await listProjects();
+    if (existing.length === 0) {
+      const config = {
+        ...COL_HS64_PRESET,
+        view: "analisis" as const,
+        lang,
+      };
+      await upsertProject(
+        createEmptyProject({
+          name,
+          config,
+          isExample: true,
+          ...(config.year !== undefined
+            ? { yearFrom: config.year, yearTo: config.year }
+            : {}),
+        }),
+      );
+    }
+    writeFlag(EXAMPLE_SEEDED_KEY);
+  })().finally(() => {
+    seedLock = null;
+  });
+  await seedLock;
+}
+
+function ProjectCard({
+  item,
+  lang,
+  onOpen,
+}: {
+  item: ProjectListItem;
+  lang: "en" | "es";
+  onOpen: (id: string) => void;
+}) {
   const { t } = useTranslation();
-  const status = t("statusNote")
-    .replaceAll("{appVersion}", APP_VERSION)
-    .replaceAll("{dataVersion}", dataConfig.release_version);
+  const scope = [
+    item.origin ? countryLabel(item.origin, lang) : null,
+    item.hs ? hsLabel(item.hs, lang) : null,
+    item.yearFrom !== undefined ? String(item.yearFrom) : null,
+  ].filter((x): x is string => x !== null);
+  const edited = new Intl.DateTimeFormat(lang === "es" ? "es-ES" : "en-GB", {
+    dateStyle: "medium",
+  }).format(new Date(item.updatedAt));
+  return (
+    <button
+      type="button"
+      className="card proj"
+      data-testid={`project-card-${item.id}`}
+      data-example={item.isExample ? "1" : "0"}
+      onClick={() => onOpen(item.id)}
+    >
+      <h2>
+        {item.name}
+        {item.isExample ? (
+          <span className="saved example" data-testid="project-card-example">
+            {t("projectExample")}
+          </span>
+        ) : null}
+      </h2>
+      <p>{scope.length > 0 ? scope.join(" · ") : t("projectScopePending")}</p>
+      <p>
+        {t("projectEdited")} {edited}
+      </p>
+    </button>
+  );
+}
+
+/** Home = "Tus proyectos": cards from the browser library plus "+ Nuevo proyecto". */
+export function Home() {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language.startsWith("es") ? "es" : "en";
+  const { openProject } = useAnalysis();
+  const [items, setItems] = useState<ProjectListItem[] | null>(null);
+  const [importError, setImportError] = useState<string | null>(null);
+  const [tourOpen, setTourOpen] = useState(false);
+  const [hintDismissed, setHintDismissed] = useState(() => readFlag(FIRST_VISIT_KEY));
+  const exampleName = t("exampleProjectName");
+
+  const refresh = useCallback(async () => {
+    setItems(await listProjects());
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      await getLibraryStatus();
+      await seedExampleOnce(exampleName, lang);
+      const rows = await listProjects();
+      if (!cancelled) setItems(rows);
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // The example is seeded once with the language of the first visit.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function onOpen(id: string) {
+    const project = await getProject(id);
+    if (!project) return;
+    openProject(project, isAnalysisReady(project.config) ? "analisis" : "datos");
+  }
+
+  async function onNew() {
+    const project = createEmptyProject({
+      name: t("projectNewName"),
+      config: { v: 1, view: "datos", lang },
+    });
+    const saved = await upsertProject(project);
+    await refresh();
+    openProject(saved, "datos");
+  }
+
+  function onImport(file: File) {
+    setImportError(null);
+    void file.text().then(async (text) => {
+      try {
+        const saved = await upsertProject(importAtlasProjectJson(text));
+        await refresh();
+        openProject(saved, isAnalysisReady(saved.config) ? "analisis" : "datos");
+      } catch (err) {
+        setImportError(plainErrorMessage(err));
+      }
+    });
+  }
+
+  function dismissHint() {
+    writeFlag(FIRST_VISIT_KEY);
+    setHintDismissed(true);
+    setTourOpen(false);
+  }
 
   return (
-    <PageShell testId="home-view" titleKey="appName" className="hero">
-      <p data-testid="home-tagline">{t("tagline")}</p>
-      <p className="note" data-testid="home-status">
-        {status}
-      </p>
-      <p className="note" data-testid="home-versions">
-        {t("appVersion")}: <span data-testid="app-version">{APP_VERSION}</span>
-        {" · "}
-        {t("dataRelease")}:{" "}
-        <a href={releaseUrl("manifest.json")}>v{dataConfig.release_version}</a>
+    <PageShell testId="home-view" titleKey="homeTitle" className="home">
+      <p className="lead" data-testid="home-lead">
+        {t("homeLead")}
       </p>
 
-      <div
-        className="mt-6 grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4"
-        data-testid="home-flow-cards"
-      >
-        <PermalinkLink
-          view="datos"
-          className="rounded-card border border-border bg-surface p-6 text-left no-underline transition-shadow duration-micro hover:shadow-md"
-          data-testid="home-card-datos"
+      {!hintDismissed ? (
+        <p className="callout home-hint" role="note" data-testid="home-first-time">
+          <span>{t("homeFirstTime")}</span>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            data-testid="home-tour-open"
+            onClick={() => setTourOpen(true)}
+          >
+            {t("homeTourOpen")}
+          </button>
+          <button
+            type="button"
+            className="btn ghost"
+            data-testid="home-tour-dismiss"
+            onClick={dismissHint}
+          >
+            {t("dismiss")}
+          </button>
+        </p>
+      ) : null}
+      {tourOpen ? <OnboardingTour onClose={dismissHint} /> : null}
+
+      <div className="home-grid" data-testid="home-projects">
+        {(items ?? []).map((item) => (
+          <ProjectCard
+            key={item.id}
+            item={item}
+            lang={lang}
+            onOpen={(id) => void onOpen(id)}
+          />
+        ))}
+        <button
+          type="button"
+          className="newp"
+          data-testid="project-new"
+          onClick={() => void onNew()}
         >
-          <Database className="mb-3 h-8 w-8 text-primary" aria-hidden />
-          <h2 className="m-0 text-xl font-semibold text-ink">{t("homeCardDatos")}</h2>
-          <p className="m-0 mt-2 text-sm text-ink-2">{t("homeCardDatosBody")}</p>
-        </PermalinkLink>
-        <PermalinkLink
-          view="variables"
-          replace={{ ...COL_HS64_PRESET, view: "variables" }}
-          className="rounded-card border border-border bg-surface p-6 text-left no-underline transition-shadow duration-micro hover:shadow-md"
-          data-testid="home-card-variables"
-        >
-          <SlidersHorizontal className="mb-3 h-8 w-8 text-primary" aria-hidden />
-          <h2 className="m-0 text-xl font-semibold text-ink">
-            {t("homeCardVariables")}
-          </h2>
-          <p className="m-0 mt-2 text-sm text-ink-2">{t("homeCardVariablesBody")}</p>
-        </PermalinkLink>
-        <PermalinkLink
-          view="analisis"
-          replace={{ ...COL_HS64_PRESET, view: "analisis" }}
-          className="rounded-card border border-border bg-surface p-6 text-left no-underline transition-shadow duration-micro hover:shadow-md"
-          data-testid="home-card-analisis"
-        >
-          <BarChart3 className="mb-3 h-8 w-8 text-primary" aria-hidden />
-          <h2 className="m-0 text-xl font-semibold text-ink">
-            {t("homeCardAnalisis")}
-          </h2>
-          <p className="m-0 mt-2 text-sm text-ink-2">{t("homeCardAnalisisBody")}</p>
-        </PermalinkLink>
+          {t("projectNew")}
+        </button>
       </div>
 
-      <p className="muted small mt-6" data-testid="home-limits">
-        {t("homeWhatItSays")}
+      {importError ? (
+        <p className="error" role="alert" data-testid="home-import-error">
+          {importError}
+        </p>
+      ) : null}
+      <p className="muted small home-manage">
+        <label className="file-import" data-testid="home-import-label">
+          {t("importProject")}
+          <input
+            type="file"
+            accept=".json,.atlas.json,application/json"
+            data-testid="home-import"
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) onImport(f);
+              e.target.value = "";
+            }}
+          />
+        </label>
+        {" · "}
+        <PermalinkLink view="projects" data-testid="home-manage-link">
+          {t("projectsManage")}
+        </PermalinkLink>
       </p>
     </PageShell>
   );

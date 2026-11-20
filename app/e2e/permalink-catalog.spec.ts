@@ -19,9 +19,8 @@ test.describe("permalink + catalog", () => {
     await expect(page.getByTestId("catalog-config-echo")).toContainText("2019");
     // Config panel is reserved for analysis views (builder/ranking/matrix/map).
     await expect(page.getByTestId("config-panel")).toHaveCount(0);
-    await expect(
-      page.getByTestId("main-nav").getByRole("link", { name: "Data", exact: true }),
-    ).toBeVisible();
+    await expect(page.getByTestId("site-header")).toBeVisible();
+    await expect(page.getByTestId("main-nav")).toHaveCount(0);
 
     // Wait for catalog variables to load from preview JSON
     await expect(page.locator(".catalog-list .var-id").first()).toBeVisible({

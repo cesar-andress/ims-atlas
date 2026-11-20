@@ -1,13 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useTranslation } from "../i18n";
-import {
-  hsCategoryTree,
-  hsLabel,
-  REGIONS,
-  searchHs,
-  topImporterHints,
-} from "../data/hsProducts";
-import { searchOrigins } from "../data/iso3Exporters";
+import { REGIONS } from "../data/hsProducts";
 import { analysisErrorFromUnknown } from "../ranking/analysisError";
 import { loadDemoPanel, type DemoPanel } from "../ranking/demoPanel";
 import { prefetchRanking } from "../ranking/rankingCache";
@@ -22,7 +15,6 @@ import { PodiumPanel } from "./PodiumPanel";
 import { ValueChartsPanel } from "./ValueChartsPanel";
 import { WeightLifterPanel } from "./WeightLifterPanel";
 import { LineUpWeightEditor } from "./LineUpWeightEditor";
-import { CountryPicker } from "./CountryPicker";
 import { GlossaryTooltip } from "./GlossaryTooltip";
 import { BaciPreselectBanner } from "./BaciPreselectBanner";
 import { RadixSelectField } from "./RadixSelectField";
@@ -76,12 +68,6 @@ export function ConfigPanel({
     importProject,
   } = useAnalysis();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
-  const [hsQuery, setHsQuery] = useState(config.hs ?? "");
-  const [hsDraft, setHsDraft] = useState(config.hs ?? "");
-  const [originDraft, setOriginDraft] = useState(config.origin ?? "");
-  const [yearDraft, setYearDraft] = useState(
-    config.year !== undefined ? String(config.year) : "",
-  );
   const [panel, setPanel] = useState<DemoPanel | null>(null);
   const [panelStatus, setPanelStatus] = useState<
     "loading" | "ready" | "pending" | "error"
@@ -130,26 +116,6 @@ export function ConfigPanel({
     config.factorWeights,
   ]);
 
-  // Keep local drafts in sync when permalink / preset changes config.
-  useEffect(() => {
-    setHsQuery(config.hs ?? "");
-    setHsDraft(config.hs ?? "");
-  }, [config.hs]);
-  useEffect(() => {
-    setOriginDraft(config.origin ?? "");
-  }, [config.origin]);
-  useEffect(() => {
-    setYearDraft(config.year !== undefined ? String(config.year) : "");
-  }, [config.year]);
-
-  const hsHits = useMemo(() => searchHs(hsQuery, lang), [hsQuery, lang]);
-  const importerHintIsos = useMemo(() => {
-    const code = config.hs ?? hsQuery.trim();
-    if (!code) return [];
-    return topImporterHints(code);
-  }, [config.hs, hsQuery]);
-  const hsTree = useMemo(() => hsCategoryTree(), []);
-
   const selectedVars = useMemo(() => {
     if (!panel) return new Set<string>();
     if (config.variableIds?.length) return new Set(config.variableIds);
@@ -195,17 +161,12 @@ export function ConfigPanel({
   }
 
   return (
-    <aside
+    <div
       className={`config-panel${layout === "page" ? " config-panel-page" : ""}`}
       data-testid="config-panel"
       data-layout={layout}
-      aria-label={t("configPanel")}
     >
-      <details className="config-panel-fold" open>
-        <summary>
-          <h2>{t("configPanel")}</h2>
-        </summary>
-
+      <div className="config-panel-fold">
         <div className="config-panel-body">
           <div className="page-help-row">
             <HelpButton section="getting_started" />
@@ -553,126 +514,7 @@ export function ConfigPanel({
             )}
           </GuidedBlock>
 
-          <GuidedBlock step={0} current={guidedStep}>
-            <CountryPicker
-              value={config.origin ?? originDraft}
-              testId="origin-picker"
-              inputTestId="origin-input"
-              hitsTestId="origin-hits"
-              onChange={(iso) => {
-                setOriginDraft(iso);
-                setConfig({ origin: iso });
-              }}
-            />
-            <p className="muted small" data-testid="origin-count">
-              {t("originPool")}: {searchOrigins("").length}
-            </p>
-
-            <label>
-              {t("product")}
-              <input
-                value={hsQuery}
-                placeholder="64 / Footwear / 6403"
-                data-testid="hs-search"
-                onChange={(e) => setHsQuery(e.target.value)}
-              />
-            </label>
-            {hsHits.length > 0 ? (
-              <ul className="hs-hits" data-testid="hs-hits">
-                {hsHits.slice(0, 10).map((p) => (
-                  <li key={p.code}>
-                    <button
-                      type="button"
-                      className={config.hs === p.code ? "active" : undefined}
-                      onClick={() => {
-                        setConfig({ hs: p.code });
-                        setHsQuery(p.code);
-                        setHsDraft(p.code);
-                      }}
-                    >
-                      {hsLabel(p.code, lang)}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-            {importerHintIsos.length > 0 ? (
-              <p className="muted small" data-testid="hs-importer-hints">
-                {t("illustrativeImporters").replaceAll(
-                  "{list}",
-                  importerHintIsos.join(", "),
-                )}
-              </p>
-            ) : null}
-            <details className="hs-tree" data-testid="hs-category-tree">
-              <summary>{t("hsCategoryTree")}</summary>
-              <ul>
-                {hsTree.map((node) => (
-                  <li key={node.code}>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setConfig({ hs: node.code });
-                        setHsQuery(node.code);
-                        setHsDraft(node.code);
-                      }}
-                    >
-                      {node.code} — {node.name[lang]}
-                    </button>
-                    {node.children.length > 0 ? (
-                      <ul>
-                        {node.children.map((ch) => (
-                          <li key={ch.code}>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setConfig({ hs: ch.code });
-                                setHsQuery(ch.code);
-                                setHsDraft(ch.code);
-                              }}
-                            >
-                              {ch.code} — {ch.name[lang]}
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
-                  </li>
-                ))}
-              </ul>
-            </details>
-            <label>
-              HS2/HS4/HS6
-              <input
-                value={hsDraft}
-                maxLength={6}
-                data-testid="hs-input"
-                onChange={(e) =>
-                  setHsDraft(e.target.value.replace(/\D/g, "").slice(0, 6))
-                }
-                onBlur={() => {
-                  setConfig({ hs: hsDraft || undefined });
-                  setHsQuery(hsDraft);
-                }}
-              />
-            </label>
-
-            <label>
-              {t("year")}
-              <input
-                type="number"
-                value={yearDraft}
-                placeholder="2023"
-                data-testid="year-input"
-                onChange={(e) => setYearDraft(e.target.value)}
-                onBlur={() =>
-                  setConfig({
-                    year: yearDraft ? Number(yearDraft) : undefined,
-                  })
-                }
-              />
-            </label>
-
+          <GuidedBlock step={1} current={guidedStep}>
             <label>
               {t("region")}
               <select
@@ -687,9 +529,6 @@ export function ConfigPanel({
                 ))}
               </select>
             </label>
-          </GuidedBlock>
-
-          <GuidedBlock step={1} current={guidedStep}>
             <label>
               {t("minImports")}
               <input
@@ -1072,7 +911,7 @@ export function ConfigPanel({
             </div>
           </GuidedBlock>
         </div>
-      </details>
-    </aside>
+      </div>
+    </div>
   );
 }

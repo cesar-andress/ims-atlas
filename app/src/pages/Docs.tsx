@@ -242,7 +242,7 @@ export function Docs() {
           <dd>{t("docs.glossary.ndcg")}</dd>
           <dt>SMAA</dt>
           <dd>{t("docs.glossary.smaa")}</dd>
-          <dt>BYOD</dt>
+          <dt>{t("nav.byod")}</dt>
           <dd>{t("docs.glossary.byod")}</dd>
           <dt>HS</dt>
           <dd>{t("docs.glossary.hs")}</dd>

@@ -1,62 +1,25 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "../i18n";
-import { PermalinkLink } from "./PermalinkLink";
-
-const KEY = "ims-atlas.onboarding.done";
 
 const STEPS = [
   { titleKey: "tourStep1Title" as const, bodyKey: "tourStep1Body" as const },
   { titleKey: "tourStep2Title" as const, bodyKey: "tourStep2Body" as const },
   { titleKey: "tourStep3Title" as const, bodyKey: "tourStep3Body" as const },
-  { titleKey: "tourStep4Title" as const, bodyKey: "tourStep4Body" as const },
 ];
 
-/** Tour opens only on request (footer button) or when forceOpen; never blocks content. */
-export function OnboardingTour({ forceOpen = false }: { forceOpen?: boolean }) {
+/** Three-step walkthrough of the project flow, opened on request from Home. */
+export function OnboardingTour({ onClose }: { onClose: () => void }) {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
   const [step, setStep] = useState(0);
-
-  useEffect(() => {
-    if (forceOpen) {
-      setOpen(true);
-      return;
-    }
-    // Do not auto-open over Análisis / first paint — user opens via "Tour (60 s)".
-    if (typeof localStorage === "undefined") return;
-    if (typeof navigator !== "undefined" && navigator.webdriver) {
-      localStorage.setItem(KEY, "1");
-    }
-  }, [forceOpen]);
-
-  function finish() {
-    if (typeof localStorage !== "undefined") localStorage.setItem(KEY, "1");
-    setOpen(false);
-  }
-
-  if (!open) {
-    return (
-      <button
-        type="button"
-        className="btn btn-secondary"
-        data-testid="tour-reopen"
-        onClick={() => {
-          setStep(0);
-          setOpen(true);
-        }}
-      >
-        {t("tourReopen")}
-      </button>
-    );
-  }
-
   const s = STEPS[step]!;
+  const last = step === STEPS.length - 1;
   return (
     <div
       className="onboarding-overlay"
       data-testid="onboarding-tour"
       role="dialog"
       aria-modal="true"
+      aria-label={t("homeTourOpen")}
     >
       <div className="onboarding-card">
         <p className="muted small font-tabular">
@@ -69,7 +32,7 @@ export function OnboardingTour({ forceOpen = false }: { forceOpen?: boolean }) {
             type="button"
             className="btn btn-secondary"
             data-testid="tour-skip"
-            onClick={finish}
+            onClick={onClose}
           >
             {t("tourSkip")}
           </button>
@@ -83,7 +46,16 @@ export function OnboardingTour({ forceOpen = false }: { forceOpen?: boolean }) {
               {t("guidedBack")}
             </button>
           ) : null}
-          {step < STEPS.length - 1 ? (
+          {last ? (
+            <button
+              type="button"
+              className="btn btn-primary"
+              data-testid="tour-done"
+              onClick={onClose}
+            >
+              {t("tourDone")}
+            </button>
+          ) : (
             <button
               type="button"
               className="btn btn-primary"
@@ -92,15 +64,6 @@ export function OnboardingTour({ forceOpen = false }: { forceOpen?: boolean }) {
             >
               {t("guidedNext")}
             </button>
-          ) : (
-            <PermalinkLink
-              view="datos"
-              className="btn btn-primary"
-              data-testid="tour-start"
-              onClick={finish}
-            >
-              {t("tourStart")}
-            </PermalinkLink>
           )}
         </div>
       </div>

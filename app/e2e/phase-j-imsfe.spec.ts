@@ -1,10 +1,9 @@
 import { expect, test } from "@playwright/test";
-import { encodeConfig, enableVariablesExpert } from "./_helpers";
+import { encodeConfig, openMoreOptions } from "./_helpers";
 import { IMSFE_BAENA_CANO_PRESET } from "../src/state/schema";
 
 test.describe("Phase J IMSFE faithful UI", () => {
   test("Baena & Cano preset and EOC matrix legend", async ({ page }) => {
-    await enableVariablesExpert(page);
     await page.goto(
       `/variables?c=${encodeConfig({
         ...IMSFE_BAENA_CANO_PRESET,
@@ -12,6 +11,7 @@ test.describe("Phase J IMSFE faithful UI", () => {
         lang: "en",
       })}`,
     );
+    await openMoreOptions(page);
     await expect(page.getByTestId("method-family")).toHaveAttribute(
       "data-value",
       "imsfe_2025",

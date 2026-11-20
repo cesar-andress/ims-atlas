@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { encodeConfig, enableVariablesExpert } from "./_helpers";
+import { encodeConfig, openMoreOptions } from "./_helpers";
 import { COL_HS64_PRESET } from "../src/state/schema";
 
 test.describe("Phase Z normalisation lab", () => {
@@ -35,7 +35,6 @@ test.describe("Phase Z normalisation lab", () => {
   });
 
   test("config panel offers robust_z", async ({ page }) => {
-    await enableVariablesExpert(page);
     await page.goto(
       `/variables?c=${encodeConfig({
         ...COL_HS64_PRESET,
@@ -43,6 +42,7 @@ test.describe("Phase Z normalisation lab", () => {
         lang: "en",
       })}`,
     );
+    await openMoreOptions(page);
     await expect(page.getByTestId("normalization-select")).toBeVisible({
       timeout: 15_000,
     });

@@ -12,6 +12,15 @@ export default defineConfig({
   use: {
     baseURL,
     trace: "on-first-retry",
+    // The UI defaults to Spanish; the English assertions in these specs opt in via the
+    // saved language preference (the same key the ES/EN switch writes). Specs that test
+    // the default or the switch override storageState.
+    storageState: {
+      cookies: [],
+      origins: [
+        { origin: baseURL, localStorage: [{ name: "ims-atlas.lang", value: "en" }] },
+      ],
+    },
   },
   webServer: {
     command: "pnpm exec vite preview --host 127.0.0.1 --port 4173 --strictPort",

@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { encodeConfig } from "./_helpers";
+import { encodeConfig, openMoreOptions, openScopeDialog } from "./_helpers";
 
 const PRODUCT_CASES = [
   { name: "HS87", origin: "DEU", hs: "87", year: 2022 },
@@ -24,25 +24,25 @@ function baseConfig(origin: string, hs: string, year: number) {
 
 test.describe("Phase H product context", () => {
   for (const { name, origin, hs, year } of PRODUCT_CASES) {
-    test(`product banner for ${name}`, async ({ page }) => {
+    test(`project bar shows scope for ${name}`, async ({ page }) => {
       const config = baseConfig(origin, hs, year);
       await page.goto(`/ranking?c=${encodeConfig(config)}`);
       await expect(page.getByTestId("ranking-view")).toBeVisible();
-      const banner = page.getByTestId("product-context");
-      await expect(banner).toBeVisible();
-      await expect(banner).toContainText(origin);
-      await expect(banner).toContainText(hs);
-      await expect(banner).toContainText(String(year));
+      const chips = page.getByTestId("project-chips");
+      await expect(chips).toBeVisible();
+      await expect(page.getByTestId("chip-origin")).toBeVisible();
+      await expect(page.getByTestId("chip-product")).toContainText(hs);
+      await expect(page.getByTestId("chip-year")).toContainText(String(year));
+      await openScopeDialog(page, "origin");
+      await expect(page.getByTestId("origin-input")).toHaveValue(origin);
     });
   }
 
-  test("apply-col-hs64 preset still works", async ({ page }) => {
-    await page.addInitScript(() => {
-      localStorage.setItem("ims-atlas.variables.expert", "1");
-    });
+  test("apply-col-hs64 example still works", async ({ page }) => {
     await page.goto("/variables");
-    await expect(page.getByTestId("config-panel")).toBeVisible();
+    await openMoreOptions(page);
     await page.getByTestId("apply-col-hs64").click();
+    await openScopeDialog(page, "origin");
     await expect(page.getByTestId("origin-input")).toHaveValue("COL");
     await expect(page.getByTestId("hs-input")).toHaveValue("64");
     await expect(page.getByTestId("year-input")).toHaveValue("2023");
@@ -52,7 +52,7 @@ test.describe("Phase H product context", () => {
     const config = { ...baseConfig("ESP", "1509", 2022), view: "factors" as const };
     await page.goto(`/factors?c=${encodeConfig(config)}`);
     await expect(page.getByTestId("factors-view")).toBeVisible();
-    await expect(page.getByTestId("product-context")).toBeVisible();
+    await expect(page.getByTestId("chip-product")).toContainText("1509");
     await expect(page.getByTestId("analysis-error")).toHaveCount(0);
   });
 });

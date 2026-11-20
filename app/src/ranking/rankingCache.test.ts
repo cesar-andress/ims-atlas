@@ -46,4 +46,20 @@ describe("rankingCache", () => {
     expect(a).toBe(b);
     expect(computeRanking).toHaveBeenCalledTimes(1);
   });
+
+  it("never serves the previous request's model for a new key while it computes", async () => {
+    const { getCachedRanking, peekCachedRanking } = await import("./rankingCache");
+    const a = {
+      origin: "COL",
+      hs: "64",
+      year: 2023,
+      weightScheme: "expert_mean" as const,
+    };
+    const b = { ...a, weightScheme: "equal" as const };
+    await getCachedRanking(a);
+    const pending = getCachedRanking(b);
+    expect(peekCachedRanking(b)).toBeNull();
+    const modelB = await pending;
+    expect(peekCachedRanking(b)).toBe(modelB);
+  });
 });

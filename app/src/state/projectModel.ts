@@ -33,6 +33,8 @@ export type AtlasProject = {
   /** Never true unless the user ticks "include my data" on export. */
   includeByodValues?: boolean;
   missingPolicyByVar?: Record<string, MissingFillPolicy>;
+  /** True for the worked example created on first visit (shown as "Ejemplo"). */
+  isExample?: boolean;
 };
 
 export type ProjectListItem = {
@@ -44,6 +46,7 @@ export type ProjectListItem = {
   hs?: string;
   yearFrom?: number;
   yearTo?: number;
+  isExample?: boolean;
 };
 
 function isObject(v: unknown): v is Record<string, unknown> {
@@ -89,6 +92,7 @@ export function createEmptyProject(
     ...(partial?.missingPolicyByVar !== undefined
       ? { missingPolicyByVar: partial.missingPolicyByVar }
       : {}),
+    ...(partial?.isExample === true ? { isExample: true } : {}),
   };
 }
 
@@ -190,6 +194,7 @@ export function parseAtlasProject(raw: unknown): AtlasProject {
   if (typeof raw.includeByodValues === "boolean") {
     out.includeByodValues = raw.includeByodValues;
   }
+  if (raw.isExample === true) out.isExample = true;
   if (isObject(raw.missingPolicyByVar)) {
     const pol: Record<string, MissingFillPolicy> = {};
     for (const [k, v] of Object.entries(raw.missingPolicyByVar)) {
@@ -219,6 +224,7 @@ export function toListItem(p: AtlasProject): ProjectListItem {
     ...(p.config.hs ? { hs: p.config.hs } : {}),
     ...(p.yearFrom !== undefined ? { yearFrom: p.yearFrom } : {}),
     ...(p.yearTo !== undefined ? { yearTo: p.yearTo } : {}),
+    ...(p.isExample === true ? { isExample: true } : {}),
   };
 }
 

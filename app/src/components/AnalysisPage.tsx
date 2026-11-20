@@ -9,8 +9,6 @@ import { AnalysisSummary } from "./AnalysisSummary";
 import { HelpButton } from "./HelpButton";
 import { PendingReleaseNotice } from "./PendingReleaseNotice";
 import { PermalinkLink } from "./PermalinkLink";
-import { ProductContextBanner } from "./ProductContextBanner";
-import { methodPlainLabel } from "../design/plainLabels";
 
 type Props = {
   testId: string;
@@ -75,20 +73,7 @@ export function AnalysisPage({
         <div className="results-chrome-fallback" data-testid="results-chrome-shell">
           <div className="results-header-actions">
             <HelpButton />
-            <PermalinkLink
-              view="variables"
-              className="btn btn-secondary"
-              data-testid="change-analysis"
-            >
-              {t("changeAnalysis")}
-            </PermalinkLink>
           </div>
-          <ProductContextBanner />
-          <p className="muted small">
-            <PermalinkLink view="analisis">{t("nav.analisis")}</PermalinkLink>
-            {" · "}
-            <PermalinkLink view="variables">{t("changeAnalysis")}</PermalinkLink>
-          </p>
         </div>
       ) : resultsChrome ? null : (
         <header className="analysis-page-header">
@@ -97,19 +82,6 @@ export function AnalysisPage({
             <HelpButton />
           </div>
           {intro ? <p className="muted">{intro}</p> : null}
-          <p className="muted small" data-testid="analysis-tabs">
-            <PermalinkLink view="analisis">{t("nav.analisis")}</PermalinkLink>
-            {" · "}
-            <PermalinkLink view="variables">{t("changeAnalysis")}</PermalinkLink>
-          </p>
-          <ProductContextBanner />
-          <p className="analysis-context muted small" data-testid="analysis-context">
-            {methodPlainLabel("weight", config.weightScheme ?? "expert_mean", t)}
-            {" · "}
-            {methodPlainLabel("mcdm", config.mcdm ?? "wsm", t)}
-            {" · "}
-            {methodPlainLabel("norm", config.normalization ?? "minmax", t)}
-          </p>
         </header>
       )}
 
@@ -139,9 +111,9 @@ export function AnalysisPage({
             >
               {t("presetColHs64")}
             </button>{" "}
-            <PermalinkLink view="variables">{t("changeAnalysis")}</PermalinkLink>
-            {" · "}
-            <PermalinkLink view="status">{t("nav.status")}</PermalinkLink>
+            <PermalinkLink view="data_sources" hash="estado">
+              {t("nav.status")}
+            </PermalinkLink>
           </p>
         </div>
       ) : null}

@@ -44,14 +44,47 @@ function lookup(dict: Dict, key: string): string {
   return typeof cur === "string" ? cur : key;
 }
 
-function langFromSearch(): Lang {
-  if (typeof window === "undefined") return "en";
+const LANG_STORAGE_KEY = "ims-atlas.lang";
+
+/** Saved UI language (header ES/EN switch); null when the user never chose one. */
+export function readSavedLanguage(): Lang | null {
+  if (typeof localStorage === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(LANG_STORAGE_KEY);
+    return raw === "es" || raw === "en" ? raw : null;
+  } catch {
+    return null;
+  }
+}
+
+export function saveLanguagePreference(lang: Lang): void {
+  if (typeof localStorage === "undefined") return;
+  try {
+    localStorage.setItem(LANG_STORAGE_KEY, lang);
+  } catch {
+    /* blocked storage: preference lasts for this session only */
+  }
+}
+
+/** Boot language: URL permalink first, then saved preference, then Spanish. */
+export function bootLanguage(): Lang {
+  if (typeof window === "undefined") return "es";
   try {
     const cfg = parseConfigFromSearch(window.location.search);
-    return cfg.lang === "es" ? "es" : "en";
+    if (cfg.lang === "es" || cfg.lang === "en") return cfg.lang;
   } catch {
-    return "en";
+    /* fall through to saved / default */
   }
+  return readSavedLanguage() ?? "es";
+}
+
+/** Load the Spanish bundle before first paint so the UI does not flash English. */
+export async function preloadBootLanguage(): Promise<Lang> {
+  const lang = bootLanguage();
+  if (lang === "es" && !esBundle) {
+    esBundle = (await import("./locales/es")).default;
+  }
+  return lang;
 }
 
 export async function ensureLanguage(lang: Lang): Promise<void> {
@@ -73,7 +106,7 @@ export function I18nProvider({
   children: ReactNode;
   initialLang?: Lang;
 }) {
-  const bootLang = initialLang ?? langFromSearch();
+  const bootLang = initialLang ?? bootLanguage();
   const [language, setLanguage] = useState<Lang>(bootLang);
   const [, setEsReady] = useState(0);
 

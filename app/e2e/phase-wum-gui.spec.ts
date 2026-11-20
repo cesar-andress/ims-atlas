@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { encodeConfig } from "./_helpers";
+import { encodeConfig, openMoreOptions } from "./_helpers";
 import { routeSyntheticDemoPanel } from "./_syntheticPanel";
 
 const COL = {
@@ -26,61 +26,43 @@ test.describe("Phase W/U/M GUI flow", () => {
     await expect(page.getByTestId("design-criteria")).toBeVisible();
   });
 
-  test("Datos → Variables → Análisis → Ranking ≤ 6 clicks", async ({ page }) => {
+  test("example project reaches the ranking in 2 clicks", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByTestId("home-flow-cards")).toBeVisible();
-    await page.getByTestId("home-card-datos").click(); // 1
-    await expect(page.getByTestId("datos-hub")).toBeVisible();
-    await page
-      .getByTestId("main-nav")
-      .getByRole("link", { name: "Variables", exact: true })
-      .click(); // 2
-    await expect(page.getByTestId("variables-hub")).toBeVisible({ timeout: 15_000 });
-    await page.getByTestId("apply-col-hs64").click(); // 3
-    await page
-      .getByTestId("main-nav")
-      .getByRole("link", { name: "Analysis", exact: true })
-      .click(); // 4
-    await expect(page.getByTestId("analisis-gallery")).toBeVisible();
-    await expect(page.getByTestId("analisis-context")).toContainText("COL");
-    await expect(page.getByTestId("study-open-ranking")).toBeVisible({
-      timeout: 10_000,
-    });
-    await page.getByTestId("study-open-ranking").click(); // 5
+    await expect(page.getByTestId("home-projects")).toBeVisible();
+    await page.locator('[data-example="1"]').click(); // 1: open the example card
     await expect(page.getByTestId("results-dashboard")).toBeVisible({
       timeout: 20_000,
     });
+    await expect(page.getByTestId("project-chips")).toContainText("Colombia");
+    await page.getByTestId("results-tab-matrix").click(); // 2: any result tab
+    await expect(page.getByTestId("matrix-view")).toBeVisible({ timeout: 20_000 });
   });
 
-  test("primary nav has exactly Datos Variables Análisis Projects", async ({
+  test("header is one row: logo, project switcher, help, language, team login", async ({
     page,
   }) => {
     await page.goto("/");
-    const nav = page.getByTestId("main-nav");
-    await expect(nav.getByRole("link", { name: "Data", exact: true })).toBeVisible();
-    await expect(
-      nav.getByRole("link", { name: "Variables", exact: true }),
-    ).toBeVisible();
-    await expect(
-      nav.getByRole("link", { name: "Analysis", exact: true }),
-    ).toBeVisible();
-    await expect(
-      nav.getByRole("link", { name: "Projects", exact: true }),
-    ).toBeVisible();
+    const header = page.getByTestId("site-header");
+    await expect(header).toBeVisible();
+    await expect(page.getByTestId("project-switcher")).toBeVisible();
+    await expect(page.getByTestId("help-open")).toBeVisible();
+    await expect(page.getByTestId("lang-switch")).toBeVisible();
+    await expect(page.getByTestId("access-login")).toBeVisible();
+    await expect(page.getByTestId("main-nav")).toHaveCount(0);
+    await expect(page.getByTestId("nav-more")).toHaveCount(0);
+    await expect(page.getByTestId("project-bar")).toHaveCount(0);
   });
 
-  test("Más menu ≤7 secondary links; /analisis loads COL example", async ({ page }) => {
+  test("/analisis offers the example and keeps results read-only", async ({ page }) => {
     await page.goto("/analisis");
-    await expect(page.getByTestId("analisis-gallery")).toBeVisible({
+    await expect(page.getByTestId("results-tabs")).toBeVisible({ timeout: 15_000 });
+    await page.getByTestId("analysis-load-preset").click();
+    await expect(page.getByTestId("project-chips")).toContainText("Colombia", {
       timeout: 15_000,
     });
-    await expect(page.getByTestId("analisis-context")).toContainText("COL");
-    await expect(page.getByTestId("analisis-context")).toContainText("64");
-    await expect(page.getByTestId("study-open-ranking")).toBeVisible({
-      timeout: 10_000,
+    await expect(page.getByTestId("results-dashboard")).toBeVisible({
+      timeout: 20_000,
     });
-    const more = page.getByTestId("nav-more");
-    await expect(more).toHaveAttribute("data-secondary-count", /^[1-7]$/);
   });
 
   test("map has choropleth legend + cluster how panel; 0 selects on map-results", async ({
@@ -114,17 +96,18 @@ test.describe("Phase W/U/M GUI flow", () => {
     await expect(page.getByTestId("hop-ranking")).toBeVisible({ timeout: 25_000 });
   });
 
-  test("Variables guided chrome + summary; WeightLifter in Pesos step", async ({
+  test("Variables y pesos: criterion cards; method controls under Más opciones", async ({
     page,
   }) => {
     await page.goto(`/variables?c=${encodeConfig({ ...COL, view: "variables" })}`);
     await expect(page.getByTestId("variables-hub")).toBeVisible({ timeout: 15_000 });
-    await expect(page.getByTestId("variables-summary-bar")).toBeVisible();
-    await expect(page.getByTestId("variables-guided-chrome")).toBeVisible();
-    await expect(page.getByTestId("origin-input")).toBeVisible();
-    await page.getByTestId("guided-next").click();
-    await page.getByTestId("guided-next").click();
-    await page.getByTestId("guided-next").click();
+    await expect(page.getByTestId("project-chips")).toBeVisible();
+    await expect(page.getByTestId("criterion-weights")).toBeVisible({
+      timeout: 20_000,
+    });
+    await expect(page.getByTestId("variables-expert-toggle")).toHaveCount(0);
+    await expect(page.getByTestId("origin-input")).toHaveCount(0);
+    await openMoreOptions(page);
     await expect(page.getByTestId("weight-scheme")).toBeVisible({ timeout: 10_000 });
     await expect(page.getByTestId("weightlifter-panel")).toBeVisible({
       timeout: 20_000,
@@ -147,17 +130,17 @@ test.describe("Phase W/U/M GUI flow", () => {
     });
   });
 
-  test("backtest card blocked for HS 6401", async ({ page }) => {
+  test("Results tabs reach the backtest blocked state for HS 6401", async ({
+    page,
+  }) => {
     await page.goto(
       `/analisis?c=${encodeConfig({ ...COL, hs: "6401", view: "analisis" })}`,
     );
-    await expect(page.getByTestId("study-card-backtest")).toHaveAttribute(
-      "data-available",
-      "0",
-    );
-    await expect(page.getByTestId("study-blocked-backtest")).toContainText(
-      /HS 64|artículo|paper/i,
-    );
+    await expect(page.getByTestId("results-tabs")).toBeVisible({ timeout: 15_000 });
+    await page.getByTestId("results-tab-backtest").click();
+    await expect(page.getByTestId("backtest-blocked")).toBeVisible({
+      timeout: 15_000,
+    });
   });
 
   test("backtest deep-link blocked for non-paper config", async ({ page }) => {
@@ -170,9 +153,9 @@ test.describe("Phase W/U/M GUI flow", () => {
     await expect(page.getByTestId("backtest-body")).toHaveCount(0);
   });
 
-  test("ValueCharts panel appears in Variables Pesos step", async ({ page }) => {
+  test("ValueCharts panel appears under Más opciones", async ({ page }) => {
     await page.goto(`/variables?c=${encodeConfig({ ...COL, view: "variables" })}`);
-    await page.getByTestId("variables-expert-toggle").check();
+    await openMoreOptions(page);
     await expect(page.getByTestId("valuecharts-panel")).toBeVisible({
       timeout: 20_000,
     });

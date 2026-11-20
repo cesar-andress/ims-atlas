@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./App";
-import { I18nProvider } from "./i18n";
+import { I18nProvider, preloadBootLanguage } from "./i18n";
 import "./design/tokens.css";
 import "./index.tw.css";
 import "./styles.css";
@@ -20,12 +20,14 @@ if (!root) {
 const rawBase = import.meta.env.BASE_URL || "/";
 const basename = rawBase.replace(/\/$/, "") || "/";
 
-createRoot(root).render(
-  <StrictMode>
-    <I18nProvider>
-      <BrowserRouter basename={basename}>
-        <App />
-      </BrowserRouter>
-    </I18nProvider>
-  </StrictMode>,
-);
+void preloadBootLanguage().then((initialLang) => {
+  createRoot(root).render(
+    <StrictMode>
+      <I18nProvider initialLang={initialLang}>
+        <BrowserRouter basename={basename}>
+          <App />
+        </BrowserRouter>
+      </I18nProvider>
+    </StrictMode>,
+  );
+});

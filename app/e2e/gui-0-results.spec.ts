@@ -30,7 +30,7 @@ test.describe("GUI-0 results dashboard", () => {
       .locator("input, select, textarea")
       .count();
     expect(n).toBe(0);
-    await expect(page.getByTestId("change-analysis")).toBeVisible();
+    await expect(page.getByTestId("results-readonly-note")).toBeVisible();
     await expect(page.getByTestId("results-kpis")).toBeVisible();
     await expect(page.getByTestId("results-why-card")).toBeVisible();
   });

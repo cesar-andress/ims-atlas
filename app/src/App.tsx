@@ -1,6 +1,7 @@
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useEffect, type ReactElement } from "react";
 import { Route, Routes } from "react-router-dom";
 import { AppShellFrame } from "./components/AppChrome";
+import { ResultsShell, type ResultTab } from "./components/ResultsShell";
 import { ToastProvider } from "./components/ToastHost";
 import { HelpProvider } from "./help/HelpProvider";
 import { Home } from "./pages/Home";
@@ -97,9 +98,6 @@ const SqlConsole = lazy(() =>
 const DataStatus = lazy(() =>
   import("./pages/transparency/DataStatus").then((m) => ({ default: m.DataStatus })),
 );
-const DataSources = lazy(() =>
-  import("./pages/transparency/DataSources").then((m) => ({ default: m.DataSources })),
-);
 const DataVariable = lazy(() =>
   import("./pages/transparency/DataVariable").then((m) => ({
     default: m.DataVariable,
@@ -126,16 +124,14 @@ const Privacy = lazy(() =>
 const DesignSystem = lazy(() =>
   import("./pages/DesignSystem").then((m) => ({ default: m.DesignSystem })),
 );
-const DatosHub = lazy(() =>
-  import("./pages/hubs/DatosHub").then((m) => ({ default: m.DatosHub })),
+const ProjectDatos = lazy(() =>
+  import("./pages/hubs/ProjectDatos").then((m) => ({ default: m.ProjectDatos })),
+);
+const FuentesDatos = lazy(() =>
+  import("./pages/FuentesDatos").then((m) => ({ default: m.FuentesDatos })),
 );
 const VariablesHub = lazy(() =>
   import("./pages/hubs/VariablesHub").then((m) => ({ default: m.VariablesHub })),
-);
-const AnalisisGallery = lazy(() =>
-  import("./pages/hubs/AnalisisGallery").then((m) => ({
-    default: m.AnalisisGallery,
-  })),
 );
 const AdvancedTools = lazy(() =>
   import("./pages/AdvancedTools").then((m) => ({ default: m.AdvancedTools })),
@@ -150,6 +146,10 @@ function RouteFallback() {
   );
 }
 
+function results(tab: ResultTab | null, page: ReactElement) {
+  return <ResultsShell tab={tab}>{page}</ResultsShell>;
+}
+
 function AppShell() {
   useEffect(() => {
     scheduleIdle(() => prefetchCriticalRoutes());
@@ -160,19 +160,19 @@ function AppShell() {
       <Suspense fallback={<RouteFallback />}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/datos" element={<DatosHub />} />
+          <Route path="/datos" element={<ProjectDatos />} />
           <Route path="/variables" element={<VariablesHub />} />
-          <Route path="/analisis" element={<AnalisisGallery />} />
+          <Route path="/analisis" element={results("ranking", <Ranking />)} />
           <Route path="/advanced_tools" element={<AdvancedTools />} />
           <Route path="/design" element={<DesignSystem />} />
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/builder" element={<Builder />} />
-          <Route path="/ranking" element={<Ranking />} />
-          <Route path="/matrix" element={<Matrix />} />
-          <Route path="/map" element={<MarketMap />} />
-          <Route path="/uncertainty" element={<Uncertainty />} />
-          <Route path="/backtest" element={<Backtest />} />
-          <Route path="/time" element={<TimeExplorer />} />
+          <Route path="/ranking" element={results("ranking", <Ranking />)} />
+          <Route path="/matrix" element={results("matrix", <Matrix />)} />
+          <Route path="/map" element={results("map", <MarketMap />)} />
+          <Route path="/uncertainty" element={results(null, <Uncertainty />)} />
+          <Route path="/backtest" element={results("backtest", <Backtest />)} />
+          <Route path="/time" element={results("time", <TimeExplorer />)} />
           <Route path="/cite" element={<CiteExport />} />
           <Route path="/byod" element={<Byod />} />
           <Route path="/imsfe_import" element={<ImsfeImport />} />
@@ -181,7 +181,7 @@ function AppShell() {
           <Route path="/paper" element={<PaperSupport />} />
           <Route path="/changelog" element={<Changelog />} />
           <Route path="/factors" element={<Factors />} />
-          <Route path="/compare" element={<Compare />} />
+          <Route path="/compare" element={results("compare", <Compare />)} />
           <Route path="/norm_lab" element={<NormLab />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/project_variables" element={<ProjectVariables />} />
@@ -192,7 +192,7 @@ function AppShell() {
           <Route path="/country" element={<CountryProfile />} />
           <Route path="/sql" element={<SqlConsole />} />
           <Route path="/status" element={<DataStatus />} />
-          <Route path="/data/sources" element={<DataSources />} />
+          <Route path="/data/sources" element={<FuentesDatos />} />
           <Route path="/data/variables/:id" element={<DataVariable />} />
           <Route path="/data/pipeline" element={<DataPipeline />} />
           <Route path="/data/releases" element={<DataReleases />} />

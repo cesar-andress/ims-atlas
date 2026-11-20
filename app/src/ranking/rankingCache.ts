@@ -29,21 +29,20 @@ export function getCachedRanking(req: RankingRequest): Promise<RankingViewModel>
     return inflight;
   }
   inflightKey = key;
-  cachedKey = key;
   inflight = computeRanking(req)
     .then((model) => {
       cachedModel = model;
       cachedKey = key;
-      inflight = null;
-      inflightKey = "";
+      if (inflightKey === key) {
+        inflight = null;
+        inflightKey = "";
+      }
       return model;
     })
     .catch((err) => {
-      inflight = null;
-      inflightKey = "";
-      if (cachedKey === key) {
-        cachedModel = null;
-        cachedKey = "";
+      if (inflightKey === key) {
+        inflight = null;
+        inflightKey = "";
       }
       throw err;
     });
