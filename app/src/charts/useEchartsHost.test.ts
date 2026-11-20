@@ -18,6 +18,7 @@ describe("ECharts onReady lifecycle (EXTRA-1)", () => {
     const host = readFileSync(join(here, "useEchartsHost.ts"), "utf8");
     expect(host).toContain("onReadyRef");
     expect(host).toContain("setChart");
+    expect(host).toContain("ResizeObserver");
     expect(host).not.toMatch(/\}, \[onReady\]/);
   });
 

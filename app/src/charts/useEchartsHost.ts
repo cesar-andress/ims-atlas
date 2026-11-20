@@ -26,15 +26,28 @@ export function useEchartsHost(
   onReadyRef.current = onReady;
 
   useEffect(() => {
-    if (!elRef.current) return;
-    const instance = echarts.init(elRef.current, undefined, { renderer });
+    const el = elRef.current;
+    if (!el) return;
+    const instance = echarts.init(el, undefined, { renderer });
     chartRef.current = instance;
     setChart(instance);
     onReadyRef.current?.(instance);
-    const onResize = () => instance.resize();
+    const onResize = () => {
+      if (!instance.isDisposed()) instance.resize();
+    };
     window.addEventListener("resize", onResize);
+    // Catch layout changes (tab switch, flex reflow) — window resize alone misses them.
+    const ro =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(() => onResize())
+        : null;
+    ro?.observe(el);
+    // One frame later: parent may still be measuring when we first init.
+    const raf = requestAnimationFrame(onResize);
     return () => {
+      cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
+      ro?.disconnect();
       instance.dispose();
       chartRef.current = null;
       setChart(null);

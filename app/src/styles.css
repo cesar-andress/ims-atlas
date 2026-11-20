@@ -1061,12 +1061,21 @@ main:has(.builder) {
 
 .strategic-scatter {
   width: 100%;
+  /* EXTRA-3: full card width, ≈4:3, ≥560px tall; avoid clipping axis names. */
   min-height: 35rem;
-  height: 35rem;
+  height: clamp(35rem, 62vw, 42rem);
+  max-width: 100%;
   border: 1px solid var(--border);
   border-radius: 0.35rem;
   background: var(--surface);
   margin-bottom: 0;
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+.chart-frame-body .strategic-scatter {
+  /* Ensure ECharts SVG is not clipped by a parent overflow. */
+  overflow: visible;
 }
 
 .chart-frame {
