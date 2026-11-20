@@ -19,7 +19,7 @@ export type VariableDataStatus = {
 /** Prefer gate audience + coverage_stats; team-only when not public. */
 export function variableDataStatus(
   v: CatalogVariable,
-  opts?: { year?: number | null },
+  opts?: { year?: number | null | undefined },
 ): VariableDataStatus {
   const year = opts?.year;
   const stats = v.coverage_stats;
@@ -55,15 +55,8 @@ export function variableDataStatus(
   else if (!yearOk) kind = "partial";
   else if (n < 50) kind = "partial";
 
-  if (team && kind === "none") {
-    return { kind: "team", nCountries: n, yearMin: y0, yearMax: y1, coveragePct: pct };
-  }
-  if (team && kind !== "complete") {
-    // Still show partial/none when coverage is weak; team lock is additive in UI.
-  }
-
   return {
-    kind: team && n <= 0 ? "team" : kind,
+    kind,
     nCountries: n,
     yearMin: y0,
     yearMax: y1,
