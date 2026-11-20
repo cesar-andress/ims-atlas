@@ -198,6 +198,87 @@ def rights_verify(
     }
 
 
+_YES_NO_UNKNOWN = frozenset({"yes", "no", "unknown"})
+
+
+def rights_set(
+    source_id: str,
+    *,
+    by: str,
+    use_research: str | None = None,
+    note: str | None = None,
+    basis: str | None = None,
+    dry_run: bool = False,
+) -> dict[str, Any]:
+    """Human-only: set a rights flag (e.g. use_research=yes) with evidence note.
+
+    Does not fetch terms. Agents must not run this without César's order;
+    use ``scripts/research-use-confirm.sh --dry-run`` to preview.
+    """
+    who = by.strip()
+    if not who:
+        raise SourcesValidationError("--by must be a non-empty human name")
+    if use_research is None:
+        raise SourcesValidationError("--use-research is required (yes|no|unknown)")
+    if use_research not in _YES_NO_UNKNOWN:
+        raise SourcesValidationError(
+            f"--use-research must be one of {sorted(_YES_NO_UNKNOWN)}",
+        )
+    if basis is not None and basis not in RIGHTS_BASIS:
+        raise SourcesValidationError(
+            f"--basis must be one of {sorted(RIGHTS_BASIS)}",
+        )
+    if not note or not note.strip():
+        raise SourcesValidationError("--note is required (basis for the flag change)")
+
+    path = sources_yaml_path()
+    data = load_sources(path)
+    assert_valid_sources(data)
+
+    target: dict[str, Any] | None = None
+    for source in data["sources"]:
+        if source.get("id") == source_id:
+            target = source
+            break
+    if target is None:
+        raise SourcesValidationError(f"unknown source id: {source_id}")
+
+    rights = target["rights"]
+    evidence = rights["evidence"]
+    checked_on = datetime.now(UTC).date().isoformat()
+    preview = {
+        "id": source_id,
+        "use_research_before": rights.get("use_research"),
+        "use_research_after": use_research,
+        "by": who,
+        "on": checked_on,
+        "basis": basis,
+        "note": note.strip(),
+        "dry_run": dry_run,
+    }
+    if dry_run:
+        return preview
+
+    rights["use_research"] = use_research
+    evidence["checked_by"] = who
+    evidence["checked_on"] = checked_on
+    if not evidence.get("snapshot_sha256"):
+        evidence["snapshot_sha256"] = "nofetch"
+    if basis:
+        evidence["basis"] = basis
+    evidence["note"] = note.strip()
+    if not evidence.get("terms_url"):
+        terms = target.get("terms_url")
+        if isinstance(terms, str) and terms.strip():
+            evidence["terms_url"] = terms
+
+    path.write_text(
+        yaml.dump(data, sort_keys=False, allow_unicode=True, default_flow_style=False),
+        encoding="utf-8",
+    )
+    return preview
+
+
 def render_rights_md(
     *,
     catalog: dict[str, Any] | None = None,

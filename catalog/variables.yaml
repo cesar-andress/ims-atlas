@@ -10,6 +10,7 @@ factors:
 - communication
 - entrepreneurship
 - sustainability
+- promotion
 variables:
 - id: IMPV
   name:
@@ -1289,7 +1290,7 @@ variables:
   redistributable: true
   years:
   - 2012
-  - 2023
+  - 2024
   frequency: annual
   coverage_countries: null
   series_breaks: []
@@ -1299,3 +1300,124 @@ variables:
   origin_specific: false
   source_ids:
   - worldbank_wdi
+- id: FAIRS_N
+  name:
+    en: International sector trade fairs (count)
+    es: Ferias internacionales del sector
+  factor: promotion
+  level: country_product
+  direction: benefit
+  transform: none
+  unit: count
+  source: AUMA / UFI / agency calendars
+  citation: Count of international trade fairs in the destination for the HS sector (last 3 years).
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2024
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: EXTRA-6 candidate. Sector via config/hs_to_fair_sector.yaml. Manual/BYOD until rights attested.
+  status: draft
+  origin_specific: false
+  source_ids:
+  - auma_fairs
+- id: FAIRS_SIZE
+  name:
+    en: Sector fair size (exhibitors / net m²)
+    es: Tamaño de las ferias del sector
+  factor: promotion
+  level: country_product
+  direction: benefit
+  transform: none
+  unit: exhibitors or m2
+  source: AUMA / UFI
+  citation: Sum of exhibitors (or net m²) of sector fairs in the destination, latest available year.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2024
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: EXTRA-6 candidate. Manual drop / BYOD until rights attested.
+  status: draft
+  origin_specific: false
+  source_ids:
+  - auma_fairs
+- id: FAIRS_INTL
+  name:
+    en: International share of fair exhibitors
+    es: Internacionalidad de las ferias
+  factor: promotion
+  level: country_product
+  direction: benefit
+  transform: none
+  unit: percent
+  source: AUMA / UFI
+  citation: Share of foreign exhibitors at sector fairs in the destination.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2024
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: EXTRA-6 candidate. Manual drop / BYOD until rights attested.
+  status: draft
+  origin_specific: false
+  source_ids:
+  - auma_fairs
+- id: PROMO_OFFICE
+  name:
+    en: Origin promotion office in destination
+    es: Oficina de promoción del país de origen
+  factor: promotion
+  level: bilateral
+  direction: benefit
+  transform: none
+  unit: binary
+  source: Promotion agencies
+  citation: 1 if the origin country's trade-promotion agency has an office in the destination.
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2024
+  frequency: irregular
+  coverage_countries: null
+  series_breaks: []
+  notes: EXTRA-6/7 candidate. Derived from promotion_office table; ProColombia proprietary → BYOD until permission.
+  status: draft
+  origin_specific: true
+  source_ids:
+  - icex_events
+- id: PROMO_EVENTS
+  name:
+    en: Origin promotion actions in destination
+    es: Acciones de promoción del país origen
+  factor: promotion
+  level: bilateral
+  direction: benefit
+  transform: none
+  unit: count
+  source: Promotion agencies
+  citation: Missions, matchmaking or pavilions by the origin agency in the destination (last 3 years).
+  redistributable: false
+  byod_only: true
+  years:
+  - 2012
+  - 2024
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: EXTRA-6/7 candidate. From promotion_event table per origin agency.
+  status: draft
+  origin_specific: true
+  source_ids:
+  - icex_events
+  - trade_gov_events

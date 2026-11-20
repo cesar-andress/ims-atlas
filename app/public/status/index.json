@@ -7,7 +7,7 @@
   "n_history_runs": 6,
   "n_lineage_edges": 172,
   "n_sources": 49,
-  "n_variables": 50,
+  "n_variables": 51,
   "paths": {
     "freshness": "/status/freshness.json",
     "history": "/status/history.json",

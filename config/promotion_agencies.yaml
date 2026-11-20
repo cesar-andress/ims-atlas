@@ -1,0 +1,117 @@
+# Origin-country trade promotion agencies (EXTRA-7). Access types verified
+# against public landing pages 2026-11-20; rights remain unknown until César
+# attests. JETRO J-messe closed 2026-03-31 — listed as closed, do not ingest.
+version: 1
+agencies:
+  - id: procolombia
+    origin_iso3: COL
+    name: ProColombia
+    events_url: https://ruta-exportadora.procolombia.co/
+    offices_url: https://procolombia.co/
+    access: web
+    source_id: procolombia
+    notes: Proprietary terms; redistribute_raw no → BYOD / internal only until permission.
+  - id: icex
+    origin_iso3: ESP
+    name: ICEX España Exportación e Inversiones
+    events_url: https://datos.gob.es/es/catalogo/ea0038767-buscador-de-ferias-del-icex
+    offices_url: https://www.icex.es/es/quienes-somos/donde-estamos
+    access: open_data
+    source_id: icex_events
+    notes: datos.gob.es catalogue; licence on dataset page to confirm.
+  - id: ita_trade_gov
+    origin_iso3: USA
+    name: U.S. Commercial Service / ITA (trade.gov)
+    events_url: https://developer.trade.gov/api-details#api=trade-events
+    offices_url: https://www.trade.gov/commercial-service-offices
+    access: api
+    source_id: trade_gov_events
+    notes: Free API key; federal open data — confirm terms before bulk use.
+  - id: business_france
+    origin_iso3: FRA
+    name: Business France / Team France Export
+    events_url: https://www.businessfrance.fr/
+    offices_url: https://www.businessfrance.fr/
+    access: web_pdf
+    source_id: null
+    notes: No open API found; manual CSV template.
+  - id: gtai
+    origin_iso3: DEU
+    name: Germany Trade & Invest (GTAI)
+    events_url: https://www.gtai.de/
+    offices_url: https://www.gtai.de/
+    access: web
+    source_id: null
+    notes: Manual.
+  - id: austrade
+    origin_iso3: AUS
+    name: Austrade
+    events_url: https://www.austrade.gov.au/
+    offices_url: https://www.austrade.gov.au/
+    access: web
+    source_id: null
+    notes: Manual.
+  - id: enterprise_ireland
+    origin_iso3: IRL
+    name: Enterprise Ireland
+    events_url: https://www.enterprise-ireland.com/
+    offices_url: https://www.enterprise-ireland.com/
+    access: web
+    source_id: null
+    notes: Manual.
+  - id: prochile
+    origin_iso3: CHL
+    name: ProChile
+    events_url: https://www.prochile.gob.cl/
+    offices_url: https://www.prochile.gob.cl/
+    access: web
+    source_id: null
+    notes: Manual.
+  - id: promperu
+    origin_iso3: PER
+    name: PROMPERÚ
+    events_url: https://www.promperu.gob.pe/
+    offices_url: https://www.promperu.gob.pe/
+    access: web
+    source_id: null
+    notes: Manual.
+  - id: apexbrasil
+    origin_iso3: BRA
+    name: ApexBrasil
+    events_url: https://apexbrasil.com.br/
+    offices_url: https://apexbrasil.com.br/
+    access: web
+    source_id: null
+    notes: Manual.
+  - id: kotra
+    origin_iso3: KOR
+    name: KOTRA
+    events_url: https://www.kotra.or.kr/
+    offices_url: https://www.kotra.or.kr/
+    access: web
+    source_id: null
+    notes: Manual.
+  - id: jetro
+    origin_iso3: JPN
+    name: JETRO
+    events_url: https://www.jetro.go.jp/
+    offices_url: https://www.jetro.go.jp/
+    access: closed
+    source_id: null
+    notes: J-messe closed 2026-03-31; do not ingest J-messe. Offices list may still exist.
+  - id: trade_commissioner_ca
+    origin_iso3: CAN
+    name: Trade Commissioner Service (Canada)
+    events_url: https://www.tradecommissioner.gc.ca/
+    offices_url: https://www.tradecommissioner.gc.ca/
+    access: web
+    source_id: null
+    notes: Manual.
+  - id: auma
+    origin_iso3: DEU
+    name: AUMA (German trade fair association — world catalogue)
+    events_url: https://www.auma.de/
+    offices_url: null
+    access: manual
+    source_id: auma_fairs
+    notes: No public reuse terms found; manual drop + ask permission only.

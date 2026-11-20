@@ -470,8 +470,8 @@ export const en = {
   builderIntro:
     "Configure origin, product, year, candidates, variables and weights in the left panel.",
   builderHint:
-    "The public data version is empty (zero verified redistributable variables). Opening the Colombian footwear example (COL · HS64 · 2023) shows a pending state until a real panel ships; use Sources and data or Upload my data meanwhile.",
-  presetColHs64: "Load COL · HS64 · 2023 · IMSFE",
+    "The public data version is empty (zero verified redistributable variables). Opening the Colombian footwear example (COL · HS64 · latest year) shows a pending state until a real panel ships; use Sources and data or Upload my data meanwhile.",
+  presetColHs64: "Load COL · HS64 · latest year · IMSFE",
   openRanking: "Open ranking →",
   builderNeedProduct:
     "Set origin, product (HS) and year in the config panel to open ranking.",
@@ -519,6 +519,7 @@ export const en = {
   aliasOf: "Alias of {id} (same series)",
   proxyIcpNote: "ICP proxy (same series as PLI)",
   chartCreditAtlas: "Source: IMS Atlas (atlas.aiserv.es)",
+  mapResetView: "Reset view",
   chartDownload: "Download",
   fit: "Fit",
   quadrant: "Quadrant",
@@ -737,7 +738,7 @@ export const en = {
     non_experts: {
       p1: "IMS Atlas ranks foreign markets with open indicators (economy, logistics, access cost, sustainability, …). Weights and missing-data rules are visible; nothing is filled in silently.",
       example:
-        "Worked example: Colombian footwear (COL · HS64 · 2023). Open the example project from Your projects, read the Ranking and Matrix tabs, then Compare top destinations. Numbers appear only when the data version (or your own uploaded data) supplies them.",
+        "Worked example: Colombian footwear (COL · HS64 · latest year). Open the example project from Your projects, read the Ranking and Matrix tabs, then Compare top destinations. Numbers appear only when the data version (or your own uploaded data) supplies them.",
     },
     researchers: {
       p1: "Hierarchical MCDM on country–year features (year ≤ t). Normalisation pipelines are deterministic; TS and Python agree on goldens to 1e-9 where deterministic.",
@@ -818,7 +819,7 @@ export const en = {
     tutorial: {
       exporterTitle: "For an exporter",
       exporter1:
-        "Open the Colombian footwear example (COL · HS64 · 2023) or set your origin, HS, and year.",
+        "Open the Colombian footwear example (COL · HS64 · latest year) or set your origin, HS, and year.",
       exporter2: "Open Ranking and the strategic matrix; compare two destinations.",
       exporter3: "Use Cite & export for a permalink and CSV of the ranking.",
       researcherTitle: "For a researcher",

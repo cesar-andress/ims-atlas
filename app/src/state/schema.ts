@@ -171,11 +171,14 @@ export const DEFAULT_CONFIG: AnalysisConfig = {
   view: "home",
 };
 
+/** Latest complete trade year from BACI pin (status/freshness.latest_complete_year). */
+export const LATEST_COMPLETE_YEAR = 2024;
+
 export const COL_HS64_PRESET: AnalysisConfig = {
   v: 1,
   view: "ranking",
   origin: "COL",
-  year: 2023,
+  year: LATEST_COMPLETE_YEAR,
   hs: "64",
   region: "world",
   normalization: "minmax",
@@ -190,7 +193,7 @@ export const IMSFE_BAENA_CANO_PRESET: AnalysisConfig = {
   v: 1,
   view: "ranking",
   origin: "COL",
-  year: 2023,
+  year: LATEST_COMPLETE_YEAR,
   hs: "64",
   region: "world",
   normalization: "ratio_legacy",

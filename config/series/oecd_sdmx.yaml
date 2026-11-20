@@ -1,0 +1,19 @@
+# Series pulled via oecd_sdmx connector (EXTRA-8). Expand as connectors land.
+version: 1
+series:
+  - id: TFI_OVERALL
+    dataflow: TBD
+    label: Trade Facilitation Indicators (overall)
+    candidate_variable: TFI_OVERALL
+  - id: STRI_SECTOR
+    dataflow: TBD
+    label: Services Trade Restrictiveness Index
+    candidate_variable: STRI_SECTOR
+  - id: DSTRI
+    dataflow: TBD
+    label: Digital STRI
+    candidate_variable: DSTRI
+  - id: FDI_RRI
+    dataflow: TBD
+    label: FDI Regulatory Restrictiveness Index
+    candidate_variable: FDI_RRI

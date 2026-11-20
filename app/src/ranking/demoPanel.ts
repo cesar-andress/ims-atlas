@@ -70,7 +70,8 @@ export function isColHs64Preset(opts: {
   hs?: string;
   year?: number;
 }): boolean {
-  return opts.origin === "COL" && opts.hs === "64" && opts.year === 2023;
+  // Year is optional: paper example is COL · HS 64 at the latest complete year.
+  return opts.origin === "COL" && opts.hs === "64";
 }
 
 export function resetDemoPanelCache(): void {

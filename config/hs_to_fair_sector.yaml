@@ -1,0 +1,28 @@
+# HS chapter → fair / promotion sector labels (EXTRA-6/7). Human-revisable.
+# Used to attribute promotion_event rows to product chapters.
+version: 1
+mappings:
+  - hs_chapter: "64"
+    sectors:
+      - footwear
+      - leather
+      - fashion
+      - moda
+      - calzado
+      - cuero
+    notes: Colombian footwear example (COL · HS 64).
+  - hs_chapter: "42"
+    sectors:
+      - leather
+      - fashion
+      - handbags
+  - hs_chapter: "61"
+    sectors:
+      - apparel
+      - fashion
+      - moda
+  - hs_chapter: "62"
+    sectors:
+      - apparel
+      - fashion
+      - moda

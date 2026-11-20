@@ -44,6 +44,15 @@ What we need: written permission (or a public licence statement) for
 | 32 | `geodatos` | GeoDatos | use_research, redistribute_raw | https://www.geodatos.net/terminosycondiciones | UNKNOWN — take from terms page |
 | 33 | `procolombia` | ProColombia | use_research, redistribute_raw | https://procolombia.co/transparencia/terminos-y-condiciones-de-uso | UNKNOWN — take from terms page |
 | 34 | `iso_country_codes_ref` | INAPI Chile (ISO country initials PDF) | confirm_terms | https://www.inapi.cl/uso-de-los-contenidos-de-este-sitio | UNKNOWN — take from terms page |
+| 35 | `auma_fairs` | AUMA | use_research, redistribute_raw | https://www.auma.de/ | UNKNOWN — take from terms page |
+| 36 | `ufi_stats` | UFI | use_research, redistribute_raw | https://www.ufi.org/ | UNKNOWN — take from terms page |
+| 37 | `icex_events` | ICEX / datos.gob.es | confirm_terms | https://datos.gob.es/es/catalogo/ea0038767-buscador-de-ferias-del-icex | UNKNOWN — take from ficha |
+| 38 | `trade_gov_events` | U.S. ITA trade.gov | confirm_terms | https://www.trade.gov/privacy-and-security-notice | UNKNOWN — take from terms page |
+| 39 | `oecd_sdmx` | OECD | confirm_terms (per dataset) | https://www.oecd.org/en/about/terms-conditions.html | UNKNOWN — take from terms page |
+| 40 | `wto_timeseries` | WTO | confirm_terms | https://www.wto.org/english/info_e/copyrights_permissions_e.htm | UNKNOWN — take from terms page |
+| 41 | `comexstat_br` | Brazil Comex Stat | confirm_terms | https://comexstat.mdic.gov.br/ | UNKNOWN — take from portal |
+| 42 | `dane_dian_comex` | DANE / DIAN | confirm_terms | https://www.dane.gov.co/ | UNKNOWN — take from dataset |
+| 43 | `datacomex_es` | DataComex (España) | confirm_terms | https://comercio.gob.es/ | UNKNOWN — take from legal notice |
 
 ## Email draft (ES)
 

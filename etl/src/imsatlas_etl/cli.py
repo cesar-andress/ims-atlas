@@ -16,6 +16,7 @@ from imsatlas_etl.catalog import (
 from imsatlas_etl.paths import catalog_yaml_path, licenses_md_path, rights_md_path
 from imsatlas_etl.port_catalog import build_catalog_from_backtest, write_catalog_yaml
 from imsatlas_etl.rights import (
+    rights_set,
     rights_verify,
     write_rights_md,
 )
@@ -195,6 +196,61 @@ def rights_verify_cmd(
         f"basis={result.get('basis')} scope={result.get('scope')} "
         f"sha256={sha_short} "
         f"(yes/no rights flags still need human edits; see {rights_md_path()})",
+    )
+
+
+@app.command("rights-set")
+def rights_set_cmd(
+    source_id: Annotated[str, typer.Argument(help="Source id in sources.yaml")],
+    by: Annotated[
+        str,
+        typer.Option("--by", help="Human name / initials recording the flag change"),
+    ],
+    use_research: Annotated[
+        str,
+        typer.Option(
+            "--use-research",
+            help="yes | no | unknown",
+        ),
+    ],
+    note: Annotated[
+        str,
+        typer.Option("--note", help="Clause / basis paraphrase (required)"),
+    ],
+    basis: Annotated[
+        str | None,
+        typer.Option(
+            "--basis",
+            help="public_terms | subscription | contract | written_permission",
+        ),
+    ] = None,
+    dry_run: Annotated[
+        bool,
+        typer.Option("--dry-run", help="Print the change without writing YAML"),
+    ] = False,
+) -> None:
+    """Human-only: set use_research (+ evidence). Agents: --dry-run only."""
+    try:
+        result = rights_set(
+            source_id,
+            by=by,
+            use_research=use_research,
+            note=note,
+            basis=basis,
+            dry_run=dry_run,
+        )
+        if not dry_run:
+            write_rights_md()
+    except SourcesValidationError as exc:
+        typer.secho(str(exc), fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=1) from exc
+    prefix = "DRY-RUN " if result.get("dry_run") else ""
+    before = result["use_research_before"]
+    after = result["use_research_after"]
+    typer.echo(
+        f"atlas-etl {__version__}: {prefix}rights-set {result['id']} "
+        f"use_research {before} → {after} "
+        f"by {result['by']} on {result['on']}",
     )
 
 

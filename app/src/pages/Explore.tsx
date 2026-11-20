@@ -6,6 +6,7 @@ import { addToBasket } from "../state/variableBasket";
 import { loadCatalogPreview } from "../data/catalogLoader";
 import type { CatalogVariable } from "../data/types";
 import { useTranslation } from "../i18n";
+import { LATEST_COMPLETE_YEAR } from "../state/schema";
 import { useAnalysis } from "../state/useAnalysis";
 import { PermalinkLink } from "../components/PermalinkLink";
 
@@ -52,7 +53,9 @@ export function Explore() {
     config.exploreLicence ?? "all",
   );
   const [yearFrom, setYearFrom] = useState(config.exploreYearFrom ?? 2015);
-  const [yearTo, setYearTo] = useState(config.exploreYearTo ?? 2023);
+  const [yearTo, setYearTo] = useState(
+    config.exploreYearTo ?? config.year ?? LATEST_COMPLETE_YEAR,
+  );
   const [minCov, setMinCov] = useState(config.exploreMinCoverage ?? 0);
   const [pin, setPin] = useState<string[]>(config.explorePinned ?? []);
   const [sortKey, setSortKey] = useState<"variableId" | "iso3" | "year">("variableId");

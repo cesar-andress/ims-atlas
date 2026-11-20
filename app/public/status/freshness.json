@@ -102,5 +102,8 @@
       "upstream_changed_at": "2024-02-15",
       "upstream_version": "db-20240215"
     }
-  ]
+  ],
+  "latest_complete_year": 2024,
+  "latest_partial_year": 2024,
+  "year_basis": "BACI HS12_V202601 options.year_max; trade coverage treated as complete for panel default"
 }

@@ -1,13 +1,19 @@
 {
   "generated_from": "catalog/variables.yaml + release manifest + status/coverage",
   "is_fixture": false,
-  "n_variables": 50,
+  "n_variables": 51,
   "schema": "transparency-variables/v1",
   "variables": [
     {
       "byod_only": null,
       "citation": "Gaulier, G. and Zignago, S. (2010). BACI: International Trade Database at the Product-Level. The 1994-2007 Version. CEPII Working Paper 2010-23.",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": null,
+        "n_countries": 227,
+        "year_max": 2024,
+        "year_min": 2012
+      },
       "definition": null,
       "direction": "benefit",
       "download_allowed": true,
@@ -31,11 +37,15 @@
       "last_checked": "2026-11-20T09:52:22Z",
       "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": null,
+      "licence_ids": [
+        "etalab-2.0"
+      ],
       "name": {
         "en": "HS chapter imports (USD)",
         "es": "Importaciones del cap\u00edtulo HS (USD)"
       },
       "new_cells_since_previous": null,
+      "notes": "Aggregate destination imports of the chapter.",
       "redistributable": true,
       "source_ids": [
         "baci"
@@ -50,6 +60,12 @@
       "byod_only": null,
       "citation": "BACI (CEPII) import values combined with World Bank population (SP.POP.TOTL). BACI: Gaulier & Zignago (2010); WDI: World Bank.",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": null,
+        "n_countries": 208,
+        "year_max": 2024,
+        "year_min": 2012
+      },
       "definition": null,
       "direction": "benefit",
       "download_allowed": true,
@@ -75,11 +91,16 @@
       "last_checked": "2026-11-20T09:52:22Z",
       "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": "2026-11-11",
+      "licence_ids": [
+        "etalab-2.0",
+        "CC-BY-4.0"
+      ],
       "name": {
         "en": "HS chapter imports per capita",
         "es": "Importaciones del cap\u00edtulo HS per c\u00e1pita"
       },
       "new_cells_since_previous": 7803,
+      "notes": "BACI import value divided by World Bank population.",
       "redistributable": true,
       "source_ids": [
         "baci",
@@ -95,6 +116,12 @@
       "byod_only": null,
       "citation": "Derived from CEPII BACI (Gaulier & Zignago, 2010), HS chapter imports.",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": null,
+        "n_countries": 226,
+        "year_max": 2024,
+        "year_min": 2015
+      },
       "definition": null,
       "direction": "benefit",
       "download_allowed": true,
@@ -118,11 +145,15 @@
       "last_checked": "2026-11-20T09:52:22Z",
       "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": null,
+      "licence_ids": [
+        "etalab-2.0"
+      ],
       "name": {
         "en": "HS chapter import growth (3-year CAGR)",
         "es": "Crecimiento de importaciones del cap\u00edtulo HS (CAGR 3 a\u00f1os)"
       },
       "new_cells_since_previous": null,
+      "notes": "Uses years t-3..t only (anti-leakage).",
       "redistributable": true,
       "source_ids": [
         "baci"
@@ -137,6 +168,12 @@
       "byod_only": null,
       "citation": "World Bank. World Development Indicators. NY.GDP.PCAP.PP.KD.",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": 89.3,
+        "n_countries": 199,
+        "year_max": 2025,
+        "year_min": 1990
+      },
       "definition": null,
       "direction": "benefit",
       "download_allowed": true,
@@ -160,6 +197,9 @@
       "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
+      "licence_ids": [
+        "CC-BY-4.0"
+      ],
       "name": {
         "en": "GDP per capita PPP",
         "es": "PIB per c\u00e1pita PPA"
@@ -179,6 +219,12 @@
       "byod_only": null,
       "citation": "Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database. CEPII Working Paper 2022-05.",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": null,
+        "n_countries": 232,
+        "year_max": 2021,
+        "year_min": 1990
+      },
       "definition": null,
       "direction": "cost",
       "download_allowed": true,
@@ -202,11 +248,15 @@
       "last_checked": "2026-11-20T16:45:05Z",
       "last_ingested": "2026-11-20T16:49:52Z",
       "last_upstream_change": null,
+      "licence_ids": [
+        "etalab-2.0"
+      ],
       "name": {
         "en": "Population-weighted distance",
         "es": "Distancia ponderada por poblaci\u00f3n"
       },
       "new_cells_since_previous": null,
+      "notes": "Fall back to distw if distw_harmonic unavailable.",
       "redistributable": true,
       "source_ids": [
         "cepi_gravity"
@@ -221,6 +271,7 @@
       "byod_only": true,
       "citation": "World Bank / UNCTAD WITS-TRAINS applied preferential tariff (AHS).",
       "coverage": null,
+      "coverage_stats": null,
       "definition": null,
       "direction": "cost",
       "download_allowed": false,
@@ -245,11 +296,15 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [
+        "custom"
+      ],
       "name": {
         "en": "Applied preferential tariff (AHS), origin to destination",
         "es": "Arancel preferencial aplicado (AHS), origen a destino"
       },
       "new_cells_since_previous": null,
+      "notes": "Preferential applied rates for the HS chapter; not MFN. WITS/TRAINS redistribution terms not confirmed from an openable official licence page in Phase 1; BYOD until verified.",
       "redistributable": false,
       "source_ids": [
         "wits_trains"
@@ -264,6 +319,12 @@
       "byod_only": null,
       "citation": "Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database. CEPII Working Paper 2022-05.",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": null,
+        "n_countries": 232,
+        "year_max": 2021,
+        "year_min": 1990
+      },
       "definition": null,
       "direction": "benefit",
       "download_allowed": true,
@@ -287,6 +348,9 @@
       "last_checked": "2026-11-20T16:45:05Z",
       "last_ingested": "2026-11-20T16:49:52Z",
       "last_upstream_change": null,
+      "licence_ids": [
+        "etalab-2.0"
+      ],
       "name": {
         "en": "Preferential trade agreement in force",
         "es": "Acuerdo comercial preferencial en vigor"
@@ -306,6 +370,12 @@
       "byod_only": null,
       "citation": "World Bank. Logistics Performance Index. LP.LPI.OVRL.XQ.",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": 13.7,
+        "n_countries": 169,
+        "year_max": 2022,
+        "year_min": 2007
+      },
       "definition": null,
       "direction": "benefit",
       "download_allowed": true,
@@ -329,11 +399,15 @@
       "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": "2026-11-11",
+      "licence_ids": [
+        "CC-BY-4.0"
+      ],
       "name": {
         "en": "Logistics Performance Index (overall)",
         "es": "\u00cdndice de desempe\u00f1o log\u00edstico (global)"
       },
       "new_cells_since_previous": 1068,
+      "notes": "Interpolate between editions; flag imputed years.",
       "redistributable": true,
       "source_ids": [
         "worldbank_lpi"
@@ -348,6 +422,12 @@
       "byod_only": null,
       "citation": "Derived from CEPII BACI (Gaulier & Zignago, 2010).",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": null,
+        "n_countries": 227,
+        "year_max": 2024,
+        "year_min": 2012
+      },
       "definition": null,
       "direction": "cost",
       "download_allowed": true,
@@ -371,6 +451,9 @@
       "last_checked": "2026-11-20T09:52:22Z",
       "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": null,
+      "licence_ids": [
+        "etalab-2.0"
+      ],
       "name": {
         "en": "China+Vietnam share of destination HS imports",
         "es": "Cuota China+Vietnam en importaciones HS del destino"
@@ -390,6 +473,12 @@
       "byod_only": null,
       "citation": "Derived from CEPII BACI (Gaulier & Zignago, 2010).",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": null,
+        "n_countries": 227,
+        "year_max": 2024,
+        "year_min": 2012
+      },
       "definition": null,
       "direction": "cost",
       "download_allowed": true,
@@ -413,6 +502,9 @@
       "last_checked": "2026-11-20T09:52:22Z",
       "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": null,
+      "licence_ids": [
+        "etalab-2.0"
+      ],
       "name": {
         "en": "Supplier concentration (HHI) in destination HS imports",
         "es": "Concentraci\u00f3n de proveedores (HHI) en importaciones HS"
@@ -432,6 +524,7 @@
       "byod_only": null,
       "citation": "Derived from CEPII BACI (Gaulier & Zignago, 2010).",
       "coverage": null,
+      "coverage_stats": null,
       "definition": null,
       "direction": "cost",
       "download_allowed": true,
@@ -455,11 +548,15 @@
       "last_checked": "2026-11-20T09:52:22Z",
       "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": null,
+      "licence_ids": [
+        "etalab-2.0"
+      ],
       "name": {
         "en": "Absolute log unit-value gap (destination imports vs origin exports)",
         "es": "Brecha absoluta de valor unitario en log"
       },
       "new_cells_since_previous": null,
+      "notes": "abs(log UV_j imports - log UV_i world exports) for the chapter.",
       "redistributable": true,
       "source_ids": [
         "baci"
@@ -474,6 +571,7 @@
       "byod_only": true,
       "citation": "Hofstede dimension scores (6 dimensions). geerthofstede.com dimension data matrix; cultural distance via Kogut-Singh.",
       "coverage": null,
+      "coverage_stats": null,
       "definition": null,
       "direction": "cost",
       "download_allowed": false,
@@ -498,11 +596,15 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [
+        "custom"
+      ],
       "name": {
         "en": "Cultural distance (Kogut-Singh, Hofstede 6 dimensions)",
         "es": "Distancia cultural (Kogut-Singh, Hofstede 6 dimensiones)"
       },
       "new_cells_since_previous": null,
+      "notes": "Manual dataset under data/manual/hofstede/. ims-backtest README: Hofstede raw data is not redistributed; researchers may use the published matrix, commercial use requires contacting authors.",
       "redistributable": false,
       "source_ids": [
         "hofstede"
@@ -517,6 +619,12 @@
       "byod_only": null,
       "citation": "Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database. CEPII Working Paper 2022-05.",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": null,
+        "n_countries": 232,
+        "year_max": 2021,
+        "year_min": 1990
+      },
       "definition": null,
       "direction": "benefit",
       "download_allowed": true,
@@ -540,6 +648,9 @@
       "last_checked": "2026-11-20T16:45:05Z",
       "last_ingested": "2026-11-20T16:49:52Z",
       "last_upstream_change": null,
+      "licence_ids": [
+        "etalab-2.0"
+      ],
       "name": {
         "en": "Common official language",
         "es": "Idioma oficial com\u00fan"
@@ -559,6 +670,12 @@
       "byod_only": null,
       "citation": "World Bank. World Development Indicators. FP.CPI.TOTL.ZG.",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": 79.3,
+        "n_countries": 193,
+        "year_max": 2025,
+        "year_min": 1990
+      },
       "definition": null,
       "direction": "cost",
       "download_allowed": true,
@@ -582,11 +699,15 @@
       "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
+      "licence_ids": [
+        "CC-BY-4.0"
+      ],
       "name": {
-        "en": "Inflation deviation from 2 percent",
-        "es": "Desviaci\u00f3n de la inflaci\u00f3n respecto al 2 por ciento"
+        "en": "Annual consumer price inflation",
+        "es": "Inflaci\u00f3n anual (IPC)"
       },
       "new_cells_since_previous": 6193,
+      "notes": "Raw annual CPI inflation (FP.CPI.TOTL.ZG). For |x \u2212 2| use candidate INFL_DEV.",
       "redistributable": true,
       "source_ids": [
         "worldbank_wdi"
@@ -601,6 +722,12 @@
       "byod_only": null,
       "citation": "World Bank. World Development Indicators. SL.UEM.TOTL.ZS.",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": 83.6,
+        "n_countries": 187,
+        "year_max": 2025,
+        "year_min": 1991
+      },
       "definition": null,
       "direction": "cost",
       "download_allowed": true,
@@ -624,6 +751,9 @@
       "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
+      "licence_ids": [
+        "CC-BY-4.0"
+      ],
       "name": {
         "en": "Unemployment rate",
         "es": "Tasa de desempleo"
@@ -643,6 +773,12 @@
       "byod_only": null,
       "citation": "World Bank. Worldwide Governance Indicators (mean of six estimate series).",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": 70.3,
+        "n_countries": 207,
+        "year_max": 2025,
+        "year_min": 1996
+      },
       "definition": null,
       "direction": "benefit",
       "download_allowed": true,
@@ -666,11 +802,15 @@
       "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": "2026-09-25",
+      "licence_ids": [
+        "CC-BY-4.0"
+      ],
       "name": {
         "en": "Mean Worldwide Governance Indicators",
         "es": "Media de Worldwide Governance Indicators"
       },
       "new_cells_since_previous": 25910,
+      "notes": "Mean of six WGI estimate series; document VIF with other macros.",
       "redistributable": true,
       "source_ids": [
         "worldbank_wgi"
@@ -685,6 +825,12 @@
       "byod_only": null,
       "citation": "World Bank. World Development Indicators. NE.TRD.GNFS.ZS.",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": 78.5,
+        "n_countries": 193,
+        "year_max": 2025,
+        "year_min": 1990
+      },
       "definition": null,
       "direction": "benefit",
       "download_allowed": true,
@@ -708,11 +854,15 @@
       "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
+      "licence_ids": [
+        "CC-BY-4.0"
+      ],
       "name": {
         "en": "External Opening Coefficient (trade/GDP)",
         "es": "Coeficiente de apertura externa (comercio/PIB)"
       },
       "new_cells_since_previous": 6134,
+      "notes": "Legacy/baseline only; biased toward hubs and small economies.",
       "redistributable": true,
       "source_ids": [
         "worldbank_wdi"
@@ -727,6 +877,12 @@
       "byod_only": null,
       "citation": "Derived from CEPII BACI (Gaulier & Zignago, 2010).",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": null,
+        "n_countries": 227,
+        "year_max": 2024,
+        "year_min": 2012
+      },
       "definition": null,
       "direction": "cost",
       "download_allowed": true,
@@ -750,11 +906,15 @@
       "last_checked": "2026-11-20T09:52:22Z",
       "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": null,
+      "licence_ids": [
+        "etalab-2.0"
+      ],
       "name": {
         "en": "Re-export intensity (chapter X_j / M_j)",
         "es": "Intensidad de reexportaci\u00f3n (cap\u00edtulo X_j / M_j)"
       },
       "new_cells_since_previous": null,
+      "notes": "Hub flag treated as cost in the core score; SPEC \u00a73.2.",
       "redistributable": true,
       "source_ids": [
         "baci"
@@ -785,6 +945,12 @@
           "2022": 1
         }
       },
+      "coverage_stats": {
+        "coverage_pct": 100.0,
+        "n_countries": 3,
+        "year_max": 2022,
+        "year_min": 2020
+      },
       "definition": null,
       "direction": "benefit",
       "download_allowed": false,
@@ -808,11 +974,15 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [
+        "CC-BY-NC-SA-3.0-IGO"
+      ],
       "name": {
         "en": "ICT Development Index",
         "es": "\u00cdndice de desarrollo de las TIC"
       },
       "new_cells_since_previous": null,
+      "notes": "ITU DataHub About page: CC BY-NC-SA 3.0 IGO (non-commercial). New IDI methodology from 2023 \u2014 do not splice with pre-2023 silently.",
       "redistributable": false,
       "source_ids": [
         "itu_datahub"
@@ -843,6 +1013,12 @@
           "2022": 1
         }
       },
+      "coverage_stats": {
+        "coverage_pct": 100.0,
+        "n_countries": 3,
+        "year_max": 2022,
+        "year_min": 2020
+      },
       "definition": null,
       "direction": "benefit",
       "download_allowed": false,
@@ -867,11 +1043,15 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [
+        "proprietary"
+      ],
       "name": {
         "en": "EF English Proficiency Index",
         "es": "\u00cdndice de dominio del ingl\u00e9s EF"
       },
       "new_cells_since_previous": null,
+      "notes": "Official landing opened; redistribution / open-licence terms not stated clearly \u2014 treat as proprietary BYOD until verified.",
       "redistributable": false,
       "source_ids": [
         "ef_epi"
@@ -902,6 +1082,12 @@
           "2022": 1
         }
       },
+      "coverage_stats": {
+        "coverage_pct": 100.0,
+        "n_countries": 3,
+        "year_max": 2022,
+        "year_min": 2020
+      },
       "definition": null,
       "direction": "benefit",
       "download_allowed": false,
@@ -925,11 +1111,15 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [
+        "CC-BY-4.0"
+      ],
       "name": {
         "en": "Open Data Inventory overall score",
         "es": "Puntuaci\u00f3n global Open Data Inventory"
       },
       "new_cells_since_previous": null,
+      "notes": "Official site shows a CC BY icon; older ODIN reports cite CC BY 4.0. Current machine-readable download terms not confirmed this session \u2014 UNKNOWN until a human verifies the download licence.",
       "redistributable": false,
       "source_ids": [
         "odin"
@@ -960,6 +1150,12 @@
           "2022": 1
         }
       },
+      "coverage_stats": {
+        "coverage_pct": 100.0,
+        "n_countries": 3,
+        "year_max": 2022,
+        "year_min": 2020
+      },
       "definition": null,
       "direction": "benefit",
       "download_allowed": false,
@@ -984,11 +1180,13 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [],
       "name": {
         "en": "Global Entrepreneurship Index",
         "es": "\u00cdndice global de emprendimiento (GEDI)"
       },
       "new_cells_since_previous": null,
+      "notes": "Final GEI issue around 2019; no clear SPDX redistribution licence on the official pages opened \u2014 BYOD.",
       "redistributable": false,
       "source_ids": [
         "gedi"
@@ -1019,6 +1217,12 @@
           "2022": 1
         }
       },
+      "coverage_stats": {
+        "coverage_pct": 100.0,
+        "n_countries": 3,
+        "year_max": 2022,
+        "year_min": 2020
+      },
       "definition": null,
       "direction": "benefit",
       "download_allowed": true,
@@ -1042,11 +1246,15 @@
       "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": "2026-09-28",
+      "licence_ids": [
+        "CC-BY-4.0"
+      ],
       "name": {
         "en": "Global Innovation Index",
         "es": "\u00cdndice global de innovaci\u00f3n"
       },
       "new_cells_since_previous": null,
+      "notes": "GII 2026 publication states CC BY 4.0; confirm the database file carries the same terms before status: verified.",
       "redistributable": true,
       "source_ids": [
         "wipo_gii"
@@ -1077,6 +1285,12 @@
           "2022": 1
         }
       },
+      "coverage_stats": {
+        "coverage_pct": 100.0,
+        "n_countries": 3,
+        "year_max": 2022,
+        "year_min": 2020
+      },
       "definition": null,
       "direction": "benefit",
       "download_allowed": false,
@@ -1101,11 +1315,15 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [
+        "proprietary"
+      ],
       "name": {
         "en": "Global Startup Ecosystem Index",
         "es": "\u00cdndice global de ecosistemas startup"
       },
       "new_cells_since_previous": null,
+      "notes": "Likely proprietary; no open licence confirmed \u2014 BYOD.",
       "redistributable": false,
       "source_ids": [
         "startupblink"
@@ -1136,6 +1354,12 @@
           "2022": 1
         }
       },
+      "coverage_stats": {
+        "coverage_pct": 100.0,
+        "n_countries": 3,
+        "year_max": 2022,
+        "year_min": 2020
+      },
       "definition": null,
       "direction": "benefit",
       "download_allowed": false,
@@ -1159,11 +1383,15 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [
+        "CC-BY-NC-SA-4.0"
+      ],
       "name": {
         "en": "Environmental Performance Index",
         "es": "\u00cdndice de desempe\u00f1o ambiental"
       },
       "new_cells_since_previous": null,
+      "notes": "epi.yale.edu downloads footer and FAQs: CC BY-NC-SA 4.0 \u2014 non-commercial; not shipped in the public release.",
       "redistributable": false,
       "source_ids": [
         "yale_epi"
@@ -1194,6 +1422,12 @@
           "2022": 1
         }
       },
+      "coverage_stats": {
+        "coverage_pct": 100.0,
+        "n_countries": 3,
+        "year_max": 2022,
+        "year_min": 2020
+      },
       "definition": null,
       "direction": "cost",
       "download_allowed": true,
@@ -1217,11 +1451,15 @@
       "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
+      "licence_ids": [
+        "CC-BY-4.0"
+      ],
       "name": {
         "en": "CO2 emissions excluding LULUCF per capita (t CO2e/capita)",
         "es": "Emisiones de CO2 excl. UTCUTS per c\u00e1pita (t CO2e/c\u00e1pita)"
       },
       "new_cells_since_previous": 7096,
+      "notes": "Replaces discontinued EN.ATM.CO2E.PC (WDI Database Archives). Different source/definition; do not splice with the archived series. series_breaks marks the catalog switch year (not an upstream splice).",
       "redistributable": true,
       "source_ids": [
         "worldbank_wdi"
@@ -1252,6 +1490,12 @@
           "2022": 1
         }
       },
+      "coverage_stats": {
+        "coverage_pct": 100.0,
+        "n_countries": 3,
+        "year_max": 2022,
+        "year_min": 2020
+      },
       "definition": null,
       "direction": "cost",
       "download_allowed": true,
@@ -1275,11 +1519,15 @@
       "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
+      "licence_ids": [
+        "CC-BY-4.0"
+      ],
       "name": {
         "en": "Price level index (households and NPISHs final consumption)",
         "es": "\u00cdndice de nivel de precios (consumo final hogares y NPSH)"
       },
       "new_cells_since_previous": 6320,
+      "notes": "Open price-level replacement for scraped consumer-price baskets. Indicator page states CC BY-4.0.",
       "redistributable": true,
       "source_ids": [
         "worldbank_wdi"
@@ -1294,6 +1542,7 @@
       "byod_only": true,
       "citation": "Phase J IMSFE 2025 draft mapping. Jose code; open candidate UVGAP/BACI unit values. licence to verify.",
       "coverage": null,
+      "coverage_stats": null,
       "definition": null,
       "direction": "benefit",
       "download_allowed": true,
@@ -1317,11 +1566,15 @@
       "last_checked": "2026-11-20T09:52:22Z",
       "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": null,
+      "licence_ids": [
+        "etalab-2.0"
+      ],
       "name": {
         "en": "Product Price at Destination (PPAD)",
         "es": "Precio del producto en destino (PPAD)"
       },
       "new_cells_since_previous": null,
+      "notes": "Jose code; open candidate UVGAP/BACI unit values. licence to verify.",
       "redistributable": false,
       "source_ids": [
         "baci"
@@ -1336,6 +1589,7 @@
       "byod_only": true,
       "citation": "Phase J IMSFE 2025 draft mapping. Workbook freight tools; BYOD; licence UNKNOWN.",
       "coverage": null,
+      "coverage_stats": null,
       "definition": null,
       "direction": "cost",
       "download_allowed": false,
@@ -1360,11 +1614,13 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [],
       "name": {
         "en": "International Transport Costs (INTC)",
         "es": "Costes de transporte internacional (INTC)"
       },
       "new_cells_since_previous": null,
+      "notes": "Workbook freight tools; BYOD; licence UNKNOWN.",
       "redistributable": false,
       "source_ids": [
         "freight_manual"
@@ -1379,6 +1635,7 @@
       "byod_only": true,
       "citation": "Phase J IMSFE 2025 draft mapping. Doing Business IC.IMP.CSBC.CD archived; flag archived series.",
       "coverage": null,
+      "coverage_stats": null,
       "definition": null,
       "direction": "cost",
       "download_allowed": true,
@@ -1402,11 +1659,15 @@
       "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
+      "licence_ids": [
+        "CC-BY-4.0"
+      ],
       "name": {
         "en": "Cost to Import Border Compliance (CIBC)",
         "es": "Coste de cumplimiento fronterizo a la importaci\u00f3n (CIBC)"
       },
       "new_cells_since_previous": 0,
+      "notes": "Doing Business IC.IMP.CSBC.CD archived; flag archived series.",
       "redistributable": false,
       "source_ids": [
         "worldbank_wdi"
@@ -1418,9 +1679,16 @@
       ]
     },
     {
+      "alias_of": "LPI",
       "byod_only": true,
       "citation": "Phase J IMSFE 2025 draft mapping. Alias of catalog LPI / LP.LPI.OVRL.XQ.",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": 13.7,
+        "n_countries": 169,
+        "year_max": 2022,
+        "year_min": 2007
+      },
       "definition": null,
       "direction": "benefit",
       "download_allowed": true,
@@ -1444,11 +1712,15 @@
       "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": "2026-11-11",
+      "licence_ids": [
+        "CC-BY-4.0"
+      ],
       "name": {
         "en": "Logistics Performance Index (LPIN)",
         "es": "\u00cdndice de desempe\u00f1o log\u00edstico (LPIN)"
       },
       "new_cells_since_previous": 1068,
+      "notes": "Alias of LPI. Alias of catalog LPI (same series LP.LPI.OVRL.XQ). Do not double-weight with LPI.",
       "redistributable": false,
       "source_ids": [
         "worldbank_lpi"
@@ -1463,6 +1735,7 @@
       "byod_only": true,
       "citation": "Phase J IMSFE 2025 draft mapping. WDI IS.SHP.GOOD.TU candidate.",
       "coverage": null,
+      "coverage_stats": null,
       "definition": null,
       "direction": "benefit",
       "download_allowed": true,
@@ -1486,11 +1759,15 @@
       "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
+      "licence_ids": [
+        "CC-BY-4.0"
+      ],
       "name": {
         "en": "Container Port Traffic (CPTR)",
         "es": "Tr\u00e1fico de contenedores portuarios (CPTR)"
       },
       "new_cells_since_previous": 0,
+      "notes": "WDI IS.SHP.GOOD.TU candidate.",
       "redistributable": false,
       "source_ids": [
         "worldbank_wdi"
@@ -1505,6 +1782,7 @@
       "byod_only": true,
       "citation": "Phase J IMSFE 2025 draft mapping. Sea-distances style BYOD; licence UNKNOWN.",
       "coverage": null,
+      "coverage_stats": null,
       "definition": null,
       "direction": "cost",
       "download_allowed": false,
@@ -1529,11 +1807,13 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [],
       "name": {
         "en": "International Transport Transit Time (ITTT)",
         "es": "Tiempo de tr\u00e1nsito internacional (ITTT)"
       },
       "new_cells_since_previous": null,
+      "notes": "Sea-distances style BYOD; licence UNKNOWN.",
       "redistributable": false,
       "source_ids": [
         "freight_manual"
@@ -1548,6 +1828,7 @@
       "byod_only": true,
       "citation": "Phase J IMSFE 2025 draft mapping. Jose code; open candidate TARIF/WITS; often BYOD.",
       "coverage": null,
+      "coverage_stats": null,
       "definition": null,
       "direction": "cost",
       "download_allowed": false,
@@ -1572,11 +1853,15 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [
+        "custom"
+      ],
       "name": {
         "en": "Customs Tariffs (CUTA)",
         "es": "Aranceles aduaneros (CUTA)"
       },
       "new_cells_since_previous": null,
+      "notes": "Jose code; open candidate TARIF/WITS; often BYOD.",
       "redistributable": false,
       "source_ids": [
         "wits_trains"
@@ -1591,6 +1876,7 @@
       "byod_only": true,
       "citation": "Phase J IMSFE 2025 draft mapping. Global Trade Alert; BYOD; licence UNKNOWN.",
       "coverage": null,
+      "coverage_stats": null,
       "definition": null,
       "direction": "cost",
       "download_allowed": false,
@@ -1614,11 +1900,15 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [
+        "custom"
+      ],
       "name": {
         "en": "Country Contribution to Interventions (CCTI)",
         "es": "Contribuci\u00f3n a intervenciones comerciales (CCTI)"
       },
       "new_cells_since_previous": null,
+      "notes": "Global Trade Alert; BYOD; licence UNKNOWN.",
       "redistributable": false,
       "source_ids": [
         "global_trade_alert"
@@ -1633,6 +1923,7 @@
       "byod_only": true,
       "citation": "Phase J IMSFE 2025 draft mapping. Heritage IEF; BYOD; licence UNKNOWN.",
       "coverage": null,
+      "coverage_stats": null,
       "definition": null,
       "direction": "benefit",
       "download_allowed": false,
@@ -1657,11 +1948,15 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [
+        "proprietary"
+      ],
       "name": {
         "en": "Index of Economic Freedom (IOEF)",
         "es": "\u00cdndice de libertad econ\u00f3mica (IOEF)"
       },
       "new_cells_since_previous": null,
+      "notes": "Heritage IEF; BYOD; licence UNKNOWN.",
       "redistributable": false,
       "source_ids": [
         "heritage_ief"
@@ -1673,9 +1968,16 @@
       ]
     },
     {
+      "alias_of": "PLI",
       "byod_only": true,
       "citation": "Phase J IMSFE 2025 draft mapping. Jose code; open candidate PLI (ICP).",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": 81.0,
+        "n_countries": 208,
+        "year_max": 2025,
+        "year_min": 1990
+      },
       "definition": null,
       "direction": "benefit",
       "download_allowed": true,
@@ -1699,11 +2001,15 @@
       "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
+      "licence_ids": [
+        "CC-BY-4.0"
+      ],
       "name": {
         "en": "Cost of Living Index (CLI)",
         "es": "\u00cdndice de coste de vida (CLI)"
       },
       "new_cells_since_previous": 6320,
+      "notes": "Alias of PLI. Proxy ICP for Jose CLI \u2014 same series as PLI (PA.NUS.PRVT.PLI). Do not double-weight with PLI.",
       "redistributable": false,
       "source_ids": [
         "worldbank_wdi"
@@ -1715,9 +2021,16 @@
       ]
     },
     {
+      "alias_of": "INFL",
       "byod_only": true,
       "citation": "Phase J IMSFE 2025 draft mapping. Jose code; open candidate INFL.",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": 79.3,
+        "n_countries": 193,
+        "year_max": 2025,
+        "year_min": 1990
+      },
       "definition": null,
       "direction": "cost",
       "download_allowed": true,
@@ -1741,11 +2054,15 @@
       "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
+      "licence_ids": [
+        "CC-BY-4.0"
+      ],
       "name": {
         "en": "Inflation Annual (INAN)",
         "es": "Inflaci\u00f3n anual (INAN)"
       },
-      "new_cells_since_previous": null,
+      "new_cells_since_previous": 6193,
+      "notes": "Alias of INFL. Jose code; alias of INFL (FP.CPI.TOTL.ZG). Do not double-weight with INFL.",
       "redistributable": false,
       "source_ids": [
         "worldbank_wdi"
@@ -1757,9 +2074,16 @@
       ]
     },
     {
+      "alias_of": "UNEMP",
       "byod_only": true,
       "citation": "Phase J IMSFE 2025 draft mapping. Jose code; open candidate UNEMP.",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": 83.6,
+        "n_countries": 187,
+        "year_max": 2025,
+        "year_min": 1991
+      },
       "definition": null,
       "direction": "cost",
       "download_allowed": true,
@@ -1783,11 +2107,15 @@
       "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
+      "licence_ids": [
+        "CC-BY-4.0"
+      ],
       "name": {
         "en": "Unemployment Rate (UNRA)",
         "es": "Tasa de desempleo (UNRA)"
       },
-      "new_cells_since_previous": null,
+      "new_cells_since_previous": 6531,
+      "notes": "Alias of UNEMP. Jose code; alias of UNEMP (SL.UEM.TOTL.ZS). Do not double-weight with UNEMP.",
       "redistributable": false,
       "source_ids": [
         "worldbank_wdi"
@@ -1802,6 +2130,7 @@
       "byod_only": true,
       "citation": "Phase J IMSFE 2025 draft mapping. BYOD; licence UNKNOWN.",
       "coverage": null,
+      "coverage_stats": null,
       "definition": null,
       "direction": "cost",
       "download_allowed": false,
@@ -1825,11 +2154,15 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [
+        "CC-BY-NC-SA-4.0"
+      ],
       "name": {
         "en": "Fragile States Index (FSIN)",
         "es": "\u00cdndice de estados fr\u00e1giles (FSIN)"
       },
       "new_cells_since_previous": null,
+      "notes": "BYOD; licence UNKNOWN.",
       "redistributable": false,
       "source_ids": [
         "fragile_states_index"
@@ -1844,6 +2177,12 @@
       "byod_only": true,
       "citation": "Phase J IMSFE 2025 draft mapping. BYOD; licence UNKNOWN.",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": null,
+        "n_countries": 191,
+        "year_max": 2025,
+        "year_min": 2016
+      },
       "definition": null,
       "direction": "cost",
       "download_allowed": true,
@@ -1867,11 +2206,15 @@
       "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": "2026-05-19T23:25:29.871538",
+      "licence_ids": [
+        "CC-BY-4.0"
+      ],
       "name": {
         "en": "INFORM Risk (INRI)",
         "es": "Riesgo INFORM (INRI)"
       },
       "new_cells_since_previous": null,
+      "notes": "BYOD; licence UNKNOWN.",
       "redistributable": false,
       "source_ids": [
         "inform_risk"
@@ -1886,6 +2229,7 @@
       "byod_only": true,
       "citation": "Phase J IMSFE 2025 draft mapping. EIU proprietary; BYOD; licence UNKNOWN.",
       "coverage": null,
+      "coverage_stats": null,
       "definition": null,
       "direction": "benefit",
       "download_allowed": false,
@@ -1910,11 +2254,15 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [
+        "proprietary"
+      ],
       "name": {
         "en": "Democracy Index (DEIN)",
         "es": "\u00cdndice de democracia (DEIN)"
       },
       "new_cells_since_previous": null,
+      "notes": "EIU proprietary; BYOD; licence UNKNOWN.",
       "redistributable": false,
       "source_ids": [
         "eiu_democracy"
@@ -1929,6 +2277,7 @@
       "byod_only": true,
       "citation": "Phase J IMSFE 2025 draft mapping. KOF; BYOD; licence UNKNOWN.",
       "coverage": null,
+      "coverage_stats": null,
       "definition": null,
       "direction": "benefit",
       "download_allowed": false,
@@ -1953,11 +2302,15 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [
+        "custom"
+      ],
       "name": {
         "en": "Globalization Index (GLIN)",
         "es": "\u00cdndice de globalizaci\u00f3n (GLIN)"
       },
       "new_cells_since_previous": null,
+      "notes": "KOF; BYOD; licence UNKNOWN.",
       "redistributable": false,
       "source_ids": [
         "kof_globalisation"
@@ -1972,6 +2325,12 @@
       "byod_only": true,
       "citation": "Phase J IMSFE 2025 draft mapping. Transparency CPI; BYOD; licence UNKNOWN.",
       "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": null,
+        "n_countries": 182,
+        "year_max": 2025,
+        "year_min": 2012
+      },
       "definition": null,
       "direction": "benefit",
       "download_allowed": true,
@@ -1995,11 +2354,15 @@
       "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": "2026-02-04",
+      "licence_ids": [
+        "CC-BY-4.0"
+      ],
       "name": {
         "en": "Corruption Perceptions Index (CPIN)",
         "es": "\u00cdndice de percepci\u00f3n de la corrupci\u00f3n (CPIN)"
       },
       "new_cells_since_previous": null,
+      "notes": "Transparency CPI; BYOD; licence UNKNOWN.",
       "redistributable": false,
       "source_ids": [
         "transparency_cpi"
@@ -2014,6 +2377,7 @@
       "byod_only": true,
       "citation": "Phase J IMSFE 2025 draft mapping. Sum of |origin\u2212dest| Hofstede dims; same family as CULT.",
       "coverage": null,
+      "coverage_stats": null,
       "definition": null,
       "direction": "cost",
       "download_allowed": false,
@@ -2038,11 +2402,15 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [
+        "custom"
+      ],
       "name": {
         "en": "Cultural Difference (CUDI)",
         "es": "Diferencia cultural (CUDI)"
       },
       "new_cells_since_previous": null,
+      "notes": "Sum of |origin\u2212dest| Hofstede dims; same family as CULT.",
       "redistributable": false,
       "source_ids": [
         "hofstede"
@@ -2057,6 +2425,7 @@
       "byod_only": true,
       "citation": "Phase A2 IMSFEM 2025 draft. Workbook cites World Population Review road-quality ranking; prefer an official series when available. Licence UNKNOWN.",
       "coverage": null,
+      "coverage_stats": null,
       "definition": null,
       "direction": "benefit",
       "download_allowed": false,
@@ -2081,11 +2450,15 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [
+        "proprietary"
+      ],
       "name": {
         "en": "Road Quality by Country (RQBC)",
         "es": "Calidad de carreteras por pa\u00eds (RQBC)"
       },
       "new_cells_since_previous": null,
+      "notes": "Olive-oil LOGI swap for CPTR. Secondary aggregator; BYOD until licence verified.",
       "redistributable": false,
       "source_ids": [
         "world_population_review"
@@ -2100,6 +2473,7 @@
       "byod_only": true,
       "citation": "Phase A2 IMSFEM 2025 draft. Workbook cites tradebarrierindex.org. Licence UNKNOWN.",
       "coverage": null,
+      "coverage_stats": null,
       "definition": null,
       "direction": "cost",
       "download_allowed": false,
@@ -2123,11 +2497,15 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [
+        "proprietary"
+      ],
       "name": {
         "en": "International Trade Barrier Index (ITBI)",
         "es": "\u00cdndice internacional de barreras al comercio (ITBI)"
       },
       "new_cells_since_previous": null,
+      "notes": "Olive-oil COMM swap for CCTI. BYOD until licence verified.",
       "redistributable": false,
       "source_ids": [
         "trade_barrier_index"
@@ -2142,6 +2520,7 @@
       "byod_only": true,
       "citation": "Phase A2 IMSFEM 2025 draft. Official candidate World Bank EN.GHG.CO2.MT.CE.AR5 (current WDI series, 1970\u20132024). Workbook also cites Global Carbon Atlas / IEA. Licence not human-verified for Atlas ship gate.",
       "coverage": null,
+      "coverage_stats": null,
       "definition": null,
       "direction": "cost",
       "download_allowed": false,
@@ -2171,11 +2550,17 @@
       "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
+      "licence_ids": [
+        "CC-BY-4.0",
+        "custom",
+        "proprietary"
+      ],
       "name": {
         "en": "Carbon Dioxide (CO2) Emissions (CADE)",
         "es": "Emisiones de di\u00f3xido de carbono (CADE)"
       },
       "new_cells_since_previous": 0,
+      "notes": "SUST criterion. Prefer WDI EN.GHG.CO2.MT.CE.AR5 over aggregators; BYOD until rights-verify.",
       "redistributable": false,
       "source_ids": [
         "worldbank_wdi",
@@ -2192,6 +2577,7 @@
       "byod_only": true,
       "citation": "Phase A2 IMSFEM 2025 draft. Workbook cites Coface country risk map. Proprietary; BYOD; licence UNKNOWN.",
       "coverage": null,
+      "coverage_stats": null,
       "definition": null,
       "direction": "cost",
       "download_allowed": false,
@@ -2217,11 +2603,15 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [
+        "proprietary"
+      ],
       "name": {
         "en": "Global Country Risk (GLCR)",
         "es": "Riesgo pa\u00eds global (GLCR)"
       },
       "new_cells_since_previous": null,
+      "notes": "Coface; proprietary \u2192 BYOD.",
       "redistributable": false,
       "source_ids": [
         "coface_country_risk"
@@ -2236,6 +2626,7 @@
       "byod_only": true,
       "citation": "Phase A2 IMSFEM 2025 draft. Workbook cites SolAbility GSCI. Licence UNKNOWN.",
       "coverage": null,
+      "coverage_stats": null,
       "definition": null,
       "direction": "benefit",
       "download_allowed": false,
@@ -2259,14 +2650,57 @@
       "last_checked": null,
       "last_ingested": null,
       "last_upstream_change": null,
+      "licence_ids": [
+        "CC-BY-NC-SA-4.0"
+      ],
       "name": {
         "en": "Global Sustainable Competitiveness Index (GLSI)",
         "es": "\u00cdndice global de competitividad sostenible (GLSI)"
       },
       "new_cells_since_previous": null,
+      "notes": "SolAbility GSCI; BYOD until licence verified.",
       "redistributable": false,
       "source_ids": [
         "solability_gsci"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": null,
+      "citation": "Derived from World Bank WDI FP.CPI.TOTL.ZG as abs(x \u2212 2).",
+      "coverage": null,
+      "coverage_stats": {
+        "coverage_pct": 79.3,
+        "n_countries": 193,
+        "year_max": 2025,
+        "year_min": 1990
+      },
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "macro_risk",
+      "formula": null,
+      "gate": null,
+      "id": "INFL_DEV",
+      "last_checked": "2026-11-20T09:52:21Z",
+      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_upstream_change": "2026-11-11",
+      "licence_ids": [
+        "CC-BY-4.0"
+      ],
+      "name": {
+        "en": "Inflation deviation from 2% target",
+        "es": "Desviaci\u00f3n de la inflaci\u00f3n respecto al 2 %"
+      },
+      "new_cells_since_previous": 6193,
+      "notes": "Candidate derived series abs(INFL \u2212 2). Does not replace verified INFL.",
+      "redistributable": true,
+      "source_ids": [
+        "worldbank_wdi"
       ],
       "status": "draft",
       "years": [

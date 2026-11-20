@@ -3,6 +3,7 @@ import type { MarketEdge, MarketNode } from "@ims-atlas/core";
 import { downloadDataUrl, downloadText } from "../cite/exportDownload";
 import { dataConfig } from "../dataConfig";
 import { composeChartPng, wrapSvgWithCredit } from "../export/imageExport";
+import { useTranslation } from "../i18n";
 import {
   CLUSTER_COLORS,
   collideLabels,
@@ -42,6 +43,7 @@ export function MarketMapCanvas({
   showHulls = false,
   clusterLabels,
 }: Props) {
+  const { t } = useTranslation();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [view, setView] = useState({ scale: 1, tx: 0, ty: 0 });
   const [lastFrameMs, setLastFrameMs] = useState(0);
@@ -277,18 +279,22 @@ export function MarketMapCanvas({
           data-testid="map-reset-view"
           onClick={() => setView({ scale: 1, tx: 0, ty: 0 })}
         >
-          Reset
+          {t("mapResetView")}
         </button>
-        <button type="button" data-testid="map-perf-200" onClick={runPerf200}>
-          Perf 200
-        </button>
-        <span className="muted small" data-testid="map-frame-ms">
-          {lastFrameMs.toFixed(2)} ms
-        </span>
-        {perf200Ms !== null ? (
-          <span className="muted small" data-testid="map-perf-ms">
-            {perf200Ms.toFixed(2)}
-          </span>
+        {import.meta.env.DEV ? (
+          <>
+            <button type="button" data-testid="map-perf-200" onClick={runPerf200}>
+              Perf 200
+            </button>
+            <span className="muted small" data-testid="map-frame-ms">
+              {lastFrameMs.toFixed(2)} ms
+            </span>
+            {perf200Ms !== null ? (
+              <span className="muted small" data-testid="map-perf-ms">
+                {perf200Ms.toFixed(2)}
+              </span>
+            ) : null}
+          </>
         ) : null}
       </div>
       <canvas

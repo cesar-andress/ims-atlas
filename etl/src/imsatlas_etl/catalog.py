@@ -29,6 +29,7 @@ ALLOWED_FACTORS = frozenset(
         "communication",
         "entrepreneurship",
         "sustainability",
+        "promotion",
     },
 )
 ALLOWED_STATUS = frozenset({"draft", "verified"})

@@ -149,6 +149,7 @@ export function MarketMap() {
     silhouetteSweep[0]?.sil ??
     null;
 
+  const lang = (config.lang ?? "es").startsWith("es") ? "es" : "en";
   const descriptors = useMemo(() => {
     if (!layout || !model) return {};
     return clusterDescriptors(
@@ -156,8 +157,9 @@ export function MarketMap() {
       model.factorScores,
       Object.keys(model.weights.factors),
       2,
+      lang,
     );
-  }, [layout, model]);
+  }, [layout, model, lang]);
 
   const combinedError =
     error ?? (layoutError ? analysisErrorMessage(layoutError) : null);

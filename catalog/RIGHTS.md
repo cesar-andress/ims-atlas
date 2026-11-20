@@ -57,6 +57,15 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 | procolombia | proprietary | unknown | no | unknown | no | unknown | no | yes | — | — |
 | iso_country_codes_ref | custom | yes | yes | yes | unknown | yes | no | no | — | — |
 | literature_dyo | CC-BY-NC-SA-4.0 | yes | yes | yes | no | yes | yes | no | CA | 2026-11-20 |
+| auma_fairs | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| ufi_stats | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| icex_events | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| trade_gov_events | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| oecd_sdmx | UNKNOWN | unknown | unknown | unknown | unknown | yes | unknown | unknown | — | — |
+| wto_timeseries | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| comexstat_br | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| dane_dian_comex | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| datacomex_es | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
 
 ## Variables (gate)
 
@@ -113,6 +122,11 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 | GLCR | coface_country_risk | local_only | unknown rights: attribution_required; evidence incomplete (checked_by/on, terms_url, snapshot_sha256); use_research=no |
 | GLSI | solability_gsci | byod_only | commercial_use=no under commercial_context=true |
 | INFL_DEV | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| FAIRS_N | auma_fairs | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| FAIRS_SIZE | auma_fairs | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| FAIRS_INTL | auma_fairs | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| PROMO_OFFICE | icex_events | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| PROMO_EVENTS | icex_events,trade_gov_events | byod_only | source[0]: unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; source[0]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256); source[1]: unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; source[1]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
 
 ## Needs human rights check
 
@@ -146,3 +160,12 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 - `geodatos`
 - `procolombia`
 - `iso_country_codes_ref`
+- `auma_fairs`
+- `ufi_stats`
+- `icex_events`
+- `trade_gov_events`
+- `oecd_sdmx`
+- `wto_timeseries`
+- `comexstat_br`
+- `dane_dian_comex`
+- `datacomex_es`

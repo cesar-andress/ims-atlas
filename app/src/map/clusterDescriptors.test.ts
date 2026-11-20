@@ -13,8 +13,9 @@ describe("clusterDescriptors", () => {
       BBB: { logistics: 8, cost: 2 },
       CCC: { logistics: 1, cost: 9 },
     };
-    const d = clusterDescriptors(nodes, factorScores, ["logistics", "cost"], 2);
+    const d = clusterDescriptors(nodes, factorScores, ["logistics", "cost"], 2, "en");
     expect(d[0]).toContain("logistics");
     expect(d[1]).toContain("cost");
+    expect(d[0]).toMatch(/^Cluster 0:/);
   });
 });

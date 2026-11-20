@@ -127,7 +127,7 @@ export function ProjectScopeFields() {
         <input
           type="number"
           value={yearDraft}
-          placeholder="2023"
+          placeholder=""
           data-testid="year-input"
           onChange={(e) => setYearDraft(e.target.value)}
           onBlur={() =>

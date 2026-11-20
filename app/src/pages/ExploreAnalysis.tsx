@@ -10,6 +10,7 @@ import { PermalinkLink } from "../components/PermalinkLink";
 import { loadCatalogPreview } from "../data/catalogLoader";
 import type { CatalogVariable } from "../data/types";
 import { useTranslation } from "../i18n";
+import { LATEST_COMPLETE_YEAR } from "../state/schema";
 import { useAnalysis } from "../state/useAnalysis";
 
 function seriesForVar(
@@ -32,7 +33,7 @@ export function ExploreAnalysis() {
   const { t } = useTranslation();
   const { config, setConfig } = useAnalysis();
   const [vars, setVars] = useState<CatalogVariable[]>([]);
-  const year = config.year ?? 2023;
+  const year = config.year ?? LATEST_COMPLETE_YEAR;
   const basket = config.variableIds?.length
     ? config.variableIds
     : vars.slice(0, 8).map((v) => v.id);

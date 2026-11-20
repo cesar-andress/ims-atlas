@@ -73,6 +73,16 @@ verify literature_dyo redistribute_raw  # CC-BY-NC-SA-4.0, confidence medium
 #   geodatos  (proprietary, confidence high)
 #   procolombia  (proprietary, confidence high)
 #   iso_country_codes_ref  (custom, confidence medium)
+# EXTRA-6/7/8/9 (added 2026-11-20; do not attest blindly — read evidence.note):
+#   auma_fairs  (unknown, confidence low)
+#   ufi_stats  (unknown, confidence low)
+#   icex_events  (unknown, confidence medium)
+#   trade_gov_events  (unknown, confidence medium)
+#   oecd_sdmx  (unknown, confidence medium)
+#   wto_timeseries  (unknown, confidence medium)
+#   comexstat_br  (unknown, confidence medium)
+#   dane_dian_comex  (unknown, confidence low)
+#   datacomex_es  (unknown, confidence low)
 
 uv run atlas-etl rights-report
 echo "Done. Review catalog/RIGHTS.md, then commit catalog/."

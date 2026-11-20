@@ -59,6 +59,15 @@ LANDING_HOST_ALLOWLIST: dict[str, frozenset[str]] = {
     "procolombia": frozenset({"ruta-exportadora.procolombia.co", "procolombia.co"}),
     "iso_country_codes_ref": frozenset({"www.inapi.cl"}),
     "literature_dyo": frozenset({"www.revistadyo.es"}),
+    "auma_fairs": frozenset({"www.auma.de"}),
+    "ufi_stats": frozenset({"www.ufi.org"}),
+    "icex_events": frozenset({"datos.gob.es"}),
+    "trade_gov_events": frozenset({"developer.trade.gov"}),
+    "oecd_sdmx": frozenset({"data-explorer.oecd.org"}),
+    "wto_timeseries": frozenset({"apiportal.wto.org"}),
+    "comexstat_br": frozenset({"comexstat.mdic.gov.br"}),
+    "dane_dian_comex": frozenset({"www.dane.gov.co"}),
+    "datacomex_es": frozenset({"comercio.gob.es"}),
 }
 
 

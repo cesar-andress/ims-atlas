@@ -1,4 +1,7 @@
-"""Build a live COL · HS64 · 2023 ranking panel from curated tables (not synthetic)."""
+"""Build a live COL · HS64 ranking panel from curated tables (not synthetic).
+
+Default year = BACI pin ``year_max`` (latest complete trade year).
+"""
 
 from __future__ import annotations
 
@@ -14,7 +17,20 @@ from imsatlas_etl.pipeline.io_paths import curated_dir, internal_release_dir
 
 ORIGIN = "COL"
 HS = "64"
-YEAR = 2023
+
+
+def _default_panel_year() -> int:
+    pin = repo_root() / "config" / "pins" / "baci.json"
+    if pin.is_file():
+        data = json.loads(pin.read_text(encoding="utf-8"))
+        opts = data.get("options") or {}
+        ymax = opts.get("year_max")
+        if isinstance(ymax, int):
+            return ymax
+    raise RuntimeError("config/pins/baci.json missing options.year_max")
+
+
+YEAR = _default_panel_year()
 
 WB_MAP = {
     "LPI": "LP.LPI.OVRL.XQ",

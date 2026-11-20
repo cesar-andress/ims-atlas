@@ -6,6 +6,7 @@ import { loadCatalogPreview } from "../data/catalogLoader";
 import { ISO3_EXPORTERS } from "../data/iso3Exporters";
 import type { CatalogVariable } from "../data/types";
 import { useTranslation } from "../i18n";
+import { LATEST_COMPLETE_YEAR } from "../state/schema";
 import { useAnalysis } from "../state/useAnalysis";
 
 function percentile(value: number, peers: number[]): number | null {
@@ -22,7 +23,7 @@ export function CountryProfile() {
   const { config, setConfig } = useAnalysis();
   const iso = (config.focusCountry ?? config.compareA ?? "COL").toUpperCase();
   const [vars, setVars] = useState<CatalogVariable[]>([]);
-  const year = config.year ?? 2023;
+  const year = config.year ?? LATEST_COMPLETE_YEAR;
 
   useEffect(() => {
     void loadCatalogPreview().then((c) => setVars(c.variables));

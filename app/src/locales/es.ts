@@ -476,8 +476,8 @@ const es = {
   builderIntro:
     "Configura origen, producto, año, candidatos, variables y pesos en el panel izquierdo.",
   builderHint:
-    "La versión pública de los datos está vacía (cero variables redistribuibles verificadas). Abrir el ejemplo de calzado colombiano (COL · HS64 · 2023) muestra un estado pendiente hasta que haya un panel real; mientras tanto usa Fuentes y datos o Subir mis datos.",
-  presetColHs64: "Cargar COL · HS64 · 2023 · IMSFE",
+    "La versión pública de los datos está vacía (cero variables redistribuibles verificadas). Abrir el ejemplo de calzado colombiano (COL · HS64 · último año) muestra un estado pendiente hasta que haya un panel real; mientras tanto usa Fuentes y datos o Subir mis datos.",
+  presetColHs64: "Cargar COL · HS64 · último año · IMSFE",
   openRanking: "Abrir ranking →",
   builderNeedProduct:
     "Define origen, producto (HS) y año en el panel para abrir el ranking.",
@@ -526,6 +526,7 @@ const es = {
   aliasOf: "Alias de {id} (misma serie)",
   proxyIcpNote: "Proxy ICP (misma serie que PLI)",
   chartCreditAtlas: "Fuente: IMS Atlas (atlas.aiserv.es)",
+  mapResetView: "Restablecer vista",
   chartDownload: "Descargar",
   fit: "Encaje",
   quadrant: "Cuadrante",
@@ -744,7 +745,7 @@ const es = {
     non_experts: {
       p1: "IMS Atlas ordena mercados con indicadores abiertos (economía, logística, acceso, sostenibilidad…). Pesos y reglas de missing son visibles; nada se rellena en silencio.",
       example:
-        "Ejemplo: calzado colombiano (COL · HS64 · 2023). Abre el proyecto de ejemplo desde Tus proyectos, lee las pestañas Ranking y Matriz, luego Comparar. Los números solo aparecen si la versión de los datos (o tus datos subidos) aporta el panel.",
+        "Ejemplo: calzado colombiano (COL · HS64 · último año). Abre el proyecto de ejemplo desde Tus proyectos, lee las pestañas Ranking y Matriz, luego Comparar. Los números solo aparecen si la versión de los datos (o tus datos subidos) aporta el panel.",
     },
     researchers: {
       p1: "MCDM jerárquico sobre features país–año (year ≤ t). Pipelines de normalización deterministas; TS y Python coinciden en goldens a 1e-9 donde aplica.",
@@ -825,7 +826,7 @@ const es = {
     tutorial: {
       exporterTitle: "Para un exportador",
       exporter1:
-        "Abre el ejemplo de calzado colombiano (COL · HS64 · 2023) o define origen, HS y año.",
+        "Abre el ejemplo de calzado colombiano (COL · HS64 · último año) o define origen, HS y año.",
       exporter2: "Abre Ranking y la matriz estratégica; compara dos destinos.",
       exporter3: "Usa Citar y exportar para permalink y CSV del ranking.",
       researcherTitle: "Para un investigador",

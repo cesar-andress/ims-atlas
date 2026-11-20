@@ -19,8 +19,12 @@ function todayIso(d = new Date()): string {
 
 function creditFooter(meta: ImageExportMeta): string {
   const date = meta.exportDate ?? todayIso();
-  const extra = meta.extraCredit ? ` · ${meta.extraCredit}` : "";
-  return `${ATLAS_EXPORT_CREDIT}${extra} · ${date}`;
+  const parts = [ATLAS_EXPORT_CREDIT];
+  if (meta.releaseId) parts.push(`Datos ${meta.releaseId}`);
+  if (meta.sourceLine) parts.push(meta.sourceLine);
+  if (meta.extraCredit) parts.push(meta.extraCredit);
+  parts.push(date);
+  return parts.join(" · ");
 }
 
 /** CRC32 for PNG chunks. */

@@ -233,7 +233,7 @@ SOURCE_META: dict[str, dict[str, Any]] = {
     },
 }
 
-DEFAULT_YEARS = [2012, 2023]
+DEFAULT_YEARS = [2012, 2024]
 
 ATLAS_FACTORS = [
     "demand",
@@ -247,6 +247,7 @@ ATLAS_FACTORS = [
     "communication",
     "entrepreneurship",
     "sustainability",
+    "promotion",
 ]
 
 
@@ -510,7 +511,7 @@ def new_draft_variables() -> list[dict[str, Any]]:
                 "(CO2 emissions excluding LULUCF per capita)."
             ),
             "redistributable": True,
-            "years": [2012, 2023],
+            "years": list(DEFAULT_YEARS),
             "frequency": "annual",
             "coverage_countries": None,
             "series_breaks": [2024],
@@ -538,7 +539,7 @@ def new_draft_variables() -> list[dict[str, Any]]:
                 "World Bank. World Development Indicators / ICP. PA.NUS.PRVT.PLI."
             ),
             "redistributable": True,
-            "years": [2012, 2023],
+            "years": list(DEFAULT_YEARS),
             "frequency": "annual",
             "coverage_countries": None,
             "series_breaks": [],

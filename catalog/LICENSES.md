@@ -55,3 +55,8 @@ Generated from `catalog/variables.yaml` + `catalog/sources.yaml`. Do not edit by
 | GLCR | coface_country_risk | proprietary | no (BYOD) | Phase A2 IMSFEM 2025 draft. Workbook cites Coface country risk map. Proprietary; BYOD; licence UNKNOWN. |
 | GLSI | solability_gsci | CC-BY-NC-SA-4.0 | no (BYOD) | Phase A2 IMSFEM 2025 draft. Workbook cites SolAbility GSCI. Licence UNKNOWN. |
 | INFL_DEV | worldbank_wdi | CC-BY-4.0 | yes | Derived from World Bank WDI FP.CPI.TOTL.ZG as abs(x − 2). |
+| FAIRS_N | auma_fairs | UNKNOWN | no (BYOD) | Count of international trade fairs in the destination for the HS sector (last 3 years). |
+| FAIRS_SIZE | auma_fairs | UNKNOWN | no (BYOD) | Sum of exhibitors (or net m²) of sector fairs in the destination, latest available year. |
+| FAIRS_INTL | auma_fairs | UNKNOWN | no (BYOD) | Share of foreign exhibitors at sector fairs in the destination. |
+| PROMO_OFFICE | icex_events | UNKNOWN | no (BYOD) | 1 if the origin country's trade-promotion agency has an office in the destination. |
+| PROMO_EVENTS | icex_events,trade_gov_events | UNKNOWN; UNKNOWN | no (BYOD) | Missions, matchmaking or pavilions by the origin agency in the destination (last 3 years). |

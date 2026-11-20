@@ -1,0 +1,15 @@
+# Series pulled via wto_timeseries connector (EXTRA-8). Expand as connectors land.
+version: 1
+series:
+  - id: TARIFF_MFN_HS
+    resource: TBD
+    label: Applied MFN tariffs by reporter / HS
+    candidate_variable: TARIFF_MFN_HS
+  - id: TARIFF_PREF_HS
+    resource: TBD
+    label: Preferential tariffs origin→destination / HS
+    candidate_variable: TARIFF_PREF_HS
+  - id: NTM_COUNT_HS
+    resource: TBD
+    label: Non-tariff measure count (I-TIP / related)
+    candidate_variable: NTM_COUNT_HS
