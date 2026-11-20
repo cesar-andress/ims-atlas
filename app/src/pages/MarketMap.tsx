@@ -237,7 +237,7 @@ export function MarketMap() {
               </p>
               {currentSil !== null && currentSil < 0.25 ? (
                 <p className="note" data-testid="cluster-weak-warn">
-                  Silhouette &lt; 0.25 — los grupos son débiles.
+                  Silhouette &lt; 0.25: los grupos son débiles.
                 </p>
               ) : null}
               <div

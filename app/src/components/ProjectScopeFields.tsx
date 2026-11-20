@@ -91,14 +91,14 @@ export function ProjectScopeFields() {
           {hsTree.map((node) => (
             <li key={node.code}>
               <button type="button" onClick={() => pickHs(node.code)}>
-                {node.code} — {node.name[lang]}
+                {node.code}: {node.name[lang]}
               </button>
               {node.children.length > 0 ? (
                 <ul>
                   {node.children.map((ch) => (
                     <li key={ch.code}>
                       <button type="button" onClick={() => pickHs(ch.code)}>
-                        {ch.code} — {ch.name[lang]}
+                        {ch.code}: {ch.name[lang]}
                       </button>
                     </li>
                   ))}

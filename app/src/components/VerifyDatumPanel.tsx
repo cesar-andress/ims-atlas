@@ -91,8 +91,8 @@ function plainTransform(row: ProvenanceRow, t: (k: string) => string): string {
     t("verifyRawLine")
       .replace("{code}", row.upstream_code ?? row.variable_id)
       .replace("{year}", String(row.year))
-      .replace("{value}", row.value == null ? "—" : String(row.value)),
-    steps.length ? t("verifySteps").replace("{steps}", steps.join(" → ")) : null,
+      .replace("{value}", row.value == null ? "-" : String(row.value)),
+    steps.length ? t("verifySteps").replace("{steps}", steps.join(", ")) : null,
     flags.length ? flags.join("; ") : null,
   ].filter(Boolean);
   return parts.join(" ");
@@ -203,7 +203,7 @@ export function VerifyDatumPanel({
                 <dt>{t("verifySource")}</dt>
                 <dd data-from-json="source_id">{row.source_id}</dd>
                 <dt>{t("verifyUpstreamCode")}</dt>
-                <dd data-from-json="upstream_code">{row.upstream_code ?? "—"}</dd>
+                <dd data-from-json="upstream_code">{row.upstream_code ?? "-"}</dd>
                 <dt>{t("verifyUpstreamVersion")}</dt>
                 <dd data-from-json="upstream_version">{row.upstream_version}</dd>
                 <dt>{t("verifyRequest")}</dt>
@@ -229,7 +229,7 @@ export function VerifyDatumPanel({
                   <code>{row.raw_sha256.slice(0, 16)}…</code>
                 </dd>
                 <dt>{t("verifyDisplayValue")}</dt>
-                <dd>{displayValue == null ? "—" : String(displayValue)}</dd>
+                <dd>{displayValue == null ? "-" : String(displayValue)}</dd>
               </dl>
               <p data-testid="verify-transform">{plainTransform(row, t)}</p>
               {isWb && row.upstream_code ? (
@@ -261,8 +261,8 @@ export function VerifyDatumPanel({
                 >
                   {live.match ? t("verifyLiveMatch") : t("verifyLiveDiffer")}
                   {": "}
-                  {t("verifyLiveStored")}={live.stored ?? "—"},{" "}
-                  {t("verifyLiveUpstream")}={live.live ?? "—"}
+                  {t("verifyLiveStored")}={live.stored ?? "-"},{" "}
+                  {t("verifyLiveUpstream")}={live.live ?? "-"}
                   {live.lastupdated
                     ? ` (${t("verifyLastUpdated")} ${live.lastupdated})`
                     : ""}

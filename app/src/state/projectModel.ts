@@ -215,7 +215,7 @@ export function defaultNameFromConfig(config: AnalysisConfig): string {
   const origin = config.origin ?? "???";
   const hs = config.hs ?? "??";
   const y0 = config.year ?? "????";
-  return `Project — HS${hs} ${origin} ${y0}`;
+  return `Project HS${hs} ${origin} ${y0}`;
 }
 
 export function toListItem(p: AtlasProject): ProjectListItem {

@@ -26,7 +26,7 @@ function daysAgoLabel(
   iso: string | null | undefined,
   t: (k: string) => string,
 ): string {
-  if (!iso) return "—";
+  if (!iso) return "-";
   const then = Date.parse(iso);
   if (Number.isNaN(then)) return iso;
   const days = Math.max(0, Math.floor((Date.now() - then) / 86_400_000));
@@ -37,16 +37,16 @@ function nextExpectedFromCadence(
   lastIso: string | null | undefined,
   cadence: string | null | undefined,
 ): string {
-  if (!lastIso || !cadence) return "—";
+  if (!lastIso || !cadence) return "-";
   const then = Date.parse(lastIso);
-  if (Number.isNaN(then)) return "—";
+  if (Number.isNaN(then)) return "-";
   const c = cadence.toLowerCase();
   let days = 0;
   if (c.includes("annual") || c.includes("year")) days = 365;
   else if (c.includes("biennial")) days = 730;
   else if (c.includes("quarter")) days = 91;
   else if (c.includes("month")) days = 30;
-  else return "—";
+  else return "-";
   return new Date(then + days * 86_400_000).toISOString().slice(0, 10);
 }
 
@@ -123,7 +123,7 @@ export function DataVariable() {
             >
               {rows.map((v) => (
                 <option key={v.id} value={v.id}>
-                  {v.id} — {varLabel(v, lang)}
+                  {v.id}: {varLabel(v, lang)}
                 </option>
               ))}
             </select>

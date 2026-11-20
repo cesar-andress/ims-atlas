@@ -54,7 +54,7 @@ function sourceKind(
 }
 
 function formatWhen(value: unknown, lang: UpdateLang): string {
-  if (typeof value !== "string" || !value.trim()) return "—";
+  if (typeof value !== "string" || !value.trim()) return "-";
   const d = new Date(value);
   if (Number.isNaN(d.getTime())) return value;
   return d.toLocaleString(lang === "es" ? "es-ES" : "en-GB", {
@@ -68,7 +68,7 @@ function formatWhen(value: unknown, lang: UpdateLang): string {
 
 function formatInt(n: unknown, lang: UpdateLang): string {
   const num = typeof n === "number" ? n : Number(n);
-  if (!Number.isFinite(num)) return "—";
+  if (!Number.isFinite(num)) return "-";
   return num.toLocaleString(lang === "es" ? "es-ES" : "en-GB");
 }
 
@@ -232,7 +232,7 @@ export function DataStatus() {
                     v{dataVersion}
                   </a>
                 ) : (
-                  "—"
+                  "-"
                 )}
               </dd>
             </div>
@@ -259,7 +259,7 @@ export function DataStatus() {
             </div>
           </dl>
           <p className="muted small status-run-id">
-            {t("statusRunId")}: <code>{lastRunId || "—"}</code>
+            {t("statusRunId")}: <code>{lastRunId || "-"}</code>
           </p>
         </section>
 
@@ -281,7 +281,7 @@ export function DataStatus() {
           <div className="status-kpi results-card">
             <p className="status-kpi-label">{t("statusSourcesOk")}</p>
             <p className="status-kpi-value font-tabular">
-              {okSources}/{ids.length || "—"}
+              {okSources}/{ids.length || "-"}
             </p>
             <p className="muted small">{t("statusSourcesOkHint")}</p>
           </div>
@@ -444,7 +444,7 @@ export function DataStatus() {
                         <code>{displayCell(id)}</code>
                         {pub ? <div className="muted small">{pub}</div> : null}
                       </td>
-                      <td>{displayCell(row?.tier ?? "—")}</td>
+                      <td>{displayCell(row?.tier ?? "-")}</td>
                       <td className="font-tabular">
                         {displayCell(
                           row?.version ?? fr?.ingested_version ?? fr?.upstream_version,
@@ -453,10 +453,10 @@ export function DataStatus() {
                       <td className="font-tabular">
                         {typeof row?.rows === "number"
                           ? formatInt(row.rows, lang)
-                          : "—"}
+                          : "-"}
                       </td>
                       <td className="font-tabular">
-                        {displayCell(row?.last_year ?? "—")}
+                        {displayCell(row?.last_year ?? "-")}
                       </td>
                       <td className="font-tabular small">
                         {formatWhen(row?.checked_at ?? fr?.checked_at ?? null, lang)}

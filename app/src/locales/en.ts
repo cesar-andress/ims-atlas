@@ -17,16 +17,16 @@ export const en = {
     "Trade data are available, but country-year indicators are not yet verified for the public version ({n} awaiting review). Sign in with your team account or view the example.",
   dataReleasePendingDetail: "Country-year indicators awaiting review: {n}.",
   dataMissingBaci:
-    "BACI trade data for the selected year are missing. See Sources and data → Update status.",
-  dataMissingLink: "Sources and data → Update status",
+    "BACI trade data for the selected year are missing. See Sources and data: Update status.",
+  dataMissingLink: "Sources and data: Update status",
   seeExample: "View example",
-  illustrativeBanner: "Illustrative example — not up-to-date data",
+  illustrativeBanner: "Illustrative example, not up-to-date data",
   demoSyntheticNote:
     "E2E/synthetic panel (not product data). Do not treat ranks as empirical COL footwear results.",
   footerRepo: "GitHub repository",
   changeAnalysis: "Change analysis",
   designIllustrative:
-    "Illustrative values only — not a live analysis. Review tokens and components here before using result screens.",
+    "Illustrative values only, not a live analysis. Review tokens and components here before using result screens.",
   designTokens: "Colour tokens",
   designCriteria: "Criterion palette (Okabe–Ito)",
   designEmptyTitle: "Nothing to show yet",
@@ -149,7 +149,7 @@ export const en = {
   ahpApply: "Apply AHP weights to analysis",
   ahpWeightsApplied: "AHP criterion weights applied",
   ahpCrWarning:
-    "Consistency ratio CR={cr} is above 0.10 — weights applied with a warning",
+    "Consistency ratio CR={cr} is above 0.10, weights applied with a warning",
   ahpCrHigh: "above 0.10 (review pairwise answers)",
   ahpMostInconsistent: "most inconsistent pair",
   weightsEqual: "Equal",
@@ -171,7 +171,7 @@ export const en = {
   projectRename: "Rename",
   projectDuplicate: "Duplicate",
   projectDelete: "Delete",
-  projectDeleteConfirm: "Delete project “{name}”?",
+  projectDeleteConfirm: "Delete project {name}?",
   projectRenamePrompt: "New project name",
   projectCreated: "Project created",
   projectDuplicated: "Project duplicated",
@@ -198,15 +198,15 @@ export const en = {
   varDataComplete: "Complete data",
   varDataPartial: "Partial data",
   varDataNone: "No data yet",
-  varDataTeam: "Team only",
+  varDataTeam: "Internal use",
   varDataWarnNone:
-    "“{name}” has no data yet. It will not count in the ranking until data arrives.",
+    "{name} has no data yet. It will not count in the ranking until data arrives.",
   varDataWarnPartial:
-    "“{name}” has partial data ({n} markets · latest year {y1}). Scoring uses available cells and flags them in results.",
+    "{name} has partial data ({n} markets, latest year {y1}). Scoring uses available cells and flags them in results.",
   varDataWarnTeam:
-    "“{name}” is team-only (source does not allow redistribution; upload your own if needed).",
+    "{name} is for internal team use (the source does not allow redistribution; upload your own if needed).",
   varAliasWarn:
-    "You selected duplicate aliases ({pairs}). Weight will not be doubled — keep only one of each pair.",
+    "You selected duplicate aliases ({pairs}). Weight will not be doubled: keep only one of each pair.",
   resultsDataWarnings:
     "{none} variables with no data were unused; {partial} with partial data.",
   projectDirHint:
@@ -216,7 +216,7 @@ export const en = {
   projectCoverageHint:
     "Click a cell for why it is missing. Choose drop / LOCF / median / keep per variable.",
   projectMissingPolicy: "If gaps",
-  projectDashIntro: "Project results at a glance — ranking, links and exports.",
+  projectDashIntro: "Project results: ranking, links and exports.",
   projectDashNav: "Project views",
   projectDashRanking: "Latest ranking (top 5)",
   projectDashUpdates: "Data updates since save",
@@ -240,7 +240,7 @@ export const en = {
   },
   basketTitle: "My variables",
   basketCount: "{n} in basket",
-  basketEmpty: "Basket empty — add from Explore or the variable list.",
+  basketEmpty: "Basket empty. Add variables from Explore or the variable list.",
   basketClear: "Clear",
   basketRemove: "Remove",
   basketAdd: "Add to basket",
@@ -267,7 +267,7 @@ export const en = {
   exploreCorrTitle: "Correlation matrix",
   exploreCorrNeed: "Add at least two variables to the basket.",
   exploreScatterTitle: "Scatter",
-  exploreSendBuilder: "Send to Builder →",
+  exploreSendBuilder: "Send to Builder",
   countryIntro:
     "Country profile: values and percentile vs countries in the coverage demo.",
   countryPercentile: "Percentile",
@@ -328,7 +328,7 @@ export const en = {
       "This app does not run third-party analytics or behavioural tracking in the browser.",
   },
   transparencyIntro:
-    "Freshness, QA and last ingest — values loaded from status/*.json only.",
+    "Freshness, QA and last ingest. Values load from status/*.json only.",
   statusPageIntro:
     "This page shows whether automatic data updates are healthy: last ingest, quality alerts, and per-source status. It is not the app change log (that is Novedades / Updates).",
   statusVerdictKicker: "Quick read",
@@ -532,8 +532,8 @@ export const en = {
   parityTop10Combo: "Top 10 combo (total + factor)",
 
   normLabIntro:
-    "Inspect per-variable transforms (skew → winsor → scale → direction), correlation warnings, and side-by-side rankings under two normalisations.",
-  normLabOpen: "Open normalisation lab →",
+    "Inspect per-variable transforms (skew, winsor, scale, direction), correlation warnings, and side-by-side rankings under two normalisations.",
+  normLabOpen: "Open normalisation lab",
   normLabDocsLink: "Why normalise? (docs)",
   normLabSkew: "Skew",
   normLabOutlier: "Outliers",
@@ -567,7 +567,7 @@ export const en = {
   builderHint:
     "The public data version is empty (zero verified redistributable variables). Opening the Colombian footwear example (COL · HS64 · latest year) shows a pending state until a real panel ships; use Sources and data or Upload my data meanwhile.",
   presetColHs64: "Load COL · HS64 · latest year · IMSFE",
-  openRanking: "Open ranking →",
+  openRanking: "Open ranking",
   builderNeedProduct:
     "Set origin, product (HS) and year in the config panel to open ranking.",
   productContext: "Analysis product",
@@ -601,14 +601,14 @@ export const en = {
   matrixCuts: "Cuts: attractiveness={a} · fit={fit} · n={n}",
   matrixCutsEoc: "Cuts: IMSFE={a} · EOC={fit} · n={n}",
   countryCode: "Country",
-  quadrantQ1: "Q1 — High attractiveness, high fit",
-  quadrantQ2: "Q2 — High attractiveness, low fit",
-  quadrantQ3: "Q3 — Low attractiveness, low fit",
-  quadrantQ4: "Q4 — Low attractiveness, high fit",
+  quadrantQ1: "Q1: high attractiveness, high fit",
+  quadrantQ2: "Q2: high attractiveness, low fit",
+  quadrantQ3: "Q3: low attractiveness, low fit",
+  quadrantQ4: "Q4: low attractiveness, high fit",
   statusPendingReview: "Pending review",
   statusReviewed: "Reviewed",
   audiencePublic: "Public",
-  audienceTeamOnly: "Team only",
+  audienceTeamOnly: "Internal use",
   coverageSummary: "{n} countries · {y0}–{y1} · {pct}% with data",
   coverageSummaryYears: "{n} countries · {y0}–{y1}",
   coverageHorizon: "Published year window: {y0}–{y1}",
@@ -646,7 +646,7 @@ export const en = {
   baciPreselectLoading: "Loading BACI import volumes for pre-selection…",
   baciPreselectOk: "BACI trade chapter loaded for pre-selection",
   baciPreselectFixture:
-    "BACI trade parquet not available — pre-selection uses the demo-panel import proxy (fixture).",
+    "BACI trade parquet is not available. Pre-selection uses the demo-panel import proxy (fixture).",
   culturalDistanceKind: "Cultural distance",
   cultureSumOfSums: "Difference of sums (workbook)",
   cultureSumAbs: "Sum of |differences| (2018 paper)",
@@ -810,7 +810,7 @@ export const en = {
   helpReadMore: "Read full docs section",
   paperIntro:
     "Main backtest tables from the companion paper fixture (T4), with permalinks to the live views.",
-  paperT4Title: "T4 — NDCG@10 (intensive, horizon 1)",
+  paperT4Title: "T4: NDCG@10 (intensive, horizon 1)",
   paperMethod: "Method",
   paperT4Note:
     "Values are copied from meta/phase10_t4.json (ims-backtest paper outputs). They are not recomputed here.",
@@ -837,13 +837,13 @@ export const en = {
       getting_started:
         "Set origin, product and year, then open Ranking. Use Explore to browse variables; save work as a Project.",
       non_experts:
-        "Think of the index as a weighted scorecard of open country indicators. The COL · HS64 footwear example is the worked demo.",
+        "The index is a weighted combination of open country indicators. The COL HS64 footwear example is the worked case.",
       researchers:
         "Formulas, SMAA, and walk-forward backtests live under Methods and the Paper tables page.",
       imsfe_workflow:
-        "Builder → variables → normalisation → ranking → matrix → cite. Matches the Baena & Cano IMSFE steps in the app.",
+        "Builder, variables, normalisation, ranking, matrix, cite: the Baena and Cano IMSFE steps in the app.",
       projects:
-        "Create a project, pick variables, check coverage, then export .atlas.json. Storage is local (IndexedDB).",
+        "Create a project, pick variables, check coverage, then export .atlas.json. With a team session projects are shared on the server.",
       methods:
         "Normalisation, aggregation (WSM/TOPSIS/…), missing-data rules, and SMAA are documented here.",
       why_normalize:
@@ -901,9 +901,9 @@ export const en = {
       step3: "Outliers: none or winsorise at p1–p99 / p5–p95 (flagged cells).",
       step4:
         "Scale: ratio 0–10 (IMSFE), min–max, z-score, robust z (median/MAD), rank.",
-      step5: "Direction (benefit/cost) after scaling — never before.",
+      step5: "Direction (benefit/cost) after scaling, never before.",
       example:
-        "Worked example: raw [1, 2, 10] → ratio [1, 2, 10], min–max [0, 1.11, 10]. Cost criteria reflect after scaling.",
+        "Example: raw [1, 2, 10] becomes ratio [1, 2, 10] or min-max [0, 1.11, 10]. Cost criteria are reflected after scaling.",
       corr: "Pairs with |ρ| ≥ 0.8 trigger a double-counting warning. Whitening stays off by default because it changes weight meaning.",
     },
     methods: {
@@ -987,7 +987,7 @@ export const en = {
   projectUploadLocal: "Upload my browser projects to the team",
   projectUploadLocalDone: "Uploaded {n} projects to the team",
   projectTeamHint: "Projects are shared with everyone who has an active team session.",
-  projectSavedTeam: "Saved · visible to the team",
+  projectSavedTeam: "Saved, visible to the team",
   projectUntitled: "Untitled project",
   homeAria: "IMS Atlas, home",
   helpButton: "Help",
@@ -1106,10 +1106,10 @@ export const en = {
   datosColUpdated: "Updated",
   datosColMarkets: "Markets with data",
   datosAccessOpen: "Open",
-  datosAccessTeam: "Team only",
+  datosAccessTeam: "Internal use",
   datosAccessUnknown: "Not stated",
   datosAccessNote:
-    "Data marked “Team only” is not redistributed with the app: it can only be used from a local copy kept by the team or from files you upload.",
+    "Data marked for internal use is not redistributed with the app: it can only be used from a local team copy or from files you upload.",
   datosOwnData: "Have your own data?",
   datosUploadMine: "Upload my data",
   datosWarnMissing: "{name}: {missing} of {total} markets have no value.",

@@ -150,7 +150,7 @@ export function ResultsDashboard({ model }: Props) {
 
   const summary =
     lang === "es"
-      ? `Para HS${config.hs ?? "—"} desde ${config.origin ?? "—"} (${config.year ?? "—"}), los tres mejores mercados son ${model.ranking
+      ? `Para HS${config.hs ?? "-"} desde ${config.origin ?? "-"} (${config.year ?? "-"}), los tres mejores mercados son ${model.ranking
           .slice(0, 3)
           .map(
             (r) =>
@@ -163,7 +163,7 @@ export function ResultsDashboard({ model }: Props) {
                 .join(" y ")}.`
             : ""
         } Líderes globales: ${leaders.length} de ${model.ranking.length}.`
-      : `For HS${config.hs ?? "—"} from ${config.origin ?? "—"} (${config.year ?? "—"}), the top three markets are ${model.ranking
+      : `For HS${config.hs ?? "-"} from ${config.origin ?? "-"} (${config.year ?? "-"}), the top three markets are ${model.ranking
           .slice(0, 3)
           .map(
             (r) =>
@@ -269,7 +269,7 @@ export function ResultsDashboard({ model }: Props) {
               </p>
             </>
           ) : (
-            <p>—</p>
+            <p>-</p>
           )}
         </article>
         <article className="results-card kpi">

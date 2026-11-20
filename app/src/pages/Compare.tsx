@@ -198,7 +198,7 @@ function CompareBody({ model }: { model: RankingViewModel }) {
                   <dd className="font-tabular">{p.variableIds.length}</dd>
                 </div>
               </dl>
-              <p className="muted small family-card-note">{p.methodNotes[0] ?? "—"}</p>
+              <p className="muted small family-card-note">{p.methodNotes[0] ?? "-"}</p>
               <p className="small">
                 <span className="muted">{t("familyTopMarkets")}: </span>
                 <span className="font-tabular">{p.topMarkets.join(" · ")}</span>

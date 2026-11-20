@@ -30,7 +30,7 @@ type ReleaseRow = {
 };
 
 function formatWhen(value: unknown, lang: "es" | "en"): string {
-  if (typeof value !== "string" || !value.trim()) return "—";
+  if (typeof value !== "string" || !value.trim()) return "-";
   const d = new Date(value);
   if (Number.isNaN(d.getTime())) return value;
   return d.toLocaleString(lang === "es" ? "es-ES" : "en-GB", {
@@ -43,7 +43,7 @@ function formatWhen(value: unknown, lang: "es" | "en"): string {
 }
 
 function formatBytes(n: number | null | undefined, lang: "es" | "en"): string {
-  if (n == null || !Number.isFinite(n) || n < 0) return "—";
+  if (n == null || !Number.isFinite(n) || n < 0) return "-";
   const units = ["B", "KB", "MB", "GB", "TB"];
   let v = n;
   let i = 0;
@@ -56,7 +56,7 @@ function formatBytes(n: number | null | undefined, lang: "es" | "en"): string {
 }
 
 function formatInt(n: number | null | undefined, lang: "es" | "en"): string {
-  if (n == null || !Number.isFinite(n)) return "—";
+  if (n == null || !Number.isFinite(n)) return "-";
   return n.toLocaleString(lang === "es" ? "es-ES" : "en-GB");
 }
 
@@ -97,7 +97,7 @@ export function DataReleases() {
       {
         id: "version",
         label: t("transparencyVersion"),
-        value: current ? `v${current}` : "—",
+        value: current ? `v${current}` : "-",
       },
       {
         id: "vars",
@@ -262,7 +262,7 @@ export function DataReleases() {
                           {typeof r.manifest_path === "string" ? (
                             <a href={r.manifest_path}>{r.manifest_path}</a>
                           ) : (
-                            "—"
+                            "-"
                           )}
                         </td>
                       </tr>

@@ -408,7 +408,7 @@ export async function computeRanking(req: RankingRequest): Promise<RankingViewMo
 
   if (candidates.length < 20) {
     warnings.push(
-      `Candidate filter left ${candidates.length} destinations; demo requires ≥20 — using full set.`,
+      `Candidate filter left ${candidates.length} destinations; demo requires ≥20, using full set.`,
     );
     candidates = [...panel.candidates];
   }

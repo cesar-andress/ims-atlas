@@ -43,7 +43,7 @@ export function statusLabel(
   status: string | null | undefined,
   lang: UpdateLang,
 ): string {
-  if (!status) return "—";
+  if (!status) return "-";
   const key = status.toLowerCase();
   return STATUS_LABEL[lang][key] ?? status;
 }
@@ -52,7 +52,7 @@ export function modeLabel(
   mode: string | null | undefined,
   lang: UpdateLang,
 ): string {
-  if (!mode) return "—";
+  if (!mode) return "-";
   const key = mode.toLowerCase();
   return STATUS_LABEL[lang][key] ?? mode;
 }

@@ -20,10 +20,10 @@ function varName(v: CatalogVariable, lang: string): string {
 }
 
 function badgeLabel(kind: VariableDataKind, t: (k: string) => string): string {
-  if (kind === "complete") return `✅ ${t("varDataComplete")}`;
-  if (kind === "partial") return `⚠️ ${t("varDataPartial")}`;
-  if (kind === "team") return `🔒 ${t("varDataTeam")}`;
-  return `⛔ ${t("varDataNone")}`;
+  if (kind === "complete") return t("varDataComplete");
+  if (kind === "partial") return t("varDataPartial");
+  if (kind === "team") return t("varDataTeam");
+  return t("varDataNone");
 }
 
 function coveragePctFromStats(v: CatalogVariable): number {
@@ -52,8 +52,8 @@ function warnForVariable(
   if (st.kind === "partial") {
     return t("varDataWarnPartial")
       .replace("{name}", name)
-      .replace("{n}", String(st.nCountries ?? "—"))
-      .replace("{y1}", String(st.yearMax ?? "—"));
+      .replace("{n}", String(st.nCountries ?? "-"))
+      .replace("{y1}", String(st.yearMax ?? "-"));
   }
   return null;
 }
@@ -210,7 +210,7 @@ function ProjectVariablesBody() {
                     <span className="muted small">{varName(v, lang)}</span>
                   </div>
                   <div className="small muted">
-                    {v.factor} · {v.source_ids[0] ?? "—"}
+                    {v.factor} · {v.source_ids[0] ?? "-"}
                   </div>
                   <span
                     className={`var-data-badge var-data-${st.kind}`}

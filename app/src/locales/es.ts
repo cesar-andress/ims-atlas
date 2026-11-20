@@ -17,16 +17,16 @@ const es = {
     "Hay datos de comercio, pero faltan indicadores país-año verificados para la versión pública ({n} pendientes de revisión). Entra con tu cuenta del equipo o mira el ejemplo.",
   dataReleasePendingDetail: "Indicadores país-año sin revisar: {n}.",
   dataMissingBaci:
-    "Faltan datos de comercio de BACI para el año seleccionado. Revise Fuentes y datos → Estado de la actualización.",
-  dataMissingLink: "Fuentes y datos → Estado",
+    "Faltan datos de comercio de BACI para el año seleccionado. Revise Fuentes y datos: Estado de la actualización.",
+  dataMissingLink: "Fuentes y datos: Estado",
   seeExample: "Ver ejemplo",
-  illustrativeBanner: "Ejemplo ilustrativo — no son datos actualizados",
+  illustrativeBanner: "Ejemplo ilustrativo, no son datos actualizados",
   demoSyntheticNote:
     "Panel sintético/E2E (no es dato de producto). No interpretar los rangos como resultados empíricos de calzado COL.",
   footerRepo: "Repositorio en GitHub",
   changeAnalysis: "Cambiar análisis",
   designIllustrative:
-    "Valores solo ilustrativos — no son un análisis en vivo. Revise tokens y componentes aquí antes de usar las pantallas de resultados.",
+    "Valores solo ilustrativos, no son un análisis en vivo. Revise tokens y componentes aquí antes de usar las pantallas de resultados.",
   designTokens: "Tokens de color",
   designCriteria: "Paleta de criterios (Okabe–Ito)",
   designEmptyTitle: "Aún no hay nada que mostrar",
@@ -151,7 +151,7 @@ const es = {
     "Compare criterios por pares. Un ratio de consistencia (CR) por encima de 0,10 avisa; se marca el par más inconsistente.",
   ahpApply: "Aplicar pesos AHP al análisis",
   ahpWeightsApplied: "Pesos AHP de criterios aplicados",
-  ahpCrWarning: "Ratio de consistencia CR={cr} > 0,10 — pesos aplicados con aviso",
+  ahpCrWarning: "Ratio de consistencia CR={cr} > 0,10; pesos aplicados con aviso",
   ahpCrHigh: "por encima de 0,10 (revise las comparaciones)",
   ahpMostInconsistent: "par más inconsistente",
   weightsEqual: "Iguales",
@@ -173,7 +173,7 @@ const es = {
   projectRename: "Renombrar",
   projectDuplicate: "Duplicar",
   projectDelete: "Eliminar",
-  projectDeleteConfirm: "¿Eliminar el proyecto «{name}»?",
+  projectDeleteConfirm: "¿Eliminar el proyecto {name}?",
   projectRenamePrompt: "Nuevo nombre del proyecto",
   projectCreated: "Proyecto creado",
   projectDuplicated: "Proyecto duplicado",
@@ -200,13 +200,13 @@ const es = {
   varDataComplete: "Datos completos",
   varDataPartial: "Datos parciales",
   varDataNone: "Sin datos todavía",
-  varDataTeam: "Solo equipo",
+  varDataTeam: "Uso interno",
   varDataWarnNone:
-    "«{name}» todavía no tiene datos. No contará en el ranking hasta que lleguen.",
+    "{name} todavía no tiene datos. No contará en el ranking hasta que lleguen.",
   varDataWarnPartial:
-    "«{name}» tiene datos parciales ({n} mercados · último año {y1}). Se calculará con lo disponible y se marcará en los resultados.",
+    "{name} tiene datos parciales ({n} mercados · último año {y1}). Se calculará con lo disponible y se marcará en los resultados.",
   varDataWarnTeam:
-    "«{name}» es solo para el equipo (la fuente no permite redistribuir; súbela tú si hace falta).",
+    "{name} es de uso interno (la fuente no permite redistribuir; súbela tú si hace falta).",
   varAliasWarn:
     "Has elegido alias duplicados ({pairs}). No se duplicará el peso: usa solo una de cada pareja.",
   resultsDataWarnings:
@@ -218,8 +218,7 @@ const es = {
   projectCoverageHint:
     "Pulsa una celda para ver el motivo. Elige excluir / LOCF / mediana / dejar missing.",
   projectMissingPolicy: "Si hay huecos",
-  projectDashIntro:
-    "Resultados del proyecto de un vistazo: ranking, enlaces y exportaciones.",
+  projectDashIntro: "Resultados del proyecto: ranking, enlaces y exportaciones.",
   projectDashNav: "Vistas del proyecto",
   projectDashRanking: "Último ranking (top 5)",
   projectDashUpdates: "Novedades de datos desde el guardado",
@@ -243,7 +242,7 @@ const es = {
   },
   basketTitle: "Mis variables",
   basketCount: "{n} en la cesta",
-  basketEmpty: "Cesta vacía — añade desde Explorar o desde la lista de variables.",
+  basketEmpty: "Cesta vacía. Añade variables desde Explorar o desde la lista.",
   basketClear: "Vaciar",
   basketRemove: "Quitar",
   basketAdd: "Añadir a la cesta",
@@ -270,7 +269,7 @@ const es = {
   exploreCorrTitle: "Matriz de correlación",
   exploreCorrNeed: "Añade al menos dos variables a la cesta.",
   exploreScatterTitle: "Dispersión",
-  exploreSendBuilder: "Enviar al constructor →",
+  exploreSendBuilder: "Enviar al constructor",
   countryIntro:
     "Perfil de país: valores y percentil frente a países del demo de cobertura.",
   countryPercentile: "Percentil",
@@ -539,8 +538,8 @@ const es = {
   parityTop10Combo: "Top 10 combo (total + factor)",
 
   normLabIntro:
-    "Inspecciona transformaciones por variable (sesgo → winsor → escala → dirección), avisos de correlación y rankings lado a lado bajo dos normalizaciones.",
-  normLabOpen: "Abrir laboratorio de normalización →",
+    "Inspecciona transformaciones por variable (sesgo, winsor, escala, dirección), avisos de correlación y rankings lado a lado bajo dos normalizaciones.",
+  normLabOpen: "Abrir laboratorio de normalización",
   normLabDocsLink: "¿Por qué normalizar? (docs)",
   normLabSkew: "Sesgo",
   normLabOutlier: "Outliers",
@@ -574,7 +573,7 @@ const es = {
   builderHint:
     "La versión pública de los datos está vacía (cero variables redistribuibles verificadas). Abrir el ejemplo de calzado colombiano (COL · HS64 · último año) muestra un estado pendiente hasta que haya un panel real; mientras tanto usa Fuentes y datos o Subir mis datos.",
   presetColHs64: "Cargar COL · HS64 · último año · IMSFE",
-  openRanking: "Abrir ranking →",
+  openRanking: "Abrir ranking",
   builderNeedProduct:
     "Define origen, producto (HS) y año en el panel para abrir el ranking.",
   productContext: "Producto del análisis",
@@ -609,14 +608,14 @@ const es = {
   matrixCuts: "Cortes: atractividad={a} · ajuste={fit} · n={n}",
   matrixCutsEoc: "Cortes: IMSFE={a} · EOC={fit} · n={n}",
   countryCode: "País",
-  quadrantQ1: "Q1 — Alta atractividad, alto ajuste",
-  quadrantQ2: "Q2 — Alta atractividad, bajo ajuste",
-  quadrantQ3: "Q3 — Baja atractividad, bajo ajuste",
-  quadrantQ4: "Q4 — Baja atractividad, alto ajuste",
+  quadrantQ1: "Q1: alta atractividad, alto ajuste",
+  quadrantQ2: "Q2: alta atractividad, bajo ajuste",
+  quadrantQ3: "Q3: baja atractividad, bajo ajuste",
+  quadrantQ4: "Q4: baja atractividad, alto ajuste",
   statusPendingReview: "Pendiente de revisión",
   statusReviewed: "Revisada",
   audiencePublic: "Pública",
-  audienceTeamOnly: "Solo equipo",
+  audienceTeamOnly: "Uso interno",
   coverageSummary: "{n} países · {y0}–{y1} · {pct} % con dato",
   coverageSummaryYears: "{n} países · {y0}–{y1}",
   coverageHorizon: "Ventana de años publicada: {y0}–{y1}",
@@ -817,7 +816,7 @@ const es = {
   helpReadMore: "Leer la sección completa en docs",
   paperIntro:
     "Tablas principales del paper (fixture T4) con permalinks a las vistas en vivo.",
-  paperT4Title: "T4 — NDCG@10 (intensive, horizonte 1)",
+  paperT4Title: "T4: NDCG@10 (intensive, horizonte 1)",
   paperMethod: "Método",
   paperT4Note:
     "Valores copiados de meta/phase10_t4.json (salidas del paper en ims-backtest). No se recalculan aquí.",
@@ -844,13 +843,13 @@ const es = {
       getting_started:
         "Define origen, producto y año; abre Ranking. Explorar sirve para variables; guarda el trabajo como Proyecto.",
       non_experts:
-        "El índice es un scorecard ponderado de indicadores abiertos. El ejemplo COL · HS64 calzado es la demo trabajada.",
+        "El índice combina indicadores abiertos de país con pesos. El ejemplo COL HS64 calzado es el caso de trabajo.",
       researchers:
         "Fórmulas, SMAA y backtests walk-forward están en Métodos y en Tablas del paper.",
       imsfe_workflow:
-        "Constructor → variables → normalización → ranking → matriz → citar. Pasos IMSFE Baena & Cano en la app.",
+        "Constructor, variables, normalización, ranking, matriz y citar: los pasos IMSFE de Baena y Cano en la app.",
       projects:
-        "Crea un proyecto, elige variables, revisa cobertura y exporta .atlas.json. Almacenamiento local (IndexedDB).",
+        "Crea un proyecto, elige variables, revisa cobertura y exporta .atlas.json. Con sesión de equipo los proyectos se comparten en el servidor.",
       methods:
         "Normalización, agregación (WSM/TOPSIS/…), missing y SMAA se documentan aquí.",
       why_normalize:
@@ -908,9 +907,9 @@ const es = {
       step3: "Outliers: none o winsor p1–p99 / p5–p95 (celdas marcadas).",
       step4:
         "Escala: ratio 0–10 (IMSFE), min–max, z-score, robust z (mediana/MAD), rank.",
-      step5: "Dirección (beneficio/coste) después de escalar — nunca antes.",
+      step5: "Dirección (beneficio/coste) después de escalar, nunca antes.",
       example:
-        "Ejemplo: crudo [1, 2, 10] → ratio [1, 2, 10], min–max [0, 1.11, 10]. Los criterios de coste se reflejan tras escalar.",
+        "Ejemplo: crudo [1, 2, 10] pasa a ratio [1, 2, 10] o min-max [0, 1.11, 10]. Los criterios de coste se reflejan tras escalar.",
       corr: "Pares con |ρ| ≥ 0.8 avisan de doble conteo. El whitening permanece apagado por defecto porque cambia el significado de los pesos.",
     },
     methods: {
@@ -994,7 +993,7 @@ const es = {
   projectUploadLocal: "Subir mis proyectos al equipo",
   projectUploadLocalDone: "Subidos {n} proyectos al equipo",
   projectTeamHint: "Los proyectos se comparten con todo el equipo con sesión activa.",
-  projectSavedTeam: "Guardado · visto por el equipo",
+  projectSavedTeam: "Guardado, visible para el equipo",
   projectUntitled: "Proyecto sin nombre",
   homeAria: "IMS Atlas, inicio",
   helpButton: "Ayuda",
@@ -1113,10 +1112,10 @@ const es = {
   datosColUpdated: "Actualización",
   datosColMarkets: "Mercados con dato",
   datosAccessOpen: "Abierto",
-  datosAccessTeam: "Solo equipo",
+  datosAccessTeam: "Uso interno",
   datosAccessUnknown: "Sin indicar",
   datosAccessNote:
-    "Los datos marcados «Solo equipo» no se redistribuyen con la aplicación: solo se pueden usar desde una copia local del equipo o desde los archivos que subes tú.",
+    "Los datos de uso interno no se redistribuyen con la aplicación: solo se pueden usar desde una copia local del equipo o desde los archivos que subes tú.",
   datosOwnData: "¿Tienes datos propios?",
   datosUploadMine: "Subir mis datos",
   datosWarnMissing: "{name}: faltan {missing} de {total} mercados.",

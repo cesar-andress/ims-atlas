@@ -349,7 +349,7 @@ export function MarketMapCanvas({
       <ul className="map-legend" data-testid="map-legend">
         {mode === "overlay" ? (
           <li data-testid="legend-overlay">
-            Overlay (low → high)
+            Overlay (low to high)
             <span
               className="swatch"
               style={{

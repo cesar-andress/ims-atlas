@@ -237,8 +237,8 @@ export function Projects() {
             filtered.map((p) => (
               <tr key={p.id} data-testid={`project-row-${p.id}`}>
                 <td>{p.name}</td>
-                <td>{p.origin ?? "—"}</td>
-                <td>{p.hs ?? "—"}</td>
+                <td>{p.origin ?? "-"}</td>
+                <td>{p.hs ?? "-"}</td>
                 <td>{p.updatedAt.slice(0, 19).replace("T", " ")}</td>
                 <td className="projects-actions">
                   <button

@@ -317,8 +317,8 @@ export function Explore() {
         {loadingData
           ? t("loading")
           : t("exploreRows").replace("{n}", String(filtered.length))}
-        {!loadingData && filtered.length === 0 ? ` — ${t("exploreEmptyRelease")}` : ""}
-        {loadError ? ` · ${loadError}` : ""}
+        {!loadingData && filtered.length === 0 ? `. ${t("exploreEmptyRelease")}` : ""}
+        {loadError ? `. ${loadError}` : ""}
       </p>
 
       <div className="explore-table-wrap" data-export-surface="table">

@@ -156,7 +156,7 @@ export function ExploreAnalysis() {
                         <td key={col}>
                           {typeof v === "number" && Number.isFinite(v)
                             ? v.toFixed(2)
-                            : "—"}
+                            : "-"}
                         </td>
                       );
                     })}
@@ -208,7 +208,7 @@ export function ExploreAnalysis() {
           </label>
         </div>
         <p className="small" data-testid="scatter-rho">
-          Spearman = {Number.isFinite(scatter.rho) ? scatter.rho.toFixed(3) : "—"} · n=
+          Spearman = {Number.isFinite(scatter.rho) ? scatter.rho.toFixed(3) : "-"} · n=
           {scatter.points.length}
         </p>
         <svg

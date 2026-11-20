@@ -95,7 +95,7 @@ export function useProjectData(): {
         sourceIds
           .map((sid) => sourceById.get(sid)?.publisher ?? sid)
           .filter((x, i, a) => a.indexOf(x) === i)
-          .join(", ") || "—";
+          .join(", ") || "-";
       let withData: number | null = null;
       if (panel) {
         const col = panel.variables.findIndex((v) => v.id === id);

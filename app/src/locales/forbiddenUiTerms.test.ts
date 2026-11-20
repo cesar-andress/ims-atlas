@@ -26,6 +26,11 @@ const FORBIDDEN: readonly { name: string; pattern: RegExp }[] = [
   { name: "redistributable panel", pattern: /panel redistribu/i },
   { name: "preset", pattern: /\bpresets?\b/i },
   { name: "Data release pending", pattern: /data release pending/i },
+  { name: "guillemets", pattern: /[«»]/ },
+  { name: "em dash", pattern: /—/ },
+  { name: "arrow", pattern: /→|<-|->/ },
+  { name: "Solo equipo / Team only", pattern: /solo equipo|team only/i },
+  { name: "scorecard / at a glance", pattern: /scorecard|at a glance|de un vistazo/i },
 ];
 
 describe("Spanish Resultados copy has no English leftovers", () => {

@@ -86,11 +86,11 @@ export function ImsfeImport() {
               <dt>{t("imsfeImportLabel")}</dt>
               <dd className="m-0">{report.path_label}</dd>
               <dt>{t("imsfeImportOrigin")}</dt>
-              <dd className="m-0">{report.origin ?? "—"}</dd>
+              <dd className="m-0">{report.origin ?? "-"}</dd>
               <dt>{t("imsfeImportHs")}</dt>
-              <dd className="m-0">{report.hs_code ?? "—"}</dd>
+              <dd className="m-0">{report.hs_code ?? "-"}</dd>
               <dt>{t("imsfeImportScale")}</dt>
-              <dd className="m-0">{report.scale ?? "—"}</dd>
+              <dd className="m-0">{report.scale ?? "-"}</dd>
               <dt>{t("imsfeImportCriteria")}</dt>
               <dd className="m-0">
                 {report.n_criteria} / {report.n_variables} / {report.n_experts}

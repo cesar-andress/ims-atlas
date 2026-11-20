@@ -7,8 +7,7 @@ const copy = {
     navEnter: "Entrar (equipo)",
     navPrivacy: "Privacidad",
     navLegal: "Aviso legal",
-    heroTitle:
-      "IMS Atlas — Selección de mercados internacionales con método científico",
+    heroTitle: "IMS Atlas: selección de mercados internacionales con método científico",
     heroSub:
       "Herramienta desarrollada en España que aplica una metodología multicriterio publicada y revisada por pares para decidir a qué mercados exportar.",
     heroCta: "Entrar (equipo)",
@@ -31,7 +30,7 @@ const copy = {
     pubsTitle: "Publicaciones",
     teamTitle: "Equipo",
     teamNames: "César Andrés-Sánchez, Jose Jaime Baena-Rojas, José Alejandro Cano",
-    teamAffil: "[AFILIACIONES — pendiente César]",
+    teamAffil: "[AFILIACIONES: pendiente César]",
     footerDev: "Desarrollado por AISERV SYSTEMS SLU (Madrid, España)",
     loginHint: "Inicia sesión para acceder",
     themeLight: "Claro",
@@ -48,7 +47,7 @@ const copy = {
     navEnter: "Sign in (team)",
     navPrivacy: "Privacy",
     navLegal: "Legal notice",
-    heroTitle: "IMS Atlas — International market selection with a scientific method",
+    heroTitle: "IMS Atlas: international market selection with a scientific method",
     heroSub:
       "A tool developed in Spain that applies a peer-reviewed multicriteria methodology to decide which markets to export to.",
     heroCta: "Sign in (team)",
@@ -71,7 +70,7 @@ const copy = {
     pubsTitle: "Publications",
     teamTitle: "Team",
     teamNames: "César Andrés-Sánchez, Jose Jaime Baena-Rojas, José Alejandro Cano",
-    teamAffil: "[AFFILIATIONS — pending César]",
+    teamAffil: "[AFFILIATIONS: pending César]",
     footerDev: "Developed by AISERV SYSTEMS SLU (Madrid, Spain)",
     loginHint: "Sign in to access",
     themeLight: "Light",

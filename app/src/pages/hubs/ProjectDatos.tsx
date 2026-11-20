@@ -10,9 +10,9 @@ const ACCESS_KEY: Record<DataAccess, string> = {
 };
 
 function formatDate(iso: string | null, lang: "en" | "es"): string {
-  if (!iso) return "—";
+  if (!iso) return "-";
   const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return "—";
+  if (Number.isNaN(d.getTime())) return "-";
   return new Intl.DateTimeFormat(lang === "es" ? "es-ES" : "en-GB", {
     dateStyle: "medium",
   }).format(d);
@@ -68,7 +68,7 @@ export function ProjectDatos() {
                   <td className="font-tabular">
                     {r.withData !== null && r.markets !== null
                       ? `${r.withData} / ${r.markets}`
-                      : "—"}
+                      : "-"}
                   </td>
                 </tr>
               ))}

@@ -34,7 +34,7 @@ export function WeightLifterPanel() {
     );
   }
 
-  const winner = rows[0]?.baselineWinner ?? "—";
+  const winner = rows[0]?.baselineWinner ?? "-";
 
   return (
     <fieldset className="weightlifter" data-testid="weightlifter-panel">
@@ -47,11 +47,11 @@ export function WeightLifterPanel() {
         {rows.map((r) => {
           const lo =
             r.lowerBeforeChange === null
-              ? "—"
+              ? "-"
               : formatPctLocale(r.lowerBeforeChange, lang);
           const hi =
             r.upperBeforeChange === null
-              ? "—"
+              ? "-"
               : formatPctLocale(r.upperBeforeChange, lang);
           return (
             <li key={r.factor} data-testid={`weightlifter-${r.factor}`}>

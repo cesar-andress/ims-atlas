@@ -113,7 +113,7 @@ export function FuentesDatos() {
                   v{dataVersion}
                 </a>
               ) : (
-                <span data-testid="data-version-link">—</span>
+                <span data-testid="data-version-link">-</span>
               )}
             </span>
             <span className="fuentes-meta-sep" aria-hidden>

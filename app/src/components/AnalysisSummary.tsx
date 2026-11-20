@@ -13,15 +13,15 @@ export function AnalysisSummary() {
     <dl className="builder-summary" data-testid="builder-summary">
       <div>
         <dt>{t("origin")}</dt>
-        <dd>{config.origin ?? "—"}</dd>
+        <dd>{config.origin ?? "-"}</dd>
       </div>
       <div>
         <dt>{t("product")}</dt>
-        <dd>{config.hs ? hsLabel(config.hs, lang) : "—"}</dd>
+        <dd>{config.hs ? hsLabel(config.hs, lang) : "-"}</dd>
       </div>
       <div>
         <dt>{t("year")}</dt>
-        <dd>{config.year ?? "—"}</dd>
+        <dd>{config.year ?? "-"}</dd>
       </div>
       <div>
         <dt>{t("region")}</dt>

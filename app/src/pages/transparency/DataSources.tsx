@@ -19,7 +19,7 @@ import { useAsyncResource } from "../../state/useAsyncResource";
 type FilterId = "all" | "open" | "closed" | "stale" | "ok";
 
 function formatWhen(value: unknown, lang: "es" | "en"): string {
-  if (typeof value !== "string" || !value.trim()) return "—";
+  if (typeof value !== "string" || !value.trim()) return "-";
   const d = new Date(value);
   if (Number.isNaN(d.getTime())) return value;
   return d.toLocaleString(lang === "es" ? "es-ES" : "en-GB", {
@@ -325,7 +325,7 @@ export function DataSources() {
                             ? state.rows.toLocaleString(
                                 lang === "es" ? "es-ES" : "en-GB",
                               )
-                            : "—"}
+                            : "-"}
                         </td>
                         <td data-from-json="evidence.checked_by">
                           {displayCell(evidence.checked_by)}
@@ -337,7 +337,7 @@ export function DataSources() {
                           {typeof evidence.snapshot_sha256 === "string" &&
                           evidence.snapshot_sha256.length > 0
                             ? `${String(evidence.snapshot_sha256).slice(0, 12)}…`
-                            : "—"}
+                            : "-"}
                         </td>
                         <td data-from-json="terms_changed">
                           {displayCell(
@@ -354,7 +354,7 @@ export function DataSources() {
                               landing
                             </a>
                           ) : (
-                            "—"
+                            "-"
                           )}
                           {s.terms_url ? (
                             <>

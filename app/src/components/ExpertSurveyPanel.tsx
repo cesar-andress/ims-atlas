@@ -145,7 +145,7 @@ export function ExpertSurveyPanel() {
               data-testid={`expert-sum-${idx}`}
             >
               Σ = {check.sum.toFixed(3)}
-              {check.ok ? "" : ` — ${t("expertSurveyMustSum1")}`}
+              {check.ok ? "" : `: ${t("expertSurveyMustSum1")}`}
             </span>
           </div>
         );
@@ -214,7 +214,7 @@ export function ExpertSurveyPanel() {
         </table>
         <p data-testid="ahp-cr">
           CR = {ahp.cr.toFixed(3)}
-          {ahp.cr > 0.1 ? ` — ${t("ahpCrHigh")}` : ""}
+          {ahp.cr > 0.1 ? `: ${t("ahpCrHigh")}` : ""}
           {ahp.mostInconsistent
             ? ` · ${t("ahpMostInconsistent")}: ${CRITERIA[ahp.mostInconsistent.i]} vs ${CRITERIA[ahp.mostInconsistent.j]}`
             : ""}

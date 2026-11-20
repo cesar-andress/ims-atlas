@@ -41,7 +41,7 @@ function parseChangelog(md: string): ChangelogBlock[] {
 }
 
 function formatWhen(value: unknown, lang: UpdateLang): string {
-  if (typeof value !== "string" || !value.trim()) return "—";
+  if (typeof value !== "string" || !value.trim()) return "-";
   const d = new Date(value);
   if (Number.isNaN(d.getTime())) return value;
   return d.toLocaleString(lang === "es" ? "es-ES" : "en-GB", {
@@ -139,7 +139,7 @@ export function DataUpdates() {
                     v{dataVersion}
                   </a>
                 ) : (
-                  "—"
+                  "-"
                 )}
               </p>
               <p className="muted small">{t("updatesDataVersionHint")}</p>
@@ -193,7 +193,7 @@ export function DataUpdates() {
               <p className="muted small">
                 {t("updatesIngestLead").replace(
                   "{version}",
-                  dataVersion ? `v${dataVersion}` : "—",
+                  dataVersion ? `v${dataVersion}` : "-",
                 )}
               </p>
             </header>

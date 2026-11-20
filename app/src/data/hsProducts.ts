@@ -191,7 +191,7 @@ export function searchHs(query: string, lang: "en" | "es"): HsProduct[] {
 
 export function hsLabel(code: string, lang: "en" | "es"): string {
   const exact = ALL_HS_PRODUCTS.find((p) => p.code === code);
-  if (exact) return `${exact.code} — ${exact.name[lang]}`;
+  if (exact) return `${exact.code}: ${exact.name[lang]}`;
   const hit = HS2_PRODUCTS.find((p) => code.startsWith(p.code));
   if (!hit) return code;
   return `${code} (${hit.name[lang]})`;

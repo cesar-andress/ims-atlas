@@ -152,7 +152,7 @@ export function ProjectBar() {
   const weightsKey = WEIGHT_STATUS_KEY[config.weightScheme ?? "expert_mean"];
   const weightsStatus = ready
     ? t("stepVariablesStatus")
-        .replace("{criteria}", nCriteria !== undefined ? String(nCriteria) : "—")
+        .replace("{criteria}", nCriteria !== undefined ? String(nCriteria) : "-")
         .replace("{weights}", t(weightsKey ?? "stepWeightsExpert"))
     : t("stepNeedScope");
 
@@ -277,10 +277,10 @@ export function ProjectBar() {
             {t("chipYear")} <b>{config.year ?? chipEmpty}</b>
           </button>
           <PermalinkLink view="variables" className="chip" data-testid="chip-markets">
-            {t("chipMarkets")} <b>{nMarkets ?? "—"}</b>
+            {t("chipMarkets")} <b>{nMarkets ?? "-"}</b>
           </PermalinkLink>
           <PermalinkLink view="variables" className="chip" data-testid="chip-criteria">
-            {t("chipCriteria")} <b>{nCriteria ?? "—"}</b>
+            {t("chipCriteria")} <b>{nCriteria ?? "-"}</b>
           </PermalinkLink>
           <PermalinkLink view="variables" className="chip" data-testid="chip-method">
             {t("chipMethod")} <b>{method}</b>

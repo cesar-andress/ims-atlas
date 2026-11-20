@@ -19,7 +19,7 @@ export function ToolPreviewSvg() {
         IMS Atlas
       </text>
       <text x="28" y="58" fill="#94a3b8" fontFamily="Inter,sans-serif" fontSize="12">
-        Acceso equipo · marca de agua del proyecto
+        Acceso equipo, marca de agua del proyecto
       </text>
       <rect
         x="28"

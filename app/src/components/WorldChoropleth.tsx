@@ -271,8 +271,7 @@ export function WorldChoropleth({
     <div className="choropleth-wrap" data-testid="world-choropleth-wrap">
       {!webglOk ? (
         <p className="muted" data-testid="choropleth-webgl-fallback">
-          WebGL unavailable — showing 2D fallback unavailable; open the similarity map
-          below.
+          WebGL unavailable. 2D fallback unavailable; open the similarity map below.
         </p>
       ) : null}
       <div

@@ -33,9 +33,9 @@ function DashboardBody() {
         {dirty ? <span className="unsaved-dot" title={t("projectUnsaved")} /> : null}
       </p>
       <p className="muted small">
-        {project.config.origin ?? "—"} · HS{project.config.hs ?? "—"} ·{" "}
-        {project.yearFrom ?? project.config.year ?? "—"}–
-        {project.yearTo ?? project.config.year ?? "—"}
+        {project.config.origin ?? "-"} · HS{project.config.hs ?? "-"} ·{" "}
+        {project.yearFrom ?? project.config.year ?? "-"}–
+        {project.yearTo ?? project.config.year ?? "-"}
         {project.dataReleaseId ? ` · release ${project.dataReleaseId}` : ""}
       </p>
 

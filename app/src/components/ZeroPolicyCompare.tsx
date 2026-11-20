@@ -72,7 +72,7 @@ export function ZeroPolicyCompare() {
       <ul className="muted small">
         {report.map((row) => (
           <li key={row.id}>
-            ε → {row.id}: {row.changes} {t("zeroPolicyCompareChanges")}
+            ε, {row.id}: {row.changes} {t("zeroPolicyCompareChanges")}
           </li>
         ))}
       </ul>

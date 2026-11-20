@@ -5,7 +5,7 @@ export function formatScoreLocale(
   lang: "en" | "es",
   digits = 2,
 ): string {
-  if (!Number.isFinite(value)) return "—";
+  if (!Number.isFinite(value)) return "-";
   return new Intl.NumberFormat(lang === "es" ? "es-ES" : "en-US", {
     minimumFractionDigits: digits,
     maximumFractionDigits: digits,
@@ -13,7 +13,7 @@ export function formatScoreLocale(
 }
 
 export function formatPctLocale(value: number, lang: "en" | "es", digits = 1): string {
-  if (!Number.isFinite(value)) return "—";
+  if (!Number.isFinite(value)) return "-";
   return new Intl.NumberFormat(lang === "es" ? "es-ES" : "en-US", {
     style: "percent",
     minimumFractionDigits: digits,

@@ -55,7 +55,7 @@ export function PrivacidadPage({ lang }: { lang: LandingLang }) {
         </p>
         <p>
           <span className="l-marker" data-testid="privacy-contact-marker">
-            [CONTACTO PRIVACIDAD — pendiente César]
+            [CONTACTO PRIVACIDAD: pendiente César]
           </span>
         </p>
       </div>

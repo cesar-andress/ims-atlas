@@ -7,11 +7,11 @@ export function ProductContextBanner() {
   const { config } = useAnalysis();
   const { i18n } = useTranslation();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
-  const origin = config.origin ?? "—";
-  const hs = config.hs ?? "—";
-  const year = config.year !== undefined ? String(config.year) : "—";
+  const origin = config.origin ?? "-";
+  const hs = config.hs ?? "-";
+  const year = config.year !== undefined ? String(config.year) : "-";
   const product =
-    config.hs !== undefined && config.hs !== "" ? hsLabel(config.hs, lang) : "—";
+    config.hs !== undefined && config.hs !== "" ? hsLabel(config.hs, lang) : "-";
 
   return (
     <p className="product-context muted" data-testid="product-context">

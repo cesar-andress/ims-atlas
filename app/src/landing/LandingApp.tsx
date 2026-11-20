@@ -53,8 +53,8 @@ function Shell({
     document.documentElement.lang = lang;
     document.title =
       lang === "es"
-        ? "IMS Atlas — Selección de mercados internacionales"
-        : "IMS Atlas — International market selection";
+        ? "IMS Atlas: selección de mercados internacionales"
+        : "IMS Atlas: international market selection";
     const meta = document.querySelector('meta[name="description"]');
     if (meta) {
       meta.setAttribute(

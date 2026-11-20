@@ -101,11 +101,11 @@ export function buildAnalysisReportPdf(input: AnalysisExportInput): Blob {
   const top = input.ranking.slice(0, 10);
   const pages: string[][] = [
     [
-      "IMS Atlas — analysis report",
+      "IMS Atlas analysis report",
       input.title,
-      `Origin ${input.origin ?? "—"} · HS ${input.hs ?? "—"} · year ${input.year ?? "—"}`,
+      `Origin ${input.origin ?? "-"}, HS ${input.hs ?? "-"}, year ${input.year ?? "-"}`,
       `Method: ${input.methodPlain}`,
-      `Data release ${input.releaseId} · app ${APP_VERSION} · ${date}`,
+      `Data version ${input.releaseId}, app ${APP_VERSION}, ${date}`,
       ATLAS_EXPORT_CREDIT,
     ],
     [
@@ -114,7 +114,7 @@ export function buildAnalysisReportPdf(input: AnalysisExportInput): Blob {
         (r) =>
           `${r.rank}. ${r.iso3}  score=${r.score.toFixed(4)}${
             input.topWhy?.find((w) => w.iso3 === r.iso3)
-              ? ` — ${input.topWhy.find((w) => w.iso3 === r.iso3)!.reason}`
+              ? `: ${input.topWhy.find((w) => w.iso3 === r.iso3)!.reason}`
               : ""
           }`,
       ),
@@ -154,7 +154,7 @@ export function buildImsfeWorkbookXlsx(input: AnalysisExportInput): Blob {
   const date = input.exportDate ?? new Date().toISOString().slice(0, 10);
   return buildXlsx([
     readmeSheet({
-      title: `IMSFE book — ${input.title}`,
+      title: `IMSFE book: ${input.title}`,
       appVersion: APP_VERSION,
       releaseId: input.releaseId,
       exportDate: date,

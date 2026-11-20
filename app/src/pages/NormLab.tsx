@@ -405,7 +405,7 @@ function NormLabBody({ model }: { model: RankingViewModel }) {
         <h2>{t("normLabCompareTitle")}</h2>
         <p className="small" data-testid="norm-lab-spearman">
           Spearman ={" "}
-          {Number.isFinite(compare.spearman) ? compare.spearman.toFixed(4) : "—"}
+          {Number.isFinite(compare.spearman) ? compare.spearman.toFixed(4) : "-"}
           {" · "}
           {t("normLabTop10Overlap")} = {(compare.top10Overlap * 10).toFixed(0)}/10
         </p>

@@ -38,7 +38,7 @@ const ES_RULES: Rule[] = [
       `La preselección dejaba ${m[1]} destinos (menos de 20); se mantiene el filtro anterior (${m[2]}).`,
   ],
   [
-    /^Candidate filter left (\d+) destinations; demo requires ≥20 — using full set\.$/,
+    /^Candidate filter left (\d+) destinations; demo requires ≥20, using full set\.$/,
     (m) =>
       `El filtro dejaba ${m[1]} destinos; se necesitan al menos 20, así que se usan todos.`,
   ],
@@ -78,7 +78,7 @@ const ES_RULES: Rule[] = [
   [
     /^No variables left after restricting weights$/,
     () =>
-      "Los pesos manuales no coinciden con los factores del panel. Elige «Pesos de expertos» o vuelve a ajustar los pesos.",
+      "Los pesos manuales no coinciden con los factores del panel. Elige Pesos de expertos o vuelve a ajustar los pesos.",
   ],
   [
     /^No overlapping factors between weights and matrix$/,

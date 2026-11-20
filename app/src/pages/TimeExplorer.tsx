@@ -251,7 +251,7 @@ export function TimeExplorer() {
                                   .join(" ")}
                               >
                                 <span className="bump-rank">
-                                  {rank === null ? "—" : rank}
+                                  {rank === null ? "-" : rank}
                                 </span>
                                 {i > 0 && rank !== null && prev !== null ? (
                                   <span className="bump-delta" aria-hidden>

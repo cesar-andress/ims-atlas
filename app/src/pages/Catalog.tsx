@@ -71,8 +71,8 @@ function reachPct(v: CatalogVariable, horizon: YearHorizon): number | null {
 function coverageSummary(v: CatalogVariable, t: (k: string) => string): string {
   const s = v.coverage_stats;
   if (!s?.n_countries && s?.year_min == null) return t("coverageNone");
-  const n = s.n_countries ?? "—";
-  const y0 = s.year_min ?? "—";
+  const n = s.n_countries ?? "-";
+  const y0 = s.year_min ?? "-";
   const y1 = s.year_max ?? y0;
   if (s.coverage_pct != null && Number.isFinite(s.coverage_pct)) {
     return t("coverageSummary")
@@ -186,7 +186,7 @@ export function Catalog() {
     >
       {config.origin || config.year ? (
         <p className="note" data-testid="catalog-config-echo">
-          {t("permalinkState")}: {config.origin ?? "—"} / {config.year ?? "—"}
+          {t("permalinkState")}: {config.origin ?? "-"} / {config.year ?? "-"}
         </p>
       ) : null}
       {loading ? <p data-testid="catalog-loading">{t("loading")}</p> : null}

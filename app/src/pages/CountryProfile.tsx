@@ -117,7 +117,7 @@ export function CountryProfile() {
                 </td>
                 <td>
                   {r.percentile === null
-                    ? "—"
+                    ? "-"
                     : `${(r.percentile * 100).toFixed(0)}% (n=${r.nPeers})`}
                 </td>
               </tr>
