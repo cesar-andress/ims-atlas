@@ -149,11 +149,13 @@ export function Matrix() {
               testIdPrefix="matrix-scatter"
               title={t("nav.matrix")}
               chartRef={scatterRef}
-              projectLine={
-                config.origin && config.hs
-                  ? `${config.origin} · HS ${config.hs}${config.year ? ` · ${config.year}` : ""}`
-                  : undefined
-              }
+              {...(config.origin && config.hs
+                ? {
+                    projectLine: `${config.origin} · HS ${config.hs}${
+                      config.year ? ` · ${config.year}` : ""
+                    }`,
+                  }
+                : {})}
             >
               <StrategicScatter
                 matrix={matrix}
