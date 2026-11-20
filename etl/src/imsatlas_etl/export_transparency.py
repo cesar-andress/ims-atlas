@@ -365,24 +365,39 @@ def _panel_coverage_stats(root: Path) -> dict[str, dict[str, Any]]:
     )
     if by_path is not None:
         by = pd.read_parquet(by_path)
-        # Map gravity columns → catalog ids used in the UI.
-        col_to_vid = {
-            "distw": "DIST",
-            "comlang_off": "LANG",
-            "fta_wto": "FTA",
-        }
-        for col, vid in col_to_vid.items():
-            if col not in by.columns:
-                continue
-            sub = by[["destination", "year", col]].dropna()
-            if sub.empty:
-                continue
-            out[vid] = {
-                "n_countries": int(sub["destination"].nunique()),
-                "year_min": int(sub["year"].min()),
-                "year_max": int(sub["year"].max()),
-                "coverage_pct": None,
+        dest_col = (
+            "destination"
+            if "destination" in by.columns
+            else ("iso3_d" if "iso3_d" in by.columns else None)
+        )
+        if {"variable_id", "value"}.issubset(by.columns) and dest_col:
+            long = by.dropna(subset=["value"])
+            for vid, g in long.groupby("variable_id"):
+                out[str(vid)] = {
+                    "n_countries": int(g[dest_col].nunique()),
+                    "year_min": int(g["year"].min()),
+                    "year_max": int(g["year"].max()),
+                    "coverage_pct": None,
+                }
+        elif dest_col:
+            # Wide gravity shape: distw / comlang_off / fta_wto columns.
+            col_to_vid = {
+                "distw": "DIST",
+                "comlang_off": "LANG",
+                "fta_wto": "FTA",
             }
+            for col, vid in col_to_vid.items():
+                if col not in by.columns:
+                    continue
+                sub = by[[dest_col, "year", col]].dropna()
+                if sub.empty:
+                    continue
+                out[vid] = {
+                    "n_countries": int(sub[dest_col].nunique()),
+                    "year_min": int(sub["year"].min()),
+                    "year_max": int(sub["year"].max()),
+                    "coverage_pct": None,
+                }
 
     vpath = curated / "variables_country_year.parquet"
     if vpath.is_file():
