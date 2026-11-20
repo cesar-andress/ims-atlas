@@ -37,6 +37,7 @@ export const navEn = {
   country: "Country",
   sql: "SQL",
   privacy: "Privacy",
+  advanced_tools: "Advanced tools",
 } as const;
 
 export const navEs = {
@@ -78,4 +79,5 @@ export const navEs = {
   country: "País",
   sql: "SQL",
   privacy: "Privacidad",
+  advanced_tools: "Herramientas avanzadas",
 } as const;

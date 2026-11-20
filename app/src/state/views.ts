@@ -8,29 +8,31 @@ export const PRIMARY_VIEWS: readonly ViewId[] = [
   "projects",
 ] as const;
 
-/** Secondary tools under “More” (docs / transparency / labs). */
-export const SECONDARY_VIEWS: readonly ViewId[] = [
-  "design",
-  "docs",
-  "cite",
-  "byod",
-  "imsfe_import",
-  "ai_verify",
-  "paper",
-  "changelog",
-  "catalog",
-  "explore",
-  "sql",
-  "norm_lab",
-  "status",
-  "data_sources",
-  "data_pipeline",
-  "data_releases",
-  "data_updates",
-  "project_dashboard",
-  "project_variables",
-  "project_coverage",
+/**
+ * Secondary “Más” menu — at most 7 links (R2), grouped Datos · Herramientas · Acerca de.
+ * Project sub-pages and labs live under advanced_tools or the project itself.
+ */
+export const SECONDARY_GROUPS: readonly {
+  labelKey: string;
+  views: readonly ViewId[];
+}[] = [
+  {
+    labelKey: "navGroupDatos",
+    views: ["data_sources", "data_updates", "explore"],
+  },
+  {
+    labelKey: "navGroupTools",
+    views: ["byod", "advanced_tools"],
+  },
+  {
+    labelKey: "navGroupAbout",
+    views: ["docs", "cite"],
+  },
 ] as const;
+
+export const SECONDARY_VIEWS: readonly ViewId[] = SECONDARY_GROUPS.flatMap(
+  (g) => g.views,
+);
 
 /** Views that share the analysis config panel + ranking model. */
 export const ANALYSIS_VIEWS: readonly ViewId[] = [

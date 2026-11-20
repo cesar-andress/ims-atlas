@@ -159,6 +159,19 @@ def test_codes_for_source_come_from_catalog() -> None:
     assert wb.codes_for_source("worldbank_lpi") == ["LP.LPI.OVRL.XQ"]
 
 
+def test_wgi_codes_are_aggregate_estimates_only() -> None:
+    """R2 / WGI caveat: CC BY covers aggregate estimates, not third-party components."""
+    codes = wb.codes_for_source("worldbank_wgi")
+    assert codes, "expected WGI indicator codes"
+    for code in codes:
+        assert code.endswith(".EST"), code
+        assert "PER.RNK" not in code and "NO.SRC" not in code
+    # Live API aliases must also be estimate series only.
+    for catalog_code, api_code in wb.WGI_API_ALIASES.items():
+        assert catalog_code.endswith(".EST")
+        assert api_code.startswith("GOV_WGI_") and api_code.endswith(".EST")
+
+
 def test_indicator_url_matches_catalog_template() -> None:
     assert wb.indicator_page_url("CC.EST", 3) == (
         "https://api.worldbank.org/v2/country/all/indicator/CC.EST"

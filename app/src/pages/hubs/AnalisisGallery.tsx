@@ -1,6 +1,8 @@
+import { useEffect, useState } from "react";
 import { PageShell } from "../../components/PageShell";
 import { PermalinkLink } from "../../components/PermalinkLink";
 import { useTranslation } from "../../i18n";
+import { IMSFE_BAENA_CANO_PRESET } from "../../state/schema";
 import { useAnalysis } from "../../state/useAnalysis";
 import { isAnalysisReady } from "../../state/views";
 import type { ViewId } from "../../state/schema";
@@ -68,6 +70,8 @@ const STUDIES: Study[] = [
   { id: "cite", view: "cite", titleKey: "studyCite", bodyKey: "studyCiteBody" },
 ];
 
+const EXAMPLE_NOTICE_KEY = "ims-atlas-analisis-example-notice";
+
 function availability(
   study: Study,
   ready: boolean,
@@ -87,12 +91,50 @@ function availability(
 /** Análisis — gallery of studies for the current selection. */
 export function AnalisisGallery() {
   const { t } = useTranslation();
-  const { config } = useAnalysis();
+  const { config, setConfig } = useAnalysis();
   const ready = isAnalysisReady(config);
+  const [showExampleNotice, setShowExampleNotice] = useState(false);
+
+  // R2: first visitor sees Jose's COL·HS64 example instead of empty "— · HS — · —".
+  useEffect(() => {
+    if (isAnalysisReady(config)) return;
+    setConfig({
+      ...IMSFE_BAENA_CANO_PRESET,
+      view: "analisis",
+    });
+    try {
+      if (sessionStorage.getItem(EXAMPLE_NOTICE_KEY) !== "0") {
+        setShowExampleNotice(true);
+      }
+    } catch {
+      setShowExampleNotice(true);
+    }
+    // Only on first empty visit to this gallery.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional once when empty
+  }, []);
+
+  function dismissExample() {
+    setShowExampleNotice(false);
+    try {
+      sessionStorage.setItem(EXAMPLE_NOTICE_KEY, "0");
+    } catch {
+      /* ignore */
+    }
+  }
 
   return (
     <PageShell testId="analisis-gallery" titleKey="nav.analisis">
       <p className="muted">{t("hubAnalisisIntro")}</p>
+      {showExampleNotice ? (
+        <p className="callout" role="status" data-testid="analisis-example-notice">
+          {t("analisisExampleNotice")}{" "}
+          <PermalinkLink view="variables">{t("changeAnalysis")}</PermalinkLink>
+          {" · "}
+          <button type="button" className="btn btn-secondary" onClick={dismissExample}>
+            {t("dismiss")}
+          </button>
+        </p>
+      ) : null}
       <p className="note small" data-testid="analisis-context">
         {config.origin ?? "—"} · HS {config.hs ?? "—"} · {config.year ?? "—"}
         {" · "}

@@ -69,6 +69,20 @@ test.describe("Phase W/U/M GUI flow", () => {
     ).toBeVisible();
   });
 
+  test("Más menu ≤7 secondary links; /analisis loads COL example", async ({ page }) => {
+    await page.goto("/analisis");
+    await expect(page.getByTestId("analisis-gallery")).toBeVisible({
+      timeout: 15_000,
+    });
+    await expect(page.getByTestId("analisis-context")).toContainText("COL");
+    await expect(page.getByTestId("analisis-context")).toContainText("64");
+    await expect(page.getByTestId("study-open-ranking")).toBeVisible({
+      timeout: 10_000,
+    });
+    const more = page.getByTestId("nav-more");
+    await expect(more).toHaveAttribute("data-secondary-count", /^[1-7]$/);
+  });
+
   test("map has choropleth legend + cluster how panel; 0 selects on map-results", async ({
     page,
   }) => {

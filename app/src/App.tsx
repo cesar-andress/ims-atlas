@@ -137,6 +137,9 @@ const AnalisisGallery = lazy(() =>
     default: m.AnalisisGallery,
   })),
 );
+const AdvancedTools = lazy(() =>
+  import("./pages/AdvancedTools").then((m) => ({ default: m.AdvancedTools })),
+);
 
 function RouteFallback() {
   const { t } = useTranslation();
@@ -160,6 +163,7 @@ function AppShell() {
           <Route path="/datos" element={<DatosHub />} />
           <Route path="/variables" element={<VariablesHub />} />
           <Route path="/analisis" element={<AnalisisGallery />} />
+          <Route path="/advanced_tools" element={<AdvancedTools />} />
           <Route path="/design" element={<DesignSystem />} />
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/builder" element={<Builder />} />

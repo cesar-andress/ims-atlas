@@ -28,7 +28,7 @@ Matrix / Compare / Time / Factors; plain-language method labels in
 | Cluster factor labels + silhouette → Variables link | Map |
 | Year play from rank-years fixture | Map (view overlay; no config edit) |
 
-### GUI gap close-up (2026-11-20 b)
+### GUI gap close-up (2026-11-20 c)
 
 | Item | Status |
 |------|--------|
@@ -38,11 +38,15 @@ Matrix / Compare / Time / Factors; plain-language method labels in
 | ValueCharts nested weight bars in Pesos | Done |
 | Datos hub variable cards from catalog | Done |
 | Análisis gallery cards: combined / VOSviewer / correlation | Done |
-| LineUp column-width weight drag | Still open |
-| Onboarding tour / Lighthouse 100 / 5 click-tasks | Still open |
-| Full visual regression matrix (all views × light/dark × 1440/390) | Still open |
-| Compare 2–4 markets radar | Still open |
-| Map hatch for non-candidates; arc width by imports | Still open |
+| LineUp column-width weight drag (Variables · Pesos) | Done |
+| Onboarding tour + ≤6-click e2e tasks | Done |
+| Compare 2–4 markets radar | Done |
+| Map hatch for non-candidates; arc width by imports | Done |
+| ADVANCE options wired into ranking engine | Done (`df47eec`) |
+| Más menu ≤7 (Datos · Herramientas · Acerca de) | Done (R2) |
+| `/analisis` default COL·HS64 example notice | Done (R2) |
+| Full visual regression matrix (all views × light/dark × 1440/390) | Partial |
+| Lighthouse 100 | Not met (honest: ~76/96 historically) |
 
 Editable controls on result screens remain **0** (`input`/`select`/`textarea`).
 

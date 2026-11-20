@@ -40,6 +40,7 @@ const VIEWS = [
   "explore_analysis",
   "country",
   "sql",
+  "advanced_tools",
 ] as const;
 
 export type ViewId = (typeof VIEWS)[number];

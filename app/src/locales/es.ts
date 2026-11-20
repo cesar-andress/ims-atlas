@@ -144,6 +144,24 @@ const es = {
   hubDatosExploreBody: "Vista previa variable × país × año.",
   hubAnalisisIntro:
     "Estudios disponibles con la selección actual. Los resultados son de solo lectura.",
+  analisisExampleNotice:
+    "Ejemplo: calzado colombiano (COL · HS 64 · 2023, preset IMSFE). Cámbialo en Cambiar análisis.",
+  dismiss: "Entendido",
+  navGroupDatos: "Datos",
+  navGroupTools: "Herramientas",
+  navGroupAbout: "Acerca de",
+  advancedToolsIntro:
+    "Labs y transparencias fuera del menú principal. Los resultados siguen siendo de solo lectura.",
+  advancedToolDesign: "Tokens, componentes y valores ilustrativos.",
+  advancedToolNormLab: "Comparar normalizaciones paso a paso.",
+  advancedToolSql: "Consola SQL de solo lectura sobre la publicación.",
+  advancedToolImsfeImport: "Importar informe de un libro IMSFE/IMSFEM.",
+  advancedToolAiVerify: "Verificar candidatos AI antes de puntuar.",
+  advancedToolPaper: "Tablas del artículo con permalinks.",
+  advancedToolCatalog: "Catálogo técnico de variables.",
+  advancedToolStatus: "Última corrida ETL y bloqueos.",
+  advancedToolPipeline: "DAG del pipeline.",
+  advancedToolReleases: "Publicaciones de datos.",
   studyOpen: "Abrir",
   studyNeedSelection: "Hace falta origen, producto y año (Variables).",
   studyBacktestPaperOnly:
