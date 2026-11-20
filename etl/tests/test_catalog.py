@@ -35,7 +35,7 @@ def test_catalog_yaml_validates() -> None:
     assert_valid_catalog(data)
 
 
-def test_catalog_has_eighteen_ported_and_new_drafts() -> None:
+def test_catalog_has_eighteen_ported_and_status_mix() -> None:
     data = load_catalog()
     ids = [v["id"] for v in data["variables"]]
     ported = {
@@ -60,7 +60,7 @@ def test_catalog_has_eighteen_ported_and_new_drafts() -> None:
     }
     assert ported.issubset(set(ids))
     assert len(ported) == 18
-    for draft_id in (
+    for catalog_id in (
         "ITU_IDI",
         "EF_EPI",
         "ODIN",
@@ -71,8 +71,17 @@ def test_catalog_has_eighteen_ported_and_new_drafts() -> None:
         "CO2PC",
         "PLI",
     ):
-        assert draft_id in ids
-    assert all(v["status"] == "draft" for v in data["variables"])
+        assert catalog_id in ids
+    by_status = {v["id"]: v["status"] for v in data["variables"]}
+    assert by_status["GDPPC"] == "verified"
+    assert by_status["GII"] == "verified"
+    assert by_status["CO2PC"] == "verified"
+    assert by_status["PLI"] == "verified"
+    assert by_status["TARIF"] == "draft"
+    assert by_status["CULT"] == "draft"
+    assert by_status["ITU_IDI"] == "draft"
+    assert sum(1 for s in by_status.values() if s == "verified") == 28
+    assert sum(1 for s in by_status.values() if s == "draft") == 22
     openness = [v for v in data["variables"] if v["id"] in {"EOC", "REEXP"}]
     assert all(v["factor"] == "openness" for v in openness)
 

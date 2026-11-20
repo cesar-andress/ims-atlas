@@ -78,9 +78,10 @@ def test_verify_sets_status_on_copy(tmp_path) -> None:  # type: ignore[no-untype
     assert gdppc["verified_by"] == "Test Human"
     assert gdppc["verified_on"] == "2026-11-19"
     committed = load_catalog()
-    assert next(v for v in committed["variables"] if v["id"] == "GDPPC")["status"] == (
-        "draft"
-    )
+    committed_gdppc = next(v for v in committed["variables"] if v["id"] == "GDPPC")
+    assert committed_gdppc["status"] == "verified"
+    # Copy-only mutate: committed provenance must stay distinct from the test byline.
+    assert committed_gdppc.get("verified_by") != "Test Human"
 
 
 def test_cli_verify_rejects_empty_by() -> None:

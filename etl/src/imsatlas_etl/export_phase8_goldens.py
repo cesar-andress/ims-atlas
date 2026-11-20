@@ -530,8 +530,7 @@ def write_phase8_goldens(path: Path | None = None) -> Path:
             keep_illustrative = False
     if not keep_illustrative:
         public_path.write_text(
-            json.dumps(pending_public_demo_payload(), indent=2, sort_keys=True)
-            + "\n",
+            json.dumps(pending_public_demo_payload(), indent=2, sort_keys=True) + "\n",
             encoding="utf-8",
         )
     # Remove legacy synthetic public filename if still present.
