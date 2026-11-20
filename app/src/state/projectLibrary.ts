@@ -39,6 +39,12 @@ export function getProjectLibraryMode(): ProjectLibraryMode {
   return mode;
 }
 
+/** Test helper: force local mode and clear the team probe cache. */
+export function __resetProjectLibraryModeForTests(): void {
+  mode = "local";
+  teamProbe = null;
+}
+
 async function teamBackendReady(): Promise<boolean> {
   if (mode !== "team") return false;
   if (!teamProbe) teamProbe = teamApiAvailable();

@@ -9,6 +9,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "preview": "vite preview",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "e2e": "playwright test",
     "figures": "node scripts/capture-paper-figures.mjs",
     "lint": "eslint src --max-warnings 0"
@@ -35,6 +36,7 @@
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/coverage-v8": "2.1.8",
     "autoprefixer": "^10.7.0",
     "postcss": "^8.5.33",
     "tailwindcss": "3",

@@ -27,20 +27,20 @@ test.describe("Default language", () => {
   }) => {
     await page.goto("/inicio");
     await expect(page.getByTestId("home-view").locator("h1")).toHaveText(
-      "Tus proyectos",
+      "Proyectos del equipo",
     );
     await expect(page.getByTestId("help-open")).toHaveText("Ayuda");
     await expect(page.getByTestId("lang-es")).toHaveAttribute("aria-pressed", "true");
 
     await page.getByTestId("lang-en").click();
     await expect(page.getByTestId("home-view").locator("h1")).toHaveText(
-      "Your projects",
+      "Team projects",
     );
     await expect(page.getByTestId("help-open")).toHaveText("Help");
 
     await page.reload();
     await expect(page.getByTestId("home-view").locator("h1")).toHaveText(
-      "Your projects",
+      "Team projects",
     );
   });
 });
