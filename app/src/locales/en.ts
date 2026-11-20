@@ -630,6 +630,14 @@ export const en = {
   quadrant: "Quadrant",
   presetImsfeBaenaCano: "IMSFE (Baena & Cano)",
   methodFamily: "Method family",
+  methodFamilyImsfe: "IMSFE 2025 footwear (6×3, 0–10)",
+  methodFamilyImsfem: "IMSFEM 2025 olive oil (7×3, + Sustainability)",
+  methodFamilySmi2018: "SMI 2018 (4×11, 0–5)",
+  methodFamilySmi2020: "SMI 2020+ (5×23, AHP)",
+  methodFamilyPanelAll: "All panel variables (free)",
+  varsApplyAllPanel: "Use all {n} panel variables",
+  varsAllPanelHint: "Free selection: {n} panel variables with equal or manual weights.",
+  varsResetTree: "Back to IMSFE tree (6×3)",
   orderByWeight: "Definitive order (by weight; display only)",
   advancedMethodOptions: "Advanced method options",
   zeroPolicy: "Zero policy (cost variables)",
@@ -1000,7 +1008,7 @@ export const en = {
   footerDocs: "Documentation",
   varsTitle: "Variables and weights",
   varsLead:
-    "Each card is a criterion of the index. Move a slider to change how much it counts; the other criteria adjust so the total stays at 100%.",
+    "Choose the method family (IMSFE, SMI, or all panel variables). Then adjust each criterion weight; the total stays at 100%.",
   varsNeedScope:
     "Choose the origin, product and year first (the buttons in the project bar above).",
   varsWeightOf: "Weight of",

@@ -4,7 +4,7 @@
  */
 
 export type MethodFamilyId =
-  "imsfe_2025" | "imsfem_2025_olive" | "smi_2018" | "smi_2020";
+  "imsfe_2025" | "imsfem_2025_olive" | "smi_2018" | "smi_2020" | "panel_all";
 
 export type MethodFamilySpec = {
   id: MethodFamilyId;
@@ -63,6 +63,17 @@ export const METHOD_FAMILIES: Record<MethodFamilyId, MethodFamilySpec> = {
     nVariables: 23,
     defaultNormalization: "ratio_legacy",
     notes: "López-Cadavid et al. (2020) / Baena-Rojas et al. (2022). AHP weights.",
+  },
+  panel_all: {
+    id: "panel_all",
+    labelEn: "All panel variables (free)",
+    labelEs: "Todas las variables del panel (libre)",
+    scaleMax: 10,
+    nFactors: 0,
+    nVariables: 0,
+    defaultNormalization: "ratio_legacy",
+    notes:
+      "No fixed criteria tree: use every available panel variable (or an explicit subset) with equal or manual weights.",
   },
 };
 

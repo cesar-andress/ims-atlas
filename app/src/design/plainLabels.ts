@@ -37,5 +37,6 @@ export function methodFamilyLabel(family: string | undefined): string | null {
   if (family === "imsfem_2025_olive") return "Baena & Cano (IMSFEM)";
   if (family === "smi_2018") return "SMI 2018";
   if (family === "smi_2020") return "SMI 2020+";
+  if (family === "panel_all") return "All panel variables";
   return null;
 }

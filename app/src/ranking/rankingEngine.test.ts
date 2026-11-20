@@ -85,6 +85,36 @@ describe("rankingEngine COL HS64", () => {
     expect(model.ranking.length).toBeGreaterThanOrEqual(20);
     expect(model.warnings.some((w) => w.includes("Criteria tree"))).toBe(true);
   });
+
+  it("panel_all uses free panel variables without criteria tree", async () => {
+    const model = await computeRanking({
+      origin: "COL",
+      hs: "64",
+      year: 2023,
+      methodFamily: "panel_all",
+      weightScheme: "equal",
+      normalization: "minmax",
+      mcdm: "wsm",
+    });
+    expect(model.ranking.length).toBeGreaterThanOrEqual(20);
+    expect(model.warnings.some((w) => w.includes("Criteria tree"))).toBe(false);
+    expect(model.warnings.some((w) => w.includes("free selection"))).toBe(true);
+  });
+
+  it("honours explicit variableIds outside the IMSFE tree", async () => {
+    const model = await computeRanking({
+      origin: "COL",
+      hs: "64",
+      year: 2023,
+      methodFamily: "imsfe_2025",
+      variableIds: ["LPI", "TARIF", "EOC"],
+      weightScheme: "equal",
+      normalization: "minmax",
+      mcdm: "wsm",
+    });
+    expect(model.ranking.length).toBeGreaterThanOrEqual(20);
+    expect(model.warnings.some((w) => w.includes("Custom variable set"))).toBe(true);
+  });
 });
 
 describe("overrideCriterionWeights", () => {

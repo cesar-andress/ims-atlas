@@ -39,7 +39,12 @@ export type RankingRequest = {
   factorWeights?: Record<string, number> | undefined;
   /** ADVANCE — method family / criteria tree. */
   methodFamily?:
-    "imsfe_2025" | "imsfem_2025_olive" | "smi_2018" | "smi_2020" | undefined;
+    | "imsfe_2025"
+    | "imsfem_2025_olive"
+    | "smi_2018"
+    | "smi_2020"
+    | "panel_all"
+    | undefined;
   zeroPolicy?: "epsilon" | "minmax" | "rank" | "offset_ratio" | undefined;
   zeroEpsilon?: number | undefined;
   zeroOffsetC?: number | undefined;
@@ -420,34 +425,52 @@ export async function computeRanking(req: RankingRequest): Promise<RankingViewMo
   let resolvedMeta: ReturnType<typeof resolveTreeAgainstPanel>["meta"] | null = null;
   if (tree) {
     const resolved = resolveTreeAgainstPanel(tree, panelIds);
-    resolvedMeta = resolved.meta;
     if (resolved.missingJose.length > 0) {
       warnings.push(
         `Tree variables not in panel (skipped): ${resolved.missingJose.join(", ")}`,
       );
     }
-    selected =
+    const explicit =
       req.variableIds && req.variableIds.length > 0
-        ? req.variableIds.filter((id) => resolved.meta.has(id) || panelIds.has(id))
-        : resolved.panelVarIds;
-    // Prefer resolved tree ids; intersect with explicit picks when provided.
-    if (req.variableIds && req.variableIds.length > 0) {
-      selected = selected.filter((id) => resolved.meta.has(id));
-    }
-    if (selected.length === 0) {
-      selected = panel.variables.map((v) => v.id);
-      resolvedMeta = null;
-      warnings.push("No tree variables available; falling back to panel variables.");
+        ? req.variableIds.filter((id) => panelIds.has(id))
+        : null;
+    if (explicit && explicit.length > 0) {
+      const allInTree = explicit.every((id) => resolved.meta.has(id));
+      if (allInTree) {
+        selected = explicit;
+        resolvedMeta = resolved.meta;
+        warnings.push(
+          `Using ${selected.length} panel variables mapped from criteria tree`,
+        );
+      } else {
+        // Free pick (includes vars outside the published tree).
+        selected = explicit;
+        resolvedMeta = null;
+        warnings.push(
+          `Custom variable set (${selected.length}); criteria-tree weights not applied.`,
+        );
+      }
     } else {
-      warnings.push(
-        `Using ${selected.length} panel variables mapped from criteria tree`,
-      );
+      selected = resolved.panelVarIds;
+      resolvedMeta = resolved.meta;
+      if (selected.length === 0) {
+        selected = panel.variables.map((v) => v.id);
+        resolvedMeta = null;
+        warnings.push("No tree variables available; falling back to panel variables.");
+      } else {
+        warnings.push(
+          `Using ${selected.length} panel variables mapped from criteria tree`,
+        );
+      }
     }
   } else {
     selected =
       req.variableIds && req.variableIds.length > 0
         ? req.variableIds.filter((id) => panelIds.has(id))
         : panel.variables.map((v) => v.id);
+    if (req.methodFamily === "panel_all") {
+      warnings.push(`Using ${selected.length} panel variables (free selection).`);
+    }
   }
 
   const subset = subsetRows(panel, keep, selected);

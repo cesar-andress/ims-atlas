@@ -208,25 +208,45 @@ export function ConfigPanel({
               options={[
                 {
                   value: "imsfe_2025",
-                  label: "IMSFE 2025 calzado (6×3, 0–10)",
+                  label: t("methodFamilyImsfe"),
                 },
                 {
                   value: "imsfem_2025_olive",
-                  label: "IMSFEM 2025 aceite (7×3, + Sostenibilidad)",
+                  label: t("methodFamilyImsfem"),
                 },
-                { value: "smi_2018", label: "SMI 2018 (4×11, 0–5)" },
-                { value: "smi_2020", label: "SMI 2020+ (5×23, AHP)" },
+                { value: "smi_2018", label: t("methodFamilySmi2018") },
+                { value: "smi_2020", label: t("methodFamilySmi2020") },
+                { value: "panel_all", label: t("methodFamilyPanelAll") },
               ]}
-              onChange={(value) =>
+              onChange={(value) => {
+                const family = value as NonNullable<typeof config.methodFamily>;
+                if (family === "panel_all") {
+                  setConfig({
+                    methodFamily: family,
+                    normalization: config.normalization ?? "ratio_legacy",
+                    weightScheme: "equal",
+                    factorWeights: undefined,
+                    variableIds: panel
+                      ? panel.variables.map((v) => v.id)
+                      : config.variableIds,
+                  });
+                  return;
+                }
                 setConfig({
-                  methodFamily: value as
-                    "imsfe_2025" | "imsfem_2025_olive" | "smi_2018" | "smi_2020",
+                  methodFamily: family,
                   normalization:
-                    value === "smi_2018"
+                    family === "smi_2018"
                       ? "ratio_legacy"
                       : (config.normalization ?? "ratio_legacy"),
-                })
-              }
+                  ...(family === "imsfe_2025" || family === "imsfem_2025_olive"
+                    ? {
+                        variableIds: undefined,
+                        factorWeights: undefined,
+                        weightScheme: "expert_mean" as const,
+                      }
+                    : { variableIds: undefined }),
+                });
+              }}
             />
 
             <label className="flex items-center gap-2">
@@ -553,47 +573,97 @@ export function ConfigPanel({
             <fieldset className="var-fieldset" data-testid="variable-picker">
               <legend>{t("variables")}</legend>
               {panel ? (
-                FACTOR_ORDER.map((factor) => {
-                  const vars = panel.variables.filter((v) => v.factor === factor);
-                  if (vars.length === 0) return null;
-                  return (
-                    <div
-                      key={factor}
-                      className="factor-vars"
-                      data-testid={`factor-group-${factor}`}
+                <>
+                  <p className="var-picker-actions">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      data-testid="var-picker-all"
+                      onClick={() =>
+                        setConfig({
+                          methodFamily: "panel_all",
+                          weightScheme: "equal",
+                          factorWeights: undefined,
+                          variableIds: panel.variables.map((v) => v.id),
+                        })
+                      }
                     >
-                      <strong>{factor}</strong>
-                      {vars.map((v) => {
-                        const cov = panel.coveragePct[v.id] ?? 0;
-                        const checked = selectedVars.has(v.id);
-                        return (
-                          <label
-                            key={v.id}
-                            className="var-check"
-                            data-testid={`var-${v.id}`}
-                          >
-                            <input
-                              type="checkbox"
-                              checked={checked}
-                              onChange={() => {
-                                const next = new Set(selectedVars);
-                                if (checked) next.delete(v.id);
-                                else next.add(v.id);
-                                setConfig({ variableIds: [...next] });
-                              }}
-                            />
-                            <span>
-                              {v.id}{" "}
-                              <span className="muted">
-                                ({cov.toFixed(0)}% · {v.direction})
+                      {t("varsApplyAllPanel").replace(
+                        "{n}",
+                        String(panel.variables.length),
+                      )}
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      data-testid="var-picker-tree-reset"
+                      onClick={() =>
+                        setConfig({
+                          methodFamily: "imsfe_2025",
+                          weightScheme: "expert_mean",
+                          factorWeights: undefined,
+                          variableIds: undefined,
+                        })
+                      }
+                    >
+                      {t("varsResetTree")}
+                    </button>
+                  </p>
+                  {FACTOR_ORDER.map((factor) => {
+                    const vars = panel.variables.filter((v) => v.factor === factor);
+                    if (vars.length === 0) return null;
+                    return (
+                      <div
+                        key={factor}
+                        className="factor-vars"
+                        data-testid={`factor-group-${factor}`}
+                      >
+                        <strong>{factor}</strong>
+                        {vars.map((v) => {
+                          const cov = panel.coveragePct[v.id] ?? 0;
+                          const checked = selectedVars.has(v.id);
+                          return (
+                            <label
+                              key={v.id}
+                              className="var-check"
+                              data-testid={`var-${v.id}`}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={checked}
+                                onChange={() => {
+                                  const next = new Set(selectedVars);
+                                  if (checked) next.delete(v.id);
+                                  else next.add(v.id);
+                                  const ids = [...next];
+                                  const treeOnly =
+                                    config.methodFamily === "imsfe_2025" ||
+                                    config.methodFamily === "imsfem_2025_olive";
+                                  setConfig({
+                                    variableIds: ids,
+                                    ...(treeOnly && ids.length > 0
+                                      ? {
+                                          methodFamily: "panel_all" as const,
+                                          weightScheme: "equal" as const,
+                                          factorWeights: undefined,
+                                        }
+                                      : {}),
+                                  });
+                                }}
+                              />
+                              <span>
+                                {v.id}{" "}
+                                <span className="muted">
+                                  ({cov.toFixed(0)}% · {v.direction})
+                                </span>
                               </span>
-                            </span>
-                          </label>
-                        );
-                      })}
-                    </div>
-                  );
-                })
+                            </label>
+                          );
+                        })}
+                      </div>
+                    );
+                  })}
+                </>
               ) : panelStatus === "pending" ? (
                 <div data-testid="config-panel-pending">
                   <p className="muted small">{t("dataReleasePending")}</p>

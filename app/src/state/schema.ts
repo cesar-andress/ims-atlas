@@ -99,9 +99,14 @@ export type AnalysisConfig = {
   matrixCutF?: number | undefined;
   /** attractiveness×fit (legacy) or IMSFE×EOC (Baena & Cano). */
   matrixMode?: "attractiveness_fit" | "imsfe_eoc" | undefined;
-  /** IMSFE / SMI method family preset. */
+  /** IMSFE / SMI / free-panel method family preset. */
   methodFamily?:
-    "imsfe_2025" | "imsfem_2025_olive" | "smi_2018" | "smi_2020" | undefined;
+    | "imsfe_2025"
+    | "imsfem_2025_olive"
+    | "smi_2018"
+    | "smi_2020"
+    | "panel_all"
+    | undefined;
   /** Display criteria/variables ordered by weight (Orden definitivo); scores unchanged. */
   orderByWeight?: boolean | undefined;
   /** Phase A3: cost zero policy for IMP variables. */
@@ -352,6 +357,7 @@ export function parseAnalysisConfig(input: unknown): AnalysisConfig {
     "imsfem_2025_olive",
     "smi_2018",
     "smi_2020",
+    "panel_all",
   ] as const);
   if (methodFamily) out.methodFamily = methodFamily;
 

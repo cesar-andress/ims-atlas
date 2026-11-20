@@ -156,7 +156,12 @@ function ProjectVariablesBody() {
   }
 
   function applyAllCatalog() {
-    setChosen(catalog.map((v) => v.id));
+    setConfig({
+      methodFamily: "panel_all",
+      weightScheme: "equal",
+      factorWeights: undefined,
+      variableIds: catalog.map((v) => v.id),
+    });
   }
 
   return (
