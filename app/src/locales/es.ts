@@ -1029,8 +1029,7 @@ const es = {
   sourcesStatusStale: "Obsoleta",
   sourcesStatusUnknown: "Sin estado",
   sourcesYes: "Sí",
-  sourcesEndpointsHint:
-    "Plantillas de endpoint del registro de fuentes (copiar URL).",
+  sourcesEndpointsHint: "Plantillas de endpoint del registro de fuentes (copiar URL).",
   datosTitle: "Datos",
   datosLead:
     "Qué mide el proyecto, de dónde sale cada dato y en cuántos mercados tiene valor.",

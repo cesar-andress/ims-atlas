@@ -8,6 +8,7 @@ import { resolveSourceStore } from "../../auth/accessStore";
 import {
   loadSources,
   loadSourcesState,
+  type SourcesStatePayload,
   type SourcesStateRow,
   type TransparencySource,
 } from "../../data/transparency";
@@ -51,7 +52,7 @@ export function DataSources() {
   const lang = i18n.language.startsWith("es") ? "es" : "en";
   const { data, error, loading } = useAsyncResource(() => loadSources(), []);
   const stateRes = useAsyncResource(
-    () => loadSourcesState().catch(() => ({ sources: {} })),
+    () => loadSourcesState().catch((): SourcesStatePayload => ({ sources: {} })),
     [],
   );
   const [query, setQuery] = useState("");
