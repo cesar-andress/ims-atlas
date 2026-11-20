@@ -1,7 +1,7 @@
 {
   "generated_from": "catalog/sources.yaml + status/freshness.json + release manifest",
   "is_fixture": false,
-  "n_sources": 49,
+  "n_sources": 58,
   "schema": "transparency-sources/v1",
   "sources": [
     {
@@ -2453,6 +2453,456 @@
       "terms_url": "https://www.revistadyo.es/DyO/index.php/dyo/politicas",
       "update_cadence": "static",
       "version_detection": "article id"
+    },
+    {
+      "citation": "AUMA. Trade fair database.",
+      "decision": "byod_only",
+      "endpoints": [
+        {
+          "id": "landing",
+          "method": "GET",
+          "notes": "No public reuse terms found (2026-11-20). Manual drop only into data/manual/auma_fairs/; do not scrape.",
+          "template": "https://www.auma.de/"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "auma_fairs",
+      "landing_url": "https://www.auma.de/",
+      "licence": "UNKNOWN",
+      "licence_id": "UNKNOWN",
+      "licence_url": "UNKNOWN",
+      "publisher": "AUMA",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "No public reuse terms located on AUMA site (2026-11-20). Flags remain unknown; manual file only. [Researched 2026-11-20; confidence low; page fetched: landing only.]",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.auma.de/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.auma.de/",
+      "update_cadence": "annual",
+      "version_detection": "AUMA fair year / catalogue edition"
+    },
+    {
+      "citation": "UFI. Global exhibition industry statistics.",
+      "decision": "byod_only",
+      "endpoints": [
+        {
+          "id": "landing",
+          "method": "GET",
+          "notes": "Statistics and reports; check each PDF licence. Manual drop into data/manual/ufi_stats/.",
+          "template": "https://www.ufi.org/"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "ufi_stats",
+      "landing_url": "https://www.ufi.org/",
+      "licence": "UNKNOWN",
+      "licence_id": "UNKNOWN",
+      "licence_url": "UNKNOWN",
+      "publisher": "UFI \u2014 The Global Association of the Exhibition Industry",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "UFI reports; reuse terms not confirmed on landing (2026-11-20). Manual only. [Researched 2026-11-20; confidence low.]",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.ufi.org/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.ufi.org/",
+      "update_cadence": "annual",
+      "version_detection": "UFI report year"
+    },
+    {
+      "citation": "ICEX. Buscador de ferias / calendario de actividades (datos.gob.es).",
+      "decision": "byod_only",
+      "endpoints": [
+        {
+          "id": "catalog",
+          "method": "GET",
+          "notes": "Open-data catalogue entry; confirm dataset licence on the ficha before bulk download. Also sector PDF calendars (e.g. moda).",
+          "template": "https://datos.gob.es/es/catalogo/ea0038767-buscador-de-ferias-del-icex"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "icex_events",
+      "landing_url": "https://datos.gob.es/es/catalogo/ea0038767-buscador-de-ferias-del-icex",
+      "licence": "UNKNOWN",
+      "licence_id": "UNKNOWN",
+      "licence_url": "UNKNOWN",
+      "publisher": "ICEX Espa\u00f1a Exportaci\u00f3n e Inversiones",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Licence on datos.gob.es ficha not yet attested (many are reuse-with- attribution). Flags unknown until C\u00e9sar confirms. [Researched 2026-11-20; confidence medium; page to re-check live.]",
+          "snapshot_sha256": null,
+          "terms_url": "https://datos.gob.es/es/catalogo/ea0038767-buscador-de-ferias-del-icex"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://datos.gob.es/es/catalogo/ea0038767-buscador-de-ferias-del-icex",
+      "update_cadence": "irregular",
+      "version_detection": "datos.gob.es dataset modified date"
+    },
+    {
+      "citation": "U.S. Department of Commerce / ITA. Trade Events API.",
+      "decision": "byod_only",
+      "endpoints": [
+        {
+          "id": "trade_events_api",
+          "method": "GET",
+          "notes": "Free API key from developer.trade.gov. Hourly updates. Requires TRADE_GOV_API_KEY env (never commit).",
+          "template": "https://api.trade.gov/v1/trade_events/search"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "trade_gov_events",
+      "landing_url": "https://developer.trade.gov/",
+      "licence": "UNKNOWN",
+      "licence_id": "UNKNOWN",
+      "licence_url": "https://www.trade.gov/privacy-and-security-notice",
+      "publisher": "U.S. International Trade Administration (trade.gov)",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Federal government data; confirm API terms / USGov works before bulk redistribute. Flags unknown. [Researched 2026-11-20; confidence medium.]",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.trade.gov/privacy-and-security-notice"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.trade.gov/privacy-and-security-notice",
+      "update_cadence": "irregular",
+      "version_detection": "API Last-Modified / feed timestamp"
+    },
+    {
+      "citation": "OECD. Data Explorer / SDMX (series as cited per variable).",
+      "decision": "byod_only",
+      "endpoints": [
+        {
+          "id": "sdmx",
+          "method": "GET",
+          "notes": "SDMX REST. Series list in config/series/oecd_sdmx.yaml (TFI, STRI, Digital STRI, FDI RRI, TiVA, PMR). Confirm licence per dataset; STRI reports cited CC BY 4.0 with third-party exclusions.",
+          "template": "https://sdmx.oecd.org/public/rest/data/{agency},{dataflow}/{key}"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "oecd_sdmx",
+      "landing_url": "https://data-explorer.oecd.org/",
+      "licence": "UNKNOWN",
+      "licence_id": "UNKNOWN",
+      "licence_url": "https://www.oecd.org/en/about/terms-conditions.html",
+      "publisher": "Organisation for Economic Co-operation and Development",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "yes",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "OECD terms + per-dataset licence (STRI often CC BY 4.0 with exclusions). Flags unknown until C\u00e9sar attests each series. [Researched 2026-11-20; confidence medium.]",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.oecd.org/en/about/terms-conditions.html"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.oecd.org/en/about/terms-conditions.html",
+      "update_cadence": "annual",
+      "version_detection": "SDMX dataflow version / observation period"
+    },
+    {
+      "citation": "WTO. Stats Timeseries API.",
+      "decision": "byod_only",
+      "endpoints": [
+        {
+          "id": "timeseries",
+          "method": "GET",
+          "notes": "Free API key (apiportal.wto.org). Also CSV/Excel without account for some series. Series list in config/series/wto_timeseries.yaml.",
+          "template": "https://api.wto.org/timeseries/v1/{resource}"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "wto_timeseries",
+      "landing_url": "https://apiportal.wto.org/",
+      "licence": "UNKNOWN",
+      "licence_id": "UNKNOWN",
+      "licence_url": "https://www.wto.org/english/info_e/copyrights_permissions_e.htm",
+      "publisher": "World Trade Organization",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "WTO copyright/permissions page; TTD has a separate Dissemination Policy (see wto_tariffs). Flags unknown. [Researched 2026-11-20; confidence medium.]",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.wto.org/english/info_e/copyrights_permissions_e.htm"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.wto.org/english/info_e/copyrights_permissions_e.htm",
+      "update_cadence": "annual",
+      "version_detection": "API / dataset vintage"
+    },
+    {
+      "citation": "Brazil MDIC. Comex Stat.",
+      "decision": "byod_only",
+      "endpoints": [
+        {
+          "id": "api",
+          "method": "GET",
+          "notes": "Open API with NCM, partner, UF, transport mode, URF; FOB and kg from 1997. Confirm current base URL and licence on portal.",
+          "template": "https://api-comexstat.mdic.gov.br/"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "comexstat_br",
+      "landing_url": "https://comexstat.mdic.gov.br/",
+      "licence": "UNKNOWN",
+      "licence_id": "UNKNOWN",
+      "licence_url": "UNKNOWN",
+      "publisher": "Minist\u00e9rio do Desenvolvimento / Comex Stat (Brazil)",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Brazilian government trade stats; licence statement on portal not yet attested. [Researched 2026-11-20; confidence medium.]",
+          "snapshot_sha256": null,
+          "terms_url": "https://comexstat.mdic.gov.br/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://comexstat.mdic.gov.br/",
+      "update_cadence": "irregular",
+      "version_detection": "API max period"
+    },
+    {
+      "citation": "DANE / DIAN. Colombian foreign trade statistics.",
+      "decision": "byod_only",
+      "endpoints": [
+        {
+          "id": "open_data",
+          "method": "GET",
+          "notes": "Locate open dataset for exports by department and transport mode; prefer datos.gov.co when listed. Manual README in data/manual/dane_dian_comex/.",
+          "template": "https://www.dane.gov.co/"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "dane_dian_comex",
+      "landing_url": "https://www.dane.gov.co/",
+      "licence": "UNKNOWN",
+      "licence_id": "UNKNOWN",
+      "licence_url": "UNKNOWN",
+      "publisher": "DANE / DIAN (Colombia)",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Open-data licence for the specific Comex dataset not yet attested. Priority for COL origin example. [Researched 2026-11-20; confidence low.]",
+          "snapshot_sha256": null,
+          "terms_url": "https://www.dane.gov.co/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://www.dane.gov.co/",
+      "update_cadence": "irregular",
+      "version_detection": "dataset modified date"
+    },
+    {
+      "citation": "Spain Secretar\u00eda de Estado de Comercio. DataComex.",
+      "decision": "byod_only",
+      "endpoints": [
+        {
+          "id": "portal",
+          "method": "GET",
+          "notes": "Provincial / transport-mode trade. Confirm live download/API and legal notice. Alternative SDMX/JSON-stat via ICANE for some series.",
+          "template": "https://comercio.gob.es/"
+        }
+      ],
+      "freshness": {
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
+        "terms_changed": null,
+        "upstream_changed_at": null,
+        "upstream_version": null
+      },
+      "id": "datacomex_es",
+      "landing_url": "https://comercio.gob.es/",
+      "licence": "UNKNOWN",
+      "licence_id": "UNKNOWN",
+      "licence_url": "UNKNOWN",
+      "publisher": "Secretar\u00eda de Estado de Comercio (Espa\u00f1a) \u2014 DataComex",
+      "release_version": null,
+      "rights": {
+        "attribution_required": "unknown",
+        "commercial_use": "unknown",
+        "evidence": {
+          "checked_by": null,
+          "checked_on": null,
+          "note": "Legal notice / API availability to confirm on live portal. Flags unknown. [Researched 2026-11-20; confidence low.]",
+          "snapshot_sha256": null,
+          "terms_url": "https://comercio.gob.es/"
+        },
+        "licence_id": "UNKNOWN",
+        "no_derivatives": "unknown",
+        "redistribute_derived": "unknown",
+        "redistribute_raw": "unknown",
+        "share_alike": "unknown",
+        "use_research": "unknown"
+      },
+      "store": "cerrada",
+      "store_reason": "rights evidence incomplete or missing",
+      "terms_url": "https://comercio.gob.es/",
+      "update_cadence": "irregular",
+      "version_detection": "portal vintage"
     }
   ]
 }
