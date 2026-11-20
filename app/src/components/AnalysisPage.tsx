@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { useTranslation } from "../i18n";
+import { localizeWarning } from "../ranking/localizeWarning";
 import type { AnalysisModelError } from "../ranking/analysisError";
 import type { RankingViewModel } from "../ranking/rankingEngine";
 import { useAnalysis } from "../state/useAnalysis";
@@ -126,7 +127,7 @@ export function AnalysisPage({
           {!resultsChrome && model && model.warnings.length > 0 ? (
             <ul className="warnings" data-testid="ranking-warnings">
               {model.warnings.map((w) => (
-                <li key={w}>{w}</li>
+                <li key={w}>{localizeWarning(w, lang)}</li>
               ))}
             </ul>
           ) : null}

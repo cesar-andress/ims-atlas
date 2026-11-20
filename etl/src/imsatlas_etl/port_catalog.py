@@ -28,7 +28,7 @@ NAME_ES: dict[str, str] = {
     "UVGAP": "Brecha absoluta de valor unitario en log",
     "CULT": "Distancia cultural (Kogut-Singh, Hofstede 6 dimensiones)",
     "LANG": "Idioma oficial común",
-    "INFL": "Desviación de la inflación respecto al 2 por ciento",
+    "INFL": "Inflación anual (IPC)",
     "UNEMP": "Tasa de desempleo",
     "GOV": "Media de Worldwide Governance Indicators",
     "EOC": "Coeficiente de apertura externa (comercio/PIB)",

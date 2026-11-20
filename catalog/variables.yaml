@@ -354,8 +354,8 @@ variables:
   verified_on: '2026-11-20'
 - id: INFL
   name:
-    en: Inflation deviation from 2 percent
-    es: Desviación de la inflación respecto al 2 por ciento
+    en: Annual consumer price inflation
+    es: Inflación anual (IPC)
   factor: macro_risk
   level: country
   direction: cost

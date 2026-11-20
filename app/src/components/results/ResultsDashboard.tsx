@@ -22,6 +22,7 @@ import {
 import { quadrantCopy } from "../../design/quadrantCopy";
 import { rankingToCsv } from "../../cite/exportDownload";
 import { useTranslation } from "../../i18n";
+import { localizeWarning } from "../../ranking/localizeWarning";
 import { collectMethodWarnings } from "../../imsfe/collectMethodWarnings";
 import { useImsfeEocMatrix } from "../../ranking/useImsfeEocMatrix";
 import type { RankingViewModel } from "../../ranking/rankingEngine";
@@ -168,7 +169,7 @@ export function ResultsDashboard({ model }: Props) {
   const notice = illustrative
     ? t("illustrativeBanner")
     : model.warnings.length > 0
-      ? model.warnings[0]
+      ? localizeWarning(model.warnings[0]!, lang)
       : missingEoc.length > 0 && eoc
         ? lang === "es"
           ? `${missingEoc[0]} sin coeficiente de apertura (EOC); no se dibuja en la matriz.`
@@ -265,7 +266,11 @@ export function ResultsDashboard({ model }: Props) {
                 : `${missingEoc[0]} missing openness coefficient`
               : methodWarnings[0]
                 ? messageFor(methodWarnings[0], lang)
-                : (model.warnings[0] ?? (lang === "es" ? "Sin avisos" : "No warnings"))}
+                : model.warnings[0]
+                  ? localizeWarning(model.warnings[0], lang)
+                  : lang === "es"
+                    ? "Sin avisos"
+                    : "No warnings"}
           </p>
           {methodWarnings.length > 0 ? (
             <ul
