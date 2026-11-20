@@ -65,6 +65,13 @@ def _write_json(path: Path, payload: object) -> None:
     )
 
 
+def _slim_row_counts(row_counts: object) -> object:
+    """Drop per-HS2 byte maps from status JSON (UI never needs them)."""
+    if not isinstance(row_counts, dict):
+        return row_counts
+    return {k: v for k, v in row_counts.items() if k != "country_product_bytes_by_hs2"}
+
+
 def _latest_run(runs_dir: Path) -> Path | None:
     """Newest timestamped run file. Never pick the ``latest.json`` pointer itself."""
     if not runs_dir.is_dir():
@@ -321,15 +328,28 @@ def write_transparency_bundle(
         manifest_fixture = top_level_is_fixture(manifest) or payload_is_fixture(
             manifest
         )
+        # SPA mirror: drop files[] (thousands of parquet parts ≈ 2 MiB). The
+        # full manifest remains under data/release/public for verify-release.
+        slim = {k: v for k, v in manifest.items() if k != "files"}
+        slim["n_files"] = len(manifest.get("files") or [])
+        slim["files_omitted"] = True
+        slim["note"] = (
+            "SPA summary: per-file hashes live in SHA256SUMS / release tree, "
+            "not in this slim manifest."
+        )
         _write_json(
             dest_rel / "manifest.json",
-            with_fixture_flag(manifest, manifest_fixture),
+            with_fixture_flag(slim, manifest_fixture),
         )
-        # Also mirror CHANGELOG/README/integrity when present (text, not invented).
-        for name in ("CHANGELOG.md", "README.md", "LICENSES.md", "SHA256SUMS"):
+        # Text docs only. Omit SHA256SUMS from the Vite tree (≈1 MiB): nginx
+        # falls through to data/release/public via @data_host for that path.
+        for name in ("CHANGELOG.md", "README.md", "LICENSES.md"):
             src = manifest_path.parent / name
             if src.is_file():
                 (dest_rel / name).write_bytes(src.read_bytes())
+        stale_sha = dest_rel / "SHA256SUMS"
+        if stale_sha.is_file():
+            stale_sha.unlink()
         n_prov = int((manifest or {}).get("row_counts", {}).get("provenance_rows") or 0)
         _write_json(
             dest_rel / "provenance_index.json",
@@ -376,7 +396,7 @@ def write_transparency_bundle(
                 "promoted_at": (manifest or {}).get("promoted_at"),
                 "promoted_by": (manifest or {}).get("promoted_by"),
                 "n_included_variables": (manifest or {}).get("n_included_variables"),
-                "row_counts": (manifest or {}).get("row_counts"),
+                "row_counts": _slim_row_counts((manifest or {}).get("row_counts")),
                 "size_bytes": (manifest or {}).get("size_bytes"),
                 "manifest_path": f"/data/v{version}/manifest.json",
             },
@@ -391,7 +411,9 @@ def write_transparency_bundle(
                 "n_included_variables": (internal_manifest or {}).get(
                     "n_included_variables",
                 ),
-                "row_counts": (internal_manifest or {}).get("row_counts"),
+                "row_counts": _slim_row_counts(
+                    (internal_manifest or {}).get("row_counts"),
+                ),
                 "size_bytes": (internal_manifest or {}).get("size_bytes"),
                 "manifest_path": f"/datos-cerrados/v{version}/manifest.json",
             }

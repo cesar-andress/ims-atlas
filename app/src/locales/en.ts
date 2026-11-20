@@ -519,6 +519,7 @@ export const en = {
   zeroPolicyCompareChanges: "countries change rank",
   zeroPolicyCompareEmpty:
     "No cost column in the current panel for zero-policy compare.",
+  baciPreselectLoad: "Load BACI trade volumes from the data package",
   baciPreselectLoading: "Loading BACI import volumes for pre-selection…",
   baciPreselectOk: "BACI trade chapter loaded for pre-selection",
   baciPreselectFixture:

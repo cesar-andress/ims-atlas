@@ -526,6 +526,7 @@ const es = {
   zeroPolicyCompareChanges: "países cambian de puesto",
   zeroPolicyCompareEmpty:
     "No hay columna de coste en el panel actual para comparar políticas de ceros.",
+  baciPreselectLoad: "Cargar volúmenes BACI del paquete de datos",
   baciPreselectLoading: "Cargando volúmenes BACI para la preselección…",
   baciPreselectOk: "Capítulo comercial BACI cargado para la preselección",
   baciPreselectFixture:

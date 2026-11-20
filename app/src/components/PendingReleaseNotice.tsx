@@ -16,29 +16,34 @@ type ReleaseHint = {
 
 async function loadReleaseHint(): Promise<ReleaseHint> {
   try {
+    // Only status/releases.json (~KB). Never fetch data/*/manifest.json here:
+    // the full manifest lists every parquet part (~2 MiB / 7k+ files).
     const base = import.meta.env.BASE_URL;
-    const [releasesRes, manifestRes] = await Promise.all([
-      fetch(`${base}status/releases.json`, { cache: "no-store" }),
-      fetch(`${base}data/v1.1.0/manifest.json`, { cache: "no-store" }),
-    ]);
+    const releasesRes = await fetch(`${base}status/releases.json`, {
+      cache: "no-store",
+    });
     let draftShipVars = 33;
     let tradeRows = 0;
     if (releasesRes.ok) {
       const rel = (await releasesRes.json()) as {
-        internal?: { n_included_variables?: number };
-        releases?: { n_included_variables?: number }[];
+        internal?: {
+          n_included_variables?: number;
+          row_counts?: { trade_rows?: number };
+        };
+        releases?: {
+          n_included_variables?: number;
+          row_counts?: { trade_rows?: number };
+        }[];
       };
+      const publicRel = rel.releases?.[0];
       const internalN = rel.internal?.n_included_variables;
-      const publicN = rel.releases?.[0]?.n_included_variables ?? 0;
+      const publicN = publicRel?.n_included_variables ?? 0;
       if (typeof internalN === "number" && internalN > publicN) {
         draftShipVars = internalN - publicN;
       }
-    }
-    if (manifestRes.ok) {
-      const man = (await manifestRes.json()) as {
-        row_counts?: { trade_rows?: number; country_year_rows?: number };
-      };
-      tradeRows = Number(man.row_counts?.trade_rows ?? 0);
+      tradeRows = Number(
+        publicRel?.row_counts?.trade_rows ?? rel.internal?.row_counts?.trade_rows ?? 0,
+      );
     }
     return { tradeRows, draftShipVars };
   } catch {

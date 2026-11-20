@@ -35,3 +35,9 @@ def test_write_transparency_bundle() -> None:
     rel = info["release_version"]
     manifest = root / "app" / "public" / "data" / f"v{rel}" / "manifest.json"
     assert manifest.is_file()
+    spa_manifest = json.loads(manifest.read_text(encoding="utf-8"))
+    # SPA mirror must not embed the per-file parquet inventory.
+    assert "files" not in spa_manifest
+    assert spa_manifest.get("files_omitted") is True
+    assert "n_included_variables" in spa_manifest
+    assert not (manifest.parent / "SHA256SUMS").is_file()

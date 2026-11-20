@@ -1,23 +1,21 @@
 import { useTranslation } from "../../i18n";
 import { ExportMenu } from "../../components/ExportMenu";
 import { TransparencyShell } from "../../components/TransparencyShell";
-import { loadManifest, loadReleases } from "../../data/transparency";
+import { loadReleases } from "../../data/transparency";
 import { displayCell } from "../../formatDisplay";
 import { useAsyncResource } from "../../state/useAsyncResource";
 
 export function DataReleases() {
   const { t } = useTranslation();
+  // Summary fields live in status/releases.json. Do not fetch the full
+  // release manifest (files[] ≈ 2 MiB) just to render this page.
   const { data, error, loading } = useAsyncResource(async () => {
     const payload = await loadReleases();
-    const first = payload.releases[0];
-    const path =
-      first && typeof first.manifest_path === "string" ? first.manifest_path : null;
-    const manifest = path ? await loadManifest(path) : null;
     return {
       releases: payload.releases,
       current: payload.current,
-      manifest,
       releasesPayload: payload,
+      first: payload.releases[0] ?? null,
     };
   }, []);
 
@@ -96,42 +94,39 @@ export function DataReleases() {
             </table>
           </div>
 
-          {data.manifest ? (
+          {data.first ? (
             <section data-testid="manifest-summary">
               <h2>{t("transparencyManifest")}</h2>
               <dl className="status-grid">
                 <dt>created_at</dt>
                 <dd data-from-json="manifest.created_at">
-                  {displayCell(data.manifest.created_at)}
+                  {displayCell(data.first.created_at)}
                 </dd>
                 <dt>promoted_at</dt>
                 <dd data-from-json="manifest.promoted_at">
-                  {displayCell(data.manifest.promoted_at)}
+                  {displayCell(data.first.promoted_at)}
                 </dd>
                 <dt>n_included_variables</dt>
                 <dd data-from-json="manifest.n_included_variables">
-                  {displayCell(data.manifest.n_included_variables)}
+                  {displayCell(data.first.n_included_variables)}
                 </dd>
-                <dt>spec</dt>
-                <dd data-from-json="manifest.spec">
-                  {displayCell(data.manifest.spec)}
+                <dt>trade_rows</dt>
+                <dd data-from-json="manifest.trade_rows">
+                  {displayCell(
+                    (data.first.row_counts as { trade_rows?: number } | undefined)
+                      ?.trade_rows,
+                  )}
                 </dd>
                 <dt>{t("transparencySignature")}</dt>
                 <dd data-from-json="manifest.signature">
-                  {displayCell(
-                    (data.manifest.signature as { status?: string } | undefined)
-                      ?.status ??
-                      (data.releasesPayload as { signature?: { status?: string } })
-                        ?.signature?.status ??
-                      "unsigned",
-                  )}
+                  {displayCell(data.releasesPayload.signature?.status ?? "unsigned")}
                 </dd>
                 <dt>{t("transparencySha256sums")}</dt>
                 <dd>
                   <a
                     href={
-                      (data.releasesPayload as { sha256sums_path?: string })
-                        ?.sha256sums_path ?? `/data/v${data.current}/SHA256SUMS`
+                      data.releasesPayload.sha256sums_path ??
+                      `/data/v${data.current}/SHA256SUMS`
                     }
                   >
                     SHA256SUMS

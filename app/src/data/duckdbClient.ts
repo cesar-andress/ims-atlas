@@ -205,20 +205,10 @@ export function createDuckDbClient(): AtlasDataClient {
       const url = `${base}/trade/hs2=${key}/part.parquet`;
       const ok = await parquetExists(url);
       if (!ok) return false;
+      // URL only — aggregations call read_parquet(url) with a year filter.
+      // Creating a VIEW here would still open the chapter on register.
       tradeUrls.set(key, url);
-      // Register a VIEW (not TABLE) so aggregations can push year filters into
-      // read_parquet instead of copying the full chapter into WASM memory.
-      const connection = await ensureConn();
-      try {
-        await connection.query(`
-          CREATE OR REPLACE VIEW trade_hs2_${key} AS
-          SELECT * FROM read_parquet('${escapeSqlString(url)}');
-        `);
-        return true;
-      } catch {
-        tradeUrls.delete(key);
-        return false;
-      }
+      return true;
     },
     tradeChapterUrl(hs2) {
       return tradeUrls.get(hs2Key(hs2));
