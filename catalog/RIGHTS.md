@@ -8,154 +8,136 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 
 | Source | Licence | use_research | raw | derived | commercial | attribution | share_alike | no_derivatives | checked_by | checked_on |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| worldbank_wdi | CC-BY-4.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| worldbank_wgi | CC-BY-4.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| worldbank_lpi | CC-BY-4.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| baci | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| cepi_gravity | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| wits_trains | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| hofstede | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| itu_datahub | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| ef_epi | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| odin | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| worldbank_wdi | CC-BY-4.0 | yes | yes | yes | yes | yes | no | no | CA | 2026-11-20 |
+| worldbank_wgi | CC-BY-4.0 | yes | yes | yes | yes | yes | no | no | CA | 2026-11-20 |
+| worldbank_lpi | CC-BY-4.0 | yes | yes | yes | yes | yes | no | no | CA | 2026-11-20 |
+| baci | etalab-2.0 | yes | yes | yes | yes | yes | no | no | CA | 2026-11-20 |
+| cepi_gravity | etalab-2.0 | yes | yes | yes | yes | yes | no | no | CA | 2026-11-20 |
+| wits_trains | custom | yes | no | unknown | no | yes | no | unknown | — | — |
+| hofstede | custom | yes | unknown | unknown | no | unknown | unknown | unknown | — | — |
+| itu_datahub | CC-BY-NC-SA-3.0-IGO | yes | yes | yes | no | yes | yes | no | — | — |
+| ef_epi | proprietary | unknown | unknown | unknown | unknown | yes | unknown | unknown | — | — |
+| odin | CC-BY-4.0 | yes | yes | yes | yes | yes | no | no | — | — |
 | gedi | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| wipo_gii | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| startupblink | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| yale_epi | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| heritage_ief | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| fragile_states_index | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| inform_risk | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| eiu_democracy | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| kof_globalisation | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| transparency_cpi | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| global_trade_alert | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| wipo_gii | CC-BY-4.0 | yes | yes | yes | yes | yes | no | no | CA | 2026-11-20 |
+| startupblink | proprietary | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| yale_epi | CC-BY-NC-SA-4.0 | yes | yes | yes | no | yes | yes | no | CA | 2026-11-20 |
+| heritage_ief | proprietary | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| fragile_states_index | CC-BY-NC-SA-4.0 | yes | yes | yes | no | yes | yes | no | CA | 2026-11-20 |
+| inform_risk | CC-BY-4.0 | yes | yes | yes | yes | yes | no | no | CA | 2026-11-20 |
+| eiu_democracy | proprietary | unknown | no | unknown | unknown | unknown | unknown | unknown | — | — |
+| kof_globalisation | custom | yes | no | unknown | no | yes | no | unknown | — | — |
+| transparency_cpi | CC-BY-4.0 | yes | yes | yes | yes | yes | no | no | CA | 2026-11-20 |
+| global_trade_alert | custom | yes | no | no | no | yes | no | no | CA | 2026-11-20 |
 | freight_manual | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| worldbank_doing_business | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| imf_weo | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| wto_tariffs | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| wto_itip | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| numbeo | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| worldbank_doing_business | CC-BY-4.0 | yes | yes | yes | yes | yes | no | no | CA | 2026-11-20 |
+| imf_weo | custom | yes | yes | yes | no | yes | no | no | CA | 2026-11-20 |
+| wto_tariffs | custom | yes | no | yes | no | yes | no | no | CA | 2026-11-20 |
+| wto_itip | custom | yes | yes | unknown | no | yes | no | unknown | — | — |
+| numbeo | proprietary | yes | no | no | no | yes | no | yes | CA | 2026-11-20 |
 | preciosmundi | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
 | global_product_prices | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
 | sea_distances | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| searates | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| searates | proprietary | unknown | no | no | no | yes | no | yes | — | — |
 | nauticalculator | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| solability_gsci | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| coface_country_risk | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| global_carbon_atlas | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| iea_ghg | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| trade_barrier_index | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| world_population_review | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| itc_trade | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| itc_trademap | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| unctadstat | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| culture_factor | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| indexmundi | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| solability_gsci | CC-BY-NC-SA-4.0 | yes | yes | yes | no | yes | yes | no | CA | 2026-11-20 |
+| coface_country_risk | proprietary | no | no | no | no | unknown | no | yes | — | — |
+| global_carbon_atlas | custom | yes | no | unknown | unknown | yes | no | unknown | — | — |
+| iea_ghg | proprietary | yes | no | unknown | unknown | yes | no | unknown | — | — |
+| trade_barrier_index | proprietary | yes | no | no | no | yes | no | yes | CA | 2026-11-20 |
+| world_population_review | proprietary | unknown | no | unknown | no | unknown | no | unknown | — | — |
+| itc_trade | custom | yes | no | unknown | unknown | yes | no | unknown | — | — |
+| itc_trademap | custom | yes | no | unknown | unknown | yes | no | unknown | — | — |
+| unctadstat | CC-BY-3.0-IGO | yes | yes | yes | yes | yes | no | no | CA | 2026-11-20 |
+| culture_factor | proprietary | yes | unknown | unknown | no | unknown | unknown | unknown | — | — |
+| indexmundi | proprietary | unknown | no | no | no | unknown | no | yes | — | — |
 | knoema | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
 | theglobaleconomy | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| geodatos | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| procolombia | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| iso_country_codes_ref | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| literature_dyo | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| geodatos | proprietary | unknown | no | unknown | no | unknown | no | unknown | — | — |
+| procolombia | proprietary | unknown | no | unknown | no | unknown | no | yes | — | — |
+| iso_country_codes_ref | custom | yes | yes | yes | unknown | yes | no | no | — | — |
+| literature_dyo | CC-BY-NC-SA-4.0 | yes | yes | yes | no | yes | yes | no | CA | 2026-11-20 |
 
 ## Variables (gate)
 
 | Variable | source_ids | decision | reasons |
 | --- | --- | --- | --- |
-| IMPV | baci | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| IMPC | baci,worldbank_wdi | byod_only | source[0]: unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; source[0]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256); source[1]: unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; source[1]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| GRW | baci | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| GDPPC | worldbank_wdi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| DIST | cepi_gravity | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| TARIF | wits_trains | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| FTA | cepi_gravity | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| LPI | worldbank_lpi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| ASIASH | baci | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| HHI | baci | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| UVGAP | baci | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| CULT | hofstede | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| LANG | cepi_gravity | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| INFL | worldbank_wdi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| UNEMP | worldbank_wdi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| GOV | worldbank_wgi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| EOC | worldbank_wdi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| REEXP | baci | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| ITU_IDI | itu_datahub | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| EF_EPI | ef_epi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| ODIN | odin | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| IMPV | baci | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| IMPC | baci,worldbank_wdi | ship_raw | source[0]: redistribute_raw=yes with evidence and commercial ok; source[1]: redistribute_raw=yes with evidence and commercial ok |
+| GRW | baci | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| GDPPC | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| DIST | cepi_gravity | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| TARIF | wits_trains | byod_only | unknown rights: redistribute_derived, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| FTA | cepi_gravity | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| LPI | worldbank_lpi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| ASIASH | baci | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| HHI | baci | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| UVGAP | baci | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| CULT | hofstede | byod_only | unknown rights: redistribute_raw, redistribute_derived, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| LANG | cepi_gravity | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| INFL | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| UNEMP | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| GOV | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| EOC | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| REEXP | baci | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| ITU_IDI | itu_datahub | byod_only | evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| EF_EPI | ef_epi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| ODIN | odin | byod_only | evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
 | GEDI | gedi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| GII | wipo_gii | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| GII | wipo_gii | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | STARTUPBLINK | startupblink | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| EPI | yale_epi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| CO2PC | worldbank_wdi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| PLI | worldbank_wdi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| PPAD | baci | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| EPI | yale_epi | byod_only | commercial_use=no under commercial_context=true |
+| CO2PC | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| PLI | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| PPAD | baci | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | INTC | freight_manual | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| CIBC | worldbank_wdi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| LPIN | worldbank_lpi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| CPTR | worldbank_wdi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| CIBC | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| LPIN | worldbank_lpi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| CPTR | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | ITTT | freight_manual | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| CUTA | wits_trains | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| CCTI | global_trade_alert | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| CUTA | wits_trains | byod_only | unknown rights: redistribute_derived, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| CCTI | global_trade_alert | byod_only | commercial_use=no under commercial_context=true |
 | IOEF | heritage_ief | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| CLI | worldbank_wdi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| INAN | worldbank_wdi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| UNRA | worldbank_wdi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| FSIN | fragile_states_index | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| INRI | inform_risk | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| DEIN | eiu_democracy | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| GLIN | kof_globalisation | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| CPIN | transparency_cpi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| CUDI | hofstede | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| RQBC | world_population_review | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| ITBI | trade_barrier_index | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| CADE | worldbank_wdi,global_carbon_atlas,iea_ghg | byod_only | source[0]: unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; source[0]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256); source[1]: unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; source[1]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256); source[2]: unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; source[2]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| GLCR | coface_country_risk | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| GLSI | solability_gsci | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| CLI | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| INAN | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| UNRA | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| FSIN | fragile_states_index | byod_only | commercial_use=no under commercial_context=true |
+| INRI | inform_risk | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| DEIN | eiu_democracy | byod_only | unknown rights: use_research, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| GLIN | kof_globalisation | byod_only | unknown rights: redistribute_derived, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| CPIN | transparency_cpi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| CUDI | hofstede | byod_only | unknown rights: redistribute_raw, redistribute_derived, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| RQBC | world_population_review | byod_only | unknown rights: use_research, redistribute_derived, attribution_required, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| ITBI | trade_barrier_index | byod_only | commercial_use=no under commercial_context=true |
+| CADE | worldbank_wdi,global_carbon_atlas,iea_ghg | byod_only | source[0]: redistribute_raw=yes with evidence and commercial ok; source[1]: unknown rights: redistribute_derived, commercial_use, no_derivatives; source[1]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256); source[2]: unknown rights: redistribute_derived, commercial_use, no_derivatives; source[2]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| GLCR | coface_country_risk | local_only | unknown rights: attribution_required; evidence incomplete (checked_by/on, terms_url, snapshot_sha256); use_research=no |
+| GLSI | solability_gsci | byod_only | commercial_use=no under commercial_context=true |
 
 ## Needs human rights check
 
-- `worldbank_wdi`
-- `worldbank_wgi`
-- `worldbank_lpi`
-- `baci`
-- `cepi_gravity`
 - `wits_trains`
 - `hofstede`
 - `itu_datahub`
 - `ef_epi`
 - `odin`
 - `gedi`
-- `wipo_gii`
 - `startupblink`
-- `yale_epi`
 - `heritage_ief`
-- `fragile_states_index`
-- `inform_risk`
 - `eiu_democracy`
 - `kof_globalisation`
-- `transparency_cpi`
-- `global_trade_alert`
 - `freight_manual`
-- `worldbank_doing_business`
-- `imf_weo`
-- `wto_tariffs`
 - `wto_itip`
-- `numbeo`
 - `preciosmundi`
 - `global_product_prices`
 - `sea_distances`
 - `searates`
 - `nauticalculator`
-- `solability_gsci`
 - `coface_country_risk`
 - `global_carbon_atlas`
 - `iea_ghg`
-- `trade_barrier_index`
 - `world_population_review`
 - `itc_trade`
 - `itc_trademap`
-- `unctadstat`
 - `culture_factor`
 - `indexmundi`
 - `knoema`
@@ -163,4 +145,3 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 - `geodatos`
 - `procolombia`
 - `iso_country_codes_ref`
-- `literature_dyo`
