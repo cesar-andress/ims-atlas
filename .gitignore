@@ -62,3 +62,4 @@ paper-figures/
 
 # Team shared projects SQLite (host volume for projects-api)
 var/projects/
+services/projects-api/__pycache__/
