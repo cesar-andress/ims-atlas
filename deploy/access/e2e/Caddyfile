@@ -16,7 +16,8 @@ atlas.e2e.local {
 			copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
 		}
 		header Cache-Control "private, no-store"
-		respond `{"username":"{http.request.header.Remote-User}","groups":"{http.request.header.Remote-Groups}","email":"{http.request.header.Remote-Email}"}` {
+		# Shape matches app WhoAmIUser: user, name, groups (CSV → JSON array in app).
+		respond `{"user":"{http.request.header.Remote-User}","name":"{http.request.header.Remote-Name}","groups":"{http.request.header.Remote-Groups}","email":"{http.request.header.Remote-Email}"}` {
 			header Content-Type application/json
 		}
 	}

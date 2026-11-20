@@ -24,7 +24,10 @@ import { WeightLifterPanel } from "./WeightLifterPanel";
 import { LineUpWeightEditor } from "./LineUpWeightEditor";
 import { CountryPicker } from "./CountryPicker";
 import { GlossaryTooltip } from "./GlossaryTooltip";
+import { BaciPreselectBanner } from "./BaciPreselectBanner";
+import { RadixSelectField } from "./RadixSelectField";
 import { VariablesRadixFields } from "./VariablesRadixFields";
+import { ZeroPolicyCompare } from "./ZeroPolicyCompare";
 
 /** Hide blocks when Variables guided mode is on a different step. */
 function GuidedBlock({
@@ -233,30 +236,34 @@ export function ConfigPanel({
           </GuidedBlock>
 
           <GuidedBlock step={4} current={guidedStep}>
-            <label>
-              {t("methodFamily")}
-              <select
-                data-testid="method-family"
-                value={config.methodFamily ?? "imsfe_2025"}
-                onChange={(e) =>
-                  setConfig({
-                    methodFamily: e.target.value as
-                      "imsfe_2025" | "imsfem_2025_olive" | "smi_2018" | "smi_2020",
-                    normalization:
-                      e.target.value === "smi_2018"
-                        ? "ratio_legacy"
-                        : (config.normalization ?? "ratio_legacy"),
-                  })
-                }
-              >
-                <option value="imsfe_2025">IMSFE 2025 calzado (6×3, 0–10)</option>
-                <option value="imsfem_2025_olive">
-                  IMSFEM 2025 aceite (7×3, + Sostenibilidad)
-                </option>
-                <option value="smi_2018">SMI 2018 (4×11, 0–5)</option>
-                <option value="smi_2020">SMI 2020+ (5×23, AHP)</option>
-              </select>
-            </label>
+            <RadixSelectField
+              id="method-family"
+              label={t("methodFamily")}
+              testId="method-family"
+              value={config.methodFamily ?? "imsfe_2025"}
+              options={[
+                {
+                  value: "imsfe_2025",
+                  label: "IMSFE 2025 calzado (6×3, 0–10)",
+                },
+                {
+                  value: "imsfem_2025_olive",
+                  label: "IMSFEM 2025 aceite (7×3, + Sostenibilidad)",
+                },
+                { value: "smi_2018", label: "SMI 2018 (4×11, 0–5)" },
+                { value: "smi_2020", label: "SMI 2020+ (5×23, AHP)" },
+              ]}
+              onChange={(value) =>
+                setConfig({
+                  methodFamily: value as
+                    "imsfe_2025" | "imsfem_2025_olive" | "smi_2018" | "smi_2020",
+                  normalization:
+                    value === "smi_2018"
+                      ? "ratio_legacy"
+                      : (config.normalization ?? "ratio_legacy"),
+                })
+              }
+            />
 
             <label className="flex items-center gap-2">
               <input
@@ -270,24 +277,24 @@ export function ConfigPanel({
 
             <details className="mt-2" data-testid="advanced-method-options">
               <summary>{t("advancedMethodOptions")}</summary>
-              <label>
-                {t("zeroPolicy")}
-                <select
-                  data-testid="zero-policy"
-                  value={config.zeroPolicy ?? "epsilon"}
-                  onChange={(e) =>
-                    setConfig({
-                      zeroPolicy: e.target.value as
-                        "epsilon" | "minmax" | "rank" | "offset_ratio",
-                    })
-                  }
-                >
-                  <option value="epsilon">{t("zeroPolicyEpsilon")}</option>
-                  <option value="minmax">{t("zeroPolicyMinmax")}</option>
-                  <option value="rank">{t("zeroPolicyRank")}</option>
-                  <option value="offset_ratio">{t("zeroPolicyOffset")}</option>
-                </select>
-              </label>
+              <RadixSelectField
+                id="zero-policy"
+                label={t("zeroPolicy")}
+                testId="zero-policy"
+                value={config.zeroPolicy ?? "epsilon"}
+                options={[
+                  { value: "epsilon", label: t("zeroPolicyEpsilon") },
+                  { value: "minmax", label: t("zeroPolicyMinmax") },
+                  { value: "rank", label: t("zeroPolicyRank") },
+                  { value: "offset_ratio", label: t("zeroPolicyOffset") },
+                ]}
+                onChange={(value) =>
+                  setConfig({
+                    zeroPolicy: value as "epsilon" | "minmax" | "rank" | "offset_ratio",
+                  })
+                }
+              />
+              <ZeroPolicyCompare />
               {(config.zeroPolicy ?? "epsilon") === "epsilon" ? (
                 <label>
                   {t("zeroEpsilon")}
@@ -309,52 +316,52 @@ export function ConfigPanel({
                     step="any"
                     min={0}
                     data-testid="zero-offset-c"
-                    value={config.zeroOffsetC ?? 1}
+                    value={config.zeroOffsetC ?? 0.001}
                     onChange={(e) => setConfig({ zeroOffsetC: Number(e.target.value) })}
                   />
                 </label>
               ) : null}
-              <label>
-                {t("culturalDistanceKind")}
-                <select
-                  data-testid="cultural-distance-kind"
-                  value={config.culturalDistanceKind ?? "sum_of_sums"}
-                  onChange={(e) =>
-                    setConfig({
-                      culturalDistanceKind: e.target.value as
-                        "sum_of_sums" | "sum_abs_diff" | "kogut_singh",
-                    })
-                  }
-                >
-                  <option value="sum_of_sums">{t("cultureSumOfSums")}</option>
-                  <option value="sum_abs_diff">{t("cultureSumAbs")}</option>
-                  <option value="kogut_singh">{t("cultureKogutSingh")}</option>
-                </select>
-              </label>
+              <RadixSelectField
+                id="cultural-distance-kind"
+                label={t("culturalDistanceKind")}
+                testId="cultural-distance-kind"
+                value={config.culturalDistanceKind ?? "sum_of_sums"}
+                options={[
+                  { value: "sum_of_sums", label: t("cultureSumOfSums") },
+                  { value: "sum_abs_diff", label: t("cultureSumAbs") },
+                  { value: "kogut_singh", label: t("cultureKogutSingh") },
+                ]}
+                onChange={(value) =>
+                  setConfig({
+                    culturalDistanceKind: value as
+                      "sum_of_sums" | "sum_abs_diff" | "kogut_singh",
+                  })
+                }
+              />
               <p className="muted small">{t("culturalDistanceHint")}</p>
-              <label>
-                {t("imputationMethod")}
-                <select
-                  data-testid="imputation-method"
-                  value={config.imputationMethod ?? "none"}
-                  onChange={(e) =>
-                    setConfig({
-                      imputationMethod: e.target.value as
-                        | "none"
-                        | "locf"
-                        | "linear_interp"
-                        | "log_linear_trend"
-                        | "cross_section",
-                    })
-                  }
-                >
-                  <option value="none">{t("imputationNone")}</option>
-                  <option value="locf">LOCF</option>
-                  <option value="linear_interp">{t("imputationLinear")}</option>
-                  <option value="log_linear_trend">{t("imputationTrend")}</option>
-                  <option value="cross_section">{t("imputationCross")}</option>
-                </select>
-              </label>
+              <RadixSelectField
+                id="imputation-method"
+                label={t("imputationMethod")}
+                testId="imputation-method"
+                value={config.imputationMethod ?? "none"}
+                options={[
+                  { value: "none", label: t("imputationNone") },
+                  { value: "locf", label: "LOCF" },
+                  { value: "linear_interp", label: t("imputationLinear") },
+                  { value: "log_linear_trend", label: t("imputationTrend") },
+                  { value: "cross_section", label: t("imputationCross") },
+                ]}
+                onChange={(value) =>
+                  setConfig({
+                    imputationMethod: value as
+                      | "none"
+                      | "locf"
+                      | "linear_interp"
+                      | "log_linear_trend"
+                      | "cross_section",
+                  })
+                }
+              />
               <p className="muted small">{t("imputationHint")}</p>
               <VariablesRadixFields />
               <label>
@@ -375,37 +382,37 @@ export function ConfigPanel({
                   {Math.round((1 - (config.combinedEocWeight ?? 0.5)) * 100)}
                 </span>
               </label>
-              <label>
-                {t("combinedEocNorm")}
-                <select
-                  data-testid="combined-eoc-norm"
-                  value={config.combinedEocNorm ?? "ratio_to_max"}
-                  onChange={(e) =>
-                    setConfig({
-                      combinedEocNorm: e.target.value as "ratio_to_max" | "times_5",
-                    })
-                  }
-                >
-                  <option value="ratio_to_max">{t("eocNormRatio")}</option>
-                  <option value="times_5">{t("eocNormTimes5")}</option>
-                </select>
-              </label>
-              <label>
-                {t("preselectPick")}
-                <select
-                  data-testid="preselect-pick"
-                  value={config.preselectPick ?? "imports"}
-                  onChange={(e) =>
-                    setConfig({
-                      preselectPick: e.target.value as "imports" | "openness" | "union",
-                    })
-                  }
-                >
-                  <option value="imports">{t("preselectPickImports")}</option>
-                  <option value="openness">{t("preselectPickOpenness")}</option>
-                  <option value="union">{t("preselectPickUnion")}</option>
-                </select>
-              </label>
+              <RadixSelectField
+                id="combined-eoc-norm"
+                label={t("combinedEocNorm")}
+                testId="combined-eoc-norm"
+                value={config.combinedEocNorm ?? "ratio_to_max"}
+                options={[
+                  { value: "ratio_to_max", label: t("eocNormRatio") },
+                  { value: "times_5", label: t("eocNormTimes5") },
+                ]}
+                onChange={(value) =>
+                  setConfig({
+                    combinedEocNorm: value as "ratio_to_max" | "times_5",
+                  })
+                }
+              />
+              <RadixSelectField
+                id="preselect-pick"
+                label={t("preselectPick")}
+                testId="preselect-pick"
+                value={config.preselectPick ?? "imports"}
+                options={[
+                  { value: "imports", label: t("preselectPickImports") },
+                  { value: "openness", label: t("preselectPickOpenness") },
+                  { value: "union", label: t("preselectPickUnion") },
+                ]}
+                onChange={(value) =>
+                  setConfig({
+                    preselectPick: value as "imports" | "openness" | "union",
+                  })
+                }
+              />
               <label className="flex items-center gap-2">
                 <input
                   type="checkbox"
@@ -500,21 +507,22 @@ export function ConfigPanel({
           </GuidedBlock>
 
           <GuidedBlock step={1} current={guidedStep}>
-            <label>
-              {t("preselectMode")}
-              <select
-                data-testid="preselect-mode"
-                value={config.preselectMode ?? "top_n"}
-                onChange={(e) =>
-                  setConfig({
-                    preselectMode: e.target.value as "top_n" | "cumulative_share",
-                  })
-                }
-              >
-                <option value="top_n">Top N</option>
-                <option value="cumulative_share">Cumulative share</option>
-              </select>
-            </label>
+            <BaciPreselectBanner />
+            <RadixSelectField
+              id="preselect-mode"
+              label={t("preselectMode")}
+              testId="preselect-mode"
+              value={config.preselectMode ?? "top_n"}
+              options={[
+                { value: "top_n", label: "Top N" },
+                { value: "cumulative_share", label: "Cumulative share" },
+              ]}
+              onChange={(value) =>
+                setConfig({
+                  preselectMode: value as "top_n" | "cumulative_share",
+                })
+              }
+            />
             {(config.preselectMode ?? "top_n") === "top_n" ? (
               <label>
                 {t("preselectTopN")}

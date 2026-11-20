@@ -21,6 +21,7 @@ import {
   type McdmId,
   type ZeroPolicy,
 } from "@ims-atlas/core";
+import { baciVolumesFor } from "../data/baciImportCache";
 import { filterByRegion } from "../data/hsProducts";
 import { loadDemoPanel, type DemoPanel } from "./demoPanel";
 
@@ -325,11 +326,21 @@ export async function computeRanking(req: RankingRequest): Promise<RankingViewMo
     if (few) warnings.push(few);
   }
 
+  const baciVolumes = baciVolumesFor(req.hs, req.year);
+  const importVolume = baciVolumes ?? panel.importVolume;
+  if (!baciVolumes) {
+    warnings.push(
+      "Pre-selection uses demo-panel import proxies (BACI trade parquet not loaded).",
+    );
+  } else {
+    warnings.push("Pre-selection import shares from BACI release trade chapter.");
+  }
+
   let candidates = [...panel.candidates];
   candidates = filterByRegion(candidates, req.region);
   if (req.minImports !== undefined && req.minImports > 0) {
     candidates = candidates.filter(
-      (iso) => (panel.importVolume[iso] ?? 0) >= req.minImports!,
+      (iso) => (importVolume[iso] ?? 0) >= req.minImports!,
     );
   }
 
@@ -338,7 +349,7 @@ export async function computeRanking(req: RankingRequest): Promise<RankingViewMo
     const eocCol = columnValues(panel, "EOC", panel.candidates);
     const importRows = panel.candidates.map((iso3) => ({
       iso3,
-      importValue: panel.importVolume[iso3] ?? 0,
+      importValue: importVolume[iso3] ?? 0,
     }));
     const opennessRows = panel.candidates
       .map((iso3) => {

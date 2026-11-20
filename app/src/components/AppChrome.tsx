@@ -5,6 +5,7 @@ import { AppNav } from "./AppNav";
 import { AppUpdateBanner } from "./AppUpdateBanner";
 import { PermalinkLink } from "./PermalinkLink";
 import { AccessMenu } from "./AccessMenu";
+import { TeamAccessBanner } from "./TeamAccessBanner";
 import { UpdatesNewsPill } from "./UpdatesNewsPill";
 import { HeaderOverflowMenu } from "./HeaderOverflowMenu";
 import { HelpDrawer } from "./HelpDrawer";
@@ -120,6 +121,7 @@ export function AppShellFrame({
       </a>
       <AppUpdateBanner />
       <AppHeader />
+      <TeamAccessBanner />
       <div className={`workspace ${showConfig ? "with-config" : ""}`}>
         {showConfig ? configSlot : null}
         <main id="main-content" tabIndex={-1}>

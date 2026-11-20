@@ -38,22 +38,29 @@ async function fetchWhoAmI(whoamiPath: string): Promise<AccessSessionState> {
       return { status: "anonymous" };
     }
     const data: unknown = await res.json();
-    if (
-      data !== null &&
-      typeof data === "object" &&
-      "user" in data &&
-      "name" in data &&
-      typeof (data as { user: unknown }).user === "string" &&
-      typeof (data as { name: unknown }).name === "string"
-    ) {
-      const rec = data as { user: string; name: string; groups?: unknown };
-      const groups = Array.isArray(rec.groups)
-        ? rec.groups.filter((g): g is string => typeof g === "string")
-        : [];
-      return {
-        status: "authenticated",
-        profile: { user: rec.user, name: rec.name, groups },
-      };
+    if (data !== null && typeof data === "object") {
+      const rec = data as Record<string, unknown>;
+      const userRaw = rec.user ?? rec.username;
+      const nameRaw = rec.name ?? rec.displayname ?? rec.display_name ?? userRaw;
+      if (
+        typeof userRaw === "string" &&
+        userRaw.trim() &&
+        typeof nameRaw === "string"
+      ) {
+        let groups: string[] = [];
+        if (Array.isArray(rec.groups)) {
+          groups = rec.groups.filter((g): g is string => typeof g === "string");
+        } else if (typeof rec.groups === "string" && rec.groups.trim()) {
+          groups = rec.groups
+            .split(/[, ]+/)
+            .map((g) => g.trim())
+            .filter(Boolean);
+        }
+        return {
+          status: "authenticated",
+          profile: { user: userRaw.trim(), name: nameRaw.trim(), groups },
+        };
+      }
     }
     return { status: "anonymous" };
   } catch {

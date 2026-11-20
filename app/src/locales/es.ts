@@ -365,6 +365,8 @@ const es = {
     badgeAbierta: "Abierta",
     badgeCerrada: "Cerrada",
     catalogTeamOnly: "Disponible con acceso del equipo",
+    internalUseBanner:
+      "Sesión de equipo activa: las variables cerradas están disponibles solo para análisis interno.",
   },
   privacy: {
     intro:
@@ -605,6 +607,15 @@ const es = {
   zeroPolicyOffset: "Ratio con desplazamiento 10·(min+c)/(x+c)",
   zeroEpsilon: "Épsilon",
   zeroOffsetC: "Constante c",
+  zeroPolicyCompareIntro:
+    "Cambios de puesto frente a la política épsilon en la primera columna de coste (comprobación lado a lado).",
+  zeroPolicyCompareChanges: "países cambian de puesto",
+  zeroPolicyCompareEmpty:
+    "No hay columna de coste en el panel actual para comparar políticas de ceros.",
+  baciPreselectLoading: "Cargando volúmenes BACI para la preselección…",
+  baciPreselectOk: "Capítulo comercial BACI cargado para la preselección",
+  baciPreselectFixture:
+    "Parquet comercial BACI no disponible: la preselección usa el proxy de importaciones del panel demo (fixture).",
   culturalDistanceKind: "Distancia cultural",
   cultureSumOfSums: "Diferencia de sumas (libro)",
   cultureSumAbs: "Suma de |diferencias| (paper 2018)",

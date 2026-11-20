@@ -12,10 +12,15 @@ test.describe("Phase J IMSFE faithful UI", () => {
         lang: "en",
       })}`,
     );
-    await expect(page.getByTestId("method-family")).toHaveValue("imsfe_2025", {
-      timeout: 15_000,
-    });
-    await expect(page.getByTestId("preselect-mode")).toHaveValue("top_n");
+    await expect(page.getByTestId("method-family")).toHaveAttribute(
+      "data-value",
+      "imsfe_2025",
+      { timeout: 15_000 },
+    );
+    await expect(page.getByTestId("preselect-mode")).toHaveAttribute(
+      "data-value",
+      "top_n",
+    );
 
     await page.goto(
       `/matrix?c=${encodeConfig({

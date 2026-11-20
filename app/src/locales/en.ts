@@ -361,6 +361,8 @@ export const en = {
     badgeAbierta: "Open",
     badgeCerrada: "Closed",
     catalogTeamOnly: "Available with team access",
+    internalUseBanner:
+      "Team session active: closed (cerrada) variables are available for internal analysis only.",
   },
   privacy: {
     intro:
@@ -598,6 +600,15 @@ export const en = {
   zeroPolicyOffset: "Offset ratio 10·(min+c)/(x+c)",
   zeroEpsilon: "Epsilon",
   zeroOffsetC: "Constant c",
+  zeroPolicyCompareIntro:
+    "Rank changes vs epsilon policy on the first cost column (side-by-side check).",
+  zeroPolicyCompareChanges: "countries change rank",
+  zeroPolicyCompareEmpty:
+    "No cost column in the current panel for zero-policy compare.",
+  baciPreselectLoading: "Loading BACI import volumes for pre-selection…",
+  baciPreselectOk: "BACI trade chapter loaded for pre-selection",
+  baciPreselectFixture:
+    "BACI trade parquet not available — pre-selection uses the demo-panel import proxy (fixture).",
   culturalDistanceKind: "Cultural distance",
   cultureSumOfSums: "Difference of sums (workbook)",
   cultureSumAbs: "Sum of |differences| (2018 paper)",
