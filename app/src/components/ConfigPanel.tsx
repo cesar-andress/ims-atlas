@@ -15,6 +15,7 @@ import { rankingRequestFromConfig } from "../ranking/rankingRequest";
 import { COL_HS64_PRESET, IMSFE_BAENA_CANO_PRESET } from "../state/schema";
 import { useAnalysis } from "../state/useAnalysis";
 import { isAnalysisReady } from "../state/views";
+import { ExpertSurveyPanel } from "./ExpertSurveyPanel";
 import { HelpButton } from "./HelpButton";
 import { PermalinkLink } from "./PermalinkLink";
 
@@ -745,6 +746,10 @@ export function ConfigPanel() {
               ))}
             </fieldset>
           ) : null}
+
+          {(config.weightScheme === "expert_mean" ||
+            config.methodFamily === "imsfe_2025" ||
+            config.methodFamily === "imsfem_2025_olive") && <ExpertSurveyPanel />}
 
           <label>
             {t("normalization")}
