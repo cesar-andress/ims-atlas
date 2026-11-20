@@ -41,7 +41,8 @@ bilateral_schema = DataFrameSchema(
         "origin": ISO3,
         "destination": ISO3,
         "year": YEAR,
-        "distw": Column(float, checks=Check.gt(0), nullable=False, coerce=True),
+        # CEPII Gravity occasionally records 0 for degenerate pairs; keep >= 0.
+        "distw": Column(float, checks=Check.ge(0), nullable=False, coerce=True),
         "comlang_off": Column(int, checks=Check.isin([0, 1]), nullable=False),
         "fta_wto": Column(int, checks=Check.isin([0, 1]), nullable=False),
     },
@@ -101,4 +102,9 @@ RAW_CONTRACTS: dict[str, pa.DataFrameSchema] = {
     "wipo_gii": index_values_schema,
     "startupblink": index_values_schema,
     "yale_epi": index_values_schema,
+    "inform_risk": index_values_schema,
+    "transparency_cpi": index_values_schema,
+    "worldbank_doing_business": indicators_schema,
+    "unctadstat": indicators_schema,
+    "imf_weo": indicators_schema,
 }

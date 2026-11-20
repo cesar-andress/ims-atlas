@@ -15,7 +15,7 @@
         }
       ],
       "freshness": {
-        "checked_at": "2026-11-20T06:29:11Z",
+        "checked_at": "2026-11-20T09:52:21Z",
         "ingested_version": "2026-11-11",
         "mode": "live",
         "stale": false,
@@ -62,7 +62,7 @@
         }
       ],
       "freshness": {
-        "checked_at": "2026-11-20T06:29:11Z",
+        "checked_at": "2026-11-20T09:52:21Z",
         "ingested_version": "2026-09-25",
         "mode": "live",
         "stale": false,
@@ -109,7 +109,7 @@
         }
       ],
       "freshness": {
-        "checked_at": "2026-11-20T06:29:11Z",
+        "checked_at": "2026-11-20T09:52:21Z",
         "ingested_version": "2026-11-11",
         "mode": "live",
         "stale": false,
@@ -156,19 +156,19 @@
         }
       ],
       "freshness": {
-        "checked_at": null,
-        "ingested_version": null,
-        "mode": null,
-        "stale": null,
+        "checked_at": "2026-11-20T09:52:22Z",
+        "ingested_version": "HS12_V202601",
+        "mode": "live",
+        "stale": false,
         "terms_changed": null,
         "upstream_changed_at": null,
-        "upstream_version": null
+        "upstream_version": "HS12_V202601"
       },
       "id": "baci",
       "landing_url": "https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37",
       "licence_url": "https://www.etalab.gouv.fr/wp-content/uploads/2018/11/open-licence.pdf",
       "publisher": "CEPII",
-      "release_version": "mini-2022",
+      "release_version": "HS12_V202601",
       "rights": {
         "attribution_required": "yes",
         "commercial_use": "yes",
@@ -203,19 +203,19 @@
         }
       ],
       "freshness": {
-        "checked_at": null,
-        "ingested_version": null,
-        "mode": null,
-        "stale": null,
+        "checked_at": "2026-11-20T09:52:22Z",
+        "ingested_version": "V202211",
+        "mode": "live",
+        "stale": false,
         "terms_changed": null,
         "upstream_changed_at": null,
-        "upstream_version": null
+        "upstream_version": "V202211"
       },
       "id": "cepi_gravity",
       "landing_url": "https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=8",
       "licence_url": "https://www.etalab.gouv.fr/wp-content/uploads/2018/11/open-licence.pdf",
       "publisher": "CEPII",
-      "release_version": "mini-2022",
+      "release_version": "V202211",
       "rights": {
         "attribution_required": "yes",
         "commercial_use": "yes",
@@ -262,7 +262,7 @@
       "landing_url": "https://wits.worldbank.org/",
       "licence_url": "https://wits.worldbank.org/data/public/UNCTAD_TermsofUseandDisclaimer.pdf",
       "publisher": "World Bank / UNCTAD (WITS)",
-      "release_version": "mini-2022",
+      "release_version": null,
       "rights": {
         "attribution_required": "yes",
         "commercial_use": "no",
@@ -309,7 +309,7 @@
       "landing_url": "https://geerthofstede.com/research-and-vsm/dimension-data-matrix/",
       "licence_url": "https://geerthofstede.com/research-and-vsm/dimension-data-matrix/",
       "publisher": "Geert Hofstede / related publishers",
-      "release_version": "mini-2022",
+      "release_version": null,
       "rights": {
         "attribution_required": "unknown",
         "commercial_use": "no",
@@ -356,7 +356,7 @@
       "landing_url": "https://datahub.itu.int/",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/igo/",
       "publisher": "International Telecommunication Union",
-      "release_version": "mini-2022",
+      "release_version": null,
       "rights": {
         "attribution_required": "yes",
         "commercial_use": "no",
@@ -403,7 +403,7 @@
       "landing_url": "https://www.ef.com/wwen/epi/",
       "licence_url": "UNKNOWN",
       "publisher": "EF Education First",
-      "release_version": "mini-2022",
+      "release_version": null,
       "rights": {
         "attribution_required": "yes",
         "commercial_use": "unknown",
@@ -450,7 +450,7 @@
       "landing_url": "https://odin.opendatawatch.com/",
       "licence_url": "https://creativecommons.org/licenses/by/4.0/",
       "publisher": "Open Data Watch",
-      "release_version": "mini-2022",
+      "release_version": null,
       "rights": {
         "attribution_required": "yes",
         "commercial_use": "yes",
@@ -497,7 +497,7 @@
       "landing_url": "https://thegedi.org/",
       "licence_url": "UNKNOWN",
       "publisher": "Global Entrepreneurship and Development Institute",
-      "release_version": "mini-2022",
+      "release_version": null,
       "rights": {
         "attribution_required": "unknown",
         "commercial_use": "unknown",
@@ -532,19 +532,19 @@
         }
       ],
       "freshness": {
-        "checked_at": null,
-        "ingested_version": null,
-        "mode": null,
-        "stale": null,
+        "checked_at": "2026-11-20T09:52:21Z",
+        "ingested_version": "gii2026-20260928",
+        "mode": "live",
+        "stale": false,
         "terms_changed": null,
-        "upstream_changed_at": null,
-        "upstream_version": null
+        "upstream_changed_at": "2026-09-28",
+        "upstream_version": "gii2026-20260928"
       },
       "id": "wipo_gii",
       "landing_url": "https://www.wipo.int/global_innovation_index/",
       "licence_url": "https://creativecommons.org/licenses/by/4.0/deed.en",
       "publisher": "World Intellectual Property Organization",
-      "release_version": "mini-2022",
+      "release_version": "gii2026-20260928",
       "rights": {
         "attribution_required": "yes",
         "commercial_use": "yes",
@@ -591,7 +591,7 @@
       "landing_url": "https://www.startupblink.com/",
       "licence_url": "UNKNOWN",
       "publisher": "StartupBlink",
-      "release_version": "mini-2022",
+      "release_version": null,
       "rights": {
         "attribution_required": "unknown",
         "commercial_use": "unknown",
@@ -638,7 +638,7 @@
       "landing_url": "https://epi.yale.edu/",
       "licence_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
       "publisher": "Yale Center for Environmental Law & Policy",
-      "release_version": "mini-2022",
+      "release_version": null,
       "rights": {
         "attribution_required": "yes",
         "commercial_use": "no",
@@ -767,19 +767,19 @@
         }
       ],
       "freshness": {
-        "checked_at": null,
-        "ingested_version": null,
-        "mode": null,
-        "stale": null,
+        "checked_at": "2026-11-20T09:52:21Z",
+        "ingested_version": "hdx-20260519",
+        "mode": "live",
+        "stale": false,
         "terms_changed": null,
-        "upstream_changed_at": null,
-        "upstream_version": null
+        "upstream_changed_at": "2026-05-19T23:25:29.871538",
+        "upstream_version": "hdx-20260519"
       },
       "id": "inform_risk",
       "landing_url": "https://drmkc.jrc.ec.europa.eu/inform-index",
       "licence_url": "https://creativecommons.org/licenses/by/4.0/",
       "publisher": "European Commission DRMKC",
-      "release_version": null,
+      "release_version": "hdx-20260519",
       "rights": {
         "attribution_required": "yes",
         "commercial_use": "yes",
@@ -908,19 +908,19 @@
         }
       ],
       "freshness": {
-        "checked_at": null,
-        "ingested_version": null,
-        "mode": null,
-        "stale": null,
+        "checked_at": "2026-11-20T09:52:21Z",
+        "ingested_version": "cpi2025-20260204",
+        "mode": "live",
+        "stale": false,
         "terms_changed": null,
-        "upstream_changed_at": null,
-        "upstream_version": null
+        "upstream_changed_at": "2026-02-04",
+        "upstream_version": "cpi2025-20260204"
       },
       "id": "transparency_cpi",
       "landing_url": "https://www.transparency.org/en/cpi",
       "licence_url": "https://creativecommons.org/licenses/by/4.0/",
       "publisher": "Transparency International",
-      "release_version": null,
+      "release_version": "cpi2025-20260204",
       "rights": {
         "attribution_required": "yes",
         "commercial_use": "yes",
@@ -1049,19 +1049,19 @@
         }
       ],
       "freshness": {
-        "checked_at": null,
-        "ingested_version": null,
-        "mode": null,
-        "stale": null,
+        "checked_at": "2026-11-20T09:52:22Z",
+        "ingested_version": "db-20240215",
+        "mode": "live",
+        "stale": false,
         "terms_changed": null,
-        "upstream_changed_at": null,
-        "upstream_version": null
+        "upstream_changed_at": "2024-02-15",
+        "upstream_version": "db-20240215"
       },
       "id": "worldbank_doing_business",
       "landing_url": "https://archive.doingbusiness.org/en/doingbusiness",
       "licence_url": "https://datacatalog.worldbank.org/public-licenses",
       "publisher": "World Bank (Doing Business archive)",
-      "release_version": null,
+      "release_version": "db-20240215",
       "rights": {
         "attribution_required": "yes",
         "commercial_use": "yes",

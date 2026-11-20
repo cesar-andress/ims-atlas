@@ -43,6 +43,14 @@ def with_fixture_flag(payload: dict[str, Any], is_fixture: bool) -> dict[str, An
     return out
 
 
+def _for_public_tree(payload: dict[str, Any]) -> dict[str, Any]:
+    """Redact cerrada store paths so ABIERTO status JSON never embeds them."""
+    text = json.dumps(payload, sort_keys=True)
+    text = text.replace("data/store/cerrada", "data/store/[redacted]")
+    text = text.replace("store/cerrada", "store/[redacted]")
+    return json.loads(text)
+
+
 def _read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -268,8 +276,9 @@ def write_transparency_bundle(
         runs_out = public_status / "runs"
         runs_out.mkdir(parents=True, exist_ok=True)
         flagged_run = with_fixture_flag(run_payload, top_level_is_fixture(run_payload))
-        _write_json(runs_out / latest.name, flagged_run)
-        _write_json(runs_out / "latest.json", flagged_run)
+        public_run = _for_public_tree(flagged_run)
+        _write_json(runs_out / latest.name, public_run)
+        _write_json(runs_out / "latest.json", public_run)
         _write_json(status_src / "runs" / "latest.json", flagged_run)
     runs_out = public_status / "runs"
     for old in sorted(runs_out.glob("*.json")) if runs_out.is_dir() else []:
@@ -278,7 +287,9 @@ def write_transparency_bundle(
         old_payload = _read_json(old)
         _write_json(
             old,
-            with_fixture_flag(old_payload, top_level_is_fixture(old_payload)),
+            _for_public_tree(
+                with_fixture_flag(old_payload, top_level_is_fixture(old_payload)),
+            ),
         )
 
     current_ptr = (
@@ -338,12 +349,20 @@ def write_transparency_bundle(
         bundle_fixture,
     )
 
+    internal_manifest_path = (
+        root / "data" / "release" / "internal" / f"v{version}" / "manifest.json"
+    )
+    internal_manifest: dict[str, Any] | None = None
+    if internal_manifest_path.is_file():
+        internal_manifest = _read_json(internal_manifest_path)
+
     releases = {
         "schema": "transparency-releases/v1",
         "current": version,
         "releases": [
             {
                 "version": version,
+                "audience": "public",
                 "created_at": (manifest or {}).get("created_at"),
                 "promoted_at": (manifest or {}).get("promoted_at"),
                 "promoted_by": (manifest or {}).get("promoted_by"),
@@ -353,6 +372,23 @@ def write_transparency_bundle(
                 "manifest_path": f"/data/v{version}/manifest.json",
             },
         ],
+        "internal": (
+            {
+                "version": version,
+                "audience": "internal",
+                "created_at": (internal_manifest or {}).get("created_at"),
+                "promoted_at": (internal_manifest or {}).get("promoted_at"),
+                "promoted_by": (internal_manifest or {}).get("promoted_by"),
+                "n_included_variables": (internal_manifest or {}).get(
+                    "n_included_variables",
+                ),
+                "row_counts": (internal_manifest or {}).get("row_counts"),
+                "size_bytes": (internal_manifest or {}).get("size_bytes"),
+                "manifest_path": f"/datos-cerrados/v{version}/manifest.json",
+            }
+            if internal_manifest
+            else None
+        ),
     }
 
     history_rows = read_history(root=root)
@@ -467,7 +503,7 @@ def write_transparency_bundle(
             **releases,
             "signature": signature,
             "sha256sums_path": f"/data/v{version}/SHA256SUMS",
-            "provenance_path": f"/data/v{version}/provenance.parquet",
+            "provenance_path": f"/data/v{version}/provenance/",
         },
         bundle_fixture,
     )

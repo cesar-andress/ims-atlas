@@ -7,6 +7,7 @@ present in the trade table, every importer and year. IMPC requires population
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any
 
@@ -190,8 +191,15 @@ def compute_product_metrics(
 def write_product_metrics_partitioned(
     frame: pd.DataFrame,
     base: Path,
+    *,
+    max_file_bytes: int | None = None,
 ) -> dict[str, Any]:
-    """Write ``country_product/hs2=XX/part.parquet`` partitions."""
+    """Write ``country_product/hs2=XX/…`` partitions.
+
+    Default layout is one file per HS2 chapter. When ``max_file_bytes`` is set
+    (release size budget), nest ``year=`` / ``variable_id=`` and write a small
+    ``index.json`` so browsers can load every part without HTTP globs.
+    """
     base.mkdir(parents=True, exist_ok=True)
     sizes: dict[str, int] = {}
     if frame.empty:
@@ -200,14 +208,54 @@ def write_product_metrics_partitioned(
         frame.to_parquet(empty, index=False)
         return {"parts": 1, "rows": 0, "bytes_by_hs2": {"_empty": empty.stat().st_size}}
     bytes_by: dict[str, int] = {}
+    n_parts = 0
     for hs2, chunk in frame.groupby("hs2"):
-        path = base / f"hs2={hs2}" / "part.parquet"
-        path.parent.mkdir(parents=True, exist_ok=True)
-        chunk.reset_index(drop=True).to_parquet(path, index=False)
-        sizes[str(hs2)] = int(len(chunk))
-        bytes_by[str(hs2)] = path.stat().st_size
+        hs2_key = str(hs2)
+        hs2_dir = base / f"hs2={hs2_key}"
+        hs2_dir.mkdir(parents=True, exist_ok=True)
+        # Drop any previous layout (single part or nested) before rewrite.
+        for old in hs2_dir.rglob("part.parquet"):
+            old.unlink()
+        index_path = hs2_dir / "index.json"
+        if index_path.is_file():
+            index_path.unlink()
+
+        if max_file_bytes is None:
+            path = hs2_dir / "part.parquet"
+            chunk.reset_index(drop=True).to_parquet(path, index=False)
+            sizes[hs2_key] = int(len(chunk))
+            bytes_by[hs2_key] = path.stat().st_size
+            n_parts += 1
+            continue
+
+        part_paths: list[str] = []
+        chapter_bytes = 0
+        for (year, vid), sub in chunk.groupby(["year", "variable_id"], sort=True):
+            rel = f"year={int(year)}/variable_id={vid}/part.parquet"
+            path = hs2_dir / rel
+            path.parent.mkdir(parents=True, exist_ok=True)
+            sub.reset_index(drop=True).to_parquet(path, index=False)
+            size = path.stat().st_size
+            if size > max_file_bytes:
+                raise ValueError(
+                    f"country_product hs2={hs2_key} {rel} is {size} bytes "
+                    f"(max {max_file_bytes})",
+                )
+            part_paths.append(rel)
+            chapter_bytes += size
+            n_parts += 1
+        index_path.write_text(
+            json.dumps(
+                {"hs2": hs2_key, "parts": part_paths, "rows": int(len(chunk))},
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        sizes[hs2_key] = int(len(chunk))
+        bytes_by[hs2_key] = chapter_bytes
     return {
-        "parts": len(sizes),
+        "parts": n_parts,
         "rows": int(len(frame)),
         "bytes_by_hs2": bytes_by,
         "rows_by_hs2": sizes,

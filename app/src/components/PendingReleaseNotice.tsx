@@ -13,7 +13,9 @@ export function PendingReleaseNotice({ detail }: Props) {
       <p>{t("dataReleasePending")}</p>
       {detail ? <p className="muted small">{detail}</p> : null}
       <p className="analysis-actions">
-        <PermalinkLink view="status">{t("nav.status")}</PermalinkLink>
+        <PermalinkLink view="status" data-testid="pending-link-status">
+          {t("dataMissingLink")}
+        </PermalinkLink>
         {" · "}
         <PermalinkLink view="catalog">{t("nav.catalog")}</PermalinkLink>
         {" · "}

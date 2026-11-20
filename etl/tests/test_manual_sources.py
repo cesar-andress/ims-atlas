@@ -302,6 +302,9 @@ MANUAL_README_SOURCES = [
     "cepi_gravity",
     "hofstede",
     "wits_trains",
+    "worldbank_doing_business",
+    "unctadstat",
+    "imf_weo",
     *sorted(PHASE3_INDEX_SOURCES),
 ]
 

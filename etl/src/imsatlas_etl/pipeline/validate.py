@@ -13,6 +13,7 @@ from imsatlas_etl.connectors import baci, country_index, gravity, hofstede, wits
 from imsatlas_etl.connectors import worldbank as wb
 from imsatlas_etl.contracts.schemas import RAW_CONTRACTS
 from imsatlas_etl.pipeline.io_paths import (
+    INDICATOR_FILE_SOURCES,
     PHASE3_INDEX_SOURCES,
     PIPELINE_SOURCES,
     freshness_path,
@@ -36,7 +37,7 @@ def load_raw_table(
     root: Path | None = None,
 ) -> pd.DataFrame:
     directory = raw_source_dir(source_id, version, root=root)
-    if source_id.startswith("worldbank_"):
+    if source_id.startswith("worldbank_") or source_id in INDICATOR_FILE_SOURCES:
         return wb.load_raw_indicators(directory / "indicators.csv")
     if source_id == "baci":
         return baci.load_raw_trade(directory / "trade.csv")

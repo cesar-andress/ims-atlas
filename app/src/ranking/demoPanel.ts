@@ -1,12 +1,14 @@
 /**
- * COL/HS64 demo panel loader.
+ * COL/HS64 panel loader.
  *
- * Product path (`meta/col_hs64_demo.json`) is either a pending stub (release empty)
- * or a future real release-backed panel. Synthetic goldens live only under
- * core/fixtures and app/e2e/fixtures and are injected by Playwright routes.
+ * Public path (`meta/col_hs64_demo.json`) stays pending until verified ship vars.
+ * Team path (`/datos-cerrados/meta/col_hs64_panel.json`) carries the live curated
+ * panel when Authelia allows cerrada reads. Synthetic goldens stay under
+ * core/fixtures and app/e2e/fixtures only.
  */
 
 import type { Direction, VariableSpec } from "@ims-atlas/core";
+import { loadAccessConfig } from "../auth/accessConfig";
 
 export type DemoPanel = {
   origin: string;
@@ -56,6 +58,7 @@ type GoldenFile = {
 };
 
 export const DEMO_PANEL_URL = "meta/col_hs64_demo.json";
+export const CERRADA_PANEL_PATH = "/meta/col_hs64_panel.json";
 
 let cache: DemoPanel | null = null;
 let loadPromise: Promise<DemoPanel> | null = null;
@@ -93,7 +96,7 @@ function panelFromBlock(block: GoldenFile["block"], synthetic: boolean): DemoPan
     for (const row of block.raw) {
       if (typeof row[v.id] === "number") present++;
     }
-    coveragePct[v.id] = (100 * present) / block.raw.length;
+    coveragePct[v.id] = (100 * present) / Math.max(1, block.raw.length);
   }
   for (const row of block.raw) {
     const iso = String(row.iso3);
@@ -116,30 +119,65 @@ function panelFromBlock(block: GoldenFile["block"], synthetic: boolean): DemoPan
   };
 }
 
+function parsePanelPayload(payload: unknown): DemoPanel | null {
+  if (!payload || typeof payload !== "object") return null;
+  if ("status" in payload && (payload as PendingFile).status === "pending") {
+    return null;
+  }
+  if (!("block" in payload) || !(payload as GoldenFile).block) return null;
+  const file = payload as GoldenFile;
+  return panelFromBlock(file.block, Boolean(file.synthetic));
+}
+
+async function tryFetchPanel(
+  url: string,
+  credentials: RequestCredentials,
+): Promise<DemoPanel | null> {
+  try {
+    const res = await fetch(url, {
+      credentials,
+      cache: "no-store",
+      headers: { Accept: "application/json" },
+    });
+    if (!res.ok) return null;
+    return parsePanelPayload(await res.json());
+  } catch {
+    return null;
+  }
+}
+
 export async function loadDemoPanel(): Promise<DemoPanel> {
   if (cache) return cache;
   if (loadPromise) return loadPromise;
   loadPromise = (async () => {
-    const res = await fetch(`${import.meta.env.BASE_URL}${DEMO_PANEL_URL}`);
+    try {
+      const cfg = await loadAccessConfig();
+      const base = cfg.auth.cerrada_base_path.replace(/\/$/, "");
+      const cerrada = await tryFetchPanel(`${base}${CERRADA_PANEL_PATH}`, "include");
+      if (cerrada && cerrada.candidates.length >= 20) {
+        cache = cerrada;
+        return cache;
+      }
+    } catch {
+      // Anonymous or missing access config: fall through to public stub.
+    }
+
+    const publicUrl = `${import.meta.env.BASE_URL}${DEMO_PANEL_URL}`;
+    const res = await fetch(publicUrl);
     if (!res.ok) throw new Error(`Failed to load demo panel (${res.status})`);
     const payload = (await res.json()) as PendingFile | GoldenFile;
-    if (
-      payload &&
-      typeof payload === "object" &&
-      "status" in payload &&
-      payload.status === "pending"
-    ) {
-      const msg =
-        payload.message ??
-        payload.reason ??
-        "Data release pending — no redistributable COL/HS64 panel yet.";
-      throw new DemoPanelPendingError(msg);
+    const parsed = parsePanelPayload(payload);
+    if (parsed && parsed.candidates.length >= 20) {
+      cache = parsed;
+      return cache;
     }
-    if (!("block" in payload) || !payload.block) {
-      throw new DemoPanelPendingError("Data release pending");
-    }
-    cache = panelFromBlock(payload.block, Boolean(payload.synthetic));
-    return cache;
+    const msg =
+      payload && typeof payload === "object" && "status" in payload
+        ? ((payload as PendingFile).message ??
+          (payload as PendingFile).reason ??
+          "Faltan datos de comercio de BACI para 2023. Revise Datos → Estado.")
+        : "Faltan datos de comercio de BACI para 2023. Revise Datos → Estado.";
+    throw new DemoPanelPendingError(msg);
   })();
   return loadPromise;
 }

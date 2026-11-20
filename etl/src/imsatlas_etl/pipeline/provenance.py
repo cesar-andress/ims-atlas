@@ -403,16 +403,29 @@ def write_provenance_jsonl(frame: pd.DataFrame, path: Path) -> None:
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def read_release_provenance(release_dir: Path) -> pd.DataFrame:
+    """Load partitioned provenance (or legacy single-file) from a release tree."""
+    parts = sorted(
+        (release_dir / "provenance").glob("variable_id=*/year=*/part.parquet"),
+    )
+    if not parts:
+        legacy = release_dir / PROVENANCE_PARQUET
+        if legacy.is_file():
+            return pd.read_parquet(legacy)
+        return empty_provenance()
+    return pd.concat([pd.read_parquet(p) for p in parts], ignore_index=True)
+
+
 def build_provenance_for_release(
     release_dir: Path,
     *,
     root: Path | None = None,
 ) -> dict[str, Any]:
     """
-    Write ``provenance.parquet`` (+ ``provenance.jsonl`` for tiny releases).
+    Write provenance partitioned by variable_id × year (SPEC ≤5 MB per file).
 
-    Reads the release's country/bilateral tables, curated meta, catalog and
-    source registry. Zero cells -> empty provenance with the full schema.
+    Also writes a tiny ``provenance.jsonl`` sample for releases with few cells.
+    Legacy single ``provenance.parquet`` is removed when partitions are written.
     """
     country = _read_cells(release_dir, COUNTRY_TABLE)
     bilateral = _read_cells(release_dir, BILATERAL_TABLE)
@@ -436,14 +449,36 @@ def build_provenance_for_release(
     )
     if problems:
         raise ProvenanceError("; ".join(problems))
-    path = release_dir / PROVENANCE_PARQUET
-    write_provenance_parquet(frame, path)
+
+    legacy = release_dir / PROVENANCE_PARQUET
+    if legacy.is_file():
+        legacy.unlink()
+    out_dir = release_dir / "provenance"
+    if out_dir.is_dir():
+        for old in out_dir.rglob("part.parquet"):
+            old.unlink()
+    n_parts = 0
+    if frame.empty:
+        empty_path = out_dir / "variable_id=_empty" / "year=0" / "part.parquet"
+        empty_path.parent.mkdir(parents=True, exist_ok=True)
+        write_provenance_parquet(frame, empty_path)
+        n_parts = 1
+    else:
+        for (vid, year), chunk in frame.groupby(["variable_id", "year"], sort=True):
+            path = out_dir / f"variable_id={vid}" / f"year={int(year)}" / "part.parquet"
+            path.parent.mkdir(parents=True, exist_ok=True)
+            write_provenance_parquet(chunk.reset_index(drop=True), path)
+            n_parts += 1
+
     jsonl_path = release_dir / PROVENANCE_JSONL
     wrote_jsonl = 0 < len(frame) <= JSONL_MAX_ROWS
     if wrote_jsonl:
         write_provenance_jsonl(frame, jsonl_path)
+    elif jsonl_path.is_file():
+        jsonl_path.unlink()
     return {
-        "path": str(path),
+        "path": str(out_dir),
         "provenance_rows": int(len(frame)),
+        "provenance_parts": n_parts,
         "provenance_jsonl": wrote_jsonl,
     }

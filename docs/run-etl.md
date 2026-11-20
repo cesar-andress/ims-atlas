@@ -51,3 +51,11 @@ via Zenodo/public release paths, not `/datos-cerrados/`.
 | `data/store/cerrada` / `/datos-cerrados/*` | no | yes (team, 2FA) |
 
 Run log field `access_mode` in ETL output records which mode executed.
+## Step 3 file-download sources
+
+`inform_risk`, `transparency_cpi`, `wipo_gii` and `worldbank_doing_business` are pulled
+as files on `--live` (a manual drop in `data/manual/<source>/` takes precedence);
+`unctadstat` and `imf_weo` are manual drops only. Verified URLs, canonical drop layouts
+and quick checks: [step3-manual-drops.md](step3-manual-drops.md). A live `check` aborts
+when a selected manual-only source has no drop, so run subsets with `--source`;
+`transform` lists absent sources under `missing_sources` and `source_coverage`.

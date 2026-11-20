@@ -41,7 +41,9 @@ def _record_responses(
     skip: tuple[str, str, int] | None = None,
 ) -> None:
     """Test-only recorded responses derived from the release's own values."""
-    prov = pd.read_parquet(release / "provenance.parquet")
+    from imsatlas_etl.pipeline.provenance import read_release_provenance
+
+    prov = read_release_provenance(release)
     out.mkdir(parents=True, exist_ok=True)
     for r in checkable_cells(prov).itertuples(index=False):
         key = (str(r.variable_id), str(r.iso3), int(r.year))

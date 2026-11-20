@@ -116,6 +116,59 @@ def fetch_bytes(
     return response.body, response.headers
 
 
+def head_headers(
+    url: str,
+    *,
+    timeout: float = 30.0,
+    attempts: int = 3,
+    sleep_base: float = 1.5,
+    sleep: Sleeper = time.sleep,
+) -> dict[str, str]:
+    """HEAD url (redirects followed) with retries; return the final headers.
+
+    Used by cheap version probes (``Last-Modified`` / ``ETag``) so that large
+    artefacts are not downloaded just to detect a new release.
+    """
+    sess = requests.Session()
+    sess.headers.update({"User-Agent": USER_AGENT, "Accept": "*/*"})
+    last_error = "no attempt made"
+    for attempt in range(1, attempts + 1):
+        try:
+            response = sess.head(url, timeout=timeout, allow_redirects=True)
+            if response.status_code == 200:
+                return {str(k): str(v) for k, v in response.headers.items()}
+            last_error = f"HTTP {response.status_code}"
+            if response.status_code not in RETRY_STATUSES:
+                break
+        except (requests.RequestException, OSError) as exc:
+            last_error = str(exc)
+        if attempt == attempts:
+            break
+        sleep(backoff_delay(attempt, sleep_base=sleep_base))
+    raise SourceUnavailableError(f"HEAD failed for {url!r}: {last_error}")
+
+
+def http_date_to_ymd(value: str | None) -> str | None:
+    """``Wed, 04 Feb 2026 10:21:12 GMT`` -> ``2026-02-04`` (None if unparsable)."""
+    if not value:
+        return None
+    from email.utils import parsedate_to_datetime
+
+    try:
+        return parsedate_to_datetime(value).date().isoformat()
+    except (TypeError, ValueError):
+        return None
+
+
+def header_ci(headers: dict[str, str], name: str) -> str | None:
+    """Case-insensitive header lookup."""
+    wanted = name.lower()
+    for key, value in headers.items():
+        if key.lower() == wanted:
+            return value
+    return None
+
+
 def sha256_file(path: Path, *, chunk: int = 1 << 20) -> str:
     """Streaming SHA-256 of a file (safe for multi-GB archives)."""
     digest = hashlib.sha256()

@@ -1,0 +1,151 @@
+{
+  "access_mode": "CERRADO",
+  "changes_path": "status/changes/20261120T091037Z-562d5a9a.json",
+  "ended_at": "2026-11-20T09:10:38Z",
+  "fixture_mode": false,
+  "force": false,
+  "is_fixture": false,
+  "missing_sources": [
+    {
+      "id": "hofstede",
+      "reason": "not in freshness.json"
+    },
+    {
+      "id": "cepi_gravity",
+      "reason": "not in freshness.json"
+    },
+    {
+      "id": "wits_trains",
+      "reason": "not in freshness.json"
+    },
+    {
+      "id": "baci",
+      "reason": "not in freshness.json"
+    }
+  ],
+  "mode": "live",
+  "run_id": "20261120T091037Z-562d5a9a",
+  "sources": [
+    "worldbank_wdi",
+    "worldbank_wgi",
+    "worldbank_lpi"
+  ],
+  "started_at": "2026-11-20T09:10:37Z",
+  "status": "qa_blocked",
+  "steps": {
+    "check": {
+      "duration_s": 0.3116,
+      "n_sources": 3,
+      "status": "ok"
+    },
+    "extract": {
+      "duration_s": 0.0061,
+      "results": [
+        {
+          "skipped": true,
+          "source": "worldbank_wdi",
+          "version": "2026-11-11"
+        },
+        {
+          "skipped": true,
+          "source": "worldbank_wgi",
+          "version": "2026-09-25"
+        },
+        {
+          "skipped": true,
+          "source": "worldbank_lpi",
+          "version": "2026-11-11"
+        }
+      ],
+      "status": "ok"
+    },
+    "lineage": {
+      "duration_s": 0.0834,
+      "status": "ok"
+    },
+    "qa": {
+      "duration_s": 0.8995,
+      "n_block": 755,
+      "n_warn": 2395,
+      "report_status": "fail",
+      "status": "block"
+    },
+    "stores": {
+      "duration_s": 0.1024,
+      "status": "ok",
+      "stores": {
+        "abierta": {
+          "bilateral_year_rows": 0,
+          "bytes": 6079,
+          "country_year_rows": 0,
+          "n_sources": 16,
+          "n_variables": 31,
+          "path": "/home/cesar/papers_unir/imr/atlas/data/store/abierta"
+        },
+        "cerrada": {
+          "bilateral_year_rows": 0,
+          "bytes": 6079,
+          "country_year_rows": 0,
+          "n_sources": 33,
+          "n_variables": 19,
+          "path": "/home/cesar/papers_unir/imr/atlas/data/store/[redacted]"
+        }
+      }
+    },
+    "transform": {
+      "duration_s": 0.0479,
+      "missing_sources": [
+        {
+          "id": "hofstede",
+          "reason": "not in freshness.json"
+        },
+        {
+          "id": "cepi_gravity",
+          "reason": "not in freshness.json"
+        },
+        {
+          "id": "wits_trains",
+          "reason": "not in freshness.json"
+        },
+        {
+          "id": "baci",
+          "reason": "not in freshness.json"
+        }
+      ],
+      "row_counts": {
+        "bilateral_year": 0,
+        "country_product": 0,
+        "country_year": 7812,
+        "trade_hs2": 0,
+        "trade_hs4": 0,
+        "trade_hs6": 0,
+        "variables_country_year": 7431
+      },
+      "status": "ok"
+    },
+    "validate": {
+      "duration_s": 0.0497,
+      "results": [
+        {
+          "ok": true,
+          "rows": 47081,
+          "source": "worldbank_wdi",
+          "version": "2026-11-11"
+        },
+        {
+          "ok": true,
+          "rows": 25937,
+          "source": "worldbank_wgi",
+          "version": "2026-09-25"
+        },
+        {
+          "ok": true,
+          "rows": 1071,
+          "source": "worldbank_lpi",
+          "version": "2026-11-11"
+        }
+      ],
+      "status": "ok"
+    }
+  }
+}

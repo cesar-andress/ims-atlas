@@ -15,8 +15,21 @@ export async function loadBaciTopImporters(opts: {
   year: number;
   topN?: number;
 }): Promise<BaciTopImportersResult> {
+  const digits = opts.hs.replace(/\D/g, "");
   const hs2 = hs2Of(opts.hs).padStart(2, "0");
   const topN = Math.max(1, Math.floor(opts.topN ?? 30));
+  // Published trade parquet is HS2-only; refuse silent HS4/HS6 → HS2 collapse.
+  if (digits.length !== 2) {
+    const miss: BaciTopImportersResult = {
+      hs2,
+      year: opts.year,
+      volumes: {},
+      source: "unavailable",
+      top: [],
+    };
+    setBaciImportCache(miss);
+    return miss;
+  }
   const client = createDuckDbClient();
   try {
     await client.init();

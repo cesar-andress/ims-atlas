@@ -98,10 +98,13 @@ def _variable_gates(*, audience: Audience = "public") -> list[dict[str, Any]]:
             deployment=deployment,
         )
         decision = result["decision"]
+        status = str(variable.get("status") or "draft")
         if audience == "public":
-            included = decision in SHIP_DECISIONS
+            # SPEC §4: public release needs verified + a ship gate.
+            included = decision in SHIP_DECISIONS and status == "verified"
         else:
             # Internal (CERRADO): ship_* or research-use with evidence (SPEC §13).
+            # Draft variables remain available so the team can work before verify.
             included = decision in SHIP_DECISIONS or (
                 decision != "local_only" and _use_research_ok(variable, registry)
             )
@@ -109,6 +112,7 @@ def _variable_gates(*, audience: Audience = "public") -> list[dict[str, Any]]:
             {
                 "id": variable["id"],
                 "decision": decision,
+                "status": status,
                 "included": included,
                 "audience": audience,
                 "reasons": result["reasons"],
@@ -243,8 +247,8 @@ Companion engine: [ims-backtest](https://github.com/cesar-andress/ims-backtest).
 | `country_year.parquet` | Long country panel | {n_cy} |
 | `bilateral_year.parquet` | Long bilateral | {n_bi} |
 | `trade/hs2=*/part.parquet` | Trade by HS2 | {n_tr} |
-| `country_product/hs2=*/` | Product metrics by HS2 | {n_cp} |
-| `provenance.parquet` | One row per release cell | {n_pr} |
+| `country_product/hs2=*/year=*/variable_id=*/` | Product metrics | {n_cp} |
+| `provenance/variable_id=*/year=*/part.parquet` | One row per release cell | {n_pr} |
 | `provenance.jsonl` | Same rows as JSON lines (tiny releases only) | |
 | `catalog.json` | Shipped variables + HS nomenclature | |
 | `manifest.json` | Hashes, versions, gate decisions, signature status | |

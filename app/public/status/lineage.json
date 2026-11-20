@@ -74,270 +74,6 @@
     },
     {
       "from": "source:baci",
-      "to": "raw:baci:mini-2022"
-    },
-    {
-      "from": "raw:baci:mini-2022",
-      "to": "curated:country_year"
-    },
-    {
-      "from": "raw:baci:mini-2022",
-      "to": "curated:bilateral_year"
-    },
-    {
-      "from": "raw:baci:mini-2022",
-      "to": "curated:trade_hs2"
-    },
-    {
-      "from": "raw:baci:mini-2022",
-      "to": "curated:trade_hs4"
-    },
-    {
-      "from": "raw:baci:mini-2022",
-      "to": "curated:trade_hs6"
-    },
-    {
-      "from": "source:cepi_gravity",
-      "to": "raw:cepi_gravity:mini-2022"
-    },
-    {
-      "from": "raw:cepi_gravity:mini-2022",
-      "to": "curated:country_year"
-    },
-    {
-      "from": "raw:cepi_gravity:mini-2022",
-      "to": "curated:bilateral_year"
-    },
-    {
-      "from": "raw:cepi_gravity:mini-2022",
-      "to": "curated:trade_hs2"
-    },
-    {
-      "from": "raw:cepi_gravity:mini-2022",
-      "to": "curated:trade_hs4"
-    },
-    {
-      "from": "raw:cepi_gravity:mini-2022",
-      "to": "curated:trade_hs6"
-    },
-    {
-      "from": "source:wits_trains",
-      "to": "raw:wits_trains:mini-2022"
-    },
-    {
-      "from": "raw:wits_trains:mini-2022",
-      "to": "curated:country_year"
-    },
-    {
-      "from": "raw:wits_trains:mini-2022",
-      "to": "curated:bilateral_year"
-    },
-    {
-      "from": "raw:wits_trains:mini-2022",
-      "to": "curated:trade_hs2"
-    },
-    {
-      "from": "raw:wits_trains:mini-2022",
-      "to": "curated:trade_hs4"
-    },
-    {
-      "from": "raw:wits_trains:mini-2022",
-      "to": "curated:trade_hs6"
-    },
-    {
-      "from": "source:hofstede",
-      "to": "raw:hofstede:mini-2022"
-    },
-    {
-      "from": "raw:hofstede:mini-2022",
-      "to": "curated:country_year"
-    },
-    {
-      "from": "raw:hofstede:mini-2022",
-      "to": "curated:bilateral_year"
-    },
-    {
-      "from": "raw:hofstede:mini-2022",
-      "to": "curated:trade_hs2"
-    },
-    {
-      "from": "raw:hofstede:mini-2022",
-      "to": "curated:trade_hs4"
-    },
-    {
-      "from": "raw:hofstede:mini-2022",
-      "to": "curated:trade_hs6"
-    },
-    {
-      "from": "source:itu_datahub",
-      "to": "raw:itu_datahub:mini-2022"
-    },
-    {
-      "from": "raw:itu_datahub:mini-2022",
-      "to": "curated:country_year"
-    },
-    {
-      "from": "raw:itu_datahub:mini-2022",
-      "to": "curated:bilateral_year"
-    },
-    {
-      "from": "raw:itu_datahub:mini-2022",
-      "to": "curated:trade_hs2"
-    },
-    {
-      "from": "raw:itu_datahub:mini-2022",
-      "to": "curated:trade_hs4"
-    },
-    {
-      "from": "raw:itu_datahub:mini-2022",
-      "to": "curated:trade_hs6"
-    },
-    {
-      "from": "source:ef_epi",
-      "to": "raw:ef_epi:mini-2022"
-    },
-    {
-      "from": "raw:ef_epi:mini-2022",
-      "to": "curated:country_year"
-    },
-    {
-      "from": "raw:ef_epi:mini-2022",
-      "to": "curated:bilateral_year"
-    },
-    {
-      "from": "raw:ef_epi:mini-2022",
-      "to": "curated:trade_hs2"
-    },
-    {
-      "from": "raw:ef_epi:mini-2022",
-      "to": "curated:trade_hs4"
-    },
-    {
-      "from": "raw:ef_epi:mini-2022",
-      "to": "curated:trade_hs6"
-    },
-    {
-      "from": "source:odin",
-      "to": "raw:odin:mini-2022"
-    },
-    {
-      "from": "raw:odin:mini-2022",
-      "to": "curated:country_year"
-    },
-    {
-      "from": "raw:odin:mini-2022",
-      "to": "curated:bilateral_year"
-    },
-    {
-      "from": "raw:odin:mini-2022",
-      "to": "curated:trade_hs2"
-    },
-    {
-      "from": "raw:odin:mini-2022",
-      "to": "curated:trade_hs4"
-    },
-    {
-      "from": "raw:odin:mini-2022",
-      "to": "curated:trade_hs6"
-    },
-    {
-      "from": "source:gedi",
-      "to": "raw:gedi:mini-2022"
-    },
-    {
-      "from": "raw:gedi:mini-2022",
-      "to": "curated:country_year"
-    },
-    {
-      "from": "raw:gedi:mini-2022",
-      "to": "curated:bilateral_year"
-    },
-    {
-      "from": "raw:gedi:mini-2022",
-      "to": "curated:trade_hs2"
-    },
-    {
-      "from": "raw:gedi:mini-2022",
-      "to": "curated:trade_hs4"
-    },
-    {
-      "from": "raw:gedi:mini-2022",
-      "to": "curated:trade_hs6"
-    },
-    {
-      "from": "source:wipo_gii",
-      "to": "raw:wipo_gii:mini-2022"
-    },
-    {
-      "from": "raw:wipo_gii:mini-2022",
-      "to": "curated:country_year"
-    },
-    {
-      "from": "raw:wipo_gii:mini-2022",
-      "to": "curated:bilateral_year"
-    },
-    {
-      "from": "raw:wipo_gii:mini-2022",
-      "to": "curated:trade_hs2"
-    },
-    {
-      "from": "raw:wipo_gii:mini-2022",
-      "to": "curated:trade_hs4"
-    },
-    {
-      "from": "raw:wipo_gii:mini-2022",
-      "to": "curated:trade_hs6"
-    },
-    {
-      "from": "source:startupblink",
-      "to": "raw:startupblink:mini-2022"
-    },
-    {
-      "from": "raw:startupblink:mini-2022",
-      "to": "curated:country_year"
-    },
-    {
-      "from": "raw:startupblink:mini-2022",
-      "to": "curated:bilateral_year"
-    },
-    {
-      "from": "raw:startupblink:mini-2022",
-      "to": "curated:trade_hs2"
-    },
-    {
-      "from": "raw:startupblink:mini-2022",
-      "to": "curated:trade_hs4"
-    },
-    {
-      "from": "raw:startupblink:mini-2022",
-      "to": "curated:trade_hs6"
-    },
-    {
-      "from": "source:yale_epi",
-      "to": "raw:yale_epi:mini-2022"
-    },
-    {
-      "from": "raw:yale_epi:mini-2022",
-      "to": "curated:country_year"
-    },
-    {
-      "from": "raw:yale_epi:mini-2022",
-      "to": "curated:bilateral_year"
-    },
-    {
-      "from": "raw:yale_epi:mini-2022",
-      "to": "curated:trade_hs2"
-    },
-    {
-      "from": "raw:yale_epi:mini-2022",
-      "to": "curated:trade_hs4"
-    },
-    {
-      "from": "raw:yale_epi:mini-2022",
-      "to": "curated:trade_hs6"
-    },
-    {
-      "from": "source:baci",
       "to": "variable:IMPV"
     },
     {
@@ -557,6 +293,198 @@
       "to": "curated:country_year"
     },
     {
+      "from": "source:baci",
+      "to": "variable:PPAD"
+    },
+    {
+      "from": "variable:PPAD",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:freight_manual",
+      "to": "variable:INTC"
+    },
+    {
+      "from": "variable:INTC",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:worldbank_wdi",
+      "to": "variable:CIBC"
+    },
+    {
+      "from": "variable:CIBC",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:worldbank_lpi",
+      "to": "variable:LPIN"
+    },
+    {
+      "from": "variable:LPIN",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:worldbank_wdi",
+      "to": "variable:CPTR"
+    },
+    {
+      "from": "variable:CPTR",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:freight_manual",
+      "to": "variable:ITTT"
+    },
+    {
+      "from": "variable:ITTT",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:wits_trains",
+      "to": "variable:CUTA"
+    },
+    {
+      "from": "variable:CUTA",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:global_trade_alert",
+      "to": "variable:CCTI"
+    },
+    {
+      "from": "variable:CCTI",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:heritage_ief",
+      "to": "variable:IOEF"
+    },
+    {
+      "from": "variable:IOEF",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:worldbank_wdi",
+      "to": "variable:CLI"
+    },
+    {
+      "from": "variable:CLI",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:worldbank_wdi",
+      "to": "variable:INAN"
+    },
+    {
+      "from": "variable:INAN",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:worldbank_wdi",
+      "to": "variable:UNRA"
+    },
+    {
+      "from": "variable:UNRA",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:fragile_states_index",
+      "to": "variable:FSIN"
+    },
+    {
+      "from": "variable:FSIN",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:inform_risk",
+      "to": "variable:INRI"
+    },
+    {
+      "from": "variable:INRI",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:eiu_democracy",
+      "to": "variable:DEIN"
+    },
+    {
+      "from": "variable:DEIN",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:kof_globalisation",
+      "to": "variable:GLIN"
+    },
+    {
+      "from": "variable:GLIN",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:transparency_cpi",
+      "to": "variable:CPIN"
+    },
+    {
+      "from": "variable:CPIN",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:hofstede",
+      "to": "variable:CUDI"
+    },
+    {
+      "from": "variable:CUDI",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:world_population_review",
+      "to": "variable:RQBC"
+    },
+    {
+      "from": "variable:RQBC",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:trade_barrier_index",
+      "to": "variable:ITBI"
+    },
+    {
+      "from": "variable:ITBI",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:worldbank_wdi",
+      "to": "variable:CADE"
+    },
+    {
+      "from": "source:global_carbon_atlas",
+      "to": "variable:CADE"
+    },
+    {
+      "from": "source:iea_ghg",
+      "to": "variable:CADE"
+    },
+    {
+      "from": "variable:CADE",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:coface_country_risk",
+      "to": "variable:GLCR"
+    },
+    {
+      "from": "variable:GLCR",
+      "to": "curated:country_year"
+    },
+    {
+      "from": "source:solability_gsci",
+      "to": "variable:GLSI"
+    },
+    {
+      "from": "variable:GLSI",
+      "to": "curated:country_year"
+    },
+    {
       "from": "curated:country_year",
       "to": "release:v0.1.0"
     },
@@ -617,7 +545,7 @@
       "to": "release:v1.1.0"
     }
   ],
-  "generated_at": "2026-11-19T21:31:12Z",
+  "generated_at": "2026-11-20T09:10:38Z",
   "is_fixture": false,
   "nodes": [
     {
@@ -689,21 +617,9 @@
       "label": "baci"
     },
     {
-      "exists": true,
-      "id": "raw:baci:mini-2022",
-      "kind": "raw",
-      "label": "baci/mini-2022"
-    },
-    {
       "id": "source:cepi_gravity",
       "kind": "source",
       "label": "cepi_gravity"
-    },
-    {
-      "exists": true,
-      "id": "raw:cepi_gravity:mini-2022",
-      "kind": "raw",
-      "label": "cepi_gravity/mini-2022"
     },
     {
       "id": "source:wits_trains",
@@ -711,21 +627,9 @@
       "label": "wits_trains"
     },
     {
-      "exists": true,
-      "id": "raw:wits_trains:mini-2022",
-      "kind": "raw",
-      "label": "wits_trains/mini-2022"
-    },
-    {
       "id": "source:hofstede",
       "kind": "source",
       "label": "hofstede"
-    },
-    {
-      "exists": true,
-      "id": "raw:hofstede:mini-2022",
-      "kind": "raw",
-      "label": "hofstede/mini-2022"
     },
     {
       "id": "source:itu_datahub",
@@ -733,21 +637,9 @@
       "label": "itu_datahub"
     },
     {
-      "exists": true,
-      "id": "raw:itu_datahub:mini-2022",
-      "kind": "raw",
-      "label": "itu_datahub/mini-2022"
-    },
-    {
       "id": "source:ef_epi",
       "kind": "source",
       "label": "ef_epi"
-    },
-    {
-      "exists": true,
-      "id": "raw:ef_epi:mini-2022",
-      "kind": "raw",
-      "label": "ef_epi/mini-2022"
     },
     {
       "id": "source:odin",
@@ -755,21 +647,9 @@
       "label": "odin"
     },
     {
-      "exists": true,
-      "id": "raw:odin:mini-2022",
-      "kind": "raw",
-      "label": "odin/mini-2022"
-    },
-    {
       "id": "source:gedi",
       "kind": "source",
       "label": "gedi"
-    },
-    {
-      "exists": true,
-      "id": "raw:gedi:mini-2022",
-      "kind": "raw",
-      "label": "gedi/mini-2022"
     },
     {
       "id": "source:wipo_gii",
@@ -777,21 +657,9 @@
       "label": "wipo_gii"
     },
     {
-      "exists": true,
-      "id": "raw:wipo_gii:mini-2022",
-      "kind": "raw",
-      "label": "wipo_gii/mini-2022"
-    },
-    {
       "id": "source:startupblink",
       "kind": "source",
       "label": "startupblink"
-    },
-    {
-      "exists": true,
-      "id": "raw:startupblink:mini-2022",
-      "kind": "raw",
-      "label": "startupblink/mini-2022"
     },
     {
       "id": "source:yale_epi",
@@ -799,37 +667,31 @@
       "label": "yale_epi"
     },
     {
-      "exists": true,
-      "id": "raw:yale_epi:mini-2022",
-      "kind": "raw",
-      "label": "yale_epi/mini-2022"
-    },
-    {
-      "gate": "byod_only",
+      "gate": "ship_raw",
       "id": "variable:IMPV",
       "kind": "variable",
       "label": "IMPV"
     },
     {
-      "gate": "byod_only",
+      "gate": "ship_raw",
       "id": "variable:IMPC",
       "kind": "variable",
       "label": "IMPC"
     },
     {
-      "gate": "byod_only",
+      "gate": "ship_raw",
       "id": "variable:GRW",
       "kind": "variable",
       "label": "GRW"
     },
     {
-      "gate": "byod_only",
+      "gate": "ship_raw",
       "id": "variable:GDPPC",
       "kind": "variable",
       "label": "GDPPC"
     },
     {
-      "gate": "byod_only",
+      "gate": "ship_raw",
       "id": "variable:DIST",
       "kind": "variable",
       "label": "DIST"
@@ -841,31 +703,31 @@
       "label": "TARIF"
     },
     {
-      "gate": "byod_only",
+      "gate": "ship_raw",
       "id": "variable:FTA",
       "kind": "variable",
       "label": "FTA"
     },
     {
-      "gate": "byod_only",
+      "gate": "ship_raw",
       "id": "variable:LPI",
       "kind": "variable",
       "label": "LPI"
     },
     {
-      "gate": "byod_only",
+      "gate": "ship_raw",
       "id": "variable:ASIASH",
       "kind": "variable",
       "label": "ASIASH"
     },
     {
-      "gate": "byod_only",
+      "gate": "ship_raw",
       "id": "variable:HHI",
       "kind": "variable",
       "label": "HHI"
     },
     {
-      "gate": "byod_only",
+      "gate": "ship_raw",
       "id": "variable:UVGAP",
       "kind": "variable",
       "label": "UVGAP"
@@ -877,37 +739,37 @@
       "label": "CULT"
     },
     {
-      "gate": "byod_only",
+      "gate": "ship_raw",
       "id": "variable:LANG",
       "kind": "variable",
       "label": "LANG"
     },
     {
-      "gate": "byod_only",
+      "gate": "ship_raw",
       "id": "variable:INFL",
       "kind": "variable",
       "label": "INFL"
     },
     {
-      "gate": "byod_only",
+      "gate": "ship_raw",
       "id": "variable:UNEMP",
       "kind": "variable",
       "label": "UNEMP"
     },
     {
-      "gate": "byod_only",
+      "gate": "ship_raw",
       "id": "variable:GOV",
       "kind": "variable",
       "label": "GOV"
     },
     {
-      "gate": "byod_only",
+      "gate": "ship_raw",
       "id": "variable:EOC",
       "kind": "variable",
       "label": "EOC"
     },
     {
-      "gate": "byod_only",
+      "gate": "ship_raw",
       "id": "variable:REEXP",
       "kind": "variable",
       "label": "REEXP"
@@ -937,7 +799,7 @@
       "label": "GEDI"
     },
     {
-      "gate": "byod_only",
+      "gate": "ship_raw",
       "id": "variable:GII",
       "kind": "variable",
       "label": "GII"
@@ -955,16 +817,154 @@
       "label": "EPI"
     },
     {
-      "gate": "byod_only",
+      "gate": "ship_raw",
       "id": "variable:CO2PC",
       "kind": "variable",
       "label": "CO2PC"
     },
     {
-      "gate": "byod_only",
+      "gate": "ship_raw",
       "id": "variable:PLI",
       "kind": "variable",
       "label": "PLI"
+    },
+    {
+      "gate": "ship_raw",
+      "id": "variable:PPAD",
+      "kind": "variable",
+      "label": "PPAD"
+    },
+    {
+      "gate": "byod_only",
+      "id": "variable:INTC",
+      "kind": "variable",
+      "label": "INTC"
+    },
+    {
+      "gate": "ship_raw",
+      "id": "variable:CIBC",
+      "kind": "variable",
+      "label": "CIBC"
+    },
+    {
+      "gate": "ship_raw",
+      "id": "variable:LPIN",
+      "kind": "variable",
+      "label": "LPIN"
+    },
+    {
+      "gate": "ship_raw",
+      "id": "variable:CPTR",
+      "kind": "variable",
+      "label": "CPTR"
+    },
+    {
+      "gate": "byod_only",
+      "id": "variable:ITTT",
+      "kind": "variable",
+      "label": "ITTT"
+    },
+    {
+      "gate": "byod_only",
+      "id": "variable:CUTA",
+      "kind": "variable",
+      "label": "CUTA"
+    },
+    {
+      "gate": "byod_only",
+      "id": "variable:CCTI",
+      "kind": "variable",
+      "label": "CCTI"
+    },
+    {
+      "gate": "byod_only",
+      "id": "variable:IOEF",
+      "kind": "variable",
+      "label": "IOEF"
+    },
+    {
+      "gate": "ship_raw",
+      "id": "variable:CLI",
+      "kind": "variable",
+      "label": "CLI"
+    },
+    {
+      "gate": "ship_raw",
+      "id": "variable:INAN",
+      "kind": "variable",
+      "label": "INAN"
+    },
+    {
+      "gate": "ship_raw",
+      "id": "variable:UNRA",
+      "kind": "variable",
+      "label": "UNRA"
+    },
+    {
+      "gate": "byod_only",
+      "id": "variable:FSIN",
+      "kind": "variable",
+      "label": "FSIN"
+    },
+    {
+      "gate": "ship_raw",
+      "id": "variable:INRI",
+      "kind": "variable",
+      "label": "INRI"
+    },
+    {
+      "gate": "byod_only",
+      "id": "variable:DEIN",
+      "kind": "variable",
+      "label": "DEIN"
+    },
+    {
+      "gate": "byod_only",
+      "id": "variable:GLIN",
+      "kind": "variable",
+      "label": "GLIN"
+    },
+    {
+      "gate": "ship_raw",
+      "id": "variable:CPIN",
+      "kind": "variable",
+      "label": "CPIN"
+    },
+    {
+      "gate": "byod_only",
+      "id": "variable:CUDI",
+      "kind": "variable",
+      "label": "CUDI"
+    },
+    {
+      "gate": "byod_only",
+      "id": "variable:RQBC",
+      "kind": "variable",
+      "label": "RQBC"
+    },
+    {
+      "gate": "byod_only",
+      "id": "variable:ITBI",
+      "kind": "variable",
+      "label": "ITBI"
+    },
+    {
+      "gate": "byod_only",
+      "id": "variable:CADE",
+      "kind": "variable",
+      "label": "CADE"
+    },
+    {
+      "gate": "local_only",
+      "id": "variable:GLCR",
+      "kind": "variable",
+      "label": "GLCR"
+    },
+    {
+      "gate": "byod_only",
+      "id": "variable:GLSI",
+      "kind": "variable",
+      "label": "GLSI"
     },
     {
       "exists": true,

@@ -58,8 +58,18 @@ def check_source_offline(
 
 
 def _live_probe(source_id: str, *, root: Path | None) -> dict[str, Any]:
-    from imsatlas_etl.connectors import baci, gravity, manual_drop, wits
+    from imsatlas_etl.connectors import (
+        baci,
+        cpi,
+        doing_business,
+        gravity,
+        inform,
+        manual_drop,
+        wipo_gii,
+        wits,
+    )
     from imsatlas_etl.connectors import worldbank as wb
+    from imsatlas_etl.connectors.step3 import has_manual_drop
 
     if source_id in {"worldbank_wdi", "worldbank_wgi", "worldbank_lpi"}:
         return wb.probe_version(source_id)
@@ -73,6 +83,20 @@ def _live_probe(source_id: str, *, root: Path | None) -> dict[str, Any]:
             "upstream_version": wits.live_version(root=root),
             "note": "version label from config/wits_trains.json; local_only",
         }
+    step3 = {
+        "inform_risk": inform,
+        "transparency_cpi": cpi,
+        "wipo_gii": wipo_gii,
+        "worldbank_doing_business": doing_business,
+    }
+    if source_id in step3:
+        # A manual drop wins; otherwise a cheap HEAD/API probe (no download).
+        if has_manual_drop(source_id, root=root):
+            return {
+                "upstream_version": manual_drop.live_version(source_id, root=root),
+                "note": note,
+            }
+        return step3[source_id].probe_version()
     if manual_drop.is_manual_source(source_id):
         return {
             "upstream_version": manual_drop.live_version(source_id, root=root),

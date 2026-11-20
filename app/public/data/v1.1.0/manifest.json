@@ -4,7 +4,7 @@
     "max_release_bytes": 838860800,
     "max_single_file_bytes": 5242880
   },
-  "created_at": "2026-11-19T21:31:09Z",
+  "created_at": "2026-11-20T10:04:50Z",
   "files": [
     {
       "bytes": 3501,
@@ -14,11 +14,11 @@
       "sha256": "b8055ba42312fca3c4210d6b2776da465034caff8447e215fe16ab1dac62439d"
     },
     {
-      "bytes": 3401,
+      "bytes": 3419,
       "licence": "pipeline-curated",
       "path": "country_product/hs2=_empty/part.parquet",
       "rows": 0,
-      "sha256": "1a1da9576104aff90c0d5cfb40ac41098f3c390a68a350af53651048fb083db9"
+      "sha256": "6424a9011b10af95e7e3c561703c673ea1406aaa72546e5f1f3cbbebc6505e50"
     },
     {
       "bytes": 3090,
@@ -30,135 +30,793 @@
     {
       "bytes": 2970,
       "licence": "pipeline-curated",
-      "path": "provenance.parquet",
+      "path": "provenance/variable_id=_empty/year=0/part.parquet",
       "rows": 0,
       "sha256": "80b60761e224ad88c8c31bc8cd24de79824518c6ca53c31f7bb9d5c4a14cd9b3"
     },
     {
-      "bytes": 2643,
+      "bytes": 448633,
       "licence": "pipeline-curated",
-      "path": "trade/hs2=_empty/part.parquet",
-      "rows": 0,
-      "sha256": "55655a3f024c6f3f06d3f0fc12f99755b7a942abbe2256a65b354ca8119d6926"
+      "path": "trade/hs2=01/part.parquet",
+      "rows": 69040,
+      "sha256": "26b252471a7a15ac9eb79646d6a3cc8a2ddba5786ee6d9c9e47d6986a54ee982"
+    },
+    {
+      "bytes": 576701,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=02/part.parquet",
+      "rows": 71174,
+      "sha256": "a5c43cf42ac286f698642679073ec7f484eb7dd4c06e9fac65914807cdae814d"
+    },
+    {
+      "bytes": 845922,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=03/part.parquet",
+      "rows": 108817,
+      "sha256": "d8c0cbec5eae74578639dfff85249d5247c2f1f44ffb42bb3dcec28bdf389883"
+    },
+    {
+      "bytes": 750060,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=04/part.parquet",
+      "rows": 101128,
+      "sha256": "a4895491cd3e246b67ff3407944b1ab24fcd5f64c70a1087bad53b42a9994ba7"
+    },
+    {
+      "bytes": 458288,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=05/part.parquet",
+      "rows": 64624,
+      "sha256": "03ace112146a894638fb42e1e097d59f4952649772c5ab3a1c6e708a4f1a1fae"
+    },
+    {
+      "bytes": 488034,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=06/part.parquet",
+      "rows": 75182,
+      "sha256": "45eec9b26e150943e0f38d122583ced3d6d9de9acb5bd98055c711cac47cfd27"
+    },
+    {
+      "bytes": 807945,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=07/part.parquet",
+      "rows": 114588,
+      "sha256": "a50c0e8c5a3204ca90fe1ec809aa869f6a0c9567bafd3a137b3db33846e1d43b"
+    },
+    {
+      "bytes": 943490,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=08/part.parquet",
+      "rows": 129899,
+      "sha256": "c2ec73bedc8000b1026ba24156f9cf7d91035d283e10b40ea3af018bb17e361a"
+    },
+    {
+      "bytes": 923929,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=09/part.parquet",
+      "rows": 139393,
+      "sha256": "cf7bd4fec0b372a12cf588ba44b8ed5f16b7d74819f83757597707c05e2f91d1"
+    },
+    {
+      "bytes": 644385,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=10/part.parquet",
+      "rows": 88079,
+      "sha256": "a5b9357f06124f2261a6791b4c08c92a73719b4463464de8b9e83b02fd2b4ee4"
+    },
+    {
+      "bytes": 643876,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=11/part.parquet",
+      "rows": 93319,
+      "sha256": "4295fa2b5b54c2848bc35a6650622a6115b450e0a375f86e08236a42bb762ed3"
+    },
+    {
+      "bytes": 867787,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=12/part.parquet",
+      "rows": 124471,
+      "sha256": "df2e29fdb5f860bc7df5959450fd355167d78bc19713c5f40f742bb32f99e7aa"
+    },
+    {
+      "bytes": 480998,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=13/part.parquet",
+      "rows": 70541,
+      "sha256": "8c6257f32ca3260dacffad30556c9408ff95725ae228992e702df611eb20dd05"
+    },
+    {
+      "bytes": 267346,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=14/part.parquet",
+      "rows": 43546,
+      "sha256": "4b1782edd2ff58c232e3be615413eba746f3c98c5d7096a51fd5293644d83c0c"
+    },
+    {
+      "bytes": 841454,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=15/part.parquet",
+      "rows": 116477,
+      "sha256": "7f22d4de2a5d1d9bc6ac7e548beccdd804cb93f25a5357fb5b98cc58a11c0638"
+    },
+    {
+      "bytes": 677001,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=16/part.parquet",
+      "rows": 92384,
+      "sha256": "907558ea3802e4b85b1f828c992cc5be24a43fcd3891dc93768cec6efd0cfa7a"
+    },
+    {
+      "bytes": 827522,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=17/part.parquet",
+      "rows": 119451,
+      "sha256": "a5acdf4e4ac0d0836aeb471572783339006f2c8d2419b9b4c9060bb9cfc4782e"
+    },
+    {
+      "bytes": 759504,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=18/part.parquet",
+      "rows": 110962,
+      "sha256": "19eb358282bf61774f5baf0e933abf83218048cd6b7a1ddace21b07e096e7bde"
+    },
+    {
+      "bytes": 969398,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=19/part.parquet",
+      "rows": 136098,
+      "sha256": "d348940340e615edc5588b12bac2ab1a2b82b598d5a03ce4d48e5ea05da379da"
+    },
+    {
+      "bytes": 953449,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=20/part.parquet",
+      "rows": 134492,
+      "sha256": "4974f06a2f0fe66ff97bd10d725c7c7b5777affd65b2032806ab9c6f9ded8ba8"
+    },
+    {
+      "bytes": 1077798,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=21/part.parquet",
+      "rows": 156426,
+      "sha256": "ba5aee0db7741f9f8777bd6b9b92902b44a7bb38c4c2d5bcc39cf4151fc8d80f"
+    },
+    {
+      "bytes": 1116542,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=22/part.parquet",
+      "rows": 159984,
+      "sha256": "d924ba9cc01179f0dd867c63d0243ac5c811adafee93113381d683b29845fad3"
+    },
+    {
+      "bytes": 711286,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=23/part.parquet",
+      "rows": 91142,
+      "sha256": "a6b13da2c98d5d580c2b5e9da45121d1b5920e2123dc6791b6b432f5e699b287"
+    },
+    {
+      "bytes": 639756,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=24/part.parquet",
+      "rows": 85647,
+      "sha256": "1d331f01da35eb2b8c9b4937e50338b3e203f13f3a611d5bea9116d1d983a9bf"
+    },
+    {
+      "bytes": 834806,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=25/part.parquet",
+      "rows": 120242,
+      "sha256": "f831adf38d012d5ade04cc688fde9d614d4762f1f4d2dc1ab482fb9aa0ca930f"
+    },
+    {
+      "bytes": 423549,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=26/part.parquet",
+      "rows": 53901,
+      "sha256": "476e62c4c4577745039c1c645bfaac36afa61ab26a4b730aa610ac0717946dcb"
+    },
+    {
+      "bytes": 1112030,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=27/part.parquet",
+      "rows": 140323,
+      "sha256": "782398405d407e0c15d91bbf497706792b2b1a9bb318fcdd3c61c74ce5b29f04"
+    },
+    {
+      "bytes": 931663,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=28/part.parquet",
+      "rows": 124769,
+      "sha256": "be9f954b6793cddf4518c3a7bbda10aee1e25878d94ba9ea796ac3a23dea31b1"
+    },
+    {
+      "bytes": 953971,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=29/part.parquet",
+      "rows": 128557,
+      "sha256": "712146c7b224cc4f826a08792402cae4e4a4540119a349001f31e77cb1bef82d"
+    },
+    {
+      "bytes": 1212663,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=30/part.parquet",
+      "rows": 164426,
+      "sha256": "2f37a3061686ed6f117c8967f39fde011053feb92adabed4f38e91c8844e5253"
+    },
+    {
+      "bytes": 623874,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=31/part.parquet",
+      "rows": 78824,
+      "sha256": "e0b0894f38b4c5fca39aee4fd525d260bd276053a66013c0dafa024e3a1bb62f"
+    },
+    {
+      "bytes": 949714,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=32/part.parquet",
+      "rows": 135526,
+      "sha256": "4686d0fbbed1e5ca56f437c26db1f5a573b4f8186fd705d826082b0eb09d0749"
+    },
+    {
+      "bytes": 1133695,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=33/part.parquet",
+      "rows": 170356,
+      "sha256": "669be9f6eddd2e1bfb4c85d384e525920133860081950a25ab4b9c89674664f7"
+    },
+    {
+      "bytes": 984270,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=34/part.parquet",
+      "rows": 151121,
+      "sha256": "9d4a496e13be704c7ab65876e39f59c2904dad2d40029d399274ee8bacad154a"
+    },
+    {
+      "bytes": 723333,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=35/part.parquet",
+      "rows": 110047,
+      "sha256": "7905a2e7635a5762f7b03bd688eb9712baf17d2d1fc51b05e70399871955c06c"
+    },
+    {
+      "bytes": 336415,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=36/part.parquet",
+      "rows": 46934,
+      "sha256": "88c242eac88e18aee85d208772ed500131d0d9cd545d9702f84e8f7ec43c8906"
+    },
+    {
+      "bytes": 427922,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=37/part.parquet",
+      "rows": 65049,
+      "sha256": "1750c90e5450791b8c03448ca5a1c7def632b6d96a19f1fca35ab6e97c85055b"
+    },
+    {
+      "bytes": 1147924,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=38/part.parquet",
+      "rows": 160999,
+      "sha256": "5fd5754aa2d21c64a183a67069a8ad26e27329dd7d9f858b13b8ea994ecb63d1"
+    },
+    {
+      "bytes": 1540184,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=39/part.parquet",
+      "rows": 229403,
+      "sha256": "9b2c4908090ba360ed0e3570dcfc8f2edf09a52d80d303d36808fac847e4823e"
+    },
+    {
+      "bytes": 1239503,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=40/part.parquet",
+      "rows": 188906,
+      "sha256": "29cd1391fb5a86e121bccbb4fb4ffb6dd5feeb8450ad20776ee4f02ae70ebef4"
+    },
+    {
+      "bytes": 492290,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=41/part.parquet",
+      "rows": 66931,
+      "sha256": "e2df7dd96cc0f72c4701ba5451f4aac9060ca0a2d669d18af7359b508708c055"
+    },
+    {
+      "bytes": 957917,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=42/part.parquet",
+      "rows": 171625,
+      "sha256": "23648258b4aa9f31c0dc32a84f8e1cd3608d0f3c15bc6de2b15e05a9ea9579b0"
+    },
+    {
+      "bytes": 311140,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=43/part.parquet",
+      "rows": 49722,
+      "sha256": "8759cc9cd5a8306d53b608889e1df6a56d714edffb8a66eee63e9bc60ef402d9"
+    },
+    {
+      "bytes": 1102219,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=44/part.parquet",
+      "rows": 163447,
+      "sha256": "3dae131e8b595e972948352c5271bbea44004217387a630d4b836555cbc19117"
+    },
+    {
+      "bytes": 248887,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=45/part.parquet",
+      "rows": 45691,
+      "sha256": "556a3c46bfb807b0a45506658f86bba51bb0a6aa61bd73f26a8d04bbeec229cf"
+    },
+    {
+      "bytes": 358553,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=46/part.parquet",
+      "rows": 67129,
+      "sha256": "60606ac8310b8a400db7eb8740e6eed135fe6dff0573d2b599afbd11bbb7e501"
+    },
+    {
+      "bytes": 367136,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=47/part.parquet",
+      "rows": 47351,
+      "sha256": "4ec579c5c95f3a38f38e9a122c4df63ede1b75be15ae11b95f7e7bc44f790e63"
+    },
+    {
+      "bytes": 1172976,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=48/part.parquet",
+      "rows": 178764,
+      "sha256": "750a04c7b4e323c9ed342e25127fc58aa866c68b6574da0e3185c0c9a5a79994"
+    },
+    {
+      "bytes": 999343,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=49/part.parquet",
+      "rows": 187864,
+      "sha256": "54d52d2a2aaa1f1dafad1dd6b8dd32d642a2e3b95f7d4f6c11d006997e54ca7b"
+    },
+    {
+      "bytes": 215699,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=50/part.parquet",
+      "rows": 35883,
+      "sha256": "a0a28881e9f9682bed4ee6f59cd2b40dcff4b7e3a663183e7ae0e53411600985"
+    },
+    {
+      "bytes": 378533,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=51/part.parquet",
+      "rows": 55082,
+      "sha256": "3d147f00f8223c529e860b52ed5c824e88d5223dda746fb1eaf08aedc21ef5ca"
+    },
+    {
+      "bytes": 668318,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=52/part.parquet",
+      "rows": 96957,
+      "sha256": "27c13b86e9e5fabe5e312b62a9b9071e529238f56e16dfb4cf981696939a9720"
+    },
+    {
+      "bytes": 356057,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=53/part.parquet",
+      "rows": 55711,
+      "sha256": "968aa99a85549fa399b012109131d86766f2cefab9f01b3bc498a8a2d1fbfee6"
+    },
+    {
+      "bytes": 658909,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=54/part.parquet",
+      "rows": 94012,
+      "sha256": "bc55c133ab8238ba3370f4d6c6b421ac9cb199c88dd59b85bb34f349a4ee1b30"
+    },
+    {
+      "bytes": 625645,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=55/part.parquet",
+      "rows": 86941,
+      "sha256": "22644759af4a5d4b2066a3d9a9775bedddbc2373156b4ed928ab142b10602554"
+    },
+    {
+      "bytes": 758849,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=56/part.parquet",
+      "rows": 115840,
+      "sha256": "f6feb3fd55ac635a1c887d35a143be1d47de0cd0a836059c4e404e6d5e6aaa83"
+    },
+    {
+      "bytes": 620363,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=57/part.parquet",
+      "rows": 104302,
+      "sha256": "e81a98726ffe1258a2421039d0bb5168d72e27aeb0d3031fa17416bb2d2d3727"
+    },
+    {
+      "bytes": 593134,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=58/part.parquet",
+      "rows": 99258,
+      "sha256": "2529e469458c78d735f4c31a9633b0daa8a334bf0e5b13a9bdcc814f4c854e42"
+    },
+    {
+      "bytes": 665853,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=59/part.parquet",
+      "rows": 103637,
+      "sha256": "4008a208c4912ab7f0528476c0d3ccff1b583d1509373df97a49661c310c2e47"
+    },
+    {
+      "bytes": 511633,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=60/part.parquet",
+      "rows": 75190,
+      "sha256": "d6ac61fdfcfb31a6f02f1440510ae5c99a59f6d38f46d007e741a9841bd8d0dc"
+    },
+    {
+      "bytes": 1214076,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=61/part.parquet",
+      "rows": 202035,
+      "sha256": "61fa4df695b62ad378bf80be4d535d9ec03e0bdd2313bc21786eb8aa57e72854"
+    },
+    {
+      "bytes": 1249869,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=62/part.parquet",
+      "rows": 204265,
+      "sha256": "319e4492a30247879715f9085778b522a9aa412af5022e1cd2f0f7684f76a4be"
+    },
+    {
+      "bytes": 1118385,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=63/part.parquet",
+      "rows": 187734,
+      "sha256": "dacf33acdfd1b8df7a4c2ed277aff5991107b59c3895814395651a05c9f58806"
+    },
+    {
+      "bytes": 997411,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=64/part.parquet",
+      "rows": 162016,
+      "sha256": "f2af5eef59243c18c29c25d4f97ccd961d564e39dcbd4b1f5099dada2aced90e"
+    },
+    {
+      "bytes": 681580,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=65/part.parquet",
+      "rows": 134179,
+      "sha256": "6817e6a58e15f2f2fc0977d4a87bc149561bea6542b257f139794f251c8bfba5"
+    },
+    {
+      "bytes": 372122,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=66/part.parquet",
+      "rows": 72969,
+      "sha256": "7bc97707e6180ce8fa486339d5204f392a2f034f0c5537537d50b1c73b6ad2c5"
+    },
+    {
+      "bytes": 392705,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=67/part.parquet",
+      "rows": 71730,
+      "sha256": "7ec55e04da9d44720e0720521130cee07d3fb483bfec3b5ebdd2d987c25da887"
+    },
+    {
+      "bytes": 906303,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=68/part.parquet",
+      "rows": 135217,
+      "sha256": "5e87a91dc34006c1334bf6d3dfb7b3fb180dcf36ad8f865983dceae70050548e"
+    },
+    {
+      "bytes": 879286,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=69/part.parquet",
+      "rows": 139889,
+      "sha256": "a4a7868a54ec5a5dd6e3787d8e358b5a0acdd714fc9b7f0994181ddbfd18cd9a"
+    },
+    {
+      "bytes": 1001878,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=70/part.parquet",
+      "rows": 159861,
+      "sha256": "4c387d906ba92978831aa4b0360822fb71bab1a9649945273a930e891226df4c"
+    },
+    {
+      "bytes": 882581,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=71/part.parquet",
+      "rows": 136134,
+      "sha256": "e4b2c5dc02f3ac61b001eaf759912aff5d95ec89d1da2f11e37c3dfc0fe67e4c"
+    },
+    {
+      "bytes": 990173,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=72/part.parquet",
+      "rows": 125462,
+      "sha256": "401bd60ce45d13537d96d7b56c0f4abe31aeb27bfc758636fc450f86db95d451"
+    },
+    {
+      "bytes": 1399027,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=73/part.parquet",
+      "rows": 213502,
+      "sha256": "71710ce76cd5882ba84de4420fff8aa043c9fe61e60ffa68024fbac5de463fa1"
+    },
+    {
+      "bytes": 823206,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=74/part.parquet",
+      "rows": 122480,
+      "sha256": "79fecbb36abe367968486a6b535dfe0ec345753594568e2ba6d01a4397511ef3"
+    },
+    {
+      "bytes": 372035,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=75/part.parquet",
+      "rows": 53197,
+      "sha256": "cac6bc940ca0a16a4777155f4de2838b510a4b7ba07a55d818fd6675e5b2f3c4"
+    },
+    {
+      "bytes": 1049767,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=76/part.parquet",
+      "rows": 150138,
+      "sha256": "7a114b12a5e0d979ea134b662d93e40ff7cf0f92ef505051e11d1b3e504be5b4"
+    },
+    {
+      "bytes": 302906,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=78/part.parquet",
+      "rows": 43241,
+      "sha256": "a76e364691d86ac19d6eb2f6f5ad2fe7236f0ecd3d4cf75bef65bd9405977b12"
+    },
+    {
+      "bytes": 414014,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=79/part.parquet",
+      "rows": 63110,
+      "sha256": "24a2b91e2a256080e6c1de3bae4af8a9b2e46959dc5456abc403ede016abe34a"
+    },
+    {
+      "bytes": 261214,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=80/part.parquet",
+      "rows": 39969,
+      "sha256": "7aaa2580056305faa829910c4229d0f912ddec3adc27ad153dafc5450270a55d"
+    },
+    {
+      "bytes": 394745,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=81/part.parquet",
+      "rows": 57169,
+      "sha256": "14fc1a8a1ecd4184fbade8346d060b3e5d9c1f0bad838a9b878fcf233ef602ae"
+    },
+    {
+      "bytes": 1055157,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=82/part.parquet",
+      "rows": 172518,
+      "sha256": "fbd17772a7fda351a2f5537b07e4d43cf326dcd331b5dad6d4b2ae399500543c"
+    },
+    {
+      "bytes": 980349,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=83/part.parquet",
+      "rows": 162095,
+      "sha256": "83fbded50a9bfe398514e847d8b14ad5b5ddf2d6707c53cbad8c25c5cdf9de69"
+    },
+    {
+      "bytes": 1889474,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=84/part.parquet",
+      "rows": 273788,
+      "sha256": "64e06484201f867491fd193f328a2750b92baf1d6e6d2a0184f8d8b3640474bc"
+    },
+    {
+      "bytes": 1823562,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=85/part.parquet",
+      "rows": 272627,
+      "sha256": "9aee5552291c18b15f3198459d2299ba6bf5e3ad55cbe4aac0cc4007b68e51f1"
+    },
+    {
+      "bytes": 555082,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=86/part.parquet",
+      "rows": 77600,
+      "sha256": "50570a7492808119e4f8e8f9923b1ab70e19cd1aa2ce403461631cf36aacaf77"
+    },
+    {
+      "bytes": 1441991,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=87/part.parquet",
+      "rows": 204813,
+      "sha256": "d4ca19ebbb61e02f4ab94af4b0dbc923f36fd75b21235d48f57a209c6a090fec"
+    },
+    {
+      "bytes": 698170,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=88/part.parquet",
+      "rows": 96476,
+      "sha256": "cd76982414873b31e1c9fe3dd79c84e3f4e6d4b10dd124dbd29c87ef144093f5"
+    },
+    {
+      "bytes": 584520,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=89/part.parquet",
+      "rows": 74452,
+      "sha256": "ff300f168bb741a075110739ff14fd333e4156fbec787c63c9cf062a1845bacc"
+    },
+    {
+      "bytes": 1506424,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=90/part.parquet",
+      "rows": 223661,
+      "sha256": "1839a69f522640e296727f02b2161f151ab3b5b2f45a95e194430f9bdcbb81ed"
+    },
+    {
+      "bytes": 652363,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=91/part.parquet",
+      "rows": 112396,
+      "sha256": "7292cfdd25244445a9de7dc23414c730a92d7695baf6715e1b1dacda50c28d7e"
+    },
+    {
+      "bytes": 495866,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=92/part.parquet",
+      "rows": 87834,
+      "sha256": "4629603180f4453022c7f46f20abb2fda3318e2a08fcd116577721a476dc956c"
+    },
+    {
+      "bytes": 396604,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=93/part.parquet",
+      "rows": 54079,
+      "sha256": "5e79e725ca72e5dc05a851f897703f7071ce6cd4a6e116e817ce975c6acff9a1"
+    },
+    {
+      "bytes": 1253906,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=94/part.parquet",
+      "rows": 189317,
+      "sha256": "0d3ae86e00416e955138df886bfe559d14b38e032a61f87587d392dde58cfff0"
+    },
+    {
+      "bytes": 988912,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=95/part.parquet",
+      "rows": 164176,
+      "sha256": "086c91b87eafc72c4d037a58c7061e00a8944e76cacdb45a3ec845651470c4c6"
+    },
+    {
+      "bytes": 973978,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=96/part.parquet",
+      "rows": 162744,
+      "sha256": "154d726b68cfccfab40caddd6120a55bf4b10e20cbdd22e96cde0813f90f48c1"
+    },
+    {
+      "bytes": 544685,
+      "licence": "pipeline-curated",
+      "path": "trade/hs2=97/part.parquet",
+      "rows": 97658,
+      "sha256": "8d981d50d1b0139d5c4478c66f92d7dbd273484a8d9281a2729c2557819f9520"
     }
   ],
-  "fixture_banner": "Fixture pipeline artefact (mini_world test data). Not a live ingest and not a production data release.",
-  "is_fixture": true,
+  "is_fixture": false,
   "n_included_variables": 0,
-  "promoted_at": "2026-11-19T21:31:11Z",
-  "promoted_by": "C\u00e9sar Andr\u00e9s (empty public; rights pending)",
+  "promoted_at": "2026-11-20T10:06:52Z",
+  "promoted_by": "C\u00e9sar Andr\u00e9s (live dual)",
   "row_counts": {
     "bilateral_year_rows": 0,
     "country_product_bytes_by_hs2": {
-      "_empty": 3401
+      "_empty": 3419
     },
     "country_product_parts": 1,
     "country_product_rows": 0,
     "country_year_rows": 0,
     "provenance_rows": 0,
-    "trade_parts": 1,
-    "trade_rows": 0
+    "trade_parts": 96,
+    "trade_rows": 11368115
   },
   "signature": {
     "note": "git tag -s not configured for this release",
     "status": "unsigned"
   },
   "size_bytes": {
-    "largest_bytes": 3501,
-    "largest_path": "bilateral_year.parquet",
-    "total_bytes": 18094
+    "largest_bytes": 1889474,
+    "largest_path": "trade/hs2=84/part.parquet",
+    "total_bytes": 75919931
   },
   "source_versions": {
-    "baci": "mini-2022",
-    "cepi_gravity": "mini-2022",
-    "ef_epi": "mini-2022",
-    "gedi": "mini-2022",
-    "hofstede": "mini-2022",
-    "itu_datahub": "mini-2022",
-    "odin": "mini-2022",
-    "startupblink": "mini-2022",
-    "wipo_gii": "mini-2022",
-    "wits_trains": "mini-2022",
+    "baci": "HS12_V202601",
+    "cepi_gravity": "V202211",
+    "inform_risk": "hdx-20260519",
+    "transparency_cpi": "cpi2025-20260204",
+    "wipo_gii": "gii2026-20260928",
+    "worldbank_doing_business": "db-20240215",
     "worldbank_lpi": "2026-11-11",
     "worldbank_wdi": "2026-11-11",
-    "worldbank_wgi": "2026-09-25",
-    "yale_epi": "mini-2022"
+    "worldbank_wgi": "2026-09-25"
   },
   "spec": "SPEC \u00a73",
   "staging": false,
   "variables": [
     {
       "audience": "public",
-      "decision": "byod_only",
+      "decision": "ship_raw",
       "id": "IMPV",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        "redistribute_raw=yes with evidence and commercial ok"
       ],
       "share_alike": false,
       "source_ids": [
         "baci"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
-      "decision": "byod_only",
+      "decision": "ship_raw",
       "id": "IMPC",
       "included": false,
       "reasons": [
-        "source[0]: unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-        "source[0]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256)",
-        "source[1]: unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-        "source[1]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        "source[0]: redistribute_raw=yes with evidence and commercial ok",
+        "source[1]: redistribute_raw=yes with evidence and commercial ok"
       ],
       "share_alike": false,
       "source_ids": [
         "baci",
         "worldbank_wdi"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
-      "decision": "byod_only",
+      "decision": "ship_raw",
       "id": "GRW",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        "redistribute_raw=yes with evidence and commercial ok"
       ],
       "share_alike": false,
       "source_ids": [
         "baci"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
-      "decision": "byod_only",
+      "decision": "ship_raw",
       "id": "GDPPC",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        "redistribute_raw=yes with evidence and commercial ok"
       ],
       "share_alike": false,
       "source_ids": [
         "worldbank_wdi"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
-      "decision": "byod_only",
+      "decision": "ship_raw",
       "id": "DIST",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        "redistribute_raw=yes with evidence and commercial ok"
       ],
       "share_alike": false,
       "source_ids": [
         "cepi_gravity"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
@@ -166,83 +824,84 @@
       "id": "TARIF",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "unknown rights: redistribute_derived, no_derivatives",
         "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
       ],
       "share_alike": false,
       "source_ids": [
         "wits_trains"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
-      "decision": "byod_only",
+      "decision": "ship_raw",
       "id": "FTA",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        "redistribute_raw=yes with evidence and commercial ok"
       ],
       "share_alike": false,
       "source_ids": [
         "cepi_gravity"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
-      "decision": "byod_only",
+      "decision": "ship_raw",
       "id": "LPI",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        "redistribute_raw=yes with evidence and commercial ok"
       ],
       "share_alike": false,
       "source_ids": [
         "worldbank_lpi"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
-      "decision": "byod_only",
+      "decision": "ship_raw",
       "id": "ASIASH",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        "redistribute_raw=yes with evidence and commercial ok"
       ],
       "share_alike": false,
       "source_ids": [
         "baci"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
-      "decision": "byod_only",
+      "decision": "ship_raw",
       "id": "HHI",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        "redistribute_raw=yes with evidence and commercial ok"
       ],
       "share_alike": false,
       "source_ids": [
         "baci"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
-      "decision": "byod_only",
+      "decision": "ship_raw",
       "id": "UVGAP",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        "redistribute_raw=yes with evidence and commercial ok"
       ],
       "share_alike": false,
       "source_ids": [
         "baci"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
@@ -250,97 +909,98 @@
       "id": "CULT",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "unknown rights: redistribute_raw, redistribute_derived, attribution_required, share_alike, no_derivatives",
         "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
       ],
       "share_alike": false,
       "source_ids": [
         "hofstede"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
-      "decision": "byod_only",
+      "decision": "ship_raw",
       "id": "LANG",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        "redistribute_raw=yes with evidence and commercial ok"
       ],
       "share_alike": false,
       "source_ids": [
         "cepi_gravity"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
-      "decision": "byod_only",
+      "decision": "ship_raw",
       "id": "INFL",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        "redistribute_raw=yes with evidence and commercial ok"
       ],
       "share_alike": false,
       "source_ids": [
         "worldbank_wdi"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
-      "decision": "byod_only",
+      "decision": "ship_raw",
       "id": "UNEMP",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        "redistribute_raw=yes with evidence and commercial ok"
       ],
       "share_alike": false,
       "source_ids": [
         "worldbank_wdi"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
-      "decision": "byod_only",
+      "decision": "ship_raw",
       "id": "GOV",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        "redistribute_raw=yes with evidence and commercial ok"
       ],
       "share_alike": false,
       "source_ids": [
         "worldbank_wgi"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
-      "decision": "byod_only",
+      "decision": "ship_raw",
       "id": "EOC",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        "redistribute_raw=yes with evidence and commercial ok"
       ],
       "share_alike": false,
       "source_ids": [
         "worldbank_wdi"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
-      "decision": "byod_only",
+      "decision": "ship_raw",
       "id": "REEXP",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        "redistribute_raw=yes with evidence and commercial ok"
       ],
       "share_alike": false,
       "source_ids": [
         "baci"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
@@ -348,13 +1008,13 @@
       "id": "ITU_IDI",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
         "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
       ],
-      "share_alike": false,
+      "share_alike": true,
       "source_ids": [
         "itu_datahub"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
@@ -362,13 +1022,14 @@
       "id": "EF_EPI",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, share_alike, no_derivatives",
         "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
       ],
       "share_alike": false,
       "source_ids": [
         "ef_epi"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
@@ -376,13 +1037,13 @@
       "id": "ODIN",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
         "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
       ],
       "share_alike": false,
       "source_ids": [
         "odin"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
@@ -396,21 +1057,22 @@
       "share_alike": false,
       "source_ids": [
         "gedi"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
-      "decision": "byod_only",
+      "decision": "ship_raw",
       "id": "GII",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        "redistribute_raw=yes with evidence and commercial ok"
       ],
       "share_alike": false,
       "source_ids": [
         "wipo_gii"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
@@ -424,7 +1086,8 @@
       "share_alike": false,
       "source_ids": [
         "startupblink"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
@@ -432,32 +1095,60 @@
       "id": "EPI",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        "commercial_use=no under commercial_context=true"
       ],
-      "share_alike": false,
+      "share_alike": true,
       "source_ids": [
         "yale_epi"
-      ]
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
-      "decision": "byod_only",
+      "decision": "ship_raw",
       "id": "CO2PC",
       "included": false,
       "reasons": [
-        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        "redistribute_raw=yes with evidence and commercial ok"
       ],
       "share_alike": false,
       "source_ids": [
         "worldbank_wdi"
-      ]
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "ship_raw",
+      "id": "PLI",
+      "included": false,
+      "reasons": [
+        "redistribute_raw=yes with evidence and commercial ok"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "worldbank_wdi"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "ship_raw",
+      "id": "PPAD",
+      "included": false,
+      "reasons": [
+        "redistribute_raw=yes with evidence and commercial ok"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "baci"
+      ],
+      "status": "draft"
     },
     {
       "audience": "public",
       "decision": "byod_only",
-      "id": "PLI",
+      "id": "INTC",
       "included": false,
       "reasons": [
         "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
@@ -465,8 +1156,318 @@
       ],
       "share_alike": false,
       "source_ids": [
+        "freight_manual"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "ship_raw",
+      "id": "CIBC",
+      "included": false,
+      "reasons": [
+        "redistribute_raw=yes with evidence and commercial ok"
+      ],
+      "share_alike": false,
+      "source_ids": [
         "worldbank_wdi"
-      ]
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "ship_raw",
+      "id": "LPIN",
+      "included": false,
+      "reasons": [
+        "redistribute_raw=yes with evidence and commercial ok"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "worldbank_lpi"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "ship_raw",
+      "id": "CPTR",
+      "included": false,
+      "reasons": [
+        "redistribute_raw=yes with evidence and commercial ok"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "worldbank_wdi"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "byod_only",
+      "id": "ITTT",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "freight_manual"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "byod_only",
+      "id": "CUTA",
+      "included": false,
+      "reasons": [
+        "unknown rights: redistribute_derived, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "wits_trains"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "byod_only",
+      "id": "CCTI",
+      "included": false,
+      "reasons": [
+        "commercial_use=no under commercial_context=true"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "global_trade_alert"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "byod_only",
+      "id": "IOEF",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "heritage_ief"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "ship_raw",
+      "id": "CLI",
+      "included": false,
+      "reasons": [
+        "redistribute_raw=yes with evidence and commercial ok"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "worldbank_wdi"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "ship_raw",
+      "id": "INAN",
+      "included": false,
+      "reasons": [
+        "redistribute_raw=yes with evidence and commercial ok"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "worldbank_wdi"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "ship_raw",
+      "id": "UNRA",
+      "included": false,
+      "reasons": [
+        "redistribute_raw=yes with evidence and commercial ok"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "worldbank_wdi"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "byod_only",
+      "id": "FSIN",
+      "included": false,
+      "reasons": [
+        "commercial_use=no under commercial_context=true"
+      ],
+      "share_alike": true,
+      "source_ids": [
+        "fragile_states_index"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "ship_raw",
+      "id": "INRI",
+      "included": false,
+      "reasons": [
+        "redistribute_raw=yes with evidence and commercial ok"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "inform_risk"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "byod_only",
+      "id": "DEIN",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "eiu_democracy"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "byod_only",
+      "id": "GLIN",
+      "included": false,
+      "reasons": [
+        "unknown rights: redistribute_derived, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "kof_globalisation"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "ship_raw",
+      "id": "CPIN",
+      "included": false,
+      "reasons": [
+        "redistribute_raw=yes with evidence and commercial ok"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "transparency_cpi"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "byod_only",
+      "id": "CUDI",
+      "included": false,
+      "reasons": [
+        "unknown rights: redistribute_raw, redistribute_derived, attribution_required, share_alike, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "hofstede"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "byod_only",
+      "id": "RQBC",
+      "included": false,
+      "reasons": [
+        "unknown rights: use_research, redistribute_derived, attribution_required, no_derivatives",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "world_population_review"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "byod_only",
+      "id": "ITBI",
+      "included": false,
+      "reasons": [
+        "commercial_use=no under commercial_context=true"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "trade_barrier_index"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "byod_only",
+      "id": "CADE",
+      "included": false,
+      "reasons": [
+        "source[0]: redistribute_raw=yes with evidence and commercial ok",
+        "source[1]: unknown rights: redistribute_derived, commercial_use, no_derivatives",
+        "source[1]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256)",
+        "source[2]: unknown rights: redistribute_derived, commercial_use, no_derivatives",
+        "source[2]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "worldbank_wdi",
+        "global_carbon_atlas",
+        "iea_ghg"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "local_only",
+      "id": "GLCR",
+      "included": false,
+      "reasons": [
+        "unknown rights: attribution_required",
+        "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)",
+        "use_research=no"
+      ],
+      "share_alike": false,
+      "source_ids": [
+        "coface_country_risk"
+      ],
+      "status": "draft"
+    },
+    {
+      "audience": "public",
+      "decision": "byod_only",
+      "id": "GLSI",
+      "included": false,
+      "reasons": [
+        "commercial_use=no under commercial_context=true"
+      ],
+      "share_alike": true,
+      "source_ids": [
+        "solability_gsci"
+      ],
+      "status": "draft"
     }
   ],
   "version": "1.1.0"

@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-11-20T06:29:11Z",
+  "generated_at": "2026-11-20T09:52:22Z",
   "is_fixture": false,
   "mode": "live",
   "sources": [
     {
-      "checked_at": "2026-11-20T06:29:11Z",
+      "checked_at": "2026-11-20T09:52:21Z",
       "ingested_version": "2026-11-11",
       "mode": "live",
       "note": null,
@@ -15,7 +15,7 @@
       "upstream_version": "2026-11-11"
     },
     {
-      "checked_at": "2026-11-20T06:29:11Z",
+      "checked_at": "2026-11-20T09:52:21Z",
       "ingested_version": "2026-09-25",
       "mode": "live",
       "note": null,
@@ -26,7 +26,7 @@
       "upstream_version": "2026-09-25"
     },
     {
-      "checked_at": "2026-11-20T06:29:11Z",
+      "checked_at": "2026-11-20T09:52:21Z",
       "ingested_version": "2026-11-11",
       "mode": "live",
       "note": null,
@@ -35,6 +35,72 @@
       "terms_changed": null,
       "upstream_changed_at": "2026-11-11",
       "upstream_version": "2026-11-11"
+    },
+    {
+      "checked_at": "2026-11-20T09:52:22Z",
+      "ingested_version": "HS12_V202601",
+      "mode": "live",
+      "note": "manual drop; version from pin or content hash",
+      "source": "baci",
+      "stale": false,
+      "terms_changed": null,
+      "upstream_changed_at": null,
+      "upstream_version": "HS12_V202601"
+    },
+    {
+      "checked_at": "2026-11-20T09:52:22Z",
+      "ingested_version": "V202211",
+      "mode": "live",
+      "note": "manual drop; version from pin or content hash",
+      "source": "cepi_gravity",
+      "stale": false,
+      "terms_changed": null,
+      "upstream_changed_at": null,
+      "upstream_version": "V202211"
+    },
+    {
+      "checked_at": "2026-11-20T09:52:21Z",
+      "ingested_version": "gii2026-20260928",
+      "mode": "live",
+      "note": "GII 2026 database Last-Modified (HEAD)",
+      "source": "wipo_gii",
+      "stale": false,
+      "terms_changed": null,
+      "upstream_changed_at": "2026-09-28",
+      "upstream_version": "gii2026-20260928"
+    },
+    {
+      "checked_at": "2026-11-20T09:52:21Z",
+      "ingested_version": "hdx-20260519",
+      "mode": "live",
+      "note": "HDX resource last_modified; licence tag cc-by",
+      "source": "inform_risk",
+      "stale": false,
+      "terms_changed": null,
+      "upstream_changed_at": "2026-05-19T23:25:29.871538",
+      "upstream_version": "hdx-20260519"
+    },
+    {
+      "checked_at": "2026-11-20T09:52:21Z",
+      "ingested_version": "cpi2025-20260204",
+      "mode": "live",
+      "note": "CPI 2025 workbook Last-Modified (HEAD)",
+      "source": "transparency_cpi",
+      "stale": false,
+      "terms_changed": null,
+      "upstream_changed_at": "2026-02-04",
+      "upstream_version": "cpi2025-20260204"
+    },
+    {
+      "checked_at": "2026-11-20T09:52:22Z",
+      "ingested_version": "db-20240215",
+      "mode": "live",
+      "note": "DB_CSV.zip Last-Modified (HEAD); series discontinued",
+      "source": "worldbank_doing_business",
+      "stale": false,
+      "terms_changed": null,
+      "upstream_changed_at": "2024-02-15",
+      "upstream_version": "db-20240215"
     }
   ]
 }

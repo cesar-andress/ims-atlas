@@ -17,12 +17,17 @@ from imsatlas_etl.connectors.manual import (
     manual_version,
     verify_pin,
 )
-from imsatlas_etl.pipeline.io_paths import PHASE3_INDEX_SOURCES, raw_source_dir
+from imsatlas_etl.pipeline.io_paths import (
+    INDICATOR_FILE_SOURCES,
+    PHASE3_INDEX_SOURCES,
+    raw_source_dir,
+)
 
 # source id -> canonical file name expected in data/manual/<source>/
 MANUAL_FILES: dict[str, str] = {
     "hofstede": "dimensions.csv",
     **{source_id: "values.csv" for source_id in PHASE3_INDEX_SOURCES},
+    **{source_id: "indicators.csv" for source_id in INDICATOR_FILE_SOURCES},
 }
 
 

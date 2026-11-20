@@ -1,0 +1,11 @@
+CountryName,Iso3,GNAYear,IndicatorId,FullName,IndicatorScore
+Testland A,TSA,2024,INFORM,INFORM Risk Index,2.5
+Testland A,TSA,2024,HA,Hazard & Exposure Index,3.5
+Testland A,TSA,2024,VU,Vulnerability Index,4.5
+Testland A,TSA,2024,CC,Lack of Coping Capacity Index,5.5
+Testland A,TSA,2025,INFORM,INFORM Risk Index,2.6
+Testland A,TSA,2025,HA,Hazard & Exposure Index,3.6
+Testland B,TSB,2024,INFORM,INFORM Risk Index,6.5
+Testland B,TSB,2025,INFORM,INFORM Risk Index,
+Testland B,TSB,2025,VU,Vulnerability Index,4.2
+Testland C,TS,2025,INFORM,INFORM Risk Index,1.1

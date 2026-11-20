@@ -15,21 +15,21 @@
       "formula": null,
       "gate": {
         "audience": "public",
-        "decision": "byod_only",
+        "decision": "ship_raw",
         "id": "IMPV",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+          "redistribute_raw=yes with evidence and commercial ok"
         ],
         "share_alike": false,
         "source_ids": [
           "baci"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "IMPV",
-      "last_checked": null,
-      "last_ingested": null,
+      "last_checked": "2026-11-20T09:52:22Z",
+      "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": null,
       "name": {
         "en": "HS chapter imports (USD)",
@@ -57,24 +57,23 @@
       "formula": null,
       "gate": {
         "audience": "public",
-        "decision": "byod_only",
+        "decision": "ship_raw",
         "id": "IMPC",
         "included": false,
         "reasons": [
-          "source[0]: unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "source[0]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256)",
-          "source[1]: unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "source[1]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+          "source[0]: redistribute_raw=yes with evidence and commercial ok",
+          "source[1]: redistribute_raw=yes with evidence and commercial ok"
         ],
         "share_alike": false,
         "source_ids": [
           "baci",
           "worldbank_wdi"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "IMPC",
-      "last_checked": "2026-11-20T06:29:11Z",
-      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_checked": "2026-11-20T09:52:22Z",
+      "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": "2026-11-11",
       "name": {
         "en": "HS chapter imports per capita",
@@ -103,21 +102,21 @@
       "formula": null,
       "gate": {
         "audience": "public",
-        "decision": "byod_only",
+        "decision": "ship_raw",
         "id": "GRW",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+          "redistribute_raw=yes with evidence and commercial ok"
         ],
         "share_alike": false,
         "source_ids": [
           "baci"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "GRW",
-      "last_checked": null,
-      "last_ingested": null,
+      "last_checked": "2026-11-20T09:52:22Z",
+      "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": null,
       "name": {
         "en": "HS chapter import growth (3-year CAGR)",
@@ -145,20 +144,20 @@
       "formula": null,
       "gate": {
         "audience": "public",
-        "decision": "byod_only",
+        "decision": "ship_raw",
         "id": "GDPPC",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+          "redistribute_raw=yes with evidence and commercial ok"
         ],
         "share_alike": false,
         "source_ids": [
           "worldbank_wdi"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "GDPPC",
-      "last_checked": "2026-11-20T06:29:11Z",
+      "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -187,21 +186,21 @@
       "formula": null,
       "gate": {
         "audience": "public",
-        "decision": "byod_only",
+        "decision": "ship_raw",
         "id": "DIST",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+          "redistribute_raw=yes with evidence and commercial ok"
         ],
         "share_alike": false,
         "source_ids": [
           "cepi_gravity"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "DIST",
-      "last_checked": null,
-      "last_ingested": null,
+      "last_checked": "2026-11-20T09:52:22Z",
+      "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": null,
       "name": {
         "en": "Population-weighted distance",
@@ -233,13 +232,14 @@
         "id": "TARIF",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "unknown rights: redistribute_derived, no_derivatives",
           "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
         ],
         "share_alike": false,
         "source_ids": [
           "wits_trains"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "TARIF",
       "last_checked": null,
@@ -271,21 +271,21 @@
       "formula": null,
       "gate": {
         "audience": "public",
-        "decision": "byod_only",
+        "decision": "ship_raw",
         "id": "FTA",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+          "redistribute_raw=yes with evidence and commercial ok"
         ],
         "share_alike": false,
         "source_ids": [
           "cepi_gravity"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "FTA",
-      "last_checked": null,
-      "last_ingested": null,
+      "last_checked": "2026-11-20T09:52:22Z",
+      "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": null,
       "name": {
         "en": "Preferential trade agreement in force",
@@ -313,21 +313,21 @@
       "formula": null,
       "gate": {
         "audience": "public",
-        "decision": "byod_only",
+        "decision": "ship_raw",
         "id": "LPI",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+          "redistribute_raw=yes with evidence and commercial ok"
         ],
         "share_alike": false,
         "source_ids": [
           "worldbank_lpi"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "LPI",
-      "last_checked": "2026-11-20T06:29:11Z",
-      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_checked": "2026-11-20T09:52:21Z",
+      "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": "2026-11-11",
       "name": {
         "en": "Logistics Performance Index (overall)",
@@ -355,21 +355,21 @@
       "formula": null,
       "gate": {
         "audience": "public",
-        "decision": "byod_only",
+        "decision": "ship_raw",
         "id": "ASIASH",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+          "redistribute_raw=yes with evidence and commercial ok"
         ],
         "share_alike": false,
         "source_ids": [
           "baci"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "ASIASH",
-      "last_checked": null,
-      "last_ingested": null,
+      "last_checked": "2026-11-20T09:52:22Z",
+      "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": null,
       "name": {
         "en": "China+Vietnam share of destination HS imports",
@@ -397,21 +397,21 @@
       "formula": null,
       "gate": {
         "audience": "public",
-        "decision": "byod_only",
+        "decision": "ship_raw",
         "id": "HHI",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+          "redistribute_raw=yes with evidence and commercial ok"
         ],
         "share_alike": false,
         "source_ids": [
           "baci"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "HHI",
-      "last_checked": null,
-      "last_ingested": null,
+      "last_checked": "2026-11-20T09:52:22Z",
+      "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": null,
       "name": {
         "en": "Supplier concentration (HHI) in destination HS imports",
@@ -439,21 +439,21 @@
       "formula": null,
       "gate": {
         "audience": "public",
-        "decision": "byod_only",
+        "decision": "ship_raw",
         "id": "UVGAP",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+          "redistribute_raw=yes with evidence and commercial ok"
         ],
         "share_alike": false,
         "source_ids": [
           "baci"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "UVGAP",
-      "last_checked": null,
-      "last_ingested": null,
+      "last_checked": "2026-11-20T09:52:22Z",
+      "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": null,
       "name": {
         "en": "Absolute log unit-value gap (destination imports vs origin exports)",
@@ -485,13 +485,14 @@
         "id": "CULT",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "unknown rights: redistribute_raw, redistribute_derived, attribution_required, share_alike, no_derivatives",
           "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
         ],
         "share_alike": false,
         "source_ids": [
           "hofstede"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "CULT",
       "last_checked": null,
@@ -523,21 +524,21 @@
       "formula": null,
       "gate": {
         "audience": "public",
-        "decision": "byod_only",
+        "decision": "ship_raw",
         "id": "LANG",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+          "redistribute_raw=yes with evidence and commercial ok"
         ],
         "share_alike": false,
         "source_ids": [
           "cepi_gravity"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "LANG",
-      "last_checked": null,
-      "last_ingested": null,
+      "last_checked": "2026-11-20T09:52:22Z",
+      "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": null,
       "name": {
         "en": "Common official language",
@@ -565,20 +566,20 @@
       "formula": null,
       "gate": {
         "audience": "public",
-        "decision": "byod_only",
+        "decision": "ship_raw",
         "id": "INFL",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+          "redistribute_raw=yes with evidence and commercial ok"
         ],
         "share_alike": false,
         "source_ids": [
           "worldbank_wdi"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "INFL",
-      "last_checked": "2026-11-20T06:29:11Z",
+      "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -607,20 +608,20 @@
       "formula": null,
       "gate": {
         "audience": "public",
-        "decision": "byod_only",
+        "decision": "ship_raw",
         "id": "UNEMP",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+          "redistribute_raw=yes with evidence and commercial ok"
         ],
         "share_alike": false,
         "source_ids": [
           "worldbank_wdi"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "UNEMP",
-      "last_checked": "2026-11-20T06:29:11Z",
+      "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -649,21 +650,21 @@
       "formula": null,
       "gate": {
         "audience": "public",
-        "decision": "byod_only",
+        "decision": "ship_raw",
         "id": "GOV",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+          "redistribute_raw=yes with evidence and commercial ok"
         ],
         "share_alike": false,
         "source_ids": [
           "worldbank_wgi"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "GOV",
-      "last_checked": "2026-11-20T06:29:11Z",
-      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_checked": "2026-11-20T09:52:21Z",
+      "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": "2026-09-25",
       "name": {
         "en": "Mean Worldwide Governance Indicators",
@@ -691,20 +692,20 @@
       "formula": null,
       "gate": {
         "audience": "public",
-        "decision": "byod_only",
+        "decision": "ship_raw",
         "id": "EOC",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+          "redistribute_raw=yes with evidence and commercial ok"
         ],
         "share_alike": false,
         "source_ids": [
           "worldbank_wdi"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "EOC",
-      "last_checked": "2026-11-20T06:29:11Z",
+      "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -733,21 +734,21 @@
       "formula": null,
       "gate": {
         "audience": "public",
-        "decision": "byod_only",
+        "decision": "ship_raw",
         "id": "REEXP",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+          "redistribute_raw=yes with evidence and commercial ok"
         ],
         "share_alike": false,
         "source_ids": [
           "baci"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "REEXP",
-      "last_checked": null,
-      "last_ingested": null,
+      "last_checked": "2026-11-20T09:52:22Z",
+      "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": null,
       "name": {
         "en": "Re-export intensity (chapter X_j / M_j)",
@@ -795,13 +796,13 @@
         "id": "ITU_IDI",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
           "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
         ],
-        "share_alike": false,
+        "share_alike": true,
         "source_ids": [
           "itu_datahub"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "ITU_IDI",
       "last_checked": null,
@@ -853,13 +854,14 @@
         "id": "EF_EPI",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, share_alike, no_derivatives",
           "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
         ],
         "share_alike": false,
         "source_ids": [
           "ef_epi"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "EF_EPI",
       "last_checked": null,
@@ -911,13 +913,13 @@
         "id": "ODIN",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
           "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
         ],
         "share_alike": false,
         "source_ids": [
           "odin"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "ODIN",
       "last_checked": null,
@@ -975,7 +977,8 @@
         "share_alike": false,
         "source_ids": [
           "gedi"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "GEDI",
       "last_checked": null,
@@ -1023,22 +1026,22 @@
       "formula": null,
       "gate": {
         "audience": "public",
-        "decision": "byod_only",
+        "decision": "ship_raw",
         "id": "GII",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+          "redistribute_raw=yes with evidence and commercial ok"
         ],
         "share_alike": false,
         "source_ids": [
           "wipo_gii"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "GII",
-      "last_checked": null,
-      "last_ingested": null,
-      "last_upstream_change": null,
+      "last_checked": "2026-11-20T09:52:21Z",
+      "last_ingested": "2026-11-20T09:59:11Z",
+      "last_upstream_change": "2026-09-28",
       "name": {
         "en": "Global Innovation Index",
         "es": "\u00cdndice global de innovaci\u00f3n"
@@ -1091,7 +1094,8 @@
         "share_alike": false,
         "source_ids": [
           "startupblink"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "STARTUPBLINK",
       "last_checked": null,
@@ -1143,13 +1147,13 @@
         "id": "EPI",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+          "commercial_use=no under commercial_context=true"
         ],
-        "share_alike": false,
+        "share_alike": true,
         "source_ids": [
           "yale_epi"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "EPI",
       "last_checked": null,
@@ -1197,20 +1201,20 @@
       "formula": null,
       "gate": {
         "audience": "public",
-        "decision": "byod_only",
+        "decision": "ship_raw",
         "id": "CO2PC",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+          "redistribute_raw=yes with evidence and commercial ok"
         ],
         "share_alike": false,
         "source_ids": [
           "worldbank_wdi"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "CO2PC",
-      "last_checked": "2026-11-20T06:29:11Z",
+      "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -1255,20 +1259,20 @@
       "formula": null,
       "gate": {
         "audience": "public",
-        "decision": "byod_only",
+        "decision": "ship_raw",
         "id": "PLI",
         "included": false,
         "reasons": [
-          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
-          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+          "redistribute_raw=yes with evidence and commercial ok"
         ],
         "share_alike": false,
         "source_ids": [
           "worldbank_wdi"
-        ]
+        ],
+        "status": "draft"
       },
       "id": "PLI",
-      "last_checked": "2026-11-20T06:29:11Z",
+      "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -1295,10 +1299,23 @@
       "download_allowed": false,
       "factor": "cost_access",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "ship_raw",
+        "id": "PPAD",
+        "included": false,
+        "reasons": [
+          "redistribute_raw=yes with evidence and commercial ok"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "baci"
+        ],
+        "status": "draft"
+      },
       "id": "PPAD",
-      "last_checked": null,
-      "last_ingested": null,
+      "last_checked": "2026-11-20T09:52:22Z",
+      "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": null,
       "name": {
         "en": "Product Price at Destination (PPAD)",
@@ -1324,7 +1341,21 @@
       "download_allowed": false,
       "factor": "cost_access",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "byod_only",
+        "id": "INTC",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "freight_manual"
+        ],
+        "status": "draft"
+      },
       "id": "INTC",
       "last_checked": null,
       "last_ingested": null,
@@ -1353,9 +1384,22 @@
       "download_allowed": false,
       "factor": "cost_access",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "ship_raw",
+        "id": "CIBC",
+        "included": false,
+        "reasons": [
+          "redistribute_raw=yes with evidence and commercial ok"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "worldbank_wdi"
+        ],
+        "status": "draft"
+      },
       "id": "CIBC",
-      "last_checked": "2026-11-20T06:29:11Z",
+      "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -1382,10 +1426,23 @@
       "download_allowed": false,
       "factor": "logistics",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "ship_raw",
+        "id": "LPIN",
+        "included": false,
+        "reasons": [
+          "redistribute_raw=yes with evidence and commercial ok"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "worldbank_lpi"
+        ],
+        "status": "draft"
+      },
       "id": "LPIN",
-      "last_checked": "2026-11-20T06:29:11Z",
-      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_checked": "2026-11-20T09:52:21Z",
+      "last_ingested": "2026-11-20T09:59:11Z",
       "last_upstream_change": "2026-11-11",
       "name": {
         "en": "Logistics Performance Index (LPIN)",
@@ -1411,9 +1468,22 @@
       "download_allowed": false,
       "factor": "logistics",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "ship_raw",
+        "id": "CPTR",
+        "included": false,
+        "reasons": [
+          "redistribute_raw=yes with evidence and commercial ok"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "worldbank_wdi"
+        ],
+        "status": "draft"
+      },
       "id": "CPTR",
-      "last_checked": "2026-11-20T06:29:11Z",
+      "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -1440,7 +1510,21 @@
       "download_allowed": false,
       "factor": "logistics",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "byod_only",
+        "id": "ITTT",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "freight_manual"
+        ],
+        "status": "draft"
+      },
       "id": "ITTT",
       "last_checked": null,
       "last_ingested": null,
@@ -1469,7 +1553,21 @@
       "download_allowed": false,
       "factor": "competition",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "byod_only",
+        "id": "CUTA",
+        "included": false,
+        "reasons": [
+          "unknown rights: redistribute_derived, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "wits_trains"
+        ],
+        "status": "draft"
+      },
       "id": "CUTA",
       "last_checked": null,
       "last_ingested": null,
@@ -1498,7 +1596,20 @@
       "download_allowed": false,
       "factor": "competition",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "byod_only",
+        "id": "CCTI",
+        "included": false,
+        "reasons": [
+          "commercial_use=no under commercial_context=true"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "global_trade_alert"
+        ],
+        "status": "draft"
+      },
       "id": "CCTI",
       "last_checked": null,
       "last_ingested": null,
@@ -1527,7 +1638,21 @@
       "download_allowed": false,
       "factor": "competition",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "byod_only",
+        "id": "IOEF",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "heritage_ief"
+        ],
+        "status": "draft"
+      },
       "id": "IOEF",
       "last_checked": null,
       "last_ingested": null,
@@ -1556,9 +1681,22 @@
       "download_allowed": false,
       "factor": "macro_risk",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "ship_raw",
+        "id": "CLI",
+        "included": false,
+        "reasons": [
+          "redistribute_raw=yes with evidence and commercial ok"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "worldbank_wdi"
+        ],
+        "status": "draft"
+      },
       "id": "CLI",
-      "last_checked": "2026-11-20T06:29:11Z",
+      "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -1585,9 +1723,22 @@
       "download_allowed": false,
       "factor": "macro_risk",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "ship_raw",
+        "id": "INAN",
+        "included": false,
+        "reasons": [
+          "redistribute_raw=yes with evidence and commercial ok"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "worldbank_wdi"
+        ],
+        "status": "draft"
+      },
       "id": "INAN",
-      "last_checked": "2026-11-20T06:29:11Z",
+      "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -1614,9 +1765,22 @@
       "download_allowed": false,
       "factor": "macro_risk",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "ship_raw",
+        "id": "UNRA",
+        "included": false,
+        "reasons": [
+          "redistribute_raw=yes with evidence and commercial ok"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "worldbank_wdi"
+        ],
+        "status": "draft"
+      },
       "id": "UNRA",
-      "last_checked": "2026-11-20T06:29:11Z",
+      "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -1643,7 +1807,20 @@
       "download_allowed": false,
       "factor": "institutional",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "byod_only",
+        "id": "FSIN",
+        "included": false,
+        "reasons": [
+          "commercial_use=no under commercial_context=true"
+        ],
+        "share_alike": true,
+        "source_ids": [
+          "fragile_states_index"
+        ],
+        "status": "draft"
+      },
       "id": "FSIN",
       "last_checked": null,
       "last_ingested": null,
@@ -1672,11 +1849,24 @@
       "download_allowed": false,
       "factor": "institutional",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "ship_raw",
+        "id": "INRI",
+        "included": false,
+        "reasons": [
+          "redistribute_raw=yes with evidence and commercial ok"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "inform_risk"
+        ],
+        "status": "draft"
+      },
       "id": "INRI",
-      "last_checked": null,
-      "last_ingested": null,
-      "last_upstream_change": null,
+      "last_checked": "2026-11-20T09:52:21Z",
+      "last_ingested": "2026-11-20T09:59:11Z",
+      "last_upstream_change": "2026-05-19T23:25:29.871538",
       "name": {
         "en": "INFORM Risk (INRI)",
         "es": "Riesgo INFORM (INRI)"
@@ -1701,7 +1891,21 @@
       "download_allowed": false,
       "factor": "institutional",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "byod_only",
+        "id": "DEIN",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "eiu_democracy"
+        ],
+        "status": "draft"
+      },
       "id": "DEIN",
       "last_checked": null,
       "last_ingested": null,
@@ -1730,7 +1934,21 @@
       "download_allowed": false,
       "factor": "product_fit",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "byod_only",
+        "id": "GLIN",
+        "included": false,
+        "reasons": [
+          "unknown rights: redistribute_derived, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "kof_globalisation"
+        ],
+        "status": "draft"
+      },
       "id": "GLIN",
       "last_checked": null,
       "last_ingested": null,
@@ -1759,11 +1977,24 @@
       "download_allowed": false,
       "factor": "product_fit",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "ship_raw",
+        "id": "CPIN",
+        "included": false,
+        "reasons": [
+          "redistribute_raw=yes with evidence and commercial ok"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "transparency_cpi"
+        ],
+        "status": "draft"
+      },
       "id": "CPIN",
-      "last_checked": null,
-      "last_ingested": null,
-      "last_upstream_change": null,
+      "last_checked": "2026-11-20T09:52:21Z",
+      "last_ingested": "2026-11-20T09:59:11Z",
+      "last_upstream_change": "2026-02-04",
       "name": {
         "en": "Corruption Perceptions Index (CPIN)",
         "es": "\u00cdndice de percepci\u00f3n de la corrupci\u00f3n (CPIN)"
@@ -1788,7 +2019,21 @@
       "download_allowed": false,
       "factor": "product_fit",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "byod_only",
+        "id": "CUDI",
+        "included": false,
+        "reasons": [
+          "unknown rights: redistribute_raw, redistribute_derived, attribution_required, share_alike, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "hofstede"
+        ],
+        "status": "draft"
+      },
       "id": "CUDI",
       "last_checked": null,
       "last_ingested": null,
@@ -1817,7 +2062,21 @@
       "download_allowed": false,
       "factor": "logistics",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "byod_only",
+        "id": "RQBC",
+        "included": false,
+        "reasons": [
+          "unknown rights: use_research, redistribute_derived, attribution_required, no_derivatives",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "world_population_review"
+        ],
+        "status": "draft"
+      },
       "id": "RQBC",
       "last_checked": null,
       "last_ingested": null,
@@ -1846,7 +2105,20 @@
       "download_allowed": false,
       "factor": "competition",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "byod_only",
+        "id": "ITBI",
+        "included": false,
+        "reasons": [
+          "commercial_use=no under commercial_context=true"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "trade_barrier_index"
+        ],
+        "status": "draft"
+      },
       "id": "ITBI",
       "last_checked": null,
       "last_ingested": null,
@@ -1875,9 +2147,28 @@
       "download_allowed": false,
       "factor": "sustainability",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "byod_only",
+        "id": "CADE",
+        "included": false,
+        "reasons": [
+          "source[0]: redistribute_raw=yes with evidence and commercial ok",
+          "source[1]: unknown rights: redistribute_derived, commercial_use, no_derivatives",
+          "source[1]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256)",
+          "source[2]: unknown rights: redistribute_derived, commercial_use, no_derivatives",
+          "source[2]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256)"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "worldbank_wdi",
+          "global_carbon_atlas",
+          "iea_ghg"
+        ],
+        "status": "draft"
+      },
       "id": "CADE",
-      "last_checked": "2026-11-20T06:29:11Z",
+      "last_checked": "2026-11-20T09:52:21Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -1906,7 +2197,22 @@
       "download_allowed": false,
       "factor": "sustainability",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "local_only",
+        "id": "GLCR",
+        "included": false,
+        "reasons": [
+          "unknown rights: attribution_required",
+          "evidence incomplete (checked_by/on, terms_url, snapshot_sha256)",
+          "use_research=no"
+        ],
+        "share_alike": false,
+        "source_ids": [
+          "coface_country_risk"
+        ],
+        "status": "draft"
+      },
       "id": "GLCR",
       "last_checked": null,
       "last_ingested": null,
@@ -1935,7 +2241,20 @@
       "download_allowed": false,
       "factor": "sustainability",
       "formula": null,
-      "gate": null,
+      "gate": {
+        "audience": "public",
+        "decision": "byod_only",
+        "id": "GLSI",
+        "included": false,
+        "reasons": [
+          "commercial_use=no under commercial_context=true"
+        ],
+        "share_alike": true,
+        "source_ids": [
+          "solability_gsci"
+        ],
+        "status": "draft"
+      },
       "id": "GLSI",
       "last_checked": null,
       "last_ingested": null,

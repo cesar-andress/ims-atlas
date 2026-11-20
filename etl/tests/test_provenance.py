@@ -157,12 +157,13 @@ def test_empty_release_writes_empty_provenance(
     result = run_release("0.1.0", root=world_root, staging=True, force=True)
     release = Path(result["path"])
     assert result["n_included_variables"] == 0
-    assert len(pd.read_parquet(release / "provenance.parquet")) == 0
+    from imsatlas_etl.pipeline.provenance import read_release_provenance
+
+    assert len(read_release_provenance(release)) == 0
     assert not (release / "provenance.jsonl").exists()
-    files = {f["path"]: f for f in result["manifest"]["files"]}
-    assert files["provenance.parquet"]["rows"] == 0
-    assert len(files["provenance.parquet"]["sha256"]) == 64
     assert result["manifest"]["row_counts"]["provenance_rows"] == 0
+    parts = list((release / "provenance").rglob("part.parquet"))
+    assert parts, "expected partitioned empty provenance"
 
 
 def _staging_with_cells(world_root: Path, tmp_path: Path) -> Path:
@@ -179,10 +180,12 @@ def test_fixture_world_every_cell_has_exactly_one_provenance_row(
     tmp_path_factory: pytest.TempPathFactory,
 ) -> None:
     dest = _staging_with_cells(world_root, tmp_path_factory.mktemp("rel"))
+    from imsatlas_etl.pipeline.provenance import read_release_provenance
+
     summary = build_provenance_for_release(dest, root=world_root)
     country = pd.read_parquet(dest / "country_year.parquet")
     bilateral = pd.read_parquet(dest / "bilateral_year.parquet")
-    prov = pd.read_parquet(dest / "provenance.parquet")
+    prov = read_release_provenance(dest)
     assert summary["provenance_rows"] == len(country) + len(bilateral) > 0
     assert (
         provenance_join_problems(
@@ -203,9 +206,11 @@ def test_fixture_world_provenance_content(
     world_root: Path,
     tmp_path_factory: pytest.TempPathFactory,
 ) -> None:
+    from imsatlas_etl.pipeline.provenance import read_release_provenance
+
     dest = _staging_with_cells(world_root, tmp_path_factory.mktemp("rel"))
     build_provenance_for_release(dest, root=world_root)
-    prov = pd.read_parquet(dest / "provenance.parquet")
+    prov = read_release_provenance(dest)
     co2 = prov[(prov["variable_id"] == "CO2PC") & (prov["iso3"] == "ESP")]
     assert set(co2["source_id"]) == {"worldbank_wdi"}
     assert set(co2["upstream_code"]) == {"EN.GHG.CO2.PC.CE.AR5"}

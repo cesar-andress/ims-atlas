@@ -7,7 +7,7 @@ import pandas as pd
 import pytest
 
 from imsatlas_etl.pipeline.check import run_check
-from imsatlas_etl.pipeline.io_paths import curated_dir, freshness_path
+from imsatlas_etl.pipeline.io_paths import PIPELINE_SOURCES, curated_dir, freshness_path
 from imsatlas_etl.pipeline.runner import run_pipeline
 from imsatlas_etl.pipeline.transform import (
     build_bilateral_year,
@@ -37,7 +37,7 @@ def test_offline_pipeline_exact_curated(work_root: Path) -> None:
     assert "transform" in log["steps"]
 
     freshness = json.loads(freshness_path(root=work_root).read_text(encoding="utf-8"))
-    assert len(freshness["sources"]) == 14
+    assert len(freshness["sources"]) == len(PIPELINE_SOURCES)
     assert all(row["upstream_version"] == "mini-2022" for row in freshness["sources"])
 
     country = pd.read_parquet(curated_dir(root=work_root) / "country_year.parquet")

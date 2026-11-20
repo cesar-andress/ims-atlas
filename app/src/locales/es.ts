@@ -14,7 +14,10 @@ const es = {
   dataRelease: "Publicación de datos",
   appVersion: "Versión de la app",
   dataReleasePending:
-    "Publicación de datos pendiente: el preset COL · HS64 · 2023 aún no tiene panel redistribuible. No se muestran rankings.",
+    "Faltan datos de comercio (BACI) u otras series necesarias para este estudio. No se muestran rankings. Revise Datos → Estado.",
+  dataMissingBaci:
+    "Faltan datos de comercio de BACI para el año seleccionado. Revise Datos → Estado.",
+  dataMissingLink: "Datos → Estado",
   demoSyntheticNote:
     "Panel sintético/E2E (no es dato de producto). No interpretar los rangos como resultados empíricos de calzado COL.",
   footerCredit:

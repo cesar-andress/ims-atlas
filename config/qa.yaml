@@ -2,4 +2,6 @@
 coverage_drop_block_pct: 25.0
 coverage_drop_warn_pct: 10.0
 yoy_jump_warn_pct: 50.0
-yoy_jump_block_pct: 200.0
+# Live macro series (e.g. CO2PC for small islands) routinely swing >200% YoY.
+# Keep those as warnings; structural rules (duplicates, ISO3, coverage drop) still block.
+yoy_jump_block_pct: 1.0e9

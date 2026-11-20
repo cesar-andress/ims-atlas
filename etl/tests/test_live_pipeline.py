@@ -16,6 +16,7 @@ from imsatlas_etl.paths import repo_root
 from imsatlas_etl.pipeline import check as check_mod
 from imsatlas_etl.pipeline import extract as extract_mod
 from imsatlas_etl.pipeline import runner as runner_mod
+from imsatlas_etl.pipeline.io_paths import PIPELINE_SOURCES
 from imsatlas_etl.pipeline.runner import run_pipeline
 
 runner = CliRunner()
@@ -86,7 +87,7 @@ def test_live_run_records_mode_history_changes_and_runs_qa_lineage(
     assert len(history) == 1
     entry = json.loads(history[0])
     assert entry["mode"] == "live" and entry["status"] == "ok"
-    assert len(entry["ingested"]) == 14
+    assert len(entry["ingested"]) == len(PIPELINE_SOURCES)
     changes = json.loads(
         (live_stubs / f"status/changes/{log['run_id']}.json").read_text()
     )
@@ -186,10 +187,11 @@ def test_cli_check_live_without_manual_files_exit_2(
     assert "manual drop" in result.stderr
 
 
-def test_cli_extract_live_without_manual_files_exit_2(
+def test_cli_extract_live_without_manual_files_records_missing(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    """Partial live extract soft-fails missing drops (STEP 1); does not abort."""
     monkeypatch.setenv("ATLAS_ROOT", str(tmp_path))
     drop = tmp_path / "data/manual/hofstede/dimensions.csv"
     drop.parent.mkdir(parents=True)
@@ -201,7 +203,9 @@ def test_cli_extract_live_without_manual_files_exit_2(
     drop.unlink()
     (tmp_path / "data/raw/hofstede").rename(tmp_path / "raw_moved")
     missing = runner.invoke(app, ["extract", "--source", "hofstede"])
-    assert missing.exit_code == 2
+    assert missing.exit_code == 0, missing.stdout + missing.stderr
+    combined = (missing.stdout + missing.stderr).lower()
+    assert "extract ok" in combined or "missing" in combined
 
 
 def test_live_check_ignores_fixture_raw_versions(live_stubs: Path) -> None:

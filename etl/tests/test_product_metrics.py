@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+
 import pandas as pd
 
 from imsatlas_etl.pipeline.product_metrics import (
@@ -99,3 +101,21 @@ def test_partition_write(tmp_path) -> None:
     assert (tmp_path / "country_product" / "hs2=87" / "part.parquet").is_file()
     part = pd.read_parquet(tmp_path / "country_product" / "hs2=87" / "part.parquet")
     assert set(part["hs2"].unique()) == {"87"}
+
+
+def test_partition_write_fine_budget(tmp_path) -> None:
+    metrics = compute_product_metrics(_toy_trade())
+    meta = write_product_metrics_partitioned(
+        metrics,
+        tmp_path / "country_product",
+        max_file_bytes=5 * 1024 * 1024,
+    )
+    assert meta["rows"] == len(metrics)
+    index = tmp_path / "country_product" / "hs2=87" / "index.json"
+    assert index.is_file()
+    payload = json.loads(index.read_text(encoding="utf-8"))
+    assert payload["parts"]
+    part = tmp_path / "country_product" / "hs2=87" / payload["parts"][0]
+    assert part.is_file()
+    frame = pd.read_parquet(part)
+    assert set(frame["hs2"].unique()) == {"87"}

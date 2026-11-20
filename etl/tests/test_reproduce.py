@@ -55,17 +55,21 @@ def test_reproduce_detects_modified_reference(world_root: Path) -> None:
 
 def test_reproduce_reports_missing_and_extra(world_root: Path) -> None:
     ref = _public(world_root)
-    (ref / "provenance.parquet").unlink()
+    parts = list((ref / "provenance").rglob("part.parquet"))
+    assert parts
+    rel = str(parts[0].relative_to(ref)).replace("\\", "/")
+    parts[0].unlink()
     (ref / "legacy.txt").write_text("x", encoding="utf-8")
     result = reproduce_release("0.1.0", root=world_root, fixture_root=FIXTURE_ROOT)
     assert result["ok"] is False
-    assert result["extra_in_candidate"] == ["provenance.parquet"]
+    assert rel in result["extra_in_candidate"]
     assert result["missing_in_candidate"] == ["legacy.txt"]
 
 
 def test_allow_extra_tolerates_pre_provenance_releases(world_root: Path) -> None:
     ref = _public(world_root)
-    (ref / "provenance.parquet").unlink()
+    for part in (ref / "provenance").rglob("part.parquet"):
+        part.unlink()
     strict = reproduce_release("0.1.0", root=world_root, fixture_root=FIXTURE_ROOT)
     lenient = reproduce_release(
         "0.1.0",

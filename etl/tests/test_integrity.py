@@ -110,7 +110,8 @@ def test_release_writes_sums_manifest_signature_and_verifies(
     rel = Path(result["path"])
     sums = parse_sha256sums((rel / "SHA256SUMS").read_text(encoding="utf-8"))
     assert "SHA256SUMS" not in sums
-    assert {"manifest.json", "provenance.parquet", "README.md"} <= set(sums)
+    assert "manifest.json" in sums and "README.md" in sums
+    assert any(p.startswith("provenance/") for p in sums)
     manifest = json.loads((rel / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["signature"] == {"status": "unsigned", "note": UNSIGNED_NOTE}
     assert verify_release(rel)["ok"] is True
@@ -129,9 +130,11 @@ def test_verify_detects_tamper_missing_and_extra(world_root: Path) -> None:
     (rel / "extra.txt").unlink()
 
     run_release("0.1.0", root=world_root, force=True)
-    (rel / "provenance.parquet").unlink()
+    parts = list((rel / "provenance").rglob("part.parquet"))
+    assert parts
+    parts[0].unlink()
     problems = verify_release(rel)["problems"]
-    assert "manifest: listed file missing: provenance.parquet" in problems
+    assert any("listed file missing: provenance/" in p for p in problems)
 
 
 def test_verify_detects_manifest_digest_mismatch(world_root: Path) -> None:

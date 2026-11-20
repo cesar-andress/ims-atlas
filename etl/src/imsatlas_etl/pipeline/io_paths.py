@@ -23,6 +23,13 @@ PIPELINE_SOURCES = (
     "wipo_gii",
     "startupblink",
     "yale_epi",
+    # Step 3: attested open sources used by the catalog (live file download
+    # or documented manual drop; see docs/step3-manual-drops.md)
+    "inform_risk",
+    "transparency_cpi",
+    "worldbank_doing_business",
+    "unctadstat",
+    "imf_weo",
 )
 
 PHASE3_INDEX_SOURCES = (
@@ -33,6 +40,26 @@ PHASE3_INDEX_SOURCES = (
     "wipo_gii",
     "startupblink",
     "yale_epi",
+    "inform_risk",
+    "transparency_cpi",
+)
+
+# Long (iso3, year, indicator, value) raw tables stored as ``indicators.csv``
+# but not pulled from the World Bank v2 API.
+INDICATOR_FILE_SOURCES = (
+    "worldbank_doing_business",
+    "unctadstat",
+    "imf_weo",
+)
+
+# Step 3 sources whose raw layout is verified (see each connector docstring).
+STEP3_SOURCES = (
+    "inform_risk",
+    "transparency_cpi",
+    "wipo_gii",
+    "worldbank_doing_business",
+    "unctadstat",
+    "imf_weo",
 )
 
 

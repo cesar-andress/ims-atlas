@@ -19,7 +19,7 @@
     "governance indicators"
   ],
   "license": "other-open",
-  "notes": "Per-source licences: baci:UNKNOWN; cepi_gravity:UNKNOWN; ef_epi:UNKNOWN; gedi:UNKNOWN; hofstede:UNKNOWN; itu_datahub:UNKNOWN; odin:UNKNOWN; startupblink:UNKNOWN; wipo_gii:UNKNOWN; wits_trains:UNKNOWN; worldbank_lpi:CC-BY-4.0; worldbank_wdi:CC-BY-4.0; worldbank_wgi:CC-BY-4.0; yale_epi:UNKNOWN",
+  "notes": "Per-source licences: baci:etalab-2.0; cepi_gravity:etalab-2.0; coface_country_risk:proprietary; culture_factor:proprietary; ef_epi:proprietary; eiu_democracy:proprietary; fragile_states_index:CC-BY-NC-SA-4.0; freight_manual:UNKNOWN; gedi:UNKNOWN; geodatos:proprietary; global_carbon_atlas:custom; global_product_prices:UNKNOWN; global_trade_alert:custom; heritage_ief:proprietary; hofstede:custom; iea_ghg:proprietary; imf_weo:custom; indexmundi:proprietary; inform_risk:CC-BY-4.0; iso_country_codes_ref:custom; itc_trade:custom; itc_trademap:custom; itu_datahub:CC-BY-NC-SA-3.0-IGO; knoema:UNKNOWN; kof_globalisation:custom; literature_dyo:CC-BY-NC-SA-4.0; nauticalculator:UNKNOWN; numbeo:proprietary; odin:CC-BY-4.0; preciosmundi:UNKNOWN; procolombia:proprietary; sea_distances:UNKNOWN; searates:proprietary; solability_gsci:CC-BY-NC-SA-4.0; startupblink:proprietary; theglobaleconomy:UNKNOWN; trade_barrier_index:proprietary; transparency_cpi:CC-BY-4.0; unctadstat:CC-BY-3.0-IGO; wipo_gii:CC-BY-4.0; wits_trains:custom; world_population_review:proprietary; worldbank_doing_business:CC-BY-4.0; worldbank_lpi:CC-BY-4.0; worldbank_wdi:CC-BY-4.0; worldbank_wgi:CC-BY-4.0; wto_itip:custom; wto_tariffs:custom; yale_epi:CC-BY-NC-SA-4.0",
   "related_identifiers": [
     {
       "identifier": "https://github.com/cesar-andress/ims-atlas",

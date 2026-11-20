@@ -27,7 +27,10 @@ export function baciVolumesFor(
 ): Record<string, number> | null {
   if (!cache || cache.source !== "baci_release") return null;
   if (!hs || year === undefined) return null;
-  const hs2 = hs.replace(/\D/g, "").slice(0, 2).padStart(2, "0");
+  // Release trade parts are HS2 chapter aggregates only — never reuse them for HS4/HS6.
+  const digits = hs.replace(/\D/g, "");
+  if (digits.length !== 2) return null;
+  const hs2 = digits.padStart(2, "0");
   if (cache.hs2 !== hs2 || cache.year !== year) return null;
   return cache.volumes;
 }

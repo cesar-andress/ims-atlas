@@ -132,9 +132,25 @@ export function createDuckDbClient(): AtlasDataClient {
       const key = hs2.padStart(2, "0").slice(0, 2);
       if (loadedCountryProductHs2.has(key)) return true;
       const base = opts?.basePath ?? releaseUrl();
-      const url = `${base}/country_product/hs2=${key}/part.parquet`;
+      const chapter = `${base}/country_product/hs2=${key}`;
+      const table = `country_product_hs2_${key}`;
       try {
-        await registerParquetTable(`country_product_hs2_${key}`, url);
+        // Fine-partitioned releases expose index.json (year × variable_id parts).
+        const indexRes = await fetch(`${chapter}/index.json`);
+        if (indexRes.ok) {
+          const index = (await indexRes.json()) as { parts?: string[] };
+          const parts = (index.parts ?? []).map(
+            (rel) => `${chapter}/${rel}`.replace(/'/g, "''"),
+          );
+          if (!parts.length) return false;
+          const list = parts.map((u) => `'${u}'`).join(", ");
+          await conn.query(`
+            CREATE OR REPLACE TABLE ${table} AS
+            SELECT * FROM read_parquet([${list}]);
+          `);
+        } else {
+          await registerParquetTable(table, `${chapter}/part.parquet`);
+        }
         loadedCountryProductHs2.add(key);
         return true;
       } catch {

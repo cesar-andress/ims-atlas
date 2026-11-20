@@ -1,0 +1,13 @@
+{
+  "version": "HS12_V202601",
+  "filename": "BACI_HS12_V202601.zip",
+  "sha256": "2dd0dd6174f11e9fc33b9bacf001d50c1913dbfeed9cba30876a1668b2b75bf9",
+  "bytes": 1267950839,
+  "url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/data/BACI_HS12_V202601.zip",
+  "options": {
+    "value_scale": 1000,
+    "value_scale_note": "Confirmed from zip Readme.txt: values in thousands of USD",
+    "year_min": 2012,
+    "year_max": 2024
+  }
+}

@@ -1,0 +1,17 @@
+[Unit]
+Description=IMS Atlas weekly full pipeline (live → release → promote → export)
+After=network-online.target ims-atlas-check.service
+Wants=network-online.target
+OnFailure=ims-atlas-check.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/services/ims-atlas
+ExecStart=/opt/services/ims-atlas/deploy/atlas-etl-pipeline.sh
+# Optional secrets (never commit): EnvironmentFile=-/etc/ims-atlas/check.env
+EnvironmentFile=-/etc/ims-atlas/check.env
+Nice=10
+TimeoutStartSec=6h
+
+[Install]
+WantedBy=multi-user.target

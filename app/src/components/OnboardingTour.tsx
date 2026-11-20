@@ -11,7 +11,7 @@ const STEPS = [
   { titleKey: "tourStep4Title" as const, bodyKey: "tourStep4Body" as const },
 ];
 
-/** Skippable ~60s first-visit tour; reopen via footer/help. */
+/** Tour opens only on request (footer button) or when forceOpen; never blocks content. */
 export function OnboardingTour({ forceOpen = false }: { forceOpen?: boolean }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
@@ -22,13 +22,11 @@ export function OnboardingTour({ forceOpen = false }: { forceOpen?: boolean }) {
       setOpen(true);
       return;
     }
+    // Do not auto-open over Análisis / first paint — user opens via "Tour (60 s)".
     if (typeof localStorage === "undefined") return;
-    // Skip auto-open under Playwright / automation (webdriver).
     if (typeof navigator !== "undefined" && navigator.webdriver) {
       localStorage.setItem(KEY, "1");
-      return;
     }
-    if (localStorage.getItem(KEY) !== "1") setOpen(true);
   }, [forceOpen]);
 
   function finish() {

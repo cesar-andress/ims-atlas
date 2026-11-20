@@ -9,13 +9,18 @@ from typing import Any
 from imsatlas_etl.connectors import (
     baci,
     country_index,
+    cpi,
+    doing_business,
     gravity,
     hofstede,
+    inform,
     manual_drop,
+    wipo_gii,
     wits,
 )
 from imsatlas_etl.connectors import worldbank as wb
 from imsatlas_etl.pipeline.io_paths import (
+    INDICATOR_FILE_SOURCES,
     PHASE3_INDEX_SOURCES,
     PIPELINE_SOURCES,
     freshness_path,
@@ -61,6 +66,16 @@ def _extract_live(
         return gravity.extract_live(version, root=root, force=force)
     if source_id == "wits_trains":
         return wits.extract_live(version, root=root, force=force)
+    # Step 3: live file download unless a manual drop is in place; sources with
+    # no verified auto-fetch (unctadstat, imf_weo) fall through to manual_drop.
+    step3 = {
+        "inform_risk": inform.extract_live,
+        "transparency_cpi": cpi.extract_live,
+        "wipo_gii": wipo_gii.extract_live,
+        "worldbank_doing_business": doing_business.extract_live,
+    }
+    if source_id in step3:
+        return step3[source_id](version, root=root, force=force)
     if manual_drop.is_manual_source(source_id):
         return manual_drop.extract_live(source_id, version, root=root, force=force)
     raise ValueError(f"unsupported extract source: {source_id}")
@@ -74,7 +89,7 @@ def _extract_fixture(
     root: Path | None,
     force: bool,
 ) -> dict[str, Any]:
-    if source_id in WB_SOURCES:
+    if source_id in WB_SOURCES or source_id in INDICATOR_FILE_SOURCES:
         return wb.extract_from_fixture(
             source_id,
             version,
@@ -133,27 +148,63 @@ def run_extract(
     root: Path | None = None,
     force: bool = False,
 ) -> list[dict[str, Any]]:
+    from imsatlas_etl.connectors.http import SourceUnavailableError
+
     selected = list(sources) if sources else list(PIPELINE_SOURCES)
     for source_id in selected:
         if source_id not in PIPELINE_SOURCES:
             raise ValueError(f"unknown pipeline source: {source_id}")
-    versions = _versions_from_freshness(root=root, sources=selected)
+    # Live partial runs: only extract sources present in freshness.
+    path = freshness_path(root=root)
+    if not path.is_file():
+        raise FileNotFoundError(f"missing {path}; run atlas-etl check first")
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    fresh_ids = {row["source"] for row in payload.get("sources", [])}
+    versions = _versions_from_freshness(
+        root=root,
+        sources=[s for s in selected if s in fresh_ids],
+    )
     results: list[dict[str, Any]] = []
     for source_id in selected:
-        results.append(
-            extract_source(
-                source_id,
-                versions[source_id],
-                fixture_root=fixture_root,
-                root=root,
-                force=force,
-            ),
-        )
+        if source_id not in versions:
+            results.append(
+                {
+                    "source": source_id,
+                    "version": None,
+                    "skipped": True,
+                    "missing": True,
+                    "reason": "not in freshness.json",
+                },
+            )
+            continue
+        try:
+            results.append(
+                extract_source(
+                    source_id,
+                    versions[source_id],
+                    fixture_root=fixture_root,
+                    root=root,
+                    force=force,
+                ),
+            )
+        except (SourceUnavailableError, FileNotFoundError, ValueError, KeyError) as exc:
+            # Manual drops / archived indicators: record and continue.
+            results.append(
+                {
+                    "source": source_id,
+                    "version": versions[source_id],
+                    "skipped": True,
+                    "missing": True,
+                    "reason": str(exc),
+                },
+            )
 
     # Refresh ingested_version / stale after a successful extract.
-    path = freshness_path(root=root)
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    by_result = {r["source"]: r["version"] for r in results}
+    by_result = {
+        r["source"]: r["version"]
+        for r in results
+        if r.get("version") and not r.get("missing")
+    }
     for row in payload.get("sources", []):
         sid = row.get("source")
         if sid in by_result:

@@ -168,6 +168,9 @@ def write_country_product_partitions(
     """Copy curated country_product partitions filtered by included variable ids."""
     from imsatlas_etl.pipeline.product_metrics import write_product_metrics_partitioned
 
+    # SPEC §3 single-file budget (keep local to avoid circular import with release.py).
+    max_file_bytes = 5 * 1024 * 1024
+
     src = curated_dir(root=root) / "country_product.parquet"
     out = dest / "country_product"
     if not source_shippable("baci") or not src.is_file():
@@ -184,9 +187,16 @@ def write_country_product_partitions(
         )
         return write_product_metrics_partitioned(empty, out)
     frame = pd.read_parquet(src)
-    if included_ids:
+    # Empty included_ids must not ship any product metrics (public until verified).
+    if not included_ids:
+        frame = frame.iloc[0:0]
+    else:
         frame = frame[frame["variable_id"].isin(included_ids)]
-    return write_product_metrics_partitioned(frame, out)
+    return write_product_metrics_partitioned(
+        frame,
+        out,
+        max_file_bytes=max_file_bytes,
+    )
 
 
 def write_spec3_tables(

@@ -34,6 +34,9 @@ VARIABLE_SPECS: dict[str, dict[str, str]] = {
     "GII": {"source_id": "wipo_gii", "kind": "index", "byod": "true"},
     "STARTUPBLINK": {"source_id": "startupblink", "kind": "index", "byod": "true"},
     "EPI": {"source_id": "yale_epi", "kind": "index", "byod": "true"},
+    # Step 3: live file download (or manual drop) -> values.csv
+    "INRI": {"source_id": "inform_risk", "kind": "index", "byod": "true"},
+    "CPIN": {"source_id": "transparency_cpi", "kind": "index", "byod": "true"},
 }
 
 
@@ -72,14 +75,28 @@ def build_variables_country_year(
             }
             continue
         version = versions[source_id]
-        if spec["kind"] == "wb_indicator":
-            series = _wb_series(spec["code"], source_id, version, root=root)
-            series = series.rename(columns={"value": vid})
-            unmatched: list[dict[str, Any]] = []
-        else:
-            path = raw_source_dir(source_id, version, root=root) / "values.csv"
-            series, unmatched = country_index.load_raw_values(path)
-            series = series.rename(columns={"value": vid})
+        try:
+            if spec["kind"] == "wb_indicator":
+                path = raw_source_dir(source_id, version, root=root) / "indicators.csv"
+                if not path.is_file():
+                    raise FileNotFoundError(str(path))
+                series = _wb_series(spec["code"], source_id, version, root=root)
+                series = series.rename(columns={"value": vid})
+                unmatched: list[dict[str, Any]] = []
+            else:
+                path = raw_source_dir(source_id, version, root=root) / "values.csv"
+                if not path.is_file():
+                    raise FileNotFoundError(str(path))
+                series, unmatched = country_index.load_raw_values(path)
+                series = series.rename(columns={"value": vid})
+        except (FileNotFoundError, ValueError, OSError) as exc:
+            meta["variables"][vid] = {
+                "status": "raw_missing",
+                "source_id": source_id,
+                "version": version,
+                "reason": str(exc),
+            }
+            continue
         meta["unmatched"][vid] = unmatched
         meta["variables"][vid] = {
             "status": "ok",

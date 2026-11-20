@@ -175,57 +175,34 @@ def run_pipeline(
                 "duration_s": round(dur, 4),
                 "results": result,
             }
-        # Transform/QA/lineage currently assume every PIPELINE_SOURCES version is
-        # present in freshness (country_year merges WDI+WGI+LPI+hofstede, …).
-        full_set = set(PIPELINE_SOURCES)
-        subset_only = set(selected_sources) != full_set
+        # Transform/QA/lineage run on whatever raw tables exist. Missing sources
+        # become null columns and are listed in missing_sources (no fixture fallback).
         if "transform" in effective:
-            if subset_only:
-                log["steps"]["transform"] = {
-                    "status": "skipped",
-                    "reason": (
-                        "selected sources are a subset of PIPELINE_SOURCES; "
-                        "curated merge needs the full set"
-                    ),
-                }
-            else:
-                result, dur = _timed(lambda: run_transform(root=root, force=force))
-                log["steps"]["transform"] = {
-                    "status": "ok",
-                    "duration_s": round(dur, 4),
-                    "row_counts": result["row_counts"],
-                }
+            result, dur = _timed(lambda: run_transform(root=root, force=force))
+            missing = result.get("missing_sources") or []
+            log["missing_sources"] = missing
+            log["steps"]["transform"] = {
+                "status": "ok",
+                "duration_s": round(dur, 4),
+                "row_counts": result["row_counts"],
+                "missing_sources": missing,
+                "source_coverage": result.get("source_coverage"),
+            }
         if "qa" in effective:
-            if subset_only:
-                log["steps"]["qa"] = {
-                    "status": "skipped",
-                    "reason": (
-                        "skipped because transform did not run on a source subset"
-                    ),
-                }
-            else:
-                report, dur = _timed(lambda: run_qa(root=root))
-                log["steps"]["qa"] = {
-                    "status": "block" if report["status"] == "fail" else "ok",
-                    "report_status": report["status"],
-                    "duration_s": round(dur, 4),
-                    "n_block": report["n_block"],
-                    "n_warn": report["n_warn"],
-                }
+            report, dur = _timed(lambda: run_qa(root=root))
+            log["steps"]["qa"] = {
+                "status": "block" if report["status"] == "fail" else "ok",
+                "report_status": report["status"],
+                "duration_s": round(dur, 4),
+                "n_block": report["n_block"],
+                "n_warn": report["n_warn"],
+            }
         if "lineage" in effective:
-            if subset_only:
-                log["steps"]["lineage"] = {
-                    "status": "skipped",
-                    "reason": (
-                        "skipped because transform did not run on a source subset"
-                    ),
-                }
-            else:
-                path, dur = _timed(lambda: write_lineage(root=root))
-                log["steps"]["lineage"] = {
-                    "status": "ok",
-                    "duration_s": round(dur, 4),
-                }
+            path, dur = _timed(lambda: write_lineage(root=root))
+            log["steps"]["lineage"] = {
+                "status": "ok",
+                "duration_s": round(dur, 4),
+            }
         if "stores" in effective:
             transform_ok = log["steps"].get("transform", {}).get("status") == "ok"
             if not transform_ok:

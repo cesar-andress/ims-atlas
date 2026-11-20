@@ -14,7 +14,10 @@ export const en = {
   dataRelease: "Data release",
   appVersion: "App version",
   dataReleasePending:
-    "Data release pending — the COL · HS64 · 2023 preset has no redistributable panel yet. Ranking numbers are not shown.",
+    "Trade data (BACI) or other series needed for this study are missing. Rankings are not shown. See Data → Status.",
+  dataMissingBaci:
+    "BACI trade data for the selected year are missing. See Data → Status.",
+  dataMissingLink: "Data → Status",
   demoSyntheticNote:
     "E2E/synthetic panel (not product data). Do not treat ranks as empirical COL footwear results.",
   footerCredit:

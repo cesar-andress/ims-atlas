@@ -21,7 +21,7 @@ import pandas as pd
 from imsatlas_etl.connectors.http import SourceUnavailableError, fetch_bytes
 from imsatlas_etl.connectors.worldbank import API_ROOT, api_indicator_code, parse_page
 from imsatlas_etl.pipeline.io_paths import public_release_dir, status_root
-from imsatlas_etl.pipeline.provenance import PROVENANCE_PARQUET
+from imsatlas_etl.pipeline.provenance import read_release_provenance
 
 WB_SOURCES = frozenset({"worldbank_wdi", "worldbank_wgi", "worldbank_lpi"})
 SPOT_CHECK_NAME = "spot_check.json"
@@ -188,13 +188,12 @@ def run_spot_check(
     Network is used only when neither ``fixture_responses`` nor ``fetch`` is set.
     """
     base = release_dir or current_release_dir(root=root)
-    prov_path = base / PROVENANCE_PARQUET if base else None
     note: str | None = None
     provenance = pd.DataFrame()
-    if prov_path is None or not prov_path.is_file():
+    if base is None:
         note = "no public release provenance found; nothing to sample"
     else:
-        provenance = pd.read_parquet(prov_path)
+        provenance = read_release_provenance(base)
         if provenance.empty:
             note = "release has 0 cells; nothing to sample"
     cells = checkable_cells(provenance)

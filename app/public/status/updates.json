@@ -1,8 +1,52 @@
 {
   "generated_from": "status/history.jsonl + status/changes/",
   "is_fixture": false,
-  "n_runs": 2,
+  "n_runs": 5,
   "runs": [
+    {
+      "ended_at": "2026-11-20T09:59:11Z",
+      "mode": "live",
+      "n_new_cells": 26978,
+      "n_revised_cells": 30,
+      "run_id": "20261120T095221Z-21994d97",
+      "started_at": "2026-11-20T09:52:21Z",
+      "status": "failed",
+      "summaries": [
+        "baci: first ingest (142112452 rows)",
+        "cepi_gravity: first ingest (1599313 rows)",
+        "inform_risk: first ingest (1910 rows)",
+        "transparency_cpi: first ingest (2491 rows)",
+        "wipo_gii: first ingest (278 rows)",
+        "worldbank_doing_business: first ingest (2405 rows)",
+        "worldbank_lpi; +2007, 2010, 2012, 2014, 2016, \u2026 for 166 countries; 3 revised values; largest: LP.LPI.OVRL.XQ CHL -9.1 %; version mini-2022 \u2192 2026-11-11",
+        "worldbank_wdi: unchanged (already on disk)",
+        "worldbank_wgi; +1996, 1998, 2000, 2002, 2003, \u2026 for 204 countries; 27 revised values; largest: RL.EST MEX -489.0 %; version mini-2022 \u2192 2026-09-25"
+      ]
+    },
+    {
+      "ended_at": "2026-11-20T09:10:38Z",
+      "mode": "live",
+      "n_new_cells": 0,
+      "n_revised_cells": 0,
+      "run_id": "20261120T091037Z-562d5a9a",
+      "started_at": "2026-11-20T09:10:37Z",
+      "status": "qa_blocked",
+      "summaries": [
+        "worldbank_lpi: unchanged (already on disk)",
+        "worldbank_wdi: unchanged (already on disk)",
+        "worldbank_wgi: unchanged (already on disk)"
+      ]
+    },
+    {
+      "ended_at": "2026-11-20T09:09:50Z",
+      "mode": "live",
+      "n_new_cells": 0,
+      "n_revised_cells": 0,
+      "run_id": "20261120T090924Z-48930250",
+      "started_at": "2026-11-20T09:09:24Z",
+      "status": "failed",
+      "summaries": []
+    },
     {
       "ended_at": "2026-11-19T20:51:52Z",
       "mode": "live",

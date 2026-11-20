@@ -1,38 +1,39 @@
 {
-  "changes_path": "status/changes/20261119T205142Z-ae7e9e9a.json",
-  "ended_at": "2026-11-19T20:51:52Z",
+  "access_mode": "CERRADO",
+  "changes_path": "status/changes/20261120T095221Z-21994d97.json",
+  "ended_at": "2026-11-20T09:59:11Z",
+  "error": "validate failed:\n- cepi_gravity: contract failed for cepi_gravity@V202211:\n{'schema_context': {0: 'Column', 1: 'Column', 2: 'Column', 3: 'Column', 4: 'Column', 5: 'Column', 6: 'Column', 7: 'Column', 8: 'Column', 9: 'Column', 10: 'Column', 11: 'Column', 12: 'Column', 13: 'Column', 14: 'Column', 15: 'Column', 16: 'Column', 17: 'Column', 18: 'Column', 19: 'Column'}, 'column': {0: 'distw', 1: 'distw', 2: 'distw', 3: 'distw', 4: 'distw', 5: 'distw', 6: 'distw', 7: 'distw', 8: 'distw', 9: 'distw', 10: 'distw', 11: 'distw', 12: 'distw', 13: 'distw', 14: 'distw', 15: 'distw', 16: 'distw', 17: 'distw', 18: 'distw', 19: 'distw'}, 'check': {0: 'greater_than(0)', 1: 'greater_than(0)', 2: 'greater_than(0)', 3: 'greater_than(0)', 4: 'greater_than(0)', 5: 'greater_than(0)', 6: 'greater_than(0)', 7: 'greater_than(0)', 8: 'greater_than(0)', 9: 'greater_than(0)', 10: 'greater_than(0)', 11: 'greater_than(0)', 12: 'greater_than(0)', 13: 'greater_than(0)', 14: 'greater_than(0)', 15: 'greater_than(0)', 16: 'greater_than(0)', 17: 'greater_than(0)', 18: 'greater_than(0)', 19: 'greater_than(0)'}, 'check_number': {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0, 13: 0, 14: 0, 15: 0, 16: 0, 17: 0, 18: 0, 19: 0}, 'failure_case': {0: 0.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 0.0, 5: 0.0, 6: 0.0, 7: 0.0, 8: 0.0, 9: 0.0, 10: 0.0, 11: 0.0, 12: 0.0, 13: 0.0, 14: 0.0, 15: 0.0, 16: 0.0, 17: 0.0, 18: 0.0, 19: 0.0}, 'index': {0: 67682, 1: 96089, 2: 161117, 3: 166988, 4: 332878, 5: 333407, 6: 363511, 7: 368713, 8: 370518, 9: 452684, 10: 524009, 11: 639325, 12: 639326, 13: 738189, 14: 845074, 15: 859175, 16: 880429, 17: 917062, 18: 917063, 19: 1226964}}",
   "fixture_mode": false,
   "force": true,
   "is_fixture": false,
   "mode": "live",
-  "run_id": "20261119T205142Z-ae7e9e9a",
+  "run_id": "20261120T095221Z-21994d97",
   "sources": [
     "worldbank_wdi",
     "worldbank_wgi",
-    "worldbank_lpi"
+    "worldbank_lpi",
+    "inform_risk",
+    "transparency_cpi",
+    "wipo_gii",
+    "worldbank_doing_business",
+    "baci",
+    "cepi_gravity"
   ],
-  "started_at": "2026-11-19T20:51:42Z",
-  "status": "ok",
+  "started_at": "2026-11-20T09:52:21Z",
+  "status": "failed",
   "steps": {
     "check": {
-      "duration_s": 0.2386,
-      "n_sources": 3,
+      "duration_s": 1.2553,
+      "n_sources": 9,
       "status": "ok"
     },
     "extract": {
-      "duration_s": 9.1147,
+      "duration_s": 386.718,
       "results": [
         {
-          "countries": 217,
-          "rows": 47081,
-          "skipped": false,
+          "skipped": true,
           "source": "worldbank_wdi",
-          "upstream_version": "2026-11-11",
-          "version": "2026-11-11",
-          "years": [
-            1990,
-            2025
-          ]
+          "version": "2026-11-11"
         },
         {
           "countries": 207,
@@ -57,42 +58,66 @@
             2007,
             2022
           ]
-        }
-      ],
-      "status": "ok"
-    },
-    "lineage": {
-      "reason": "skipped because transform did not run on a source subset",
-      "status": "skipped"
-    },
-    "qa": {
-      "reason": "skipped because transform did not run on a source subset",
-      "status": "skipped"
-    },
-    "transform": {
-      "reason": "selected sources are a subset of PIPELINE_SOURCES; curated merge needs the full set",
-      "status": "skipped"
-    },
-    "validate": {
-      "duration_s": 0.0492,
-      "results": [
-        {
-          "ok": true,
-          "rows": 47081,
-          "source": "worldbank_wdi",
-          "version": "2026-11-11"
         },
         {
-          "ok": true,
-          "rows": 25937,
-          "source": "worldbank_wgi",
-          "version": "2026-09-25"
+          "countries": 191,
+          "rows": 1910,
+          "skipped": false,
+          "source": "inform_risk",
+          "upstream_version": "hdx-20260519",
+          "version": "hdx-20260519",
+          "years": [
+            2016,
+            2025
+          ]
         },
         {
-          "ok": true,
-          "rows": 1071,
-          "source": "worldbank_lpi",
-          "version": "2026-11-11"
+          "countries": 182,
+          "rows": 2491,
+          "skipped": false,
+          "source": "transparency_cpi",
+          "upstream_version": "cpi2025-20260204",
+          "version": "cpi2025-20260204",
+          "years": [
+            2012,
+            2025
+          ]
+        },
+        {
+          "countries": 142,
+          "rows": 278,
+          "skipped": false,
+          "source": "wipo_gii",
+          "upstream_version": "gii2026-20260928",
+          "version": "gii2026-20260928",
+          "years": [
+            2025,
+            2026
+          ]
+        },
+        {
+          "countries": 191,
+          "rows": 2405,
+          "skipped": false,
+          "source": "worldbank_doing_business",
+          "upstream_version": "db-20240215",
+          "version": "db-20240215",
+          "years": [
+            2009,
+            2019
+          ]
+        },
+        {
+          "rows": 142112452,
+          "skipped": false,
+          "source": "baci",
+          "version": "HS12_V202601"
+        },
+        {
+          "rows": 1599313,
+          "skipped": false,
+          "source": "cepi_gravity",
+          "version": "V202211"
         }
       ],
       "status": "ok"

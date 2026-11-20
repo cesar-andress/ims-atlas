@@ -300,6 +300,7 @@ def extract_live(
     )
     frames: list[pd.DataFrame] = []
     per_code: dict[str, dict[str, Any]] = {}
+    skipped_codes: dict[str, str] = {}
     for code in selected:
 
         def _save(
@@ -318,14 +319,28 @@ def extract_live(
             )
 
         api_code = api_indicator_code(code)
-        meta, rows = _fetch_all_pages(
-            lambda page, _api=api_code: indicator_page_url(_api, page),
-            label=f"{code}→{api_code}" if api_code != code else code,
-            fetch=getter,
-            sleep=sleep,
-            rate_limit_s=rate_limit_s,
-            on_page=_save,
-        )
+        label = f"{code}→{api_code}" if api_code != code else code
+        try:
+            meta, rows = _fetch_all_pages(
+                lambda page, _api=api_code: indicator_page_url(_api, page),
+                label=label,
+                fetch=getter,
+                sleep=sleep,
+                rate_limit_s=rate_limit_s,
+                on_page=_save,
+            )
+        except ValueError as exc:
+            # Archived / deleted series (e.g. Doing Business IC.IMP.CSBC.CD) must
+            # not abort the whole source extract when other indicators succeed.
+            skipped_codes[code] = str(exc)
+            per_code[code] = {
+                "catalog_code": code,
+                "api_code": api_code,
+                "status": "skipped",
+                "reason": str(exc),
+                "n_kept": 0,
+            }
+            continue
         sleep(rate_limit_s)
         frame, counts = tidy_indicator_rows(
             code,
@@ -340,6 +355,7 @@ def extract_live(
             "lastupdated": meta.get("lastupdated"),
             "pages": int(meta.get("pages") or 1),
             "total": meta.get("total"),
+            "status": "ok",
             **counts,
         }
 
@@ -359,6 +375,7 @@ def extract_live(
         "version": version,
         "mode": "live",
         "indicators": per_code,
+        "skipped_codes": skipped_codes,
         "rows": int(len(table)),
         "countries": int(table["iso3"].nunique()),
         "year_min": int(table["year"].min()),

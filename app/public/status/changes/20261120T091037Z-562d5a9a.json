@@ -1,0 +1,32 @@
+{
+  "generated_at": "2026-11-20T09:10:38Z",
+  "is_fixture": false,
+  "mode": "live",
+  "run_id": "20261120T091037Z-562d5a9a",
+  "sources": {
+    "worldbank_lpi": {
+      "status": "skipped_existing",
+      "version": {
+        "changed": false,
+        "next": "2026-11-11",
+        "previous": "2026-11-11"
+      }
+    },
+    "worldbank_wdi": {
+      "status": "skipped_existing",
+      "version": {
+        "changed": false,
+        "next": "2026-11-11",
+        "previous": "2026-11-11"
+      }
+    },
+    "worldbank_wgi": {
+      "status": "skipped_existing",
+      "version": {
+        "changed": false,
+        "next": "2026-09-25",
+        "previous": "2026-09-25"
+      }
+    }
+  }
+}

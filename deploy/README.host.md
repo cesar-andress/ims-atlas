@@ -74,6 +74,28 @@ sudo systemctl enable --now ims-atlas-check.timer
 
 Manual check: `deploy/atlas-etl-check.sh`
 
+## Weekly full pipeline timer (after the check)
+
+Runs live extract → dual release → promote (public + internal) → transparency
+export → COL/HS64 panel → `sync-public-status.sh` → compose reload. Writes under
+`status/` (including `changes/` and `updates.json` via export-transparency).
+Failures exit non-zero so systemd can alert; optional GitHub issue via the same
+`/etc/ims-atlas/check.env` as the freshness check.
+
+```bash
+sudo cp deploy/ims-atlas-pipeline.service deploy/ims-atlas-pipeline.timer /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now ims-atlas-pipeline.timer
+systemctl list-timers 'ims-atlas-*'
+# Manual run:
+#   sudo systemctl start ims-atlas-pipeline.service
+#   journalctl -u ims-atlas-pipeline.service -n 200 --no-pager
+```
+
+Requires host Docker, network access to source APIs, and the manual drops under
+`data/manual/` (BACI, Gravity, and any STEP 3 manual sources). Do **not** commit
+those drops.
+
 ## Promote a data release
 
 On a machine with the ETL env (after `make pipeline-fixture && make release-staging`):

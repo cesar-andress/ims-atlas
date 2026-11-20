@@ -53,6 +53,16 @@ SOURCE_LANDING: dict[str, dict[str, str]] = {
         "access_date": "2026-11-19",
         "notes": "EPI downloads CC BY-NC-SA 4.0 — non-commercial; BYOD / not shipped.",
     },
+    "inform_risk": {
+        "landing_url": "https://drmkc.jrc.ec.europa.eu/inform-index",
+        "access_date": "2026-11-20",
+        "notes": "Live: HDX inform_risk_index_trends.csv (IndicatorId=INFORM).",
+    },
+    "transparency_cpi": {
+        "landing_url": "https://www.transparency.org/en/cpi",
+        "access_date": "2026-11-20",
+        "notes": "Live: CPI2025_Results.xlsx (timeseries sheet, strict OOXML).",
+    },
 }
 
 
