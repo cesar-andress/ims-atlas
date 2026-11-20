@@ -38,6 +38,15 @@ export const en = {
   homeCardVariables: "Variables",
   homeCardVariablesBody:
     "Define origin, product, markets, weights and method in one place.",
+  hubVariablesIntro:
+    "This is the only place that changes the analysis: origin, product, markets, variables, weights and method. Advanced options stay collapsed below.",
+  mapViewOptions: "Map view",
+  mapProjection: "Map projection",
+  mapProjGlobe: "Globe",
+  mapProjFlat: "Flat",
+  mapExtrude3d: "3D extrusion by score",
+  clusterK: "Cluster count (k)",
+  backtestOptions: "Backtest options",
   homeCardAnalisis: "Analysis",
   homeCardAnalisisBody:
     "Open a study for the current selection (ranking, map, backtest…).",

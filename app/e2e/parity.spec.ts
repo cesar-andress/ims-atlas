@@ -38,7 +38,7 @@ async function routeFullPanel(page: import("@playwright/test").Page): Promise<vo
 
 test.describe("SPEC §11 parity with app-sme", () => {
   test("any origin country (~190 ISO3 exporters selectable)", async ({ page }) => {
-    await page.goto(`/builder?c=${encodeConfig({ ...COL, view: "builder" })}`);
+    await page.goto(`/variables?c=${encodeConfig({ ...COL, view: "variables" })}`);
     await expect(page.getByTestId("config-panel")).toBeVisible();
     const countText = await page.getByTestId("origin-count").innerText();
     const n = Number(countText.replace(/[^\d]/g, ""));
@@ -47,11 +47,11 @@ test.describe("SPEC §11 parity with app-sme", () => {
     await page.getByTestId("origin-input").fill("ESP");
     await expect(page.getByTestId("origin-hits")).toContainText("ESP");
     await page.getByTestId("origin-hits").getByRole("button", { name: "ESP" }).click();
-    await expect(page.getByTestId("builder-summary")).toContainText("ESP");
+    await expect(page.getByTestId("origin-input")).toHaveValue("ESP");
   });
 
   test("product search by name, HS2/HS4/HS6 and category tree", async ({ page }) => {
-    await page.goto(`/builder?c=${encodeConfig({ ...COL, view: "builder" })}`);
+    await page.goto(`/variables?c=${encodeConfig({ ...COL, view: "variables" })}`);
     await expect(page.getByTestId("config-panel")).toBeVisible();
 
     await page.getByTestId("hs-search").fill("Footwear");
@@ -79,7 +79,7 @@ test.describe("SPEC §11 parity with app-sme", () => {
     await expect(page.getByTestId("factor-criteria-table")).toBeVisible({
       timeout: 15_000,
     });
-    await page.getByTestId("factor-tab").selectOption("cost_access");
+    await page.getByRole("tab", { name: "cost_access" }).click();
     await expect(page.locator('tr[data-var-id="DIST"]')).toBeVisible();
     await expect(page.getByTestId("raw-DIST")).not.toHaveText("");
     await expect(page.getByTestId("norm-DIST")).not.toHaveText("");
@@ -89,7 +89,7 @@ test.describe("SPEC §11 parity with app-sme", () => {
 
   test("IMSFE weighting module (expert preset + manual sliders)", async ({ page }) => {
     await routeFullPanel(page);
-    await page.goto(`/builder?c=${encodeConfig({ ...COL, view: "builder" })}`);
+    await page.goto(`/variables?c=${encodeConfig({ ...COL, view: "variables" })}`);
     await expect(page.getByTestId("weight-scheme")).toBeVisible();
     await expect(page.getByTestId("weight-scheme")).toHaveValue("expert_mean");
     await page.getByTestId("weight-scheme").selectOption("manual");
@@ -126,7 +126,7 @@ test.describe("SPEC §11 parity with app-sme", () => {
     page,
   }) => {
     await routeFullPanel(page);
-    await page.goto(`/builder?c=${encodeConfig({ ...COL, view: "builder" })}`);
+    await page.goto(`/variables?c=${encodeConfig({ ...COL, view: "variables" })}`);
     await expect(page.getByTestId("factor-group-cost_access")).toBeVisible({
       timeout: 15_000,
     });
@@ -141,15 +141,17 @@ test.describe("SPEC §11 parity with app-sme", () => {
 
   test("sustainability factor (open CO2PC)", async ({ page }) => {
     await routeFullPanel(page);
-    await page.goto(`/builder?c=${encodeConfig({ ...COL, view: "builder" })}`);
+    await page.goto(`/variables?c=${encodeConfig({ ...COL, view: "variables" })}`);
     await expect(page.getByTestId("factor-group-sustainability")).toBeVisible({
       timeout: 15_000,
     });
     await expect(page.getByTestId("var-CO2PC")).toBeVisible();
 
     await page.goto(`/factors?c=${encodeConfig({ ...COL, view: "factors" })}`);
-    await expect(page.getByTestId("factor-tab")).toBeVisible({ timeout: 15_000 });
-    await page.getByTestId("factor-tab").selectOption("sustainability");
+    await expect(page.getByRole("tab", { name: "sustainability" })).toBeVisible({
+      timeout: 15_000,
+    });
+    await page.getByRole("tab", { name: "sustainability" }).click();
     await expect(page.locator('tr[data-var-id="CO2PC"]')).toBeVisible();
 
     await page.goto(`/docs?c=${encodeConfig({ v: 1, view: "docs", lang: "en" })}`);
@@ -191,7 +193,7 @@ test.describe("SPEC §11 parity with app-sme", () => {
 
   test("consumer price basket replaced by open WB ICP PLI", async ({ page }) => {
     await routeFullPanel(page);
-    await page.goto(`/builder?c=${encodeConfig({ ...COL, view: "builder" })}`);
+    await page.goto(`/variables?c=${encodeConfig({ ...COL, view: "variables" })}`);
     await expect(page.getByTestId("var-PLI")).toBeVisible({ timeout: 15_000 });
 
     await page.goto(`/docs?c=${encodeConfig({ v: 1, view: "docs", lang: "en" })}`);

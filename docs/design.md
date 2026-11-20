@@ -1,5 +1,22 @@
 # IMS Atlas — visual design notes (Phase W)
 
+## Editable controls (GUI simplicity, 2026-11-20)
+
+| Screen | Before | After |
+|--------|--------|-------|
+| Ranking / Matrix / Uncertainty / Compare / Time | 0 | 0 |
+| Map (globe / flat / 3D) | 3 buttons | 0 (moved to Variables → Opciones avanzadas) |
+| Backtest (target / horizon) | 2 selects | 0 (same) |
+| Factors (factor / ISO3) | 2 selects | 0 selects (country/factor chips only) |
+| Permanent side ConfigPanel on results | yes (historically) | never |
+
+Target: **0** `input` / `select` / `textarea` inside `main` on every results view
+(`e2e/results-readonly.spec.ts`).
+
+---
+
+# IMS Atlas — visual design notes (Phase W)
+
 Decision-dashboard visuals follow published multi-criteria ranking and
 uncertainty literature. Weight editing and “order them yourself” (Podium) live
 only inside **Cambiar análisis → Pesos**; result screens stay read-only.

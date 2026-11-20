@@ -18,9 +18,9 @@ export function MarketMap() {
   const { model, error } = useRankingModel();
   const [layout, setLayout] = useState<MarketLayoutResult | null>(null);
   const [layoutError, setLayoutError] = useState<string | null>(null);
-  const [projection, setProjection] = useState<"globe" | "mercator">("globe");
-  const [extrude, setExtrude] = useState(false);
 
+  const projection = config.mapProjection ?? "globe";
+  const extrude = config.mapExtrude === true;
   const clusterK = config.clusterK ?? 4;
   const mapSeed = config.mapSeed ?? 42;
   const colorMode = config.mapColor === "quadrant" ? "quadrant" : "cluster";
@@ -103,38 +103,13 @@ export function MarketMap() {
     >
       {() => (
         <div className="map-results" data-testid="map-results">
-          <div className="mb-3 flex flex-wrap gap-2" data-testid="map-view-toggles">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              data-testid="map-proj-globe"
-              aria-pressed={projection === "globe"}
-              onClick={() => setProjection("globe")}
-            >
-              Globe
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              data-testid="map-proj-flat"
-              aria-pressed={projection === "mercator"}
-              onClick={() => setProjection("mercator")}
-            >
-              Flat
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              data-testid="map-extrude"
-              aria-pressed={extrude}
-              onClick={() => setExtrude((v) => !v)}
-            >
-              3D
-            </button>
-            <PermalinkLink view="variables" className="btn btn-secondary">
-              {t("changeAnalysis")} (k={clusterK})
-            </PermalinkLink>
-          </div>
+          <p className="muted small" data-testid="map-view-context">
+            {projection === "globe" ? t("mapProjGlobe") : t("mapProjFlat")}
+            {extrude ? ` · ${t("mapExtrude3d")}` : ""}
+            {` · k=${clusterK}`}
+            {" · "}
+            <PermalinkLink view="variables">{t("changeAnalysis")}</PermalinkLink>
+          </p>
 
           <WorldChoropleth
             rows={choroplethRows}

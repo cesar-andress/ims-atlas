@@ -51,35 +51,42 @@ function FactorsBody({ model }: { model: RankingViewModel }) {
 
   return (
     <>
-      <div className="ranking-meta">
-        <label>
-          {t("transparencyFactor")}{" "}
-          <select
-            data-testid="factor-tab"
-            value={factor}
-            onChange={(e) => setFactor(e.target.value)}
-          >
-            {factors.map((f) => (
-              <option key={f} value={f}>
-                {f}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          ISO3{" "}
-          <select
-            data-testid="factor-iso"
-            value={iso ?? ""}
-            onChange={(e) => setConfig({ compareA: e.target.value })}
-          >
-            {model.ranking.map((r) => (
-              <option key={r.iso3} value={r.iso3}>
-                {r.rank}. {r.iso3}
-              </option>
-            ))}
-          </select>
-        </label>
+      <div className="ranking-meta" data-testid="factors-picker">
+        <p className="muted small m-0">{t("transparencyFactor")}</p>
+        <div
+          className="flex flex-wrap gap-1"
+          role="tablist"
+          aria-label={t("transparencyFactor")}
+        >
+          {factors.map((f) => (
+            <button
+              key={f}
+              type="button"
+              role="tab"
+              aria-selected={f === factor}
+              className={f === factor ? "btn btn-primary" : "btn btn-secondary"}
+              data-testid={f === factor ? "factor-tab" : `factor-tab-${f}`}
+              onClick={() => setFactor(f)}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+        <p className="muted small m-0">ISO3</p>
+        <div className="flex flex-wrap gap-1" data-testid="factor-iso-list">
+          {model.ranking.slice(0, 30).map((r) => (
+            <button
+              key={r.iso3}
+              type="button"
+              className={r.iso3 === iso ? "btn btn-primary" : "btn btn-secondary"}
+              data-testid={r.iso3 === iso ? "factor-iso" : `factor-iso-${r.iso3}`}
+              aria-pressed={r.iso3 === iso}
+              onClick={() => setConfig({ compareA: r.iso3 })}
+            >
+              {r.rank}. {r.iso3}
+            </button>
+          ))}
+        </div>
       </div>
       <div className="table-scroll" data-export-surface="table">
         <ExportMenu

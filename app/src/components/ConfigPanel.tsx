@@ -31,7 +31,12 @@ const FACTOR_ORDER = [
   "sustainability",
 ] as const;
 
-export function ConfigPanel() {
+type ConfigPanelProps = {
+  /** `page` = Variables hub (full width). Default keeps legacy aside chrome. */
+  layout?: "aside" | "page";
+};
+
+export function ConfigPanel({ layout = "aside" }: ConfigPanelProps) {
   const { t, i18n } = useTranslation();
   const {
     config,
@@ -166,8 +171,9 @@ export function ConfigPanel() {
 
   return (
     <aside
-      className="config-panel"
+      className={`config-panel${layout === "page" ? " config-panel-page" : ""}`}
       data-testid="config-panel"
+      data-layout={layout}
       aria-label={t("configPanel")}
     >
       <details className="config-panel-fold" open>
@@ -385,6 +391,85 @@ export function ConfigPanel() {
               />
               {t("includeOriginInPreselect")}
             </label>
+
+            <fieldset data-testid="map-view-options">
+              <legend>{t("mapViewOptions")}</legend>
+              <label>
+                {t("mapProjection")}
+                <select
+                  data-testid="map-projection"
+                  value={config.mapProjection ?? "globe"}
+                  onChange={(e) =>
+                    setConfig({
+                      mapProjection: e.target.value as "globe" | "mercator",
+                    })
+                  }
+                >
+                  <option value="globe">{t("mapProjGlobe")}</option>
+                  <option value="mercator">{t("mapProjFlat")}</option>
+                </select>
+              </label>
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  data-testid="map-extrude"
+                  checked={config.mapExtrude === true}
+                  onChange={(e) => setConfig({ mapExtrude: e.target.checked })}
+                />
+                {t("mapExtrude3d")}
+              </label>
+              <label>
+                {t("clusterK")}
+                <input
+                  type="number"
+                  min={2}
+                  max={8}
+                  data-testid="cluster-k"
+                  value={config.clusterK ?? 4}
+                  onChange={(e) =>
+                    setConfig({
+                      clusterK: Math.max(2, Math.min(8, Number(e.target.value) || 4)),
+                    })
+                  }
+                />
+              </label>
+            </fieldset>
+
+            <fieldset data-testid="backtest-options">
+              <legend>{t("backtestOptions")}</legend>
+              <label>
+                {t("backtestTarget")}
+                <select
+                  data-testid="backtest-target"
+                  value={config.backtestTarget ?? "intensive"}
+                  onChange={(e) =>
+                    setConfig({
+                      backtestTarget: e.target.value as
+                        "intensive" | "new_markets" | "growth",
+                    })
+                  }
+                >
+                  <option value="intensive">intensive</option>
+                  <option value="new_markets">new_markets</option>
+                  <option value="growth">growth</option>
+                </select>
+              </label>
+              <label>
+                {t("backtestHorizon")}
+                <select
+                  data-testid="backtest-horizon"
+                  value={config.backtestHorizon ?? 1}
+                  onChange={(e) =>
+                    setConfig({
+                      backtestHorizon: Number(e.target.value) === 3 ? 3 : 1,
+                    })
+                  }
+                >
+                  <option value={1}>k=1</option>
+                  <option value={3}>k=3</option>
+                </select>
+              </label>
+            </fieldset>
           </details>
 
           <label>

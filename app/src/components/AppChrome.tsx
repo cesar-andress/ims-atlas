@@ -1,17 +1,16 @@
 import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { version as APP_VERSION } from "@ims-atlas/core";
 import { AppNav } from "./AppNav";
 import { AppUpdateBanner } from "./AppUpdateBanner";
 import { PermalinkLink } from "./PermalinkLink";
 import { AccessMenu } from "./AccessMenu";
 import { UpdatesNewsPill } from "./UpdatesNewsPill";
-import { GlobalSearch } from "./GlobalSearch";
+import { HeaderOverflowMenu } from "./HeaderOverflowMenu";
 import { HelpDrawer } from "./HelpDrawer";
 import { dataConfig } from "../dataConfig";
 import { useAnalysis } from "../state/useAnalysis";
 import { ensureLanguage, useTranslation } from "../i18n";
-import { applyTheme, readStoredTheme, type ThemeMode } from "../theme";
 
 const REPO_URL = "https://github.com/cesar-andress/ims-atlas";
 const BACKTEST_URL = "https://github.com/cesar-andress/ims-backtest";
@@ -19,14 +18,7 @@ const BACKTEST_URL = "https://github.com/cesar-andress/ims-backtest";
 /** View: site header + footer around the workspace. */
 export function AppHeader() {
   const { t, i18n } = useTranslation();
-  const { config, setConfig, dirty, activeProject } = useAnalysis();
-  const [theme, setTheme] = useState<ThemeMode>(() =>
-    typeof document === "undefined" ? "light" : readStoredTheme(),
-  );
-
-  useEffect(() => {
-    applyTheme(theme);
-  }, [theme]);
+  const { config, dirty, activeProject } = useAnalysis();
 
   useEffect(() => {
     const current = i18n.language.startsWith("es") ? "es" : "en";
@@ -60,30 +52,10 @@ export function AppHeader() {
         ) : null}
       </div>
       <AppNav />
-      <GlobalSearch />
       <UpdatesNewsPill />
       <div className="controls">
         <AccessMenu />
-        <label>
-          {t("language")}{" "}
-          <select
-            aria-label={t("language")}
-            value={i18n.language.startsWith("es") ? "es" : "en"}
-            onChange={(event) => {
-              const lang = event.target.value as "en" | "es";
-              void ensureLanguage(lang).then(() => setConfig({ lang }));
-            }}
-          >
-            <option value="en">EN</option>
-            <option value="es">ES</option>
-          </select>
-        </label>
-        <button
-          type="button"
-          onClick={() => setTheme((prev) => (prev === "light" ? "dark" : "light"))}
-        >
-          {theme === "light" ? t("themeDark") : t("themeLight")}
-        </button>
+        <HeaderOverflowMenu />
       </div>
     </header>
   );

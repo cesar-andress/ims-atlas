@@ -37,13 +37,12 @@ test.describe("Phase H product context", () => {
   }
 
   test("apply-col-hs64 preset still works", async ({ page }) => {
-    await page.goto("/builder");
+    await page.goto("/variables");
     await expect(page.getByTestId("config-panel")).toBeVisible();
     await page.getByTestId("apply-col-hs64").click();
-    const banner = page.getByTestId("product-context");
-    await expect(banner).toContainText("COL");
-    await expect(banner).toContainText("64");
-    await expect(banner).toContainText("2023");
+    await expect(page.getByTestId("origin-input")).toHaveValue("COL");
+    await expect(page.getByTestId("hs-input")).toHaveValue("64");
+    await expect(page.getByTestId("year-input")).toHaveValue("2023");
   });
 
   test("Factors does not crash for non-demo product", async ({ page }) => {

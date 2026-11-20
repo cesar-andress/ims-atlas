@@ -37,6 +37,15 @@ const es = {
   homeCardDatosBody: "Qué datos hay, por fuente y licencia.",
   homeCardVariables: "Variables",
   homeCardVariablesBody: "Origen, producto, mercados, pesos y método en un solo sitio.",
+  hubVariablesIntro:
+    "Este es el único sitio donde se cambia el análisis: origen, producto, mercados, variables, pesos y método. Las opciones avanzadas van abajo, plegadas.",
+  mapViewOptions: "Vista del mapa",
+  mapProjection: "Proyección del mapa",
+  mapProjGlobe: "Globo",
+  mapProjFlat: "Plano",
+  mapExtrude3d: "Extrusión 3D por puntuación",
+  clusterK: "Número de clusters (k)",
+  backtestOptions: "Opciones de backtest",
   homeCardAnalisis: "Análisis",
   homeCardAnalisisBody:
     "Abra un estudio con la selección actual (ranking, mapa, backtest…).",

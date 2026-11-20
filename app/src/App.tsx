@@ -8,13 +8,8 @@ import { RankingModelProvider } from "./ranking/RankingModelContext";
 import { prefetchCriticalRoutes } from "./ranking/prefetchRoutes";
 import { scheduleIdle } from "./scheduleIdle";
 import { AnalysisProvider } from "./state/AnalysisContext";
-import { useAnalysis } from "./state/useAnalysis";
-import { isAnalysisView, isResultsView } from "./state/views";
 import { useTranslation } from "./i18n";
 
-const ConfigPanel = lazy(() =>
-  import("./components/ConfigPanel").then((m) => ({ default: m.ConfigPanel })),
-);
 const Builder = lazy(() =>
   import("./pages/Builder").then((m) => ({ default: m.Builder })),
 );
@@ -153,29 +148,12 @@ function RouteFallback() {
 }
 
 function AppShell() {
-  const { config } = useAnalysis();
-  // GUI simplicity: config only on Variables / builder / lab — never on results.
-  const showConfig =
-    isAnalysisView(config.view) &&
-    !isResultsView(config.view) &&
-    (config.view === "builder" ||
-      config.view === "variables" ||
-      config.view === "norm_lab" ||
-      config.view === "project_variables");
-
   useEffect(() => {
     scheduleIdle(() => prefetchCriticalRoutes());
   }, []);
 
   return (
-    <AppShellFrame
-      showConfig={showConfig}
-      configSlot={
-        <Suspense fallback={null}>
-          <ConfigPanel />
-        </Suspense>
-      }
-    >
+    <AppShellFrame showConfig={false} configSlot={null}>
       <Suspense fallback={<RouteFallback />}>
         <Routes>
           <Route path="/" element={<Home />} />

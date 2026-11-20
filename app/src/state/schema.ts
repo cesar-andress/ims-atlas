@@ -130,6 +130,10 @@ export type AnalysisConfig = {
   mapColor?: "cluster" | "quadrant" | undefined;
   /** VOSviewer-style mode (SPEC §12). */
   mapMode?: "network" | "overlay" | "density" | undefined;
+  /** MapLibre projection (Cambiar análisis only). */
+  mapProjection?: "globe" | "mercator" | undefined;
+  /** Extrude country polygons by score (Cambiar análisis only). */
+  mapExtrude?: boolean | undefined;
   /** Variable id for overlay colouring. */
   mapOverlayVar?: string | undefined;
   backtestTarget?: "intensive" | "new_markets" | "growth" | undefined;
@@ -433,6 +437,11 @@ export function parseAnalysisConfig(input: unknown): AnalysisConfig {
 
   const mapMode = asEnum(input.mapMode, ["network", "overlay", "density"] as const);
   if (mapMode) out.mapMode = mapMode;
+
+  const mapProjection = asEnum(input.mapProjection, ["globe", "mercator"] as const);
+  if (mapProjection) out.mapProjection = mapProjection;
+
+  if (typeof input.mapExtrude === "boolean") out.mapExtrude = input.mapExtrude;
 
   if (typeof input.mapOverlayVar === "string" && input.mapOverlayVar.trim()) {
     out.mapOverlayVar = input.mapOverlayVar.trim().slice(0, 32);

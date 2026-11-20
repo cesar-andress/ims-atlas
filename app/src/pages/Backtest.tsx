@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
 import { ExportMenu } from "../components/ExportMenu";
+import { PermalinkLink } from "../components/PermalinkLink";
 import { formatScore } from "../format";
 import { loadT4Fixture, type T4Fixture } from "../data/loadT4Fixture";
 import { analysisErrorMessage } from "../ranking/analysisError";
@@ -10,7 +11,7 @@ import { isColHs64Preset } from "../ranking/demoPanel";
 import { useAnalysis } from "../state/useAnalysis";
 import { scoreBlock, spearmanCorr } from "@ims-atlas/core";
 
-const TARGETS = ["intensive", "new_markets", "growth"] as const;
+type BacktestTarget = "intensive" | "new_markets" | "growth";
 
 function leaveOneOutSpearman(
   model: NonNullable<ReturnType<typeof useRankingModel>["model"]>,
@@ -52,11 +53,11 @@ function leaveOneOutSpearman(
 
 export function Backtest() {
   const { t } = useTranslation();
-  const { config, setConfig } = useAnalysis();
+  const { config } = useAnalysis();
   const { model, error } = useRankingModel();
   const [fixture, setFixture] = useState<T4Fixture | null>(null);
   const [fixtureError, setFixtureError] = useState<string | null>(null);
-  const target = (config.backtestTarget as (typeof TARGETS)[number]) ?? "intensive";
+  const target: BacktestTarget = config.backtestTarget ?? "intensive";
   const horizon = config.backtestHorizon === 3 ? 3 : 1;
 
   useEffect(() => {
@@ -115,47 +116,16 @@ export function Backtest() {
       model={model}
       error={error ?? (fixtureError ? analysisErrorMessage(fixtureError) : null)}
       allowWithoutModel
-      controls={
-        <div className="matrix-controls" data-testid="backtest-controls">
-          <label>
-            {t("backtestTarget")}
-            <select
-              value={target}
-              data-testid="backtest-target"
-              onChange={(e) =>
-                setConfig({
-                  backtestTarget: e.target.value as (typeof TARGETS)[number],
-                })
-              }
-            >
-              {TARGETS.map((tg) => (
-                <option key={tg} value={tg}>
-                  {tg}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            {t("backtestHorizon")}
-            <select
-              value={horizon}
-              data-testid="backtest-horizon"
-              onChange={(e) =>
-                setConfig({
-                  backtestHorizon: Number(e.target.value) === 3 ? 3 : 1,
-                })
-              }
-            >
-              <option value={1}>k=1</option>
-              <option value={3}>k=3</option>
-            </select>
-          </label>
-        </div>
-      }
+      chrome="results"
     >
       {() =>
         fixture ? (
           <div className="backtest-body" data-testid="backtest-body">
+            <p className="muted small" data-testid="backtest-context">
+              {t("backtestTarget")}: {target} · {t("backtestHorizon")}: k={horizon}
+              {" · "}
+              <PermalinkLink view="variables">{t("changeAnalysis")}</PermalinkLink>
+            </p>
             <p className="callout" data-testid="backtest-disclaimer" role="note">
               {t("backtestDisclaimer")}
             </p>

@@ -98,6 +98,8 @@ export function configToSearch(config: AnalysisConfig): string {
   if (config.mapSeed !== undefined) compact.mapSeed = config.mapSeed;
   if (config.mapColor) compact.mapColor = config.mapColor;
   if (config.mapMode) compact.mapMode = config.mapMode;
+  if (config.mapProjection) compact.mapProjection = config.mapProjection;
+  if (config.mapExtrude !== undefined) compact.mapExtrude = config.mapExtrude;
   if (config.mapOverlayVar) compact.mapOverlayVar = config.mapOverlayVar;
   if (config.backtestTarget) compact.backtestTarget = config.backtestTarget;
   if (config.backtestHorizon !== undefined) {
