@@ -339,7 +339,17 @@ const es = {
   transparencyPipelineIntro:
     "DAG de linaje y log de la última ejecución desde status/lineage.json y status/runs/.",
   transparencyReleasesIntro:
-    "Versiones publicadas de los datos y campos del manifiesto desde el JSON.",
+    "Qué versión de los datos está publicada, cuándo se promovió y qué incluye el manifiesto.",
+  releasesHistoryTitle: "Historial de versiones publicadas",
+  releasesTradeRows: "Filas de comercio",
+  releasesSize: "Tamaño publicado",
+  releasesOpenManifest: "Abrir manifiesto",
+  releasesBrowseFiles: "Explorar ficheros",
+  releasesEmpty: "No hay entradas en el registro de versiones publicadas.",
+  releasesVersionMissing: "Versión no publicada",
+  releasesFallbackConfig: "Versión tomada de la configuración de la app.",
+  releasesInternalVars: "Variables internas (equipo)",
+  releasesInternalManifest: "manifiesto interno",
   transparencyUpdatesIntro:
     "Línea temporal de ejecuciones ETL y diferencias legibles frente a la ingestión live anterior de cada fuente.",
   transparencyUpdatesEmpty:

@@ -335,7 +335,17 @@ export const en = {
   transparencyPipelineIntro:
     "Lineage DAG and last run log from status/lineage.json and status/runs/.",
   transparencyReleasesIntro:
-    "Published data versions and manifest fields from the manifest JSON.",
+    "Which data version is published, when it was promoted, and what the manifest includes.",
+  releasesHistoryTitle: "Published version history",
+  releasesTradeRows: "Trade rows",
+  releasesSize: "Published size",
+  releasesOpenManifest: "Open manifest",
+  releasesBrowseFiles: "Browse files",
+  releasesEmpty: "No published data-version entries are available yet.",
+  releasesVersionMissing: "No published version",
+  releasesFallbackConfig: "Version taken from the app configuration.",
+  releasesInternalVars: "Internal variables (team)",
+  releasesInternalManifest: "internal manifest",
   transparencyUpdatesIntro:
     "Timeline of ETL runs and readable diffs versus the previous live ingest of each source.",
   transparencyUpdatesEmpty:

@@ -1,10 +1,18 @@
-import { lazy, Suspense, useMemo, type ComponentType } from "react";
+import {
+  lazy,
+  Suspense,
+  useEffect,
+  useMemo,
+  useState,
+  type ComponentType,
+} from "react";
 import { useLocation } from "react-router-dom";
 import { version as APP_VERSION } from "@ims-atlas/core";
 import { EmbeddedPanelContext } from "../components/EmbeddedContext";
 import { GlobalSearch } from "../components/GlobalSearch";
 import { PermalinkLink } from "../components/PermalinkLink";
 import { dataConfig, releaseUrl } from "../dataConfig";
+import { loadReleases } from "../data/transparency";
 import { useTranslation } from "../i18n";
 
 const DataSources = lazy(() =>
@@ -49,6 +57,35 @@ export function FuentesDatos() {
     return FUENTES_TABS.find((tab) => tab.id === id)?.id ?? "fuentes";
   }, [hash]);
   const Panel = FUENTES_TABS.find((tab) => tab.id === active)!.Panel;
+  const [liveRelease, setLiveRelease] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    void loadReleases()
+      .then((payload) => {
+        const current =
+          typeof payload.current === "string" ? payload.current.trim() : "";
+        const fromRow = payload.releases?.find(
+          (r) => typeof r.version === "string" && String(r.version).trim(),
+        )?.version;
+        const resolved =
+          current ||
+          (typeof fromRow === "string" ? fromRow.trim() : "") ||
+          dataConfig.release_version;
+        if (!cancelled) setLiveRelease(resolved);
+      })
+      .catch(() => {
+        if (!cancelled) setLiveRelease(dataConfig.release_version);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const dataVersion = liveRelease ?? dataConfig.release_version;
+  const manifestHref = dataVersion
+    ? `${dataConfig.release_base_path}/v${dataVersion}/manifest.json`
+    : releaseUrl("manifest.json");
 
   return (
     <section
@@ -71,9 +108,13 @@ export function FuentesDatos() {
             </span>
             <span>
               {t("dataVersion")}:{" "}
-              <a href={releaseUrl("manifest.json")} data-testid="data-version-link">
-                v{dataConfig.release_version}
-              </a>
+              {dataVersion ? (
+                <a href={manifestHref} data-testid="data-version-link">
+                  v{dataVersion}
+                </a>
+              ) : (
+                <span data-testid="data-version-link">—</span>
+              )}
             </span>
             <span className="fuentes-meta-sep" aria-hidden>
               ·

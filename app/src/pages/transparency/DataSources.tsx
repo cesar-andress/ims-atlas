@@ -309,7 +309,9 @@ export function DataSources() {
                           {displayCell(fr.ingested_version ?? state?.version)}
                         </td>
                         <td data-from-json="release_version">
-                          {displayCell(s.release_version)}
+                          {displayCell(
+                            s.release_version ?? fr.ingested_version ?? state?.version,
+                          )}
                         </td>
                         <td data-from-json="stale">
                           {stale ? (
