@@ -254,6 +254,96 @@ def _licence_ids_for_var(var: dict[str, Any], sources_by: dict[str, Any]) -> lis
     return out
 
 
+def _panel_coverage_stats(root: Path) -> dict[str, dict[str, Any]]:
+    """Counts-only coverage from curated/internal panels (no cell values)."""
+    import pandas as pd
+
+    out: dict[str, dict[str, Any]] = {}
+    curated = root / "data" / "curated"
+    internal = root / "data" / "release" / "internal"
+    # Prefer newest internal release country_year if curated missing columns.
+    cy_path = curated / "country_year.parquet"
+    if not cy_path.is_file():
+        versions = sorted(internal.glob("v*/country_year.parquet"))
+        cy_path = versions[-1] if versions else cy_path
+    if cy_path.is_file():
+        cy = pd.read_parquet(cy_path)
+        for col in cy.columns:
+            if col in {"iso3", "year"}:
+                continue
+            sub = cy[["iso3", "year", col]].dropna()
+            if sub.empty:
+                continue
+            n_iso = int(sub["iso3"].nunique())
+            y0, y1 = int(sub["year"].min()), int(sub["year"].max())
+            # Approximate coverage vs full iso×year grid of the panel.
+            grid = int(cy["iso3"].nunique() * max(1, cy["year"].nunique()))
+            filled = int(len(sub))
+            out[str(col)] = {
+                "n_countries": n_iso,
+                "year_min": y0,
+                "year_max": y1,
+                "coverage_pct": round(100.0 * filled / grid, 1) if grid else None,
+            }
+
+    cp_path = curated / "country_product.parquet"
+    if cp_path.is_file():
+        # Aggregate without loading every value into memory twice.
+        cp = pd.read_parquet(
+            cp_path,
+            columns=["iso3", "year", "variable_id", "value"],
+        )
+        cp = cp.dropna(subset=["value"])
+        for vid, g in cp.groupby("variable_id"):
+            n_iso = int(g["iso3"].nunique())
+            y0, y1 = int(g["year"].min()), int(g["year"].max())
+            out[str(vid)] = {
+                "n_countries": n_iso,
+                "year_min": y0,
+                "year_max": y1,
+                "coverage_pct": None,
+            }
+
+    by_path = curated / "bilateral_year.parquet"
+    if by_path.is_file():
+        by = pd.read_parquet(by_path)
+        # Map gravity columns → catalog ids used in the UI.
+        col_to_vid = {
+            "distw": "DIST",
+            "comlang_off": "LANG",
+            "fta_wto": "FTA",
+        }
+        for col, vid in col_to_vid.items():
+            if col not in by.columns:
+                continue
+            sub = by[["destination", "year", col]].dropna()
+            if sub.empty:
+                continue
+            out[vid] = {
+                "n_countries": int(sub["destination"].nunique()),
+                "year_min": int(sub["year"].min()),
+                "year_max": int(sub["year"].max()),
+                "coverage_pct": None,
+            }
+
+    vpath = curated / "variables_country_year.parquet"
+    if vpath.is_file():
+        vp = pd.read_parquet(vpath)
+        for col in vp.columns:
+            if col in {"iso3", "year"}:
+                continue
+            sub = vp[["iso3", "year", col]].dropna()
+            if sub.empty:
+                continue
+            out[str(col)] = {
+                "n_countries": int(sub["iso3"].nunique()),
+                "year_min": int(sub["year"].min()),
+                "year_max": int(sub["year"].max()),
+                "coverage_pct": None,
+            }
+    return out
+
+
 def _variables_payload(
     manifest: dict[str, Any] | None,
     coverage: dict[str, dict[str, dict[str, int]]],
@@ -277,12 +367,20 @@ def _variables_payload(
         for g in (manifest or {}).get("variables", [])
         if isinstance(g, dict) and "id" in g
     }
+    panel_stats = _panel_coverage_stats(root)
     rows: list[dict[str, Any]] = []
     for var in catalog["variables"]:
         vid = str(var["id"])
         gate = gates.get(vid)
         cov_matrix = coverage.get(vid)
         stats = _coverage_stats_for(cov_matrix)
+        if not stats:
+            # Fall back: by variable id, then by upstream code column.
+            stats = panel_stats.get(vid)
+            if not stats:
+                code = str(var.get("code") or "").split(",")[0].strip()
+                if code:
+                    stats = panel_stats.get(code)
         notes = var.get("notes")
         alias = var.get("alias_of")
         if alias:
