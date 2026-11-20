@@ -3,7 +3,7 @@ import { hsLabel } from "../data/hsProducts";
 import { countryLabel } from "../design/formatLocale";
 import { useTranslation } from "../i18n";
 import { createEmptyProject, type ProjectListItem } from "../state/projectModel";
-import { getProject, listProjects, upsertProject } from "../state/projectIdb";
+import { getProject, listProjects, upsertProject } from "../state/projectLibrary";
 import { useAnalysis } from "../state/useAnalysis";
 import { isAnalysisReady, isProjectScreen } from "../state/views";
 import { PermalinkLink } from "./PermalinkLink";
@@ -149,6 +149,11 @@ export function ProjectSwitcher() {
                       ) : (
                         <span className="muted small">{t("projectScopePending")}</span>
                       )}
+                      {item.updatedBy ? (
+                        <span className="muted small">
+                          {t("projectSwitchUpdatedBy").replace("{who}", item.updatedBy)}
+                        </span>
+                      ) : null}
                     </button>
                   </li>
                 );

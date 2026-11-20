@@ -1,10 +1,35 @@
 # Runtime on vpn-aplicaciones (10.204.0.3). Edge TLS: aiserv-server Caddy.
 # Document root is the Vite build at ../app/dist (built on the host from git).
 services:
+  projects:
+    build:
+      context: ../services/projects-api
+    image: ims-atlas-projects:local
+    container_name: ims-atlas-projects
+    restart: unless-stopped
+    volumes:
+      - ../var/projects:/data
+    environment:
+      ATLAS_PROJECTS_DB: /data/projects.sqlite3
+      ATLAS_PROJECTS_PORT: "8130"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8130/api/projects/health')",
+        ]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
   web:
     image: nginx:alpine
     container_name: ims-atlas-web
     restart: unless-stopped
+    depends_on:
+      - projects
     ports:
       - "10.204.0.3:8121:80"
     volumes:

@@ -53,6 +53,7 @@ handle {
 		header_up X-Forwarded-For {remote_host}
 		header_up X-Forwarded-Proto {scheme}
 		header_up X-Atlas-Auth-User {http.request.header.Remote-User}
+		header_up X-Atlas-Auth-Name {http.request.header.Remote-Name}
 		header_up X-Atlas-Auth-Groups {http.request.header.Remote-Groups}
 	}
 }

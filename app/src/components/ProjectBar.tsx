@@ -10,7 +10,7 @@ import {
   projectWorkbookZip,
   safeFilename,
 } from "../state/projectExport";
-import { duplicateProject } from "../state/projectIdb";
+import { duplicateProject } from "../state/projectLibrary";
 import { persistActiveProject, projectFromConfig } from "../state/projectStore";
 import { useToast } from "../state/toastContext";
 import { useAnalysis } from "../state/useAnalysis";

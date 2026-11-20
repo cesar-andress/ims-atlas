@@ -35,11 +35,11 @@ export function PrivacidadPage({ lang }: { lang: LandingLang }) {
             ? "Los registros técnicos se conservan 90 días (alineado con la política de retención del servicio)."
             : "Technical logs are kept for 90 days (aligned with the service retention policy)."}
         </p>
-        <h2>{es ? "Proyectos en el navegador" : "Projects in the browser"}</h2>
+        <h2>{es ? "Proyectos del equipo" : "Team projects"}</h2>
         <p>
           {es
-            ? "Los proyectos se guardan en el navegador del usuario (IndexedDB) y no se envían al servidor salvo que la persona exporte o descargue un fichero."
-            : "Projects are stored in the user's browser (IndexedDB) and are not sent to the server unless the person exports or downloads a file."}
+            ? "Con sesión de equipo activa, los proyectos de análisis se guardan en el servidor (SQLite) y son visibles para todo el equipo autorizado, junto con el identificador de quien crea o edita. Sin sesión, o como copia de respaldo, también pueden guardarse en el navegador (IndexedDB)."
+            : "With an active team session, analysis projects are stored on the server (SQLite) and are visible to the whole authorised team, together with the identifier of who creates or edits them. Without a session, or as a backup copy, they may also be kept in the browser (IndexedDB)."}
         </p>
         <h2>{es ? "Cookies" : "Cookies"}</h2>
         <p>

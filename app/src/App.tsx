@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, type ReactElement } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { RequireSession } from "./auth/RequireSession";
 import { AppShellFrame } from "./components/AppChrome";
+import { ProjectLibraryModeSync } from "./components/ProjectLibraryModeSync";
 import { ResultsShell, type ResultTab } from "./components/ResultsShell";
 import { ToastProvider } from "./components/ToastHost";
 import { HelpProvider } from "./help/HelpProvider";
@@ -210,6 +211,7 @@ export function App() {
     <ToastProvider>
       <HelpProvider>
         <AnalysisProvider>
+          <ProjectLibraryModeSync />
           <RankingModelProvider>
             <AppShell />
           </RankingModelProvider>

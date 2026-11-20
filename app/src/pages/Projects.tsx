@@ -15,7 +15,7 @@ import {
   getLibraryStatus,
   listProjects,
   type ProjectLibraryStatus,
-} from "../state/projectIdb";
+} from "../state/projectLibrary";
 import {
   atlasJsonBlob,
   downloadBlob,
@@ -69,7 +69,7 @@ export function Projects() {
       ...(base.year !== undefined ? { yearFrom: base.year, yearTo: base.year } : {}),
     };
     const project = createEmptyProject(partial);
-    const { upsertProject } = await import("../state/projectIdb");
+    const { upsertProject } = await import("../state/projectLibrary");
     const saved = await upsertProject(project);
     await refresh();
     openProject(saved, "project_dashboard");
@@ -77,7 +77,7 @@ export function Projects() {
   }
 
   async function onOpen(id: string) {
-    const { getProject } = await import("../state/projectIdb");
+    const { getProject } = await import("../state/projectLibrary");
     const p = await getProject(id);
     if (!p) return;
     openProject(p, "project_dashboard");
@@ -88,7 +88,7 @@ export function Projects() {
     if (!next || !next.trim() || next.trim() === current) return;
     setBusyId(id);
     try {
-      const { getProject, upsertProject } = await import("../state/projectIdb");
+      const { getProject, upsertProject } = await import("../state/projectLibrary");
       const p = await getProject(id);
       if (!p) return;
       await upsertProject({
@@ -127,14 +127,14 @@ export function Projects() {
   }
 
   async function onExportAtlas(id: string) {
-    const { getProject } = await import("../state/projectIdb");
+    const { getProject } = await import("../state/projectLibrary");
     const p = await getProject(id);
     if (!p) return;
     downloadBlob(atlasJsonBlob(p), `${safeFilename(p.name)}.atlas.json`);
   }
 
   async function onExportWorkbook(id: string) {
-    const { getProject } = await import("../state/projectIdb");
+    const { getProject } = await import("../state/projectLibrary");
     const p = await getProject(id);
     if (!p) return;
     downloadBlob(projectWorkbookZip(p), `${safeFilename(p.name)}-tables.zip`);
@@ -145,7 +145,7 @@ export function Projects() {
     void file.text().then(async (text) => {
       try {
         const project = importAtlasProjectJson(text);
-        const { upsertProject } = await import("../state/projectIdb");
+        const { upsertProject } = await import("../state/projectLibrary");
         const saved = await upsertProject(project);
         await refresh();
         openProject(saved);

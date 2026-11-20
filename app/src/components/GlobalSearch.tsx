@@ -8,7 +8,7 @@ import {
 } from "../data/globalSearch";
 import { loadSources } from "../data/transparency";
 import { useTranslation } from "../i18n";
-import { listProjects } from "../state/projectIdb";
+import { listProjects } from "../state/projectLibrary";
 import type { ViewId } from "../state/schema";
 import { useAnalysis } from "../state/useAnalysis";
 

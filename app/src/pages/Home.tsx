@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useAccessSession } from "../auth/accessSession";
 import { OnboardingTour } from "../components/OnboardingTour";
 import { PageShell } from "../components/PageShell";
 import { PermalinkLink } from "../components/PermalinkLink";
@@ -14,8 +15,9 @@ import {
   getLibraryStatus,
   getProject,
   listProjects,
+  uploadLocalProjectsToTeam,
   upsertProject,
-} from "../state/projectIdb";
+} from "../state/projectLibrary";
 import { importAtlasProjectJson } from "../state/projectStore";
 import { COL_HS64_PRESET } from "../state/schema";
 import { useAnalysis } from "../state/useAnalysis";
@@ -120,11 +122,14 @@ export function Home() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
   const { openProject } = useAnalysis();
+  const { status: accessStatus } = useAccessSession();
   const [items, setItems] = useState<ProjectListItem[] | null>(null);
   const [importError, setImportError] = useState<string | null>(null);
+  const [uploadMsg, setUploadMsg] = useState<string | null>(null);
   const [tourOpen, setTourOpen] = useState(false);
   const [hintDismissed, setHintDismissed] = useState(() => readFlag(FIRST_VISIT_KEY));
   const exampleName = t("exampleProjectName");
+  const teamMode = accessStatus === "authenticated";
 
   const refresh = useCallback(async () => {
     setItems(await listProjects());
@@ -134,16 +139,18 @@ export function Home() {
     let cancelled = false;
     void (async () => {
       await getLibraryStatus();
-      await seedExampleOnce(exampleName, lang);
+      if (accessStatus !== "authenticated") {
+        await seedExampleOnce(exampleName, lang);
+      }
       const rows = await listProjects();
       if (!cancelled) setItems(rows);
     })();
     return () => {
       cancelled = true;
     };
-    // The example is seeded once with the language of the first visit.
+    // Refresh when team/local mode settles after whoami.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [accessStatus]);
 
   async function onOpen(id: string) {
     const project = await getProject(id);
@@ -180,11 +187,27 @@ export function Home() {
     setTourOpen(false);
   }
 
+  async function onUploadLocal() {
+    setUploadMsg(null);
+    try {
+      const n = await uploadLocalProjectsToTeam();
+      setUploadMsg(t("projectUploadLocalDone").replace("{n}", String(n)));
+      await refresh();
+    } catch (err) {
+      setImportError(plainErrorMessage(err));
+    }
+  }
+
   return (
     <PageShell testId="home-view" titleKey="homeTitle" className="home">
       <p className="lead" data-testid="home-lead">
         {t("homeLead")}
       </p>
+      {teamMode ? (
+        <p className="muted small" data-testid="home-team-hint">
+          {t("projectTeamHint")}
+        </p>
+      ) : null}
 
       {!hintDismissed ? (
         <p className="callout home-hint" role="note" data-testid="home-first-time">
@@ -233,6 +256,11 @@ export function Home() {
           {importError}
         </p>
       ) : null}
+      {uploadMsg ? (
+        <p className="muted small" role="status" data-testid="home-upload-msg">
+          {uploadMsg}
+        </p>
+      ) : null}
       <p className="muted small home-manage">
         <label className="file-import" data-testid="home-import-label">
           {t("importProject")}
@@ -247,6 +275,19 @@ export function Home() {
             }}
           />
         </label>
+        {teamMode ? (
+          <>
+            {" · "}
+            <button
+              type="button"
+              className="linkish"
+              data-testid="home-upload-local"
+              onClick={() => void onUploadLocal()}
+            >
+              {t("projectUploadLocal")}
+            </button>
+          </>
+        ) : null}
         {" · "}
         <PermalinkLink view="projects" data-testid="home-manage-link">
           {t("projectsManage")}

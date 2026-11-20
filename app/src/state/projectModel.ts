@@ -47,6 +47,10 @@ export type ProjectListItem = {
   yearFrom?: number;
   yearTo?: number;
   isExample?: boolean;
+  /** Present when the row comes from the shared team library. */
+  createdBy?: string;
+  updatedBy?: string;
+  source?: "team" | "local";
 };
 
 function isObject(v: unknown): v is Record<string, unknown> {

@@ -19,7 +19,8 @@ import {
   persistActiveProject,
   projectFromConfig,
 } from "./projectStore";
-import { saveDraft, upsertProject } from "./projectIdb";
+import { saveDraft } from "./projectIdb";
+import { upsertProject } from "./projectLibrary";
 import { DEFAULT_CONFIG, type AnalysisConfig, type ViewId } from "./schema";
 import {
   configToSearch,

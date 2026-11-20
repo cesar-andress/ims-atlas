@@ -11,7 +11,8 @@ import {
   serializeAtlasProject,
   type AtlasProject,
 } from "./projectModel";
-import { getProject, listProjects, saveDraft, upsertProject } from "./projectIdb";
+import { saveDraft } from "./projectIdb";
+import { getProject, listProjects, upsertProject } from "./projectLibrary";
 import {
   AnalysisConfigSchema,
   ProjectFileSchema,
