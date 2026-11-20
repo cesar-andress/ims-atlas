@@ -25,10 +25,9 @@ type Props = {
 
 export function Top10Chart({ title, series, secondary, onReady }: Props) {
   const elRef = useRef<HTMLDivElement>(null);
-  const chartRef = useEchartsHost(elRef, onReady, "svg");
+  const { chart } = useEchartsHost(elRef, onReady, "svg");
 
   useEffect(() => {
-    const chart = chartRef.current;
     if (!chart) return;
     const cats = series.map((s) => s.name);
     chart.setOption(
@@ -58,7 +57,7 @@ export function Top10Chart({ title, series, secondary, onReady }: Props) {
       },
       true,
     );
-  }, [title, series, secondary, chartRef]);
+  }, [title, series, secondary, chart]);
 
   return (
     <div

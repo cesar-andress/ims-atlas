@@ -39,10 +39,9 @@ export function StrategicScatter({ matrix, onReady }: Props) {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
   const elRef = useRef<HTMLDivElement | null>(null);
-  const chartRef = useEchartsHost(elRef, onReady, "svg");
+  const { chart } = useEchartsHost(elRef, onReady, "svg");
 
   useEffect(() => {
-    const chart = chartRef.current;
     if (!chart) return;
     const loc = lang === "es" ? "es" : "en";
     const qName = (q: number) => t(`quadrantQ${q}` as "quadrantQ1");
@@ -124,7 +123,7 @@ export function StrategicScatter({ matrix, onReady }: Props) {
       },
       true,
     );
-  }, [matrix, chartRef, t, lang]);
+  }, [matrix, chart, t, lang]);
 
   return (
     <div

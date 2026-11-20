@@ -16,13 +16,13 @@ type Props = {
 /** Factor weight ±50% tornado (mean |Δrank|). */
 export function TornadoChart({ bars, onReady }: Props) {
   const elRef = useRef<HTMLDivElement>(null);
-  const chartRef = useEchartsHost(elRef, onReady, "svg");
+  const { chart } = useEchartsHost(elRef, onReady, "svg");
   const factors = bars.filter((b) => b.level === "factor");
 
   useEffect(() => {
-    const chart = chartRef.current;
     if (!chart) return;
-    const labels = factors.map((b) => b.id);
+    const factorBars = bars.filter((b) => b.level === "factor");
+    const labels = factorBars.map((b) => b.id);
     chart.setOption(
       {
         tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
@@ -33,21 +33,20 @@ export function TornadoChart({ bars, onReady }: Props) {
           {
             name: "−50%",
             type: "bar",
-            data: factors.map((b) => -b.lowDelta),
+            data: factorBars.map((b) => -b.lowDelta),
             itemStyle: { color: "#6b8cae" },
           },
           {
             name: "+50%",
             type: "bar",
-            data: factors.map((b) => b.highDelta),
+            data: factorBars.map((b) => b.highDelta),
             itemStyle: { color: "#c45c26" },
           },
         ],
       },
       true,
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- factors derived from bars
-  }, [bars, chartRef]);
+  }, [bars, chart]);
 
   return (
     <div

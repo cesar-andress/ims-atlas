@@ -31,10 +31,9 @@ export function RankAcceptabilityChart({
   onReady,
 }: Props) {
   const elRef = useRef<HTMLDivElement>(null);
-  const chartRef = useEchartsHost(elRef, onReady, "svg");
+  const { chart } = useEchartsHost(elRef, onReady, "svg");
 
   useEffect(() => {
-    const chart = chartRef.current;
     if (!chart) return;
     const order = alternatives
       .map((iso, i) => ({ iso, i, p1: acceptability[i]?.[0] ?? 0 }))
@@ -63,7 +62,7 @@ export function RankAcceptabilityChart({
       },
       true,
     );
-  }, [alternatives, acceptability, topN, chartRef]);
+  }, [alternatives, acceptability, topN, chart]);
 
   return (
     <div
