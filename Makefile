@@ -143,5 +143,4 @@ bundle-budgets: build
 	node scripts/check-bundle-budgets.mjs
 
 phase-f: e2e bundle-budgets link-check
-	@echo "Phase F gates ok. Footer R&D name still BLOCKER — see docs/phase-f-blockers.md"
-	@echo "Do NOT tag v1.1.0 until César confirms."
+	@echo "Phase F gates ok. Do NOT tag v1.1.0 until César confirms."

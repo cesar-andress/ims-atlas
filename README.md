@@ -4,8 +4,6 @@ Open, browser-based tool to **build, compare, stress-test and backtest** interna
 market selection (IMS) indices on open data. All computation runs in the browser; there
 is no backend and no accounts.
 
-> Developed within the R&D&I project [project name/code] of AISERV SYSTEMS SLU (Madrid, Spain).
-
 ## Status
 
 **v1.0.0** — browser app (ranking, matrix, map, SMAA, backtest, time, cite, BYOD, docs),

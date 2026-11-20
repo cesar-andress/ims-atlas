@@ -18,8 +18,6 @@ export const en = {
   dataMissingLink: "Data → Status",
   demoSyntheticNote:
     "E2E/synthetic panel (not product data). Do not treat ranks as empirical COL footwear results.",
-  footerCredit:
-    "Developed by AISERV SYSTEMS SLU (Madrid, Spain) as part of an R&D&I project.",
   footerRepo: "GitHub repository",
   changeAnalysis: "Change analysis",
   designIllustrative:

@@ -18,8 +18,6 @@ const es = {
   dataMissingLink: "Datos → Estado",
   demoSyntheticNote:
     "Panel sintético/E2E (no es dato de producto). No interpretar los rangos como resultados empíricos de calzado COL.",
-  footerCredit:
-    "Desarrollado por AISERV SYSTEMS SLU (Madrid, España) en el marco de un proyecto de I+D+i.",
   footerRepo: "Repositorio en GitHub",
   changeAnalysis: "Cambiar análisis",
   designIllustrative:

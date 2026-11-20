@@ -1,6 +1,6 @@
 # PROMPTS.md L→F status (2026-11-19 audit)
 
-Agent audit against the pasted PROMPTS order. **Do not invent** rights, R&D text, or tag.
+Agent audit against the pasted PROMPTS order. **Do not invent** rights or tag.
 
 | Phase | Status | Notes |
 |-------|--------|-------|
@@ -15,15 +15,14 @@ Agent audit against the pasted PROMPTS order. **Do not invent** rights, R&D text
 | E | Done | Search, explore, country, analysis, SQL. |
 | X | Done + follow-up | Shared ExportMenu; remaining tables/charts wired in gap pass. PDF companion text (not embedded bitmap). |
 | N | Done | Docs, help drawer, paper, changelog. |
-| F | Done except blockers | Footer placeholder, link-check, budgets, Lighthouse. **No v1.1.0 tag** until César confirms. |
+| F | Done except blockers | Link-check, budgets, Lighthouse. Footer has no R&D placeholder. **No v1.1.0 tag** until César confirms. |
 
 ## Still need from César
 
-1. Exact AISERV R&D&I footer wording.
-2. Confirm git tag `v1.1.0` (no Zenodo by agent).
-3. `rights-verify` + RIGHTS.md OK for redistribute sources.
-4. Current World Bank licence page URL (datacatalog public-licenses 404).
-5. Optional: workbook path for J golden commit; Authelia user emails; live ETL promote.
+1. Confirm git tag `v1.1.0` (no Zenodo by agent).
+2. `rights-verify` + RIGHTS.md OK for redistribute sources (variables: `variables-confirm.sh`).
+3. Current World Bank licence page URL (datacatalog public-licenses 404).
+4. Optional: workbook path for J golden commit; Authelia user emails; live ETL promote.
 
 ## Out of this file
 

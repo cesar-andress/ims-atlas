@@ -120,8 +120,8 @@ test.describe("COL HS64 2023 IMSFE ranking", () => {
     };
     await page.goto(`/?c=${encodeConfig(config)}`);
     await expect(page.getByTestId("site-header")).toBeVisible();
-    await expect(page.locator("footer.site-footer")).toContainText(
-      "Desarrollado por AISERV SYSTEMS SLU",
+    await expect(page.getByTestId("footer-atlas-credit")).toContainText(
+      "AISERV SYSTEMS SLU",
     );
     await expect(page.locator("html")).toHaveAttribute("lang", "es");
   });

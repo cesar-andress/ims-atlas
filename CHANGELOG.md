@@ -6,7 +6,7 @@ All notable changes to IMS Atlas are documented in this file.
 
 ### Added
 
-- Phase F polish: footer Atlas credit + R&D placeholder blocker marker, Matrix/Factors
+- Phase F polish: footer Atlas credit (no R&D project placeholder), Matrix/Factors
   ExportMenu, `make link-check` / `make bundle-budgets` / `make phase-f`, and
   `docs/phase-f-blockers.md` + review notes. **No v1.1.0 git tag** until human confirm.
 - Phase F follow-up: ExportMenu on Backtest, Uncertainty, NormLab, Explore, country

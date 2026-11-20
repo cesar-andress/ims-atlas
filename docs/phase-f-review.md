@@ -7,7 +7,7 @@ Severity: Critical / High fixed in this phase where feasible; Medium/Low logged.
 
 | Issue | Status |
 |-------|--------|
-| Invented R&D&I project name/code in footer | **Not invented.** Placeholder kept; `footer-rd-blocker` + `docs/phase-f-blockers.md`. |
+| Invented R&D&I project name/code in footer | **Removed.** Footer is only `© IMS Atlas · atlas.aiserv.es · AISERV SYSTEMS SLU`. |
 | Synthetic ranking panel in public `app/public` | Guarded by `test_public_synthetic_guard` / pending demo. OK. |
 | Verified rights without human check | Rights remain `unknown` / `checked_by: null`. OK. |
 

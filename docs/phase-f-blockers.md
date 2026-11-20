@@ -1,15 +1,12 @@
 # Phase F blockers (human)
 
-## Footer R&D&I credit — resolved without inventing a code
+## Footer credit
 
-The bracketed placeholder was shown on the live site. It is replaced by a neutral sentence
-that names no project:
+No R&D&I project name/code is shown. The site footer is only:
 
-- ES: `Desarrollado por AISERV SYSTEMS SLU (Madrid, España) en el marco de un proyecto de I+D+i.`
-- EN: `Developed by AISERV SYSTEMS SLU (Madrid, Spain) as part of an R&D&I project.`
+`© IMS Atlas · atlas.aiserv.es · AISERV SYSTEMS SLU`
 
-If César later supplies the exact project name/code, add it to `footerCredit` in both
-locales. `AppFooter` still flags any `[project name/code]` marker as `footer-rd-blocker`.
+(README and locales no longer mention an unnamed R&D&I project.)
 
 ## Tag v1.1.0
 

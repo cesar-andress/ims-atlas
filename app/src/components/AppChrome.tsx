@@ -87,26 +87,13 @@ export function AppHeader() {
   );
 }
 
-const FOOTER_PLACEHOLDER_MARKERS = [
-  "[project name/code]",
-  "[nombre/código del proyecto]",
-];
-
 export function AppFooter() {
   const { t } = useTranslation();
-  const credit = t("footerCredit");
-  const placeholder = FOOTER_PLACEHOLDER_MARKERS.some((m) => credit.includes(m));
   return (
     <footer className="site-footer" data-testid="site-footer">
       <div className="wrap">
         <p className="muted small" data-testid="footer-atlas-credit">
           © IMS Atlas · atlas.aiserv.es · AISERV SYSTEMS SLU
-        </p>
-        <p
-          data-testid={placeholder ? "footer-rd-blocker" : "footer-credit"}
-          {...(placeholder ? { "data-blocker": "rd-project-name" } : {})}
-        >
-          {credit}
         </p>
         <nav aria-label={t("footerNav")} data-testid="footer-links">
           <PermalinkLink
