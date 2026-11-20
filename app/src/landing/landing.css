@@ -125,17 +125,18 @@ a:hover {
 }
 
 .l-btn-primary {
-  background: var(--l-teal);
-  color: #fff;
+  background: #0f766e;
+  color: #ffffff;
 }
 
 [data-theme="dark"] .l-btn-primary {
+  background: #2dd4bf;
   color: #042f2e;
 }
 
 .l-btn-primary:hover {
-  filter: brightness(1.05);
-  color: #fff;
+  filter: brightness(1.06);
+  color: #ffffff;
 }
 
 [data-theme="dark"] .l-btn-primary:hover {
