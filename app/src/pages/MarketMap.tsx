@@ -114,21 +114,22 @@ export function MarketMap() {
 
   const choroplethRows = useMemo(() => {
     if (!model) return [];
+    const withImports = (r: { iso3: string; score: number; rank: number }) => {
+      const q = quadrants?.[r.iso3];
+      const imports = model.panel.importVolume[r.iso3];
+      return {
+        iso3: r.iso3,
+        score: r.score,
+        rank: r.rank,
+        ...(q !== undefined ? { quadrant: q } : {}),
+        ...(imports !== undefined ? { imports } : {}),
+      };
+    };
     if (playYear !== null && yearFixture) {
       const ranks = yearFixture.rankings[String(playYear)] ?? [];
-      return ranks.map((r) => {
-        const q = quadrants?.[r.iso3];
-        return q !== undefined
-          ? { iso3: r.iso3, score: r.score, rank: r.rank, quadrant: q }
-          : { iso3: r.iso3, score: r.score, rank: r.rank };
-      });
+      return ranks.map(withImports);
     }
-    return model.ranking.map((r) => {
-      const q = quadrants?.[r.iso3];
-      return q !== undefined
-        ? { iso3: r.iso3, score: r.score, rank: r.rank, quadrant: q }
-        : { iso3: r.iso3, score: r.score, rank: r.rank };
-    });
+    return model.ranking.map(withImports);
   }, [model, quadrants, playYear, yearFixture]);
 
   const silhouetteSweep = useMemo(() => {

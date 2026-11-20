@@ -2231,3 +2231,112 @@ button.pinned {
 .results-study-nav a:hover {
   text-decoration: underline;
 }
+
+/* LineUp weight drag + preview */
+.lineup-weights {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  margin: 0.75rem 0;
+}
+.lineup-weight-list {
+  list-style: none;
+  margin: 0.5rem 0;
+  padding: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+.lineup-weight-track {
+  height: 1.1rem;
+  border-radius: 6px;
+  background: var(--surface-2, #e2e8f0);
+  cursor: ew-resize;
+  touch-action: none;
+  overflow: hidden;
+}
+.lineup-weight-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 120ms ease;
+}
+.lineup-preview {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.2rem;
+}
+.lineup-preview-row {
+  padding: 0.15rem 0.35rem;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--primary, #0f766e) 8%, transparent);
+}
+
+/* Onboarding tour */
+.onboarding-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: color-mix(in srgb, #0f172a 45%, transparent);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+.onboarding-card {
+  max-width: 28rem;
+  width: 100%;
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: 14px;
+  padding: 1.25rem 1.35rem;
+  box-shadow: 0 12px 40px color-mix(in srgb, #0f172a 25%, transparent);
+}
+
+.glossary-tip-trigger {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  text-decoration: underline dotted;
+  cursor: help;
+  font: inherit;
+}
+.glossary-tip-content {
+  z-index: 90;
+  max-width: 16rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--border);
+  font-size: 0.8rem;
+  box-shadow: 0 6px 18px color-mix(in srgb, #0f172a 18%, transparent);
+}
+
+.country-picker-hits {
+  list-style: none;
+  margin: 0.35rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.country-picker-hits button {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+}
+.country-picker-hits button.active {
+  border-color: var(--primary, #0f766e);
+  background: color-mix(in srgb, var(--primary, #0f766e) 12%, transparent);
+}
+
+.compare-bar {
+  height: 0.45rem;
+  border-radius: 4px;
+  background: var(--primary, #0f766e);
+  margin-bottom: 0.15rem;
+  max-width: 100%;
+}

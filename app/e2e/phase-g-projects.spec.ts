@@ -1,13 +1,14 @@
 import { expect, test } from "@playwright/test";
-import { encodeConfig } from "./_helpers";
+import { encodeConfig, enableVariablesExpert } from "./_helpers";
 import { COL_HS64_PRESET } from "../src/state/schema";
 
 test.describe("Phase G projects", () => {
   test("Guardar shows toast (does-nothing regression)", async ({ page }) => {
+    await enableVariablesExpert(page);
     await page.goto(
-      `/builder?c=${encodeConfig({
+      `/variables?c=${encodeConfig({
         ...COL_HS64_PRESET,
-        view: "builder",
+        view: "variables",
         lang: "en",
       })}`,
     );

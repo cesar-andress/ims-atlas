@@ -1,4 +1,4 @@
-import { lazy, Suspense, useMemo, useRef } from "react";
+import { lazy, Suspense, useMemo, useRef, useState } from "react";
 import {
   CRITERIA_TREE_PRESETS,
   compareExportTables,
@@ -6,6 +6,7 @@ import {
 } from "@ims-atlas/core";
 import { AnalysisPage } from "../components/AnalysisPage";
 import { ChartExportBar } from "../components/ChartExportBar";
+import { MarketRadarCompare } from "../components/MarketRadarCompare";
 import { useTranslation } from "../i18n";
 import { useRankingModel } from "../ranking/useRankingModelApi";
 import type { RankingViewModel } from "../ranking/rankingEngine";
@@ -37,6 +38,9 @@ function csvBody(rows: SeriesRow[] | ComboRow[], mode: "value" | "combo"): strin
 function CompareBody({ model }: { model: RankingViewModel }) {
   const { t } = useTranslation();
   const { config } = useAnalysis();
+  const [radarPicks, setRadarPicks] = useState<string[]>(() =>
+    model.ranking.slice(0, 2).map((r) => r.iso3),
+  );
   const totalRef = useRef<ChartHandle | null>(null);
   const factorRef = useRef<ChartHandle | null>(null);
   const comboRef = useRef<ChartHandle | null>(null);
@@ -111,6 +115,22 @@ function CompareBody({ model }: { model: RankingViewModel }) {
 
   return (
     <div className="compare-grid" data-testid="compare-charts">
+      <section className="results-card" data-testid="market-radar-section">
+        <h2>{t("nav.compare")}</h2>
+        <MarketRadarCompare
+          model={model}
+          selected={radarPicks}
+          onToggle={(iso) =>
+            setRadarPicks((prev) =>
+              prev.includes(iso)
+                ? prev.filter((x) => x !== iso)
+                : prev.length >= 4
+                  ? prev
+                  : [...prev, iso],
+            )
+          }
+        />
+      </section>
       <section className="results-card" data-testid="project-family-compare">
         <h2>{t("projectFamilyCompare")}</h2>
         <ul className="muted small">

@@ -1,0 +1,322 @@
+{
+  "url": "http://127.0.0.1:4173/",
+  "fetchedAt": "2026-11-20T07:48:37.616Z",
+  "scores": {
+    "performance": 76,
+    "accessibility": 96
+  },
+  "bundle": [
+    {
+      "name": "maplibre-DkbJTOFF.js",
+      "bytes": 802165
+    },
+    {
+      "name": "echarts-DGjS1E1v.js",
+      "bytes": 546534
+    },
+    {
+      "name": "react-vendor-BlzgRyC2.js",
+      "bytes": 203566
+    },
+    {
+      "name": "duckdb-CUy2rKpd.js",
+      "bytes": 197411
+    },
+    {
+      "name": "index-BAzrxl3x.js",
+      "bytes": 124570
+    },
+    {
+      "name": "ConfigPanel-7C3gwc8O.js",
+      "bytes": 70996
+    },
+    {
+      "name": "maplibre-MGNviBeR.css",
+      "bytes": 65461
+    },
+    {
+      "name": "es-CH8XDtFE.js",
+      "bytes": 42891
+    },
+    {
+      "name": "index-DeKhY6U6.css",
+      "bytes": 41983
+    },
+    {
+      "name": "core-BW2WxsnD.js",
+      "bytes": 37097
+    },
+    {
+      "name": "MarketMap-DAz2nV_n.js",
+      "bytes": 22963
+    },
+    {
+      "name": "Ranking-DFiJ3gMC.js",
+      "bytes": 21219
+    },
+    {
+      "name": "layoutWorker-BmEYqN9T.js",
+      "bytes": 12121
+    },
+    {
+      "name": "CiteExport-DWDKtWoe.js",
+      "bytes": 10357
+    },
+    {
+      "name": "Uncertainty-CrN3J2sF.js",
+      "bytes": 10206
+    },
+    {
+      "name": "Docs-Bw8fb9Id.js",
+      "bytes": 10173
+    },
+    {
+      "name": "NormLab-CAj-AgfO.js",
+      "bytes": 9759
+    },
+    {
+      "name": "Explore-Cvlhxh9y.js",
+      "bytes": 8724
+    },
+    {
+      "name": "AiVerify-3db2jDCm.js",
+      "bytes": 7426
+    },
+    {
+      "name": "Backtest-DNXs8CCS.js",
+      "bytes": 7352
+    },
+    {
+      "name": "Changelog-DscPXV_v.js",
+      "bytes": 6947
+    },
+    {
+      "name": "Compare-CxaQoVfN.js",
+      "bytes": 6715
+    },
+    {
+      "name": "ProjectCoverage-Dyyc6VD5.js",
+      "bytes": 6659
+    },
+    {
+      "name": "DataVariable-DQo2osLq.js",
+      "bytes": 6228
+    },
+    {
+      "name": "imageExport-BPpY6st1.js",
+      "bytes": 6098
+    },
+    {
+      "name": "Matrix-Cf_YbRZK.js",
+      "bytes": 6095
+    },
+    {
+      "name": "ImsfeImport-qDodtQDY.js",
+      "bytes": 6085
+    },
+    {
+      "name": "Projects-DMYqTWeu.js",
+      "bytes": 5901
+    },
+    {
+      "name": "DatosHub-46j3lbF-.js",
+      "bytes": 5857
+    },
+    {
+      "name": "AnalysisPage-BEqU72Su.js",
+      "bytes": 5596
+    },
+    {
+      "name": "SqlConsole-CzId1u9F.js",
+      "bytes": 5589
+    },
+    {
+      "name": "DesignSystem-B51eMHvW.js",
+      "bytes": 4944
+    },
+    {
+      "name": "ProjectVariables-C29kw8VR.js",
+      "bytes": 4888
+    },
+    {
+      "name": "VerifyDatumPanel-BSiA50Y3.js",
+      "bytes": 4757
+    },
+    {
+      "name": "DataSources-Ch80FrWQ.js",
+      "bytes": 4633
+    },
+    {
+      "name": "ExploreAnalysis-nvVCTAyG.js",
+      "bytes": 4534
+    },
+    {
+      "name": "DataStatus-CBLzBuzg.js",
+      "bytes": 4326
+    },
+    {
+      "name": "VariablesHub-Dam79T0q.js",
+      "bytes": 3755
+    },
+    {
+      "name": "Factors-DVgXoDLd.js",
+      "bytes": 3694
+    },
+    {
+      "name": "DataReleases-C8mKCLp2.js",
+      "bytes": 3649
+    },
+    {
+      "name": "DataPipeline-Bf_0ngOW.js",
+      "bytes": 3494
+    },
+    {
+      "name": "xlsx-CXfoqXmo.js",
+      "bytes": 3081
+    },
+    {
+      "name": "TimeExplorer-DNv87MT2.js",
+      "bytes": 3043
+    },
+    {
+      "name": "Byod-zUSZyc5o.js",
+      "bytes": 2748
+    },
+    {
+      "name": "ProjectDashboard-CObMCPh2.js",
+      "bytes": 2677
+    },
+    {
+      "name": "PaperSupport-BCbdKArw.js",
+      "bytes": 2632
+    },
+    {
+      "name": "CountryProfile-aUTaHN_L.js",
+      "bytes": 2603
+    },
+    {
+      "name": "ExportMenu-fCvqamKQ.js",
+      "bytes": 2575
+    },
+    {
+      "name": "AnalisisGallery-C0m7tLi7.js",
+      "bytes": 2543
+    },
+    {
+      "name": "Catalog-TKfPJTLO.js",
+      "bytes": 2439
+    },
+    {
+      "name": "projectExport-B3cI8S5S.js",
+      "bytes": 2276
+    },
+    {
+      "name": "byodStore-Cal1ZrH0.js",
+      "bytes": 1760
+    },
+    {
+      "name": "formatLocale-C-fHwXR9.js",
+      "bytes": 1722
+    },
+    {
+      "name": "Privacy-BRG8HAaw.js",
+      "bytes": 1460
+    },
+    {
+      "name": "DataUpdates-B2Qcyl_q.js",
+      "bytes": 1352
+    },
+    {
+      "name": "AccessBadge-Dd17-iWz.js",
+      "bytes": 1318
+    },
+    {
+      "name": "RankAcceptabilityChart-4x3xvy1c.js",
+      "bytes": 1294
+    },
+    {
+      "name": "HelpButton-ST4nbBg-.js",
+      "bytes": 1245
+    },
+    {
+      "name": "TornadoChart-Cf5j4mzM.js",
+      "bytes": 1168
+    },
+    {
+      "name": "useCompareSelection-BQdyS8-R.js",
+      "bytes": 1096
+    },
+    {
+      "name": "CoverageHeatmap-D9Ingl5Y.js",
+      "bytes": 1094
+    },
+    {
+      "name": "Top10Chart-DiP1KqKo.js",
+      "bytes": 1088
+    },
+    {
+      "name": "BumpChart-ph9ne8Hx.js",
+      "bytes": 973
+    },
+    {
+      "name": "runWorker-CeEpqx2E.js",
+      "bytes": 657
+    },
+    {
+      "name": "TransparencyShell-4hhywyqQ.js",
+      "bytes": 581
+    },
+    {
+      "name": "criteria-D2E_YaiJ.js",
+      "bytes": 482
+    },
+    {
+      "name": "ChartExportBar-sdDdt3Wb.js",
+      "bytes": 450
+    },
+    {
+      "name": "useStrategicMatrix-D4N927sm.js",
+      "bytes": 421
+    },
+    {
+      "name": "useAsyncResource-B6NDy0vA.js",
+      "bytes": 400
+    },
+    {
+      "name": "FixtureStatusBanner-CYgIvcRQ.js",
+      "bytes": 323
+    },
+    {
+      "name": "LicenceBadge-BOgFpGNM.js",
+      "bytes": 237
+    },
+    {
+      "name": "useRankingModelApi-D3wRnbxD.js",
+      "bytes": 220
+    },
+    {
+      "name": "loadRankYears-R8LIxAd3.js",
+      "bytes": 215
+    },
+    {
+      "name": "loadT4Fixture-DKru5dva.js",
+      "bytes": 199
+    },
+    {
+      "name": "Builder-BogtWNf7.js",
+      "bytes": 190
+    },
+    {
+      "name": "variableBasket-BiQ8n0yw.js",
+      "bytes": 90
+    },
+    {
+      "name": "formatDisplay-D6gyswpA.js",
+      "bytes": 69
+    },
+    {
+      "name": "format-BBLv-YmE.js",
+      "bytes": 54
+    }
+  ]
+}

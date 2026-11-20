@@ -81,6 +81,28 @@ export const en = {
   valueChartsIntro:
     "Bar width = criterion weight; nested shares are variables within each criterion.",
   valueChartsPending: "Compute a ranking to see the weight hierarchy.",
+  lineUpTitle: "LineUp: weight widths",
+  lineUpIntro:
+    "Drag each bar’s width to change the weight; the preview ranking re-orders on release.",
+  lineUpPending: "Compute a ranking to edit weights with LineUp.",
+  tourReopen: "Tour (60 s)",
+  tourSkip: "Skip",
+  tourStart: "Start at Data",
+  tourStep1Title: "Data → Variables → Analysis",
+  tourStep1Body:
+    "Three hubs: see what exists (Data), configure the analysis (Variables), open a study (Analysis).",
+  tourStep2Title: "One place to change",
+  tourStep2Body:
+    "Only Variables edits origin, product, weights and method. Results stay read-only.",
+  tourStep3Title: "Visible weights",
+  tourStep3Body:
+    "Use LineUp, WeightLifter or Podium in Variables. Tooltips link to the glossary.",
+  tourStep4Title: "Map and compare",
+  tourStep4Body:
+    "The map hatches out-of-analysis countries and thickens arcs by imports. Compare 2–4 markets in Compare.",
+  glossaryOpen: "Open glossary",
+  compareMarketsIntro: "Pick 2–4 markets from the top to compare factors side by side.",
+  compareNeedTwo: "Select at least two markets.",
   smaaAcceptAdvanced: "Advanced: rank acceptability (SMAA)",
   smaaAcceptAdvancedHint:
     "Stacked bars by rank; prefer quantile dots and HOP above. Expert read-only view.",

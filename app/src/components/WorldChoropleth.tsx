@@ -8,6 +8,8 @@ export type ChoroplethDatum = {
   score: number;
   rank: number;
   quadrant?: number;
+  /** Import volume proxy for arc line width (optional). */
+  imports?: number;
 };
 
 type Props = {
@@ -303,6 +305,30 @@ export function WorldChoropleth({
   );
 }
 
+function ensureHatchPattern(map: MapLibreMap): void {
+  if (map.hasImage("hatch-out")) return;
+  const size = 8;
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+  ctx.fillStyle = "#c8ccc8";
+  ctx.fillRect(0, 0, size, size);
+  ctx.strokeStyle = "#64748b";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(0, size);
+  ctx.lineTo(size, 0);
+  ctx.stroke();
+  const data = ctx.getImageData(0, 0, size, size);
+  map.addImage(
+    "hatch-out",
+    { width: size, height: size, data: data.data },
+    { pixelRatio: 1 },
+  );
+}
+
 function applyColors(
   map: MapLibreMap,
   rows: ChoroplethDatum[],
@@ -311,6 +337,7 @@ function applyColors(
   extrude: boolean,
 ): void {
   if (rows.length === 0) return;
+  ensureHatchPattern(map);
   const analyzed = new Set(rows.map((r) => r.iso3));
   const scores = rows.map((r) => r.score);
   const min = Math.min(...scores);
@@ -325,12 +352,34 @@ function applyColors(
   matchExpr.push("#c8ccc8");
   map.setPaintProperty("countries-fill", "fill-color", matchExpr as never);
 
+  const inAnalysis = [...analyzed, origin].filter(Boolean) as string[];
   map.setPaintProperty("countries-fill", "fill-opacity", [
     "case",
-    ["in", ["get", "ADM0_A3"], ["literal", [...analyzed, origin].filter(Boolean)]],
+    ["in", ["get", "ADM0_A3"], ["literal", inAnalysis]],
     0.95,
-    0.35,
+    0.55,
   ] as never);
+
+  if (!map.getLayer("countries-hatch")) {
+    map.addLayer(
+      {
+        id: "countries-hatch",
+        type: "fill",
+        source: "ne",
+        paint: {
+          "fill-pattern": "hatch-out",
+          "fill-opacity": 0.55,
+        },
+        filter: ["!", ["in", ["get", "ADM0_A3"], ["literal", inAnalysis]]],
+      },
+      "countries-line",
+    );
+  } else {
+    map.setFilter("countries-hatch", [
+      "!",
+      ["in", ["get", "ADM0_A3"], ["literal", inAnalysis]],
+    ] as never);
+  }
 
   if (selected || origin) {
     map.setPaintProperty("countries-line", "line-width", [
@@ -387,13 +436,21 @@ function applyArcs(
   const from = ISO_CENTROID[origin];
   if (!from) return;
   const top = [...rows].sort((a, b) => a.rank - b.rank).slice(0, topN);
+  const vols = top.map((r) => r.imports ?? Math.max(1, 20 - r.rank));
+  const vMax = Math.max(...vols, 1);
   const features = top
     .map((r) => {
       const to = ISO_CENTROID[r.iso3];
       if (!to) return null;
+      const vol = r.imports ?? Math.max(1, 20 - r.rank);
       return {
         type: "Feature" as const,
-        properties: { iso3: r.iso3, rank: r.rank },
+        properties: {
+          iso3: r.iso3,
+          rank: r.rank,
+          imports: vol,
+          width: 1.2 + (3.8 * vol) / vMax,
+        },
         geometry: {
           type: "LineString" as const,
           coordinates: greatCircle(from, to),
@@ -417,7 +474,7 @@ function applyArcs(
       source: "arcs",
       paint: {
         "line-color": "#0f766e",
-        "line-width": 1.6,
+        "line-width": ["coalesce", ["get", "width"], 1.6],
         "line-opacity": 0.65,
       },
     });

@@ -64,6 +64,7 @@ test.describe("Phase 10 uncertainty + backtest", () => {
     await expect(page.getByTestId("topk-prob-bars")).toBeVisible({
       timeout: 60_000,
     });
+    await page.getByTestId("smaa-accept-advanced").locator("summary").click();
     await expect(page.getByTestId("smaa-acceptability-chart")).toBeVisible({
       timeout: 60_000,
     });

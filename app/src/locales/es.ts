@@ -81,6 +81,28 @@ const es = {
   valueChartsIntro:
     "Ancho = peso del criterio; debajo, la participación de cada variable dentro del criterio.",
   valueChartsPending: "Calcule un ranking para ver la jerarquía de pesos.",
+  lineUpTitle: "LineUp: anchos de peso",
+  lineUpIntro:
+    "Arrastre el ancho de cada barra para cambiar el peso; el ranking de vista previa se reordena al soltar.",
+  lineUpPending: "Calcule un ranking para editar pesos con LineUp.",
+  tourReopen: "Tour (60 s)",
+  tourSkip: "Saltar",
+  tourStart: "Empezar en Datos",
+  tourStep1Title: "Datos → Variables → Análisis",
+  tourStep1Body:
+    "Tres hubs: vea qué hay (Datos), configure el análisis (Variables) y abra un estudio (Análisis).",
+  tourStep2Title: "Un solo sitio para cambiar",
+  tourStep2Body:
+    "Solo Variables edita origen, producto, pesos y método. Los resultados son de solo lectura.",
+  tourStep3Title: "Pesos visibles",
+  tourStep3Body:
+    "Use LineUp, WeightLifter o Podium en Variables. Los tooltips enlazan al glosario.",
+  tourStep4Title: "Mapa y comparación",
+  tourStep4Body:
+    "El mapa marca fuera de análisis y engrosa arcos por imports. Compare 2–4 mercados en Comparar.",
+  glossaryOpen: "Abrir glosario",
+  compareMarketsIntro: "Elija 2–4 mercados del top para comparar factores lado a lado.",
+  compareNeedTwo: "Seleccione al menos dos mercados.",
   smaaAcceptAdvanced: "Vista avanzada: aceptabilidad por puesto (SMAA)",
   smaaAcceptAdvancedHint:
     "Barras apiladas por puesto; preferimos puntos cuantílicos y HOP arriba. Solo para lectura experta.",

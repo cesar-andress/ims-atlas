@@ -8,6 +8,7 @@ import { AccessMenu } from "./AccessMenu";
 import { UpdatesNewsPill } from "./UpdatesNewsPill";
 import { HeaderOverflowMenu } from "./HeaderOverflowMenu";
 import { HelpDrawer } from "./HelpDrawer";
+import { OnboardingTour } from "./OnboardingTour";
 import { dataConfig } from "../dataConfig";
 import { useAnalysis } from "../state/useAnalysis";
 import { ensureLanguage, useTranslation } from "../i18n";
@@ -95,6 +96,9 @@ export function AppFooter() {
         <a href="/privacidad">{t("nav.privacy")}</a>
         <a href="/changelog">{t("nav.changelog")}</a>
       </nav>
+      <div className="mt-2">
+        <OnboardingTour />
+      </div>
     </footer>
   );
 }

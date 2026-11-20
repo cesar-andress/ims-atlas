@@ -4,6 +4,7 @@ import { encodeConfig } from "./_helpers";
 test.describe("Phase E data explorer", () => {
   test("global search opens with / and finds a variable", async ({ page }) => {
     await page.goto("/");
+    await page.getByTestId("header-overflow-toggle").click();
     await expect(page.getByTestId("global-search-open")).toBeVisible({
       timeout: 15_000,
     });

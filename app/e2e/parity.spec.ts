@@ -6,7 +6,7 @@ import { expect, test } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { encodeConfig } from "./_helpers";
+import { encodeConfig, enableVariablesExpert } from "./_helpers";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const fullFixture = readFileSync(
@@ -37,6 +37,10 @@ async function routeFullPanel(page: import("@playwright/test").Page): Promise<vo
 }
 
 test.describe("SPEC §11 parity with app-sme", () => {
+  test.beforeEach(async ({ page }) => {
+    await enableVariablesExpert(page);
+  });
+
   test("any origin country (~190 ISO3 exporters selectable)", async ({ page }) => {
     await page.goto(`/variables?c=${encodeConfig({ ...COL, view: "variables" })}`);
     await expect(page.getByTestId("config-panel")).toBeVisible();

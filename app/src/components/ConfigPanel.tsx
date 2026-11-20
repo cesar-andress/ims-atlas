@@ -21,6 +21,10 @@ import { PermalinkLink } from "./PermalinkLink";
 import { PodiumPanel } from "./PodiumPanel";
 import { ValueChartsPanel } from "./ValueChartsPanel";
 import { WeightLifterPanel } from "./WeightLifterPanel";
+import { LineUpWeightEditor } from "./LineUpWeightEditor";
+import { CountryPicker } from "./CountryPicker";
+import { GlossaryTooltip } from "./GlossaryTooltip";
+import { VariablesRadixFields } from "./VariablesRadixFields";
 
 /** Hide blocks when Variables guided mode is on a different step. */
 function GuidedBlock({
@@ -356,6 +360,7 @@ export function ConfigPanel({
                 </select>
               </label>
               <p className="muted small">{t("imputationHint")}</p>
+              <VariablesRadixFields />
               <label>
                 {t("combinedEocWeight")}
                 <input
@@ -545,50 +550,19 @@ export function ConfigPanel({
           </GuidedBlock>
 
           <GuidedBlock step={0} current={guidedStep}>
-            <label>
-              {t("origin")}
-              <input
-                value={originDraft}
-                maxLength={3}
-                placeholder="COL"
-                list="origin-iso3-list"
-                data-testid="origin-input"
-                onChange={(e) =>
-                  setOriginDraft(e.target.value.toUpperCase().slice(0, 3))
-                }
-                onBlur={() =>
-                  setConfig({
-                    origin: originDraft ? originDraft.slice(0, 3) : undefined,
-                  })
-                }
-              />
-            </label>
-            <datalist id="origin-iso3-list">
-              {originHits.map((c) => (
-                <option key={c} value={c} />
-              ))}
-            </datalist>
+            <CountryPicker
+              value={config.origin ?? originDraft}
+              testId="origin-picker"
+              inputTestId="origin-input"
+              hitsTestId="origin-hits"
+              onChange={(iso) => {
+                setOriginDraft(iso);
+                setConfig({ origin: iso });
+              }}
+            />
             <p className="muted small" data-testid="origin-count">
               {t("originPool")}: {searchOrigins("").length}
             </p>
-            {originHits.length > 0 && originDraft.length > 0 ? (
-              <ul className="hs-hits" data-testid="origin-hits">
-                {originHits.map((c) => (
-                  <li key={c}>
-                    <button
-                      type="button"
-                      className={config.origin === c ? "active" : undefined}
-                      onClick={() => {
-                        setOriginDraft(c);
-                        setConfig({ origin: c });
-                      }}
-                    >
-                      {c}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            ) : null}
 
             <label>
               {t("product")}
@@ -943,13 +917,18 @@ export function ConfigPanel({
               config.methodFamily === "imsfem_2025_olive") && <ExpertSurveyPanel />}
 
             <ValueChartsPanel />
+            <LineUpWeightEditor />
             <WeightLifterPanel />
             <PodiumPanel />
           </GuidedBlock>
 
           <GuidedBlock step={4} current={guidedStep}>
             <label>
-              {t("normalization")}
+              <GlossaryTooltip
+                label={t("normalization")}
+                technical="normalization"
+                glossaryId="glossary"
+              />
               <select
                 value={config.normalization ?? "minmax"}
                 data-testid="normalization-select"
@@ -984,7 +963,11 @@ export function ConfigPanel({
             </p>
 
             <label>
-              {t("method")}
+              <GlossaryTooltip
+                label={t("method")}
+                technical="mcdm"
+                glossaryId="glossary"
+              />
               <select
                 value={config.mcdm ?? "wsm"}
                 data-testid="mcdm-select"

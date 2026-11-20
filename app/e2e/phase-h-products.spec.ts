@@ -37,6 +37,9 @@ test.describe("Phase H product context", () => {
   }
 
   test("apply-col-hs64 preset still works", async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem("ims-atlas.variables.expert", "1");
+    });
     await page.goto("/variables");
     await expect(page.getByTestId("config-panel")).toBeVisible();
     await page.getByTestId("apply-col-hs64").click();
