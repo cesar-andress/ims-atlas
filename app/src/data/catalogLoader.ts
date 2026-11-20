@@ -26,6 +26,37 @@ function normalizeName(
   return { en: id, es: id };
 }
 
+function normalizeNotes(
+  notes: unknown,
+): string | { en: string; es: string } | undefined {
+  if (notes == null) return undefined;
+  if (typeof notes === "string") {
+    const s = notes.trim();
+    return s ? s : undefined;
+  }
+  if (typeof notes === "object") {
+    const o = notes as { en?: unknown; es?: unknown };
+    const en = String(o.en ?? "").trim();
+    const es = String(o.es ?? "").trim();
+    if (!en && !es) return undefined;
+    return { en: en || es, es: es || en };
+  }
+  return undefined;
+}
+
+/** Localized note for UI (falls back across languages). */
+export function localizeNotes(
+  notes: CatalogVariable["notes"] | undefined,
+  lang: "en" | "es",
+): string | null {
+  if (!notes) return null;
+  if (typeof notes === "string") return notes.trim() || null;
+  const primary = (notes[lang] ?? "").trim();
+  if (primary) return primary;
+  const fallback = (notes[lang === "es" ? "en" : "es"] ?? "").trim();
+  return fallback || null;
+}
+
 type StatusVariable = Record<string, unknown>;
 type StatusSource = {
   id?: string;
@@ -120,7 +151,8 @@ function normalizeFromStatus(
       if (row.alias_of) out.alias_of = String(row.alias_of);
       const stats = coverageStats(row);
       if (stats) out.coverage_stats = stats;
-      if (row.notes) out.notes = String(row.notes);
+      const notes = normalizeNotes(row.notes);
+      if (notes) out.notes = notes;
       return out;
     },
   );

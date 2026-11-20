@@ -1,1423 +1,1551 @@
-factors:
-- demand
-- cost_access
-- logistics
-- competition
-- product_fit
-- macro_risk
-- institutional
-- openness
-- communication
-- entrepreneurship
-- sustainability
-- promotion
-variables:
-- id: IMPV
-  name:
-    en: HS chapter imports (USD)
-    es: Importaciones del capítulo HS (USD)
-  factor: demand
-  level: country_product
-  direction: benefit
-  transform: log
-  unit: USD
-  source: BACI
-  citation: 'Gaulier, G. and Zignago, S. (2010). BACI: International Trade Database
-    at the Product-Level. The 1994-2007 Version. CEPII Working Paper 2010-23.'
-  redistributable: true
-  years:
+'factors':
+- 'demand'
+- 'cost_access'
+- 'logistics'
+- 'competition'
+- 'product_fit'
+- 'macro_risk'
+- 'institutional'
+- 'openness'
+- 'communication'
+- 'entrepreneurship'
+- 'sustainability'
+- 'promotion'
+'variables':
+- 'id': 'IMPV'
+  'name':
+    'en': 'HS chapter imports (USD)'
+    'es': 'Importaciones del capítulo HS (USD)'
+  'factor': 'demand'
+  'level': 'country_product'
+  'direction': 'benefit'
+  'transform': 'log'
+  'unit': 'USD'
+  'source': 'BACI'
+  'citation': 'Gaulier, G. and Zignago, S. (2010). BACI: International Trade Database at the
+    Product-Level. The 1994-2007 Version. CEPII Working Paper 2010-23.'
+  'redistributable': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Aggregate destination imports of the chapter.
-  status: verified
-  code: value
-  origin_specific: false
-  source_ids: &id001
-  - baci
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: IMPC
-  name:
-    en: HS chapter imports per capita
-    es: Importaciones del capítulo HS per cápita
-  factor: demand
-  level: country_product
-  direction: benefit
-  transform: log
-  unit: USD per capita
-  source: BACI+WB
-  citation: 'BACI (CEPII) import values combined with World Bank population (SP.POP.TOTL).
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Aggregate destination imports of the chapter.'
+    'es': 'Importaciones agregadas del destino para el capítulo HS.'
+  'status': 'verified'
+  'code': 'value'
+  'origin_specific': false
+  'source_ids': &id001
+  - 'baci'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'IMPC'
+  'name':
+    'en': 'HS chapter imports per capita'
+    'es': 'Importaciones del capítulo HS per cápita'
+  'factor': 'demand'
+  'level': 'country_product'
+  'direction': 'benefit'
+  'transform': 'log'
+  'unit': 'USD per capita'
+  'source': 'BACI+WB'
+  'citation': 'BACI (CEPII) import values combined with World Bank population (SP.POP.TOTL).
     BACI: Gaulier & Zignago (2010); WDI: World Bank.'
-  redistributable: true
-  years:
+  'redistributable': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: BACI import value divided by World Bank population.
-  status: verified
-  code: value/SP.POP.TOTL
-  origin_specific: false
-  source_ids:
-  - baci
-  - worldbank_wdi
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: GRW
-  name:
-    en: HS chapter import growth (3-year CAGR)
-    es: Crecimiento de importaciones del capítulo HS (CAGR 3 años)
-  factor: demand
-  level: country_product
-  direction: benefit
-  transform: none
-  unit: share
-  source: BACI
-  citation: Derived from CEPII BACI (Gaulier & Zignago, 2010), HS chapter imports.
-  redistributable: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'BACI import value divided by World Bank population.'
+    'es': 'Valor de importación BACI dividido por la población del Banco Mundial.'
+  'status': 'verified'
+  'code': 'value/SP.POP.TOTL'
+  'origin_specific': false
+  'source_ids':
+  - 'baci'
+  - 'worldbank_wdi'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'GRW'
+  'name':
+    'en': 'HS chapter import growth (3-year CAGR)'
+    'es': 'Crecimiento de importaciones del capítulo HS (CAGR 3 años)'
+  'factor': 'demand'
+  'level': 'country_product'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'share'
+  'source': 'BACI'
+  'citation': 'Derived from CEPII BACI (Gaulier & Zignago, 2010), HS chapter imports.'
+  'redistributable': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Uses years t-3..t only (anti-leakage).
-  status: verified
-  code: cagr_3y
-  origin_specific: false
-  source_ids: *id001
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: GDPPC
-  name:
-    en: GDP per capita PPP
-    es: PIB per cápita PPA
-  factor: demand
-  level: country
-  direction: benefit
-  transform: log
-  unit: constant international USD
-  source: WB
-  citation: World Bank. World Development Indicators. NY.GDP.PCAP.PP.KD.
-  redistributable: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Uses years t-3..t only (anti-leakage).'
+    'es': 'Usa solo los años t-3..t (anti-fuga temporal).'
+  'status': 'verified'
+  'code': 'cagr_3y'
+  'origin_specific': false
+  'source_ids': *id001
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'GDPPC'
+  'name':
+    'en': 'GDP per capita PPP'
+    'es': 'PIB per cápita PPA'
+  'factor': 'demand'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'log'
+  'unit': 'constant international USD'
+  'source': 'WB'
+  'citation': 'World Bank. World Development Indicators. NY.GDP.PCAP.PP.KD.'
+  'redistributable': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: ''
-  status: verified
-  code: NY.GDP.PCAP.PP.KD
-  origin_specific: false
-  source_ids: &id003
-  - worldbank_wdi
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: DIST
-  name:
-    en: Population-weighted distance
-    es: Distancia ponderada por población
-  factor: cost_access
-  level: bilateral
-  direction: cost
-  transform: log
-  unit: km
-  source: CEPII Gravity
-  citation: Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database.
-    CEPII Working Paper 2022-05.
-  redistributable: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'GDP per capita in PPP (World Bank WDI).'
+    'es': 'PIB per cápita en PPA (WDI del Banco Mundial).'
+  'status': 'verified'
+  'code': 'NY.GDP.PCAP.PP.KD'
+  'origin_specific': false
+  'source_ids': &id003
+  - 'worldbank_wdi'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'DIST'
+  'name':
+    'en': 'Population-weighted distance'
+    'es': 'Distancia ponderada por población'
+  'factor': 'cost_access'
+  'level': 'bilateral'
+  'direction': 'cost'
+  'transform': 'log'
+  'unit': 'km'
+  'source': 'CEPII Gravity'
+  'citation': 'Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database.
+    CEPII Working Paper 2022-05.'
+  'redistributable': true
+  'years':
   - 2012
   - 2023
-  frequency: irregular
-  coverage_countries: null
-  series_breaks: []
-  notes: Fall back to distw if distw_harmonic unavailable.
-  status: verified
-  code: distw_harmonic
-  origin_specific: true
-  source_ids: &id002
-  - cepi_gravity
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: TARIF
-  name:
-    en: Applied preferential tariff (AHS), origin to destination
-    es: Arancel preferencial aplicado (AHS), origen a destino
-  factor: cost_access
-  level: bilateral_product
-  direction: cost
-  transform: none
-  unit: percent
-  source: WITS/TRAINS
-  citation: World Bank / UNCTAD WITS-TRAINS applied preferential tariff (AHS).
-  redistributable: false
-  years:
+  'frequency': 'irregular'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Fall back to distw if distw_harmonic unavailable.'
+    'es': 'Si falta distw_harmonic, se usa distw.'
+  'status': 'verified'
+  'code': 'distw_harmonic'
+  'origin_specific': true
+  'source_ids': &id002
+  - 'cepi_gravity'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'TARIF'
+  'name':
+    'en': 'Applied preferential tariff (AHS), origin to destination'
+    'es': 'Arancel preferencial aplicado (AHS), origen a destino'
+  'factor': 'cost_access'
+  'level': 'bilateral_product'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'percent'
+  'source': 'WITS/TRAINS'
+  'citation': 'World Bank / UNCTAD WITS-TRAINS applied preferential tariff (AHS).'
+  'redistributable': false
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Preferential applied rates for the HS chapter; not MFN. WITS/TRAINS redistribution
-    terms not confirmed from an openable official licence page in Phase 1; BYOD until
-    verified.
-  status: draft
-  code: AHS
-  origin_specific: true
-  byod_only: true
-  source_ids:
-  - wits_trains
-- id: FTA
-  name:
-    en: Preferential trade agreement in force
-    es: Acuerdo comercial preferencial en vigor
-  factor: cost_access
-  level: bilateral
-  direction: benefit
-  transform: none
-  unit: binary
-  source: CEPII Gravity
-  citation: Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database.
-    CEPII Working Paper 2022-05.
-  redistributable: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Preferential applied rates for the HS chapter; not MFN. WITS/TRAINS redistribution
+      terms not confirmed from an openable official licence page in Phase 1; BYOD until verified.'
+    'es': 'Aranceles preferenciales aplicados del capítulo HS; no MFN. Los términos de redistribución
+      de WITS/TRAINS no están confirmados en una página de licencia oficial abierta (fase
+      1); BYOD hasta verificación.'
+  'status': 'draft'
+  'code': 'AHS'
+  'origin_specific': true
+  'byod_only': true
+  'source_ids':
+  - 'wits_trains'
+- 'id': 'FTA'
+  'name':
+    'en': 'Preferential trade agreement in force'
+    'es': 'Acuerdo comercial preferencial en vigor'
+  'factor': 'cost_access'
+  'level': 'bilateral'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'binary'
+  'source': 'CEPII Gravity'
+  'citation': 'Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database.
+    CEPII Working Paper 2022-05.'
+  'redistributable': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: ''
-  status: verified
-  code: fta_wto
-  origin_specific: true
-  source_ids: *id002
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: LPI
-  name:
-    en: Logistics Performance Index (overall)
-    es: Índice de desempeño logístico (global)
-  factor: logistics
-  level: country
-  direction: benefit
-  transform: none
-  unit: index
-  source: WB
-  citation: World Bank. Logistics Performance Index. LP.LPI.OVRL.XQ.
-  redistributable: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Preferential trade agreement in force (CEPII Gravity).'
+    'es': 'Acuerdo comercial preferencial en vigor (CEPII Gravity).'
+  'status': 'verified'
+  'code': 'fta_wto'
+  'origin_specific': true
+  'source_ids': *id002
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'LPI'
+  'name':
+    'en': 'Logistics Performance Index (overall)'
+    'es': 'Índice de desempeño logístico (global)'
+  'factor': 'logistics'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'WB'
+  'citation': 'World Bank. Logistics Performance Index. LP.LPI.OVRL.XQ.'
+  'redistributable': true
+  'years':
   - 2012
   - 2023
-  frequency: irregular
-  coverage_countries: null
-  series_breaks: []
-  notes: Interpolate between editions; flag imputed years.
-  status: verified
-  code: LP.LPI.OVRL.XQ
-  origin_specific: false
-  source_ids:
-  - worldbank_lpi
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: ASIASH
-  name:
-    en: China+Vietnam share of destination HS imports
-    es: Cuota China+Vietnam en importaciones HS del destino
-  factor: competition
-  level: country_product
-  direction: cost
-  transform: none
-  unit: share
-  source: BACI
-  citation: Derived from CEPII BACI (Gaulier & Zignago, 2010).
-  redistributable: true
-  years:
+  'frequency': 'irregular'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Interpolate between editions; flag imputed years.'
+    'es': 'Se interpola entre ediciones; los años imputados se marcan.'
+  'status': 'verified'
+  'code': 'LP.LPI.OVRL.XQ'
+  'origin_specific': false
+  'source_ids':
+  - 'worldbank_lpi'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'ASIASH'
+  'name':
+    'en': 'China+Vietnam share of destination HS imports'
+    'es': 'Cuota China+Vietnam en importaciones HS del destino'
+  'factor': 'competition'
+  'level': 'country_product'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'share'
+  'source': 'BACI'
+  'citation': 'Derived from CEPII BACI (Gaulier & Zignago, 2010).'
+  'redistributable': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: ''
-  status: verified
-  code: chn_vnm_share
-  origin_specific: false
-  source_ids: *id001
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: HHI
-  name:
-    en: Supplier concentration (HHI) in destination HS imports
-    es: Concentración de proveedores (HHI) en importaciones HS
-  factor: competition
-  level: country_product
-  direction: cost
-  transform: none
-  unit: index
-  source: BACI
-  citation: Derived from CEPII BACI (Gaulier & Zignago, 2010).
-  redistributable: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'China + Vietnam share of destination HS chapter imports.'
+    'es': 'Cuota de China + Vietnam en las importaciones HS del destino.'
+  'status': 'verified'
+  'code': 'chn_vnm_share'
+  'origin_specific': false
+  'source_ids': *id001
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'HHI'
+  'name':
+    'en': 'Supplier concentration (HHI) in destination HS imports'
+    'es': 'Concentración de proveedores (HHI) en importaciones HS'
+  'factor': 'competition'
+  'level': 'country_product'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'BACI'
+  'citation': 'Derived from CEPII BACI (Gaulier & Zignago, 2010).'
+  'redistributable': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: ''
-  status: verified
-  code: hhi_suppliers
-  origin_specific: false
-  source_ids: *id001
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: UVGAP
-  name:
-    en: Absolute log unit-value gap (destination imports vs origin exports)
-    es: Brecha absoluta de valor unitario en log
-  factor: product_fit
-  level: bilateral_product
-  direction: cost
-  transform: none
-  unit: log USD per ton
-  source: BACI
-  citation: Derived from CEPII BACI (Gaulier & Zignago, 2010).
-  redistributable: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Herfindahl-Hirschman supplier concentration in destination HS imports.'
+    'es': 'Concentración de proveedores (Herfindahl-Hirschman) en importaciones HS del destino.'
+  'status': 'verified'
+  'code': 'hhi_suppliers'
+  'origin_specific': false
+  'source_ids': *id001
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'UVGAP'
+  'name':
+    'en': 'Absolute log unit-value gap (destination imports vs origin exports)'
+    'es': 'Brecha absoluta de valor unitario en log'
+  'factor': 'product_fit'
+  'level': 'bilateral_product'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'log USD per ton'
+  'source': 'BACI'
+  'citation': 'Derived from CEPII BACI (Gaulier & Zignago, 2010).'
+  'redistributable': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: abs(log UV_j imports - log UV_i world exports) for the chapter.
-  status: verified
-  code: uv_gap
-  origin_specific: true
-  source_ids: *id001
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: CULT
-  name:
-    en: Cultural distance (Kogut-Singh, Hofstede 6 dimensions)
-    es: Distancia cultural (Kogut-Singh, Hofstede 6 dimensiones)
-  factor: product_fit
-  level: bilateral
-  direction: cost
-  transform: none
-  unit: index
-  source: Hofstede
-  citation: Hofstede dimension scores (6 dimensions). geerthofstede.com dimension
-    data matrix; cultural distance via Kogut-Singh.
-  redistributable: false
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'abs(log UV_j imports - log UV_i world exports) for the chapter.'
+    'es': 'abs(log UV_j importaciones - log UV_i exportaciones mundiales) del capítulo.'
+  'status': 'verified'
+  'code': 'uv_gap'
+  'origin_specific': true
+  'source_ids': *id001
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'CULT'
+  'name':
+    'en': 'Cultural distance (Kogut-Singh, Hofstede 6 dimensions)'
+    'es': 'Distancia cultural (Kogut-Singh, Hofstede 6 dimensiones)'
+  'factor': 'product_fit'
+  'level': 'bilateral'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'Hofstede'
+  'citation': 'Hofstede dimension scores (6 dimensions). geerthofstede.com dimension data
+    matrix; cultural distance via Kogut-Singh.'
+  'redistributable': false
+  'years':
   - 2012
   - 2023
-  frequency: irregular
-  coverage_countries: null
-  series_breaks: []
-  notes: 'Manual dataset under data/manual/hofstede/. ims-backtest README: Hofstede
-    raw data is not redistributed; researchers may use the published matrix, commercial
-    use requires contacting authors.'
-  status: draft
-  code: kogut_singh_6
-  origin_specific: true
-  byod_only: true
-  source_ids:
-  - hofstede
-- id: LANG
-  name:
-    en: Common official language
-    es: Idioma oficial común
-  factor: product_fit
-  level: bilateral
-  direction: benefit
-  transform: none
-  unit: binary
-  source: CEPII Gravity
-  citation: Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database.
-    CEPII Working Paper 2022-05.
-  redistributable: true
-  years:
+  'frequency': 'irregular'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Manual dataset under data/manual/hofstede/. ims-backtest README: Hofstede raw data
+      is not redistributable in the public release.'
+    'es': 'Dataset manual en data/manual/hofstede/. README de ims-backtest: los datos Hofstede
+      en bruto no se redistribuyen en la versión pública.'
+  'status': 'draft'
+  'code': 'kogut_singh_6'
+  'origin_specific': true
+  'byod_only': true
+  'source_ids':
+  - 'hofstede'
+- 'id': 'LANG'
+  'name':
+    'en': 'Common official language'
+    'es': 'Idioma oficial común'
+  'factor': 'product_fit'
+  'level': 'bilateral'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'binary'
+  'source': 'CEPII Gravity'
+  'citation': 'Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database.
+    CEPII Working Paper 2022-05.'
+  'redistributable': true
+  'years':
   - 2012
   - 2023
-  frequency: irregular
-  coverage_countries: null
-  series_breaks: []
-  notes: ''
-  status: verified
-  code: comlang_off
-  origin_specific: true
-  source_ids: *id002
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: INFL
-  name:
-    en: Annual consumer price inflation
-    es: Inflación anual (IPC)
-  factor: macro_risk
-  level: country
-  direction: cost
-  transform: none
-  unit: percentage points
-  source: WB
-  citation: World Bank. World Development Indicators. FP.CPI.TOTL.ZG.
-  redistributable: true
-  years:
+  'frequency': 'irregular'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Common official language flag (CEPII Gravity).'
+    'es': 'Indicador de idioma oficial común (CEPII Gravity).'
+  'status': 'verified'
+  'code': 'comlang_off'
+  'origin_specific': true
+  'source_ids': *id002
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'INFL'
+  'name':
+    'en': 'Annual consumer price inflation'
+    'es': 'Inflación anual (IPC)'
+  'factor': 'macro_risk'
+  'level': 'country'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'percentage points'
+  'source': 'WB'
+  'citation': 'World Bank. World Development Indicators. FP.CPI.TOTL.ZG.'
+  'redistributable': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Raw annual CPI inflation (FP.CPI.TOTL.ZG). For |x − 2| use candidate INFL_DEV.
-  status: verified
-  code: FP.CPI.TOTL.ZG
-  origin_specific: false
-  source_ids: *id003
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: UNEMP
-  name:
-    en: Unemployment rate
-    es: Tasa de desempleo
-  factor: macro_risk
-  level: country
-  direction: cost
-  transform: none
-  unit: percent
-  source: WB
-  citation: World Bank. World Development Indicators. SL.UEM.TOTL.ZS.
-  redistributable: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Raw annual CPI inflation (FP.CPI.TOTL.ZG). For |x - 2| use candidate INFL_DEV.'
+    'es': 'Inflación anual IPC en bruto (FP.CPI.TOTL.ZG). Para |x - 2| usar la candidata INFL_DEV.'
+  'status': 'verified'
+  'code': 'FP.CPI.TOTL.ZG'
+  'origin_specific': false
+  'source_ids': *id003
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'UNEMP'
+  'name':
+    'en': 'Unemployment rate'
+    'es': 'Tasa de desempleo'
+  'factor': 'macro_risk'
+  'level': 'country'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'percent'
+  'source': 'WB'
+  'citation': 'World Bank. World Development Indicators. SL.UEM.TOTL.ZS.'
+  'redistributable': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: ''
-  status: verified
-  code: SL.UEM.TOTL.ZS
-  origin_specific: false
-  source_ids: *id003
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: GOV
-  name:
-    en: Mean Worldwide Governance Indicators
-    es: Media de Worldwide Governance Indicators
-  factor: institutional
-  level: country
-  direction: benefit
-  transform: none
-  unit: estimate
-  source: WB WGI
-  citation: World Bank. Worldwide Governance Indicators (mean of six estimate series).
-  redistributable: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Unemployment rate (World Bank / ILO).'
+    'es': 'Tasa de desempleo (Banco Mundial / OIT).'
+  'status': 'verified'
+  'code': 'SL.UEM.TOTL.ZS'
+  'origin_specific': false
+  'source_ids': *id003
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'GOV'
+  'name':
+    'en': 'Mean Worldwide Governance Indicators'
+    'es': 'Media de Worldwide Governance Indicators'
+  'factor': 'institutional'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'estimate'
+  'source': 'WB WGI'
+  'citation': 'World Bank. Worldwide Governance Indicators (mean of six estimate series).'
+  'redistributable': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Mean of six WGI estimate series; document VIF with other macros.
-  status: verified
-  code: VA.EST,PV.EST,GE.EST,RQ.EST,RL.EST,CC.EST
-  origin_specific: false
-  source_ids:
-  - worldbank_wgi
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: EOC
-  name:
-    en: External Opening Coefficient (trade/GDP)
-    es: Coeficiente de apertura externa (comercio/PIB)
-  factor: openness
-  level: country
-  direction: benefit
-  transform: none
-  unit: percent of GDP
-  source: WB
-  citation: World Bank. World Development Indicators. NE.TRD.GNFS.ZS.
-  redistributable: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Mean of six WGI estimate series; document VIF with other macros.'
+    'es': 'Media de las seis series estimate de WGI; documentar VIF con otros macros.'
+  'status': 'verified'
+  'code': 'VA.EST,PV.EST,GE.EST,RQ.EST,RL.EST,CC.EST'
+  'origin_specific': false
+  'source_ids':
+  - 'worldbank_wgi'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'EOC'
+  'name':
+    'en': 'External Opening Coefficient (trade/GDP)'
+    'es': 'Coeficiente de apertura externa (comercio/PIB)'
+  'factor': 'openness'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'percent of GDP'
+  'source': 'WB'
+  'citation': 'World Bank. World Development Indicators. NE.TRD.GNFS.ZS.'
+  'redistributable': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Legacy/baseline only; biased toward hubs and small economies.
-  status: verified
-  code: NE.TRD.GNFS.ZS
-  origin_specific: false
-  source_ids: *id003
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: REEXP
-  name:
-    en: Re-export intensity (chapter X_j / M_j)
-    es: Intensidad de reexportación (capítulo X_j / M_j)
-  factor: openness
-  level: country_product
-  direction: cost
-  transform: none
-  unit: ratio
-  source: BACI
-  citation: Derived from CEPII BACI (Gaulier & Zignago, 2010).
-  redistributable: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Legacy/baseline only; biased toward hubs and small economies.'
+    'es': 'Solo legado/línea base; sesgado hacia hubs y economías pequeñas.'
+  'status': 'verified'
+  'code': 'NE.TRD.GNFS.ZS'
+  'origin_specific': false
+  'source_ids': *id003
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'REEXP'
+  'name':
+    'en': 'Re-export intensity (chapter X_j / M_j)'
+    'es': 'Intensidad de reexportación (capítulo X_j / M_j)'
+  'factor': 'openness'
+  'level': 'country_product'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'ratio'
+  'source': 'BACI'
+  'citation': 'Derived from CEPII BACI (Gaulier & Zignago, 2010).'
+  'redistributable': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Hub flag treated as cost in the core score; SPEC §3.2.
-  status: verified
-  code: reexport_ratio
-  origin_specific: false
-  source_ids: *id001
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: ITU_IDI
-  name:
-    en: ICT Development Index
-    es: Índice de desarrollo de las TIC
-  factor: communication
-  level: country
-  direction: benefit
-  transform: none
-  unit: index
-  source: ITU
-  citation: International Telecommunication Union. ICT Development Index / ITU DataHub.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Hub flag treated as cost in the core score; SPEC section 3.2.'
+    'es': 'Indicador de hub tratado como coste en la puntuación central; SPEC sección 3.2.'
+  'status': 'verified'
+  'code': 'reexport_ratio'
+  'origin_specific': false
+  'source_ids': *id001
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'ITU_IDI'
+  'name':
+    'en': 'ICT Development Index'
+    'es': 'Índice de desarrollo de las TIC'
+  'factor': 'communication'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'ITU'
+  'citation': 'International Telecommunication Union. ICT Development Index / ITU DataHub.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2023
   - 2026
-  frequency: annual
-  coverage_countries: null
-  series_breaks:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks':
   - 2023
-  notes: 'ITU DataHub About page: CC BY-NC-SA 3.0 IGO (non-commercial). New IDI methodology
-    from 2023 — do not splice with pre-2023 silently.'
-  status: draft
-  source_ids:
-  - itu_datahub
-- id: EF_EPI
-  name:
-    en: EF English Proficiency Index
-    es: Índice de dominio del inglés EF
-  factor: communication
-  level: country
-  direction: benefit
-  transform: none
-  unit: index
-  source: EF
-  citation: EF Education First. EF English Proficiency Index.
-  redistributable: false
-  byod_only: true
-  years:
+  'notes':
+    'en': 'ITU DataHub About page: CC BY-NC-SA 3.0 IGO (non-commercial). New IDI methodology
+      from 2023: do not mix with earlier editions.'
+    'es': 'Página About de ITU DataHub: CC BY-NC-SA 3.0 IGO (no comercial). Nueva metodología
+      IDI desde 2023: no mezclar con ediciones anteriores.'
+  'status': 'draft'
+  'source_ids':
+  - 'itu_datahub'
+- 'id': 'EF_EPI'
+  'name':
+    'en': 'EF English Proficiency Index'
+    'es': 'Índice de dominio del inglés EF'
+  'factor': 'communication'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'EF'
+  'citation': 'EF Education First. EF English Proficiency Index.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2011
   - 2026
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Official landing opened; redistribution / open-licence terms not stated clearly
-    — treat as proprietary BYOD until verified.
-  status: draft
-  source_ids:
-  - ef_epi
-- id: ODIN
-  name:
-    en: Open Data Inventory overall score
-    es: Puntuación global Open Data Inventory
-  factor: communication
-  level: country
-  direction: benefit
-  transform: none
-  unit: index
-  source: Open Data Watch
-  citation: Open Data Watch. Open Data Inventory (ODIN).
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Official landing opened; redistribution / open-licence terms not stated clearly:
+      treat as proprietary / BYOD.'
+    'es': 'Landing oficial revisada; los términos de redistribución / licencia abierta no
+      están claros: tratar como propietario / BYOD.'
+  'status': 'draft'
+  'source_ids':
+  - 'ef_epi'
+- 'id': 'ODIN'
+  'name':
+    'en': 'Open Data Inventory overall score'
+    'es': 'Puntuación global Open Data Inventory'
+  'factor': 'communication'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'Open Data Watch'
+  'citation': 'Open Data Watch. Open Data Inventory (ODIN).'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2015
   - 2024
-  frequency: biennial
-  coverage_countries: null
-  series_breaks: []
-  notes: Official site shows a CC BY icon; older ODIN reports cite CC BY 4.0. Current
-    machine-readable download terms not confirmed this session — UNKNOWN until a human
-    verifies the download licence.
-  status: draft
-  source_ids:
-  - odin
-- id: GEDI
-  name:
-    en: Global Entrepreneurship Index
-    es: Índice global de emprendimiento (GEDI)
-  factor: entrepreneurship
-  level: country
-  direction: benefit
-  transform: none
-  unit: index
-  source: GEDI Institute
-  citation: The GEDI Institute. Global Entrepreneurship Index (GEI).
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'biennial'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Official site shows a CC BY icon; older ODIN reports cite CC BY 4.0. Current machine-readable
+      download terms still need confirmation before public ship.'
+    'es': 'El sitio oficial muestra icono CC BY; informes ODIN antiguos citan CC BY 4.0. Los
+      términos de descarga machine-readable actuales siguen pendientes de confirmación antes
+      de publicar.'
+  'status': 'draft'
+  'source_ids':
+  - 'odin'
+- 'id': 'GEDI'
+  'name':
+    'en': 'Global Entrepreneurship Index'
+    'es': 'Índice global de emprendimiento (GEDI)'
+  'factor': 'entrepreneurship'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'GEDI Institute'
+  'citation': 'The GEDI Institute. Global Entrepreneurship Index (GEI).'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2006
   - 2019
-  frequency: irregular
-  coverage_countries: null
-  series_breaks: []
-  notes: Final GEI issue around 2019; no clear SPDX redistribution licence on the
-    official pages opened — BYOD.
-  status: draft
-  source_ids:
-  - gedi
-- id: GII
-  name:
-    en: Global Innovation Index
-    es: Índice global de innovación
-  factor: entrepreneurship
-  level: country
-  direction: benefit
-  transform: none
-  unit: index
-  source: WIPO
-  citation: World Intellectual Property Organization (WIPO). Global Innovation Index.
-  redistributable: true
-  years:
+  'frequency': 'irregular'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Final GEI issue around 2019; no clear SPDX redistribution licence on the official
+      pages opened: BYOD.'
+    'es': 'Última edición GEI alrededor de 2019; sin licencia SPDX de redistribución clara
+      en las páginas oficiales revisadas: BYOD.'
+  'status': 'draft'
+  'source_ids':
+  - 'gedi'
+- 'id': 'GII'
+  'name':
+    'en': 'Global Innovation Index'
+    'es': 'Índice global de innovación'
+  'factor': 'entrepreneurship'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'WIPO'
+  'citation': 'World Intellectual Property Organization (WIPO). Global Innovation Index.'
+  'redistributable': true
+  'years':
   - 2013
   - 2026
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: 'GII 2026 publication states CC BY 4.0; confirm the database file carries
-    the same terms before status: verified.'
-  status: verified
-  source_ids:
-  - wipo_gii
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: STARTUPBLINK
-  name:
-    en: Global Startup Ecosystem Index
-    es: Índice global de ecosistemas startup
-  factor: entrepreneurship
-  level: country
-  direction: benefit
-  transform: none
-  unit: index
-  source: StartupBlink
-  citation: StartupBlink. Global Startup Ecosystem Index.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'GII 2026 publication states CC BY 4.0; confirm the database file carries the same
+      terms before status=verified ship.'
+    'es': 'La publicación GII 2026 indica CC BY 4.0; confirmar que el fichero de base de datos
+      lleva los mismos términos antes de publicar como verified.'
+  'status': 'verified'
+  'source_ids':
+  - 'wipo_gii'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'STARTUPBLINK'
+  'name':
+    'en': 'Global Startup Ecosystem Index'
+    'es': 'Índice global de ecosistemas startup'
+  'factor': 'entrepreneurship'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'StartupBlink'
+  'citation': 'StartupBlink. Global Startup Ecosystem Index.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2020
   - 2026
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Likely proprietary; no open licence confirmed — BYOD.
-  status: draft
-  source_ids:
-  - startupblink
-- id: EPI
-  name:
-    en: Environmental Performance Index
-    es: Índice de desempeño ambiental
-  factor: sustainability
-  level: country
-  direction: benefit
-  transform: none
-  unit: index
-  source: Yale EPI
-  citation: Wendling, Z. A., Emerson, J. W., Esty, D. C., de Sherbinin, A., Block,
-    S., et al. (2026). 2026 Environmental Performance Index. Yale Center for Environmental
-    Law & Policy.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Likely proprietary; no open licence confirmed: BYOD.'
+    'es': 'Probablemente propietario; sin licencia abierta confirmada: BYOD.'
+  'status': 'draft'
+  'source_ids':
+  - 'startupblink'
+- 'id': 'EPI'
+  'name':
+    'en': 'Environmental Performance Index'
+    'es': 'Índice de desempeño ambiental'
+  'factor': 'sustainability'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'Yale EPI'
+  'citation': 'Wendling, Z. A., Emerson, J. W., Esty, D. C., de Sherbinin, A., Block, S.,
+    et al. (2026). 2026 Environmental Performance Index. Yale Center for Environmental Law
+    & Policy.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2006
   - 2026
-  frequency: biennial
-  coverage_countries: null
-  series_breaks: []
-  notes: 'epi.yale.edu downloads footer and FAQs: CC BY-NC-SA 4.0 — non-commercial;
-    not shipped in the public release.'
-  status: draft
-  source_ids:
-  - yale_epi
-- id: CO2PC
-  name:
-    en: CO2 emissions excluding LULUCF per capita (t CO2e/capita)
-    es: Emisiones de CO2 excl. UTCUTS per cápita (t CO2e/cápita)
-  factor: sustainability
-  level: country
-  direction: cost
-  transform: none
-  unit: t CO2e per capita
-  source: WB
-  code: EN.GHG.CO2.PC.CE.AR5
-  citation: World Bank. World Development Indicators. EN.GHG.CO2.PC.CE.AR5 (CO2 emissions
-    excluding LULUCF per capita).
-  redistributable: true
-  years:
+  'frequency': 'biennial'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'epi.yale.edu downloads footer and FAQs: CC BY-NC-SA 4.0 (non-commercial); not shipped
+      in the public redistributable bundle.'
+    'es': 'Pie y FAQ de descargas en epi.yale.edu: CC BY-NC-SA 4.0 (no comercial); no se incluye
+      en el paquete público redistribuible.'
+  'status': 'draft'
+  'source_ids':
+  - 'yale_epi'
+- 'id': 'CO2PC'
+  'name':
+    'en': 'CO2 emissions excluding LULUCF per capita (t CO2e/capita)'
+    'es': 'Emisiones de CO2 excl. UTCUTS per cápita (t CO2e/cápita)'
+  'factor': 'sustainability'
+  'level': 'country'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 't CO2e per capita'
+  'source': 'WB'
+  'code': 'EN.GHG.CO2.PC.CE.AR5'
+  'citation': 'World Bank. World Development Indicators. EN.GHG.CO2.PC.CE.AR5 (CO2 emissions
+    excluding LULUCF per capita).'
+  'redistributable': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks':
   - 2024
-  notes: Replaces discontinued EN.ATM.CO2E.PC (WDI Database Archives). Different source/definition;
-    do not splice with the archived series. series_breaks marks the catalog switch
-    year (not an upstream splice).
-  status: verified
-  source_ids: *id003
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: PLI
-  name:
-    en: Price level index (households and NPISHs final consumption)
-    es: Índice de nivel de precios (consumo final hogares y NPSH)
-  factor: cost_access
-  level: country
-  direction: cost
-  transform: none
-  unit: index (USA=100)
-  source: WB ICP/WDI
-  code: PA.NUS.PRVT.PLI
-  citation: World Bank. World Development Indicators / ICP. PA.NUS.PRVT.PLI.
-  redistributable: true
-  years:
+  'notes':
+    'en': 'Replaces discontinued EN.ATM.CO2E.PC (WDI Database Archives). Different source/definition;
+      do not splice with the old series.'
+    'es': 'Sustituye EN.ATM.CO2E.PC discontinuado (archivos WDI). Fuente/definición distintas;
+      no empalmar con la serie antigua.'
+  'status': 'verified'
+  'source_ids': *id003
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'PLI'
+  'name':
+    'en': 'Price level index (households and NPISHs final consumption)'
+    'es': 'Índice de nivel de precios (consumo final hogares y NPSH)'
+  'factor': 'cost_access'
+  'level': 'country'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'index (USA=100)'
+  'source': 'WB ICP/WDI'
+  'code': 'PA.NUS.PRVT.PLI'
+  'citation': 'World Bank. World Development Indicators / ICP. PA.NUS.PRVT.PLI.'
+  'redistributable': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Open price-level replacement for scraped consumer-price baskets. Indicator
-    page states CC BY-4.0.
-  status: verified
-  source_ids:
-  - worldbank_wdi
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: PPAD
-  name:
-    en: Product Price at Destination (PPAD)
-    es: Precio del producto en destino (PPAD)
-  factor: cost_access
-  level: country
-  direction: benefit
-  transform: none
-  unit: USD
-  source: baci
-  citation: Phase J IMSFE 2025 draft mapping. Jose code; open candidate UVGAP/BACI
-    unit values. licence to verify.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Open price-level replacement for scraped consumer-price baskets. Indicator page
+      states CC BY-4.0.'
+    'es': 'Sustituto abierto de nivel de precios frente a cestas scrapeadas. La ficha del
+      indicador indica CC BY-4.0.'
+  'status': 'verified'
+  'source_ids':
+  - 'worldbank_wdi'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'PPAD'
+  'name':
+    'en': 'Product Price at Destination (PPAD)'
+    'es': 'Precio del producto en destino (PPAD)'
+  'factor': 'cost_access'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'USD'
+  'source': 'baci'
+  'citation': 'Phase J IMSFE 2025 draft mapping. Jose code; open candidate UVGAP/BACI unit
+    values. licence to verify.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Jose code; open candidate UVGAP/BACI unit values. licence to verify.
-  status: verified
-  source_ids:
-  - baci
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: INTC
-  name:
-    en: International Transport Costs (INTC)
-    es: Costes de transporte internacional (INTC)
-  factor: cost_access
-  level: country
-  direction: cost
-  transform: none
-  unit: USD
-  source: freight_manual
-  citation: Phase J IMSFE 2025 draft mapping. Workbook freight tools; BYOD; licence
-    UNKNOWN.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Jose code; open candidate UVGAP/BACI unit values. licence to verify.'
+    'es': 'Código Jose; candidata abierta UVGAP/valores unitarios BACI. Licencia por verificar.'
+  'status': 'verified'
+  'source_ids':
+  - 'baci'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'INTC'
+  'name':
+    'en': 'International Transport Costs (INTC)'
+    'es': 'Costes de transporte internacional (INTC)'
+  'factor': 'cost_access'
+  'level': 'country'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'USD'
+  'source': 'freight_manual'
+  'citation': 'Phase J IMSFE 2025 draft mapping. Workbook freight tools; BYOD; licence UNKNOWN.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Workbook freight tools; BYOD; licence UNKNOWN.
-  status: draft
-  source_ids:
-  - freight_manual
-- id: CIBC
-  name:
-    en: Cost to Import Border Compliance (CIBC)
-    es: Coste de cumplimiento fronterizo a la importación (CIBC)
-  factor: cost_access
-  level: country
-  direction: cost
-  transform: none
-  unit: USD
-  source: worldbank_wdi
-  citation: Phase J IMSFE 2025 draft mapping. Doing Business IC.IMP.CSBC.CD archived;
-    flag archived series.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Workbook freight tools; BYOD; licence UNKNOWN.'
+    'es': 'Herramientas de flete del libro Excel; BYOD; licencia UNKNOWN.'
+  'status': 'draft'
+  'source_ids':
+  - 'freight_manual'
+- 'id': 'CIBC'
+  'name':
+    'en': 'Cost to Import Border Compliance (CIBC)'
+    'es': 'Coste de cumplimiento fronterizo a la importación (CIBC)'
+  'factor': 'cost_access'
+  'level': 'country'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'USD'
+  'source': 'worldbank_wdi'
+  'citation': 'Phase J IMSFE 2025 draft mapping. Doing Business IC.IMP.CSBC.CD archived; flag
+    archived series.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Doing Business IC.IMP.CSBC.CD archived; flag archived series.
-  status: verified
-  code: IC.IMP.CSBC.CD
-  source_ids:
-  - worldbank_wdi
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: LPIN
-  name:
-    en: Logistics Performance Index (LPIN)
-    es: Índice de desempeño logístico (LPIN)
-  factor: logistics
-  level: country
-  direction: benefit
-  transform: none
-  unit: index
-  source: worldbank_lpi
-  citation: Phase J IMSFE 2025 draft mapping. Alias of catalog LPI / LP.LPI.OVRL.XQ.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Doing Business IC.IMP.CSBC.CD archived; flag archived series.'
+    'es': 'Doing Business IC.IMP.CSBC.CD archivado; marcar serie archivada.'
+  'status': 'verified'
+  'code': 'IC.IMP.CSBC.CD'
+  'source_ids':
+  - 'worldbank_wdi'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'LPIN'
+  'name':
+    'en': 'Logistics Performance Index (LPIN)'
+    'es': 'Índice de desempeño logístico (LPIN)'
+  'factor': 'logistics'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'worldbank_lpi'
+  'citation': 'Phase J IMSFE 2025 draft mapping. Alias of catalog LPI / LP.LPI.OVRL.XQ.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Alias of catalog LPI (same series LP.LPI.OVRL.XQ). Do not double-weight with LPI.
-  status: verified
-  code: LP.LPI.OVRL.XQ
-  source_ids:
-  - worldbank_lpi
-  verified_by: CA
-  verified_on: '2026-11-20'
-  alias_of: LPI
-- id: CPTR
-  name:
-    en: Container Port Traffic (CPTR)
-    es: Tráfico de contenedores portuarios (CPTR)
-  factor: logistics
-  level: country
-  direction: benefit
-  transform: none
-  unit: TEU
-  source: worldbank_wdi
-  citation: Phase J IMSFE 2025 draft mapping. WDI IS.SHP.GOOD.TU candidate.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Alias of catalog LPI (same series LP.LPI.OVRL.XQ). Do not double-weight with LPI.'
+    'es': 'Alias de LPI del listado (misma serie LP.LPI.OVRL.XQ). No ponderar junto con LPI.'
+  'status': 'verified'
+  'code': 'LP.LPI.OVRL.XQ'
+  'source_ids':
+  - 'worldbank_lpi'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+  'alias_of': 'LPI'
+- 'id': 'CPTR'
+  'name':
+    'en': 'Container Port Traffic (CPTR)'
+    'es': 'Tráfico de contenedores portuarios (CPTR)'
+  'factor': 'logistics'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'TEU'
+  'source': 'worldbank_wdi'
+  'citation': 'Phase J IMSFE 2025 draft mapping. WDI IS.SHP.GOOD.TU candidate.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: WDI IS.SHP.GOOD.TU candidate.
-  status: verified
-  code: IS.SHP.GOOD.TU
-  source_ids:
-  - worldbank_wdi
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: ITTT
-  name:
-    en: International Transport Transit Time (ITTT)
-    es: Tiempo de tránsito internacional (ITTT)
-  factor: logistics
-  level: country
-  direction: cost
-  transform: none
-  unit: days
-  source: freight_manual
-  citation: Phase J IMSFE 2025 draft mapping. Sea-distances style BYOD; licence UNKNOWN.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'WDI IS.SHP.GOOD.TU candidate.'
+    'es': 'Candidata WDI IS.SHP.GOOD.TU.'
+  'status': 'verified'
+  'code': 'IS.SHP.GOOD.TU'
+  'source_ids':
+  - 'worldbank_wdi'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'ITTT'
+  'name':
+    'en': 'International Transport Transit Time (ITTT)'
+    'es': 'Tiempo de tránsito internacional (ITTT)'
+  'factor': 'logistics'
+  'level': 'country'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'days'
+  'source': 'freight_manual'
+  'citation': 'Phase J IMSFE 2025 draft mapping. Sea-distances style BYOD; licence UNKNOWN.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Sea-distances style BYOD; licence UNKNOWN.
-  status: draft
-  source_ids:
-  - freight_manual
-- id: CUTA
-  name:
-    en: Customs Tariffs (CUTA)
-    es: Aranceles aduaneros (CUTA)
-  factor: competition
-  level: country
-  direction: cost
-  transform: none
-  unit: percent
-  source: wits_trains
-  citation: Phase J IMSFE 2025 draft mapping. Jose code; open candidate TARIF/WITS;
-    often BYOD.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Sea-distances style BYOD; licence UNKNOWN.'
+    'es': 'Estilo distancias marítimas; BYOD; licencia UNKNOWN.'
+  'status': 'draft'
+  'source_ids':
+  - 'freight_manual'
+- 'id': 'CUTA'
+  'name':
+    'en': 'Customs Tariffs (CUTA)'
+    'es': 'Aranceles aduaneros (CUTA)'
+  'factor': 'competition'
+  'level': 'country'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'percent'
+  'source': 'wits_trains'
+  'citation': 'Phase J IMSFE 2025 draft mapping. Jose code; open candidate TARIF/WITS; often
+    BYOD.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Jose code; open candidate TARIF/WITS; often BYOD.
-  status: draft
-  source_ids:
-  - wits_trains
-- id: CCTI
-  name:
-    en: Country Contribution to Interventions (CCTI)
-    es: Contribución a intervenciones comerciales (CCTI)
-  factor: competition
-  level: country
-  direction: cost
-  transform: none
-  unit: count
-  source: global_trade_alert
-  citation: Phase J IMSFE 2025 draft mapping. Global Trade Alert; BYOD; licence UNKNOWN.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Jose code; open candidate TARIF/WITS; often BYOD.'
+    'es': 'Código Jose; candidata abierta TARIF/WITS; a menudo BYOD.'
+  'status': 'draft'
+  'source_ids':
+  - 'wits_trains'
+- 'id': 'CCTI'
+  'name':
+    'en': 'Country Contribution to Interventions (CCTI)'
+    'es': 'Contribución a intervenciones comerciales (CCTI)'
+  'factor': 'competition'
+  'level': 'country'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'count'
+  'source': 'global_trade_alert'
+  'citation': 'Phase J IMSFE 2025 draft mapping. Global Trade Alert; BYOD; licence UNKNOWN.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Global Trade Alert; BYOD; licence UNKNOWN.
-  status: draft
-  source_ids:
-  - global_trade_alert
-- id: IOEF
-  name:
-    en: Index of Economic Freedom (IOEF)
-    es: Índice de libertad económica (IOEF)
-  factor: competition
-  level: country
-  direction: benefit
-  transform: none
-  unit: index
-  source: heritage_ief
-  citation: Phase J IMSFE 2025 draft mapping. Heritage IEF; BYOD; licence UNKNOWN.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Global Trade Alert; BYOD; licence UNKNOWN.'
+    'es': 'Global Trade Alert; BYOD; licencia UNKNOWN.'
+  'status': 'draft'
+  'source_ids':
+  - 'global_trade_alert'
+- 'id': 'IOEF'
+  'name':
+    'en': 'Index of Economic Freedom (IOEF)'
+    'es': 'Índice de libertad económica (IOEF)'
+  'factor': 'competition'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'heritage_ief'
+  'citation': 'Phase J IMSFE 2025 draft mapping. Heritage IEF; BYOD; licence UNKNOWN.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Heritage IEF; BYOD; licence UNKNOWN.
-  status: draft
-  source_ids:
-  - heritage_ief
-- id: CLI
-  name:
-    en: Cost of Living Index (CLI)
-    es: Índice de coste de vida (CLI)
-  factor: macro_risk
-  level: country
-  direction: benefit
-  transform: none
-  unit: index
-  source: worldbank_wdi
-  citation: Phase J IMSFE 2025 draft mapping. Jose code; open candidate PLI (ICP).
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Heritage IEF; BYOD; licence UNKNOWN.'
+    'es': 'Heritage IEF; BYOD; licencia UNKNOWN.'
+  'status': 'draft'
+  'source_ids':
+  - 'heritage_ief'
+- 'id': 'CLI'
+  'name':
+    'en': 'Cost of Living Index (CLI)'
+    'es': 'Índice de coste de vida (CLI)'
+  'factor': 'macro_risk'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'worldbank_wdi'
+  'citation': 'Phase J IMSFE 2025 draft mapping. Jose code; open candidate PLI (ICP).'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Proxy ICP for Jose CLI — same series as PLI (PA.NUS.PRVT.PLI). Do not double-weight with PLI.
-  status: verified
-  code: PA.NUS.PRVT.PLI
-  source_ids:
-  - worldbank_wdi
-  verified_by: CA
-  verified_on: '2026-11-20'
-  alias_of: PLI
-- id: INAN
-  name:
-    en: Inflation Annual (INAN)
-    es: Inflación anual (INAN)
-  factor: macro_risk
-  level: country
-  direction: cost
-  transform: none
-  unit: percent
-  source: worldbank_wdi
-  citation: Phase J IMSFE 2025 draft mapping. Jose code; open candidate INFL.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Proxy ICP for Jose CLI: same series as PLI (PA.NUS.PRVT.PLI). Do not double-weight
+      with PLI.'
+    'es': 'Proxy ICP para CLI de Jose: misma serie que PLI (PA.NUS.PRVT.PLI). No ponderar
+      junto con PLI.'
+  'status': 'verified'
+  'code': 'PA.NUS.PRVT.PLI'
+  'source_ids':
+  - 'worldbank_wdi'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+  'alias_of': 'PLI'
+- 'id': 'INAN'
+  'name':
+    'en': 'Inflation Annual (INAN)'
+    'es': 'Inflación anual (INAN)'
+  'factor': 'macro_risk'
+  'level': 'country'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'percent'
+  'source': 'worldbank_wdi'
+  'citation': 'Phase J IMSFE 2025 draft mapping. Jose code; open candidate INFL.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Jose code; alias of INFL (FP.CPI.TOTL.ZG). Do not double-weight with INFL.
-  status: verified
-  code: FP.CPI.TOTL.ZG
-  source_ids:
-  - worldbank_wdi
-  verified_by: CA
-  verified_on: '2026-11-20'
-  alias_of: INFL
-- id: UNRA
-  name:
-    en: Unemployment Rate (UNRA)
-    es: Tasa de desempleo (UNRA)
-  factor: macro_risk
-  level: country
-  direction: cost
-  transform: none
-  unit: percent
-  source: worldbank_wdi
-  citation: Phase J IMSFE 2025 draft mapping. Jose code; open candidate UNEMP.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Jose code; alias of INFL (FP.CPI.TOTL.ZG). Do not double-weight with INFL.'
+    'es': 'Código Jose; alias de INFL (FP.CPI.TOTL.ZG). No ponderar junto con INFL.'
+  'status': 'verified'
+  'code': 'FP.CPI.TOTL.ZG'
+  'source_ids':
+  - 'worldbank_wdi'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+  'alias_of': 'INFL'
+- 'id': 'UNRA'
+  'name':
+    'en': 'Unemployment Rate (UNRA)'
+    'es': 'Tasa de desempleo (UNRA)'
+  'factor': 'macro_risk'
+  'level': 'country'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'percent'
+  'source': 'worldbank_wdi'
+  'citation': 'Phase J IMSFE 2025 draft mapping. Jose code; open candidate UNEMP.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Jose code; alias of UNEMP (SL.UEM.TOTL.ZS). Do not double-weight with UNEMP.
-  status: verified
-  code: SL.UEM.TOTL.ZS
-  source_ids:
-  - worldbank_wdi
-  verified_by: CA
-  verified_on: '2026-11-20'
-  alias_of: UNEMP
-- id: FSIN
-  name:
-    en: Fragile States Index (FSIN)
-    es: Índice de estados frágiles (FSIN)
-  factor: institutional
-  level: country
-  direction: cost
-  transform: none
-  unit: index
-  source: fragile_states_index
-  citation: Phase J IMSFE 2025 draft mapping. BYOD; licence UNKNOWN.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Jose code; alias of UNEMP (SL.UEM.TOTL.ZS). Do not double-weight with UNEMP.'
+    'es': 'Código Jose; alias de UNEMP (SL.UEM.TOTL.ZS). No ponderar junto con UNEMP.'
+  'status': 'verified'
+  'code': 'SL.UEM.TOTL.ZS'
+  'source_ids':
+  - 'worldbank_wdi'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+  'alias_of': 'UNEMP'
+- 'id': 'FSIN'
+  'name':
+    'en': 'Fragile States Index (FSIN)'
+    'es': 'Índice de estados frágiles (FSIN)'
+  'factor': 'institutional'
+  'level': 'country'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'fragile_states_index'
+  'citation': 'Phase J IMSFE 2025 draft mapping. BYOD; licence UNKNOWN.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: BYOD; licence UNKNOWN.
-  status: draft
-  source_ids:
-  - fragile_states_index
-- id: INRI
-  name:
-    en: INFORM Risk (INRI)
-    es: Riesgo INFORM (INRI)
-  factor: institutional
-  level: country
-  direction: cost
-  transform: none
-  unit: index
-  source: inform_risk
-  citation: Phase J IMSFE 2025 draft mapping. BYOD; licence UNKNOWN.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'BYOD; licence UNKNOWN.'
+    'es': 'BYOD; licencia UNKNOWN.'
+  'status': 'draft'
+  'source_ids':
+  - 'fragile_states_index'
+- 'id': 'INRI'
+  'name':
+    'en': 'INFORM Risk (INRI)'
+    'es': 'Riesgo INFORM (INRI)'
+  'factor': 'institutional'
+  'level': 'country'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'inform_risk'
+  'citation': 'Phase J IMSFE 2025 draft mapping. BYOD; licence UNKNOWN.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: BYOD; licence UNKNOWN.
-  status: verified
-  source_ids:
-  - inform_risk
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: DEIN
-  name:
-    en: Democracy Index (DEIN)
-    es: Índice de democracia (DEIN)
-  factor: institutional
-  level: country
-  direction: benefit
-  transform: none
-  unit: index
-  source: eiu_democracy
-  citation: Phase J IMSFE 2025 draft mapping. EIU proprietary; BYOD; licence UNKNOWN.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'BYOD; licence UNKNOWN.'
+    'es': 'BYOD; licencia UNKNOWN.'
+  'status': 'verified'
+  'source_ids':
+  - 'inform_risk'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'DEIN'
+  'name':
+    'en': 'Democracy Index (DEIN)'
+    'es': 'Índice de democracia (DEIN)'
+  'factor': 'institutional'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'eiu_democracy'
+  'citation': 'Phase J IMSFE 2025 draft mapping. EIU proprietary; BYOD; licence UNKNOWN.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: EIU proprietary; BYOD; licence UNKNOWN.
-  status: draft
-  source_ids:
-  - eiu_democracy
-- id: GLIN
-  name:
-    en: Globalization Index (GLIN)
-    es: Índice de globalización (GLIN)
-  factor: product_fit
-  level: country
-  direction: benefit
-  transform: none
-  unit: index
-  source: kof_globalisation
-  citation: Phase J IMSFE 2025 draft mapping. KOF; BYOD; licence UNKNOWN.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'EIU proprietary; BYOD; licence UNKNOWN.'
+    'es': 'EIU propietario; BYOD; licencia UNKNOWN.'
+  'status': 'draft'
+  'source_ids':
+  - 'eiu_democracy'
+- 'id': 'GLIN'
+  'name':
+    'en': 'Globalization Index (GLIN)'
+    'es': 'Índice de globalización (GLIN)'
+  'factor': 'product_fit'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'kof_globalisation'
+  'citation': 'Phase J IMSFE 2025 draft mapping. KOF; BYOD; licence UNKNOWN.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: KOF; BYOD; licence UNKNOWN.
-  status: draft
-  source_ids:
-  - kof_globalisation
-- id: CPIN
-  name:
-    en: Corruption Perceptions Index (CPIN)
-    es: Índice de percepción de la corrupción (CPIN)
-  factor: product_fit
-  level: country
-  direction: benefit
-  transform: none
-  unit: index
-  source: transparency_cpi
-  citation: Phase J IMSFE 2025 draft mapping. Transparency CPI; BYOD; licence UNKNOWN.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'KOF; BYOD; licence UNKNOWN.'
+    'es': 'KOF; BYOD; licencia UNKNOWN.'
+  'status': 'draft'
+  'source_ids':
+  - 'kof_globalisation'
+- 'id': 'CPIN'
+  'name':
+    'en': 'Corruption Perceptions Index (CPIN)'
+    'es': 'Índice de percepción de la corrupción (CPIN)'
+  'factor': 'product_fit'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'transparency_cpi'
+  'citation': 'Phase J IMSFE 2025 draft mapping. Transparency CPI; BYOD; licence UNKNOWN.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Transparency CPI; BYOD; licence UNKNOWN.
-  status: verified
-  source_ids:
-  - transparency_cpi
-  verified_by: CA
-  verified_on: '2026-11-20'
-- id: CUDI
-  name:
-    en: Cultural Difference (CUDI)
-    es: Diferencia cultural (CUDI)
-  factor: product_fit
-  level: country
-  direction: cost
-  transform: none
-  unit: index
-  source: hofstede
-  citation: Phase J IMSFE 2025 draft mapping. Sum of |origin−dest| Hofstede dims;
-    same family as CULT.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Transparency CPI; BYOD; licence UNKNOWN.'
+    'es': 'Transparency CPI; BYOD; licencia UNKNOWN.'
+  'status': 'verified'
+  'source_ids':
+  - 'transparency_cpi'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'CUDI'
+  'name':
+    'en': 'Cultural Difference (CUDI)'
+    'es': 'Diferencia cultural (CUDI)'
+  'factor': 'product_fit'
+  'level': 'country'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'hofstede'
+  'citation': 'Phase J IMSFE 2025 draft mapping. Sum of |origin−dest| Hofstede dims; same
+    family as CULT.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Sum of |origin−dest| Hofstede dims; same family as CULT.
-  status: draft
-  source_ids:
-  - hofstede
-- id: RQBC
-  name:
-    en: Road Quality by Country (RQBC)
-    es: Calidad de carreteras por país (RQBC)
-  factor: logistics
-  level: country
-  direction: benefit
-  transform: none
-  unit: index
-  source: world_population_review
-  citation: Phase A2 IMSFEM 2025 draft. Workbook cites World Population Review road-quality
-    ranking; prefer an official series when available. Licence UNKNOWN.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Sum of |origin-dest| Hofstede dims; same family as CULT.'
+    'es': 'Suma de |origen-destino| en dimensiones Hofstede; misma familia que CULT.'
+  'status': 'draft'
+  'source_ids':
+  - 'hofstede'
+- 'id': 'RQBC'
+  'name':
+    'en': 'Road Quality by Country (RQBC)'
+    'es': 'Calidad de carreteras por país (RQBC)'
+  'factor': 'logistics'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'world_population_review'
+  'citation': 'Phase A2 IMSFEM 2025 draft. Workbook cites World Population Review road-quality
+    ranking; prefer an official series when available. Licence UNKNOWN.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Olive-oil LOGI swap for CPTR. Secondary aggregator; BYOD until licence verified.
-  status: draft
-  source_ids:
-  - world_population_review
-- id: ITBI
-  name:
-    en: International Trade Barrier Index (ITBI)
-    es: Índice internacional de barreras al comercio (ITBI)
-  factor: competition
-  level: country
-  direction: cost
-  transform: none
-  unit: index
-  source: trade_barrier_index
-  citation: Phase A2 IMSFEM 2025 draft. Workbook cites tradebarrierindex.org. Licence
-    UNKNOWN.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Olive-oil LOGI swap for CPTR. Secondary aggregator; BYOD until licence verified.'
+    'es': 'Sustituto LOGI (aceite de oliva) de CPTR. Agregador secundario; BYOD hasta verificar
+      licencia.'
+  'status': 'draft'
+  'source_ids':
+  - 'world_population_review'
+- 'id': 'ITBI'
+  'name':
+    'en': 'International Trade Barrier Index (ITBI)'
+    'es': 'Índice internacional de barreras al comercio (ITBI)'
+  'factor': 'competition'
+  'level': 'country'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'trade_barrier_index'
+  'citation': 'Phase A2 IMSFEM 2025 draft. Workbook cites tradebarrierindex.org. Licence UNKNOWN.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Olive-oil COMM swap for CCTI. BYOD until licence verified.
-  status: draft
-  source_ids:
-  - trade_barrier_index
-- id: CADE
-  name:
-    en: Carbon Dioxide (CO2) Emissions (CADE)
-    es: Emisiones de dióxido de carbono (CADE)
-  factor: sustainability
-  level: country
-  direction: cost
-  transform: none
-  unit: Mt CO2e
-  source: worldbank_wdi
-  citation: Phase A2 IMSFEM 2025 draft. Official candidate World Bank EN.GHG.CO2.MT.CE.AR5
-    (current WDI series, 1970–2024). Workbook also cites Global Carbon Atlas / IEA.
-    Licence not human-verified for Atlas ship gate.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Olive-oil COMM swap for CCTI. BYOD until licence verified.'
+    'es': 'Sustituto COMM (aceite de oliva) de CCTI. BYOD hasta verificar licencia.'
+  'status': 'draft'
+  'source_ids':
+  - 'trade_barrier_index'
+- 'id': 'CADE'
+  'name':
+    'en': 'Carbon Dioxide (CO2) Emissions (CADE)'
+    'es': 'Emisiones de dióxido de carbono (CADE)'
+  'factor': 'sustainability'
+  'level': 'country'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'Mt CO2e'
+  'source': 'worldbank_wdi'
+  'citation': 'Phase A2 IMSFEM 2025 draft. Official candidate World Bank EN.GHG.CO2.MT.CE.AR5
+    (current WDI series, 1970–2024). Workbook also cites Global Carbon Atlas / IEA. Licence
+    not human-verified for Atlas ship gate.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: SUST criterion. Prefer WDI EN.GHG.CO2.MT.CE.AR5 over aggregators; BYOD until
-    rights-verify.
-  status: draft
-  code: EN.GHG.CO2.MT.CE.AR5
-  source_ids:
-  - worldbank_wdi
-  - global_carbon_atlas
-  - iea_ghg
-- id: GLCR
-  name:
-    en: Global Country Risk (GLCR)
-    es: Riesgo país global (GLCR)
-  factor: sustainability
-  level: country
-  direction: cost
-  transform: none
-  unit: index
-  source: coface_country_risk
-  citation: Phase A2 IMSFEM 2025 draft. Workbook cites Coface country risk map. Proprietary;
-    BYOD; licence UNKNOWN.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'SUST criterion. Prefer WDI EN.GHG.CO2.MT.CE.AR5 over aggregators; BYOD until rights-verify.'
+    'es': 'Criterio SUST. Preferir WDI EN.GHG.CO2.MT.CE.AR5 frente a agregadores; BYOD hasta
+      verificar derechos.'
+  'status': 'draft'
+  'code': 'EN.GHG.CO2.MT.CE.AR5'
+  'source_ids':
+  - 'worldbank_wdi'
+  - 'global_carbon_atlas'
+  - 'iea_ghg'
+- 'id': 'GLCR'
+  'name':
+    'en': 'Global Country Risk (GLCR)'
+    'es': 'Riesgo país global (GLCR)'
+  'factor': 'sustainability'
+  'level': 'country'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'coface_country_risk'
+  'citation': 'Phase A2 IMSFEM 2025 draft. Workbook cites Coface country risk map. Proprietary;
+    BYOD; licence UNKNOWN.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Coface; proprietary → BYOD.
-  status: draft
-  source_ids:
-  - coface_country_risk
-- id: GLSI
-  name:
-    en: Global Sustainable Competitiveness Index (GLSI)
-    es: Índice global de competitividad sostenible (GLSI)
-  factor: sustainability
-  level: country
-  direction: benefit
-  transform: none
-  unit: index
-  source: solability_gsci
-  citation: Phase A2 IMSFEM 2025 draft. Workbook cites SolAbility GSCI. Licence UNKNOWN.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Coface; proprietary: BYOD.'
+    'es': 'Coface; propietario: BYOD.'
+  'status': 'draft'
+  'source_ids':
+  - 'coface_country_risk'
+- 'id': 'GLSI'
+  'name':
+    'en': 'Global Sustainable Competitiveness Index (GLSI)'
+    'es': 'Índice global de competitividad sostenible (GLSI)'
+  'factor': 'sustainability'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'index'
+  'source': 'solability_gsci'
+  'citation': 'Phase A2 IMSFEM 2025 draft. Workbook cites SolAbility GSCI. Licence UNKNOWN.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2023
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: SolAbility GSCI; BYOD until licence verified.
-  status: draft
-  source_ids:
-  - solability_gsci
-- id: INFL_DEV
-  name:
-    en: Inflation deviation from 2% target
-    es: Desviación de la inflación respecto al 2 %
-  factor: macro_risk
-  level: country
-  direction: cost
-  transform: none
-  unit: percentage points
-  source: WB
-  citation: Derived from World Bank WDI FP.CPI.TOTL.ZG as abs(x − 2).
-  redistributable: true
-  years:
-  - 2012
-  - 2024
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: Candidate derived series abs(INFL − 2). Does not replace verified INFL.
-  status: draft
-  code: FP.CPI.TOTL.ZG
-  origin_specific: false
-  source_ids:
-  - worldbank_wdi
-- id: FAIRS_N
-  name:
-    en: International sector trade fairs (count)
-    es: Ferias internacionales del sector
-  factor: promotion
-  level: country_product
-  direction: benefit
-  transform: none
-  unit: count
-  source: AUMA / UFI / agency calendars
-  citation: Count of international trade fairs in the destination for the HS sector (last 3 years).
-  redistributable: false
-  byod_only: true
-  years:
-  - 2012
-  - 2024
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: EXTRA-6 candidate. Sector via config/hs_to_fair_sector.yaml. Manual/BYOD until rights attested.
-  status: draft
-  origin_specific: false
-  source_ids:
-  - auma_fairs
-- id: FAIRS_SIZE
-  name:
-    en: Sector fair size (exhibitors / net m²)
-    es: Tamaño de las ferias del sector
-  factor: promotion
-  level: country_product
-  direction: benefit
-  transform: none
-  unit: exhibitors or m2
-  source: AUMA / UFI
-  citation: Sum of exhibitors (or net m²) of sector fairs in the destination, latest available year.
-  redistributable: false
-  byod_only: true
-  years:
-  - 2012
-  - 2024
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: EXTRA-6 candidate. Manual drop / BYOD until rights attested.
-  status: draft
-  origin_specific: false
-  source_ids:
-  - auma_fairs
-- id: FAIRS_INTL
-  name:
-    en: International share of fair exhibitors
-    es: Internacionalidad de las ferias
-  factor: promotion
-  level: country_product
-  direction: benefit
-  transform: none
-  unit: percent
-  source: AUMA / UFI
-  citation: Share of foreign exhibitors at sector fairs in the destination.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'SolAbility GSCI; BYOD until licence verified.'
+    'es': 'SolAbility GSCI; BYOD hasta verificar licencia.'
+  'status': 'draft'
+  'source_ids':
+  - 'solability_gsci'
+- 'id': 'INFL_DEV'
+  'name':
+    'en': 'Inflation deviation from 2% target'
+    'es': 'Desviación de la inflación respecto al 2 %'
+  'factor': 'macro_risk'
+  'level': 'country'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'percentage points'
+  'source': 'WB'
+  'citation': 'Derived from World Bank WDI FP.CPI.TOTL.ZG as abs(x − 2).'
+  'redistributable': true
+  'years':
   - 2012
   - 2024
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: EXTRA-6 candidate. Manual drop / BYOD until rights attested.
-  status: draft
-  origin_specific: false
-  source_ids:
-  - auma_fairs
-- id: PROMO_OFFICE
-  name:
-    en: Origin promotion office in destination
-    es: Oficina de promoción del país de origen
-  factor: promotion
-  level: bilateral
-  direction: benefit
-  transform: none
-  unit: binary
-  source: Promotion agencies
-  citation: 1 if the origin country's trade-promotion agency has an office in the destination.
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Candidate derived series abs(INFL - 2). Does not replace verified INFL.'
+    'es': 'Serie derivada candidata abs(INFL - 2). No sustituye a INFL verificada.'
+  'status': 'draft'
+  'code': 'FP.CPI.TOTL.ZG'
+  'origin_specific': false
+  'source_ids':
+  - 'worldbank_wdi'
+- 'id': 'FAIRS_N'
+  'name':
+    'en': 'International sector trade fairs (count)'
+    'es': 'Ferias internacionales del sector'
+  'factor': 'promotion'
+  'level': 'country_product'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'count'
+  'source': 'AUMA / UFI / agency calendars'
+  'citation': 'Count of international trade fairs in the destination for the HS sector (last
+    3 years).'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2024
-  frequency: irregular
-  coverage_countries: null
-  series_breaks: []
-  notes: EXTRA-6/7 candidate. Derived from promotion_office table; ProColombia proprietary → BYOD until permission.
-  status: draft
-  origin_specific: true
-  source_ids:
-  - icex_events
-- id: PROMO_EVENTS
-  name:
-    en: Origin promotion actions in destination
-    es: Acciones de promoción del país origen
-  factor: promotion
-  level: bilateral
-  direction: benefit
-  transform: none
-  unit: count
-  source: Promotion agencies
-  citation: Missions, matchmaking or pavilions by the origin agency in the destination (last 3 years).
-  redistributable: false
-  byod_only: true
-  years:
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'EXTRA-6 candidate. Sector via config/hs_to_fair_sector.yaml. Manual/BYOD until
+      rights attested.'
+    'es': 'Candidata EXTRA-6. Sector vía config/hs_to_fair_sector.yaml. Manual/BYOD hasta
+      atestar derechos.'
+  'status': 'draft'
+  'origin_specific': false
+  'source_ids':
+  - 'auma_fairs'
+- 'id': 'FAIRS_SIZE'
+  'name':
+    'en': 'Sector fair size (exhibitors / net m²)'
+    'es': 'Tamaño de las ferias del sector'
+  'factor': 'promotion'
+  'level': 'country_product'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'exhibitors or m2'
+  'source': 'AUMA / UFI'
+  'citation': 'Sum of exhibitors (or net m²) of sector fairs in the destination, latest available
+    year.'
+  'redistributable': false
+  'byod_only': true
+  'years':
   - 2012
   - 2024
-  frequency: annual
-  coverage_countries: null
-  series_breaks: []
-  notes: EXTRA-6/7 candidate. From promotion_event table per origin agency.
-  status: draft
-  origin_specific: true
-  source_ids:
-  - icex_events
-  - trade_gov_events
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'EXTRA-6 candidate. Manual drop / BYOD until rights attested.'
+    'es': 'Candidata EXTRA-6. Carga manual / BYOD hasta atestar derechos.'
+  'status': 'draft'
+  'origin_specific': false
+  'source_ids':
+  - 'auma_fairs'
+- 'id': 'FAIRS_INTL'
+  'name':
+    'en': 'International share of fair exhibitors'
+    'es': 'Internacionalidad de las ferias'
+  'factor': 'promotion'
+  'level': 'country_product'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'percent'
+  'source': 'AUMA / UFI'
+  'citation': 'Share of foreign exhibitors at sector fairs in the destination.'
+  'redistributable': false
+  'byod_only': true
+  'years':
+  - 2012
+  - 2024
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'EXTRA-6 candidate. Manual drop / BYOD until rights attested.'
+    'es': 'Candidata EXTRA-6. Carga manual / BYOD hasta atestar derechos.'
+  'status': 'draft'
+  'origin_specific': false
+  'source_ids':
+  - 'auma_fairs'
+- 'id': 'PROMO_OFFICE'
+  'name':
+    'en': 'Origin promotion office in destination'
+    'es': 'Oficina de promoción del país de origen'
+  'factor': 'promotion'
+  'level': 'bilateral'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'binary'
+  'source': 'Promotion agencies'
+  'citation': '1 if the origin country''s trade-promotion agency has an office in the destination.'
+  'redistributable': false
+  'byod_only': true
+  'years':
+  - 2012
+  - 2024
+  'frequency': 'irregular'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'EXTRA-6/7 candidate. Derived from promotion_office table; ProColombia proprietary:
+      BYOD until permission.'
+    'es': 'Candidata EXTRA-6/7. Derivada de la tabla promotion_office; ProColombia propietario:
+      BYOD hasta permiso.'
+  'status': 'draft'
+  'origin_specific': true
+  'source_ids':
+  - 'icex_events'
+- 'id': 'PROMO_EVENTS'
+  'name':
+    'en': 'Origin promotion actions in destination'
+    'es': 'Acciones de promoción del país origen'
+  'factor': 'promotion'
+  'level': 'bilateral'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'count'
+  'source': 'Promotion agencies'
+  'citation': 'Missions, matchmaking or pavilions by the origin agency in the destination
+    (last 3 years).'
+  'redistributable': false
+  'byod_only': true
+  'years':
+  - 2012
+  - 2024
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'EXTRA-6/7 candidate. From promotion_event table per origin agency.'
+    'es': 'Candidata EXTRA-6/7. Desde la tabla promotion_event por agencia de origen.'
+  'status': 'draft'
+  'origin_specific': true
+  'source_ids':
+  - 'icex_events'
+  - 'trade_gov_events'

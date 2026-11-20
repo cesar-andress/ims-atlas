@@ -27,7 +27,7 @@ export type CatalogVariable = {
   licence_ids: string[];
   years?: number[] | undefined;
   citation?: string | undefined;
-  notes?: string | undefined;
+  notes?: string | { en: string; es: string } | undefined;
   gate_decision?: string | undefined;
   audience_public?: boolean | undefined;
   /** EXTRA-10: same series as another catalog id (do not double-weight). */

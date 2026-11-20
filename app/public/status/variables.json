@@ -42,10 +42,13 @@
       ],
       "name": {
         "en": "HS chapter imports (USD)",
-        "es": "Importaciones del cap\u00edtulo HS (USD)"
+        "es": "Importaciones del capítulo HS (USD)"
       },
       "new_cells_since_previous": null,
-      "notes": "Aggregate destination imports of the chapter.",
+      "notes": {
+        "en": "Aggregate destination imports of the chapter.",
+        "es": "Importaciones agregadas del destino para el capítulo HS."
+      },
       "redistributable": true,
       "source_ids": [
         "baci"
@@ -97,10 +100,13 @@
       ],
       "name": {
         "en": "HS chapter imports per capita",
-        "es": "Importaciones del cap\u00edtulo HS per c\u00e1pita"
+        "es": "Importaciones del capítulo HS per cápita"
       },
       "new_cells_since_previous": 7803,
-      "notes": "BACI import value divided by World Bank population.",
+      "notes": {
+        "en": "BACI import value divided by World Bank population.",
+        "es": "Valor de importación BACI dividido por la población del Banco Mundial."
+      },
       "redistributable": true,
       "source_ids": [
         "baci",
@@ -150,10 +156,13 @@
       ],
       "name": {
         "en": "HS chapter import growth (3-year CAGR)",
-        "es": "Crecimiento de importaciones del cap\u00edtulo HS (CAGR 3 a\u00f1os)"
+        "es": "Crecimiento de importaciones del capítulo HS (CAGR 3 años)"
       },
       "new_cells_since_previous": null,
-      "notes": "Uses years t-3..t only (anti-leakage).",
+      "notes": {
+        "en": "Uses years t-3..t only (anti-leakage).",
+        "es": "Usa solo los años t-3..t (anti-fuga temporal)."
+      },
       "redistributable": true,
       "source_ids": [
         "baci"
@@ -202,7 +211,7 @@
       ],
       "name": {
         "en": "GDP per capita PPP",
-        "es": "PIB per c\u00e1pita PPA"
+        "es": "PIB per cápita PPA"
       },
       "new_cells_since_previous": 6968,
       "redistributable": true,
@@ -213,7 +222,11 @@
       "years": [
         2012,
         2023
-      ]
+      ],
+      "notes": {
+        "en": "GDP per capita in PPP (World Bank WDI).",
+        "es": "PIB per cápita en PPA (WDI del Banco Mundial)."
+      }
     },
     {
       "byod_only": null,
@@ -253,10 +266,13 @@
       ],
       "name": {
         "en": "Population-weighted distance",
-        "es": "Distancia ponderada por poblaci\u00f3n"
+        "es": "Distancia ponderada por población"
       },
       "new_cells_since_previous": null,
-      "notes": "Fall back to distw if distw_harmonic unavailable.",
+      "notes": {
+        "en": "Fall back to distw if distw_harmonic unavailable.",
+        "es": "Si falta distw_harmonic, se usa distw."
+      },
       "redistributable": true,
       "source_ids": [
         "cepi_gravity"
@@ -304,7 +320,10 @@
         "es": "Arancel preferencial aplicado (AHS), origen a destino"
       },
       "new_cells_since_previous": null,
-      "notes": "Preferential applied rates for the HS chapter; not MFN. WITS/TRAINS redistribution terms not confirmed from an openable official licence page in Phase 1; BYOD until verified.",
+      "notes": {
+        "en": "Preferential applied rates for the HS chapter; not MFN. WITS/TRAINS redistribution terms not confirmed from an openable official licence page in Phase 1; BYOD until verified.",
+        "es": "Aranceles preferenciales aplicados del capítulo HS; no MFN. Los términos de redistribución de WITS/TRAINS no están confirmados en una página de licencia oficial abierta (fase 1); BYOD hasta verificación."
+      },
       "redistributable": false,
       "source_ids": [
         "wits_trains"
@@ -364,7 +383,11 @@
       "years": [
         2012,
         2023
-      ]
+      ],
+      "notes": {
+        "en": "Preferential trade agreement in force (CEPII Gravity).",
+        "es": "Acuerdo comercial preferencial en vigor (CEPII Gravity)."
+      }
     },
     {
       "byod_only": null,
@@ -404,10 +427,13 @@
       ],
       "name": {
         "en": "Logistics Performance Index (overall)",
-        "es": "\u00cdndice de desempe\u00f1o log\u00edstico (global)"
+        "es": "Índice de desempeño logístico (global)"
       },
       "new_cells_since_previous": 1068,
-      "notes": "Interpolate between editions; flag imputed years.",
+      "notes": {
+        "en": "Interpolate between editions; flag imputed years.",
+        "es": "Se interpola entre ediciones; los años imputados se marcan."
+      },
       "redistributable": true,
       "source_ids": [
         "worldbank_lpi"
@@ -467,7 +493,11 @@
       "years": [
         2012,
         2023
-      ]
+      ],
+      "notes": {
+        "en": "China + Vietnam share of destination HS chapter imports.",
+        "es": "Cuota de China + Vietnam en las importaciones HS del destino."
+      }
     },
     {
       "byod_only": null,
@@ -507,7 +537,7 @@
       ],
       "name": {
         "en": "Supplier concentration (HHI) in destination HS imports",
-        "es": "Concentraci\u00f3n de proveedores (HHI) en importaciones HS"
+        "es": "Concentración de proveedores (HHI) en importaciones HS"
       },
       "new_cells_since_previous": null,
       "redistributable": true,
@@ -518,7 +548,11 @@
       "years": [
         2012,
         2023
-      ]
+      ],
+      "notes": {
+        "en": "Herfindahl-Hirschman supplier concentration in destination HS imports.",
+        "es": "Concentración de proveedores (Herfindahl-Hirschman) en importaciones HS del destino."
+      }
     },
     {
       "byod_only": null,
@@ -556,7 +590,10 @@
         "es": "Brecha absoluta de valor unitario en log"
       },
       "new_cells_since_previous": null,
-      "notes": "abs(log UV_j imports - log UV_i world exports) for the chapter.",
+      "notes": {
+        "en": "abs(log UV_j imports - log UV_i world exports) for the chapter.",
+        "es": "abs(log UV_j importaciones - log UV_i exportaciones mundiales) del capítulo."
+      },
       "redistributable": true,
       "source_ids": [
         "baci"
@@ -604,7 +641,10 @@
         "es": "Distancia cultural (Kogut-Singh, Hofstede 6 dimensiones)"
       },
       "new_cells_since_previous": null,
-      "notes": "Manual dataset under data/manual/hofstede/. ims-backtest README: Hofstede raw data is not redistributed; researchers may use the published matrix, commercial use requires contacting authors.",
+      "notes": {
+        "en": "Manual dataset under data/manual/hofstede/. ims-backtest README: Hofstede raw data is not redistributable in the public release.",
+        "es": "Dataset manual en data/manual/hofstede/. README de ims-backtest: los datos Hofstede en bruto no se redistribuyen en la versión pública."
+      },
       "redistributable": false,
       "source_ids": [
         "hofstede"
@@ -653,7 +693,7 @@
       ],
       "name": {
         "en": "Common official language",
-        "es": "Idioma oficial com\u00fan"
+        "es": "Idioma oficial común"
       },
       "new_cells_since_previous": null,
       "redistributable": true,
@@ -664,7 +704,11 @@
       "years": [
         2012,
         2023
-      ]
+      ],
+      "notes": {
+        "en": "Common official language flag (CEPII Gravity).",
+        "es": "Indicador de idioma oficial común (CEPII Gravity)."
+      }
     },
     {
       "byod_only": null,
@@ -704,10 +748,13 @@
       ],
       "name": {
         "en": "Annual consumer price inflation",
-        "es": "Inflaci\u00f3n anual (IPC)"
+        "es": "Inflación anual (IPC)"
       },
       "new_cells_since_previous": 6193,
-      "notes": "Raw annual CPI inflation (FP.CPI.TOTL.ZG). For |x \u2212 2| use candidate INFL_DEV.",
+      "notes": {
+        "en": "Raw annual CPI inflation (FP.CPI.TOTL.ZG). For |x - 2| use candidate INFL_DEV.",
+        "es": "Inflación anual IPC en bruto (FP.CPI.TOTL.ZG). Para |x - 2| usar la candidata INFL_DEV."
+      },
       "redistributable": true,
       "source_ids": [
         "worldbank_wdi"
@@ -767,7 +814,11 @@
       "years": [
         2012,
         2023
-      ]
+      ],
+      "notes": {
+        "en": "Unemployment rate (World Bank / ILO).",
+        "es": "Tasa de desempleo (Banco Mundial / OIT)."
+      }
     },
     {
       "byod_only": null,
@@ -810,7 +861,10 @@
         "es": "Media de Worldwide Governance Indicators"
       },
       "new_cells_since_previous": 25910,
-      "notes": "Mean of six WGI estimate series; document VIF with other macros.",
+      "notes": {
+        "en": "Mean of six WGI estimate series; document VIF with other macros.",
+        "es": "Media de las seis series estimate de WGI; documentar VIF con otros macros."
+      },
       "redistributable": true,
       "source_ids": [
         "worldbank_wgi"
@@ -862,7 +916,10 @@
         "es": "Coeficiente de apertura externa (comercio/PIB)"
       },
       "new_cells_since_previous": 6134,
-      "notes": "Legacy/baseline only; biased toward hubs and small economies.",
+      "notes": {
+        "en": "Legacy/baseline only; biased toward hubs and small economies.",
+        "es": "Solo legado/línea base; sesgado hacia hubs y economías pequeñas."
+      },
       "redistributable": true,
       "source_ids": [
         "worldbank_wdi"
@@ -911,10 +968,13 @@
       ],
       "name": {
         "en": "Re-export intensity (chapter X_j / M_j)",
-        "es": "Intensidad de reexportaci\u00f3n (cap\u00edtulo X_j / M_j)"
+        "es": "Intensidad de reexportación (capítulo X_j / M_j)"
       },
       "new_cells_since_previous": null,
-      "notes": "Hub flag treated as cost in the core score; SPEC \u00a73.2.",
+      "notes": {
+        "en": "Hub flag treated as cost in the core score; SPEC section 3.2.",
+        "es": "Indicador de hub tratado como coste en la puntuación central; SPEC sección 3.2."
+      },
       "redistributable": true,
       "source_ids": [
         "baci"
@@ -979,10 +1039,13 @@
       ],
       "name": {
         "en": "ICT Development Index",
-        "es": "\u00cdndice de desarrollo de las TIC"
+        "es": "Índice de desarrollo de las TIC"
       },
       "new_cells_since_previous": null,
-      "notes": "ITU DataHub About page: CC BY-NC-SA 3.0 IGO (non-commercial). New IDI methodology from 2023 \u2014 do not splice with pre-2023 silently.",
+      "notes": {
+        "en": "ITU DataHub About page: CC BY-NC-SA 3.0 IGO (non-commercial). New IDI methodology from 2023: do not mix with earlier editions.",
+        "es": "Página About de ITU DataHub: CC BY-NC-SA 3.0 IGO (no comercial). Nueva metodología IDI desde 2023: no mezclar con ediciones anteriores."
+      },
       "redistributable": false,
       "source_ids": [
         "itu_datahub"
@@ -1048,10 +1111,13 @@
       ],
       "name": {
         "en": "EF English Proficiency Index",
-        "es": "\u00cdndice de dominio del ingl\u00e9s EF"
+        "es": "Índice de dominio del inglés EF"
       },
       "new_cells_since_previous": null,
-      "notes": "Official landing opened; redistribution / open-licence terms not stated clearly \u2014 treat as proprietary BYOD until verified.",
+      "notes": {
+        "en": "Official landing opened; redistribution / open-licence terms not stated clearly: treat as proprietary / BYOD.",
+        "es": "Landing oficial revisada; los términos de redistribución / licencia abierta no están claros: tratar como propietario / BYOD."
+      },
       "redistributable": false,
       "source_ids": [
         "ef_epi"
@@ -1116,10 +1182,13 @@
       ],
       "name": {
         "en": "Open Data Inventory overall score",
-        "es": "Puntuaci\u00f3n global Open Data Inventory"
+        "es": "Puntuación global Open Data Inventory"
       },
       "new_cells_since_previous": null,
-      "notes": "Official site shows a CC BY icon; older ODIN reports cite CC BY 4.0. Current machine-readable download terms not confirmed this session \u2014 UNKNOWN until a human verifies the download licence.",
+      "notes": {
+        "en": "Official site shows a CC BY icon; older ODIN reports cite CC BY 4.0. Current machine-readable download terms still need confirmation before public ship.",
+        "es": "El sitio oficial muestra icono CC BY; informes ODIN antiguos citan CC BY 4.0. Los términos de descarga machine-readable actuales siguen pendientes de confirmación antes de publicar."
+      },
       "redistributable": false,
       "source_ids": [
         "odin"
@@ -1183,10 +1252,13 @@
       "licence_ids": [],
       "name": {
         "en": "Global Entrepreneurship Index",
-        "es": "\u00cdndice global de emprendimiento (GEDI)"
+        "es": "Índice global de emprendimiento (GEDI)"
       },
       "new_cells_since_previous": null,
-      "notes": "Final GEI issue around 2019; no clear SPDX redistribution licence on the official pages opened \u2014 BYOD.",
+      "notes": {
+        "en": "Final GEI issue around 2019; no clear SPDX redistribution licence on the official pages opened: BYOD.",
+        "es": "Última edición GEI alrededor de 2019; sin licencia SPDX de redistribución clara en las páginas oficiales revisadas: BYOD."
+      },
       "redistributable": false,
       "source_ids": [
         "gedi"
@@ -1251,10 +1323,13 @@
       ],
       "name": {
         "en": "Global Innovation Index",
-        "es": "\u00cdndice global de innovaci\u00f3n"
+        "es": "Índice global de innovación"
       },
       "new_cells_since_previous": null,
-      "notes": "GII 2026 publication states CC BY 4.0; confirm the database file carries the same terms before status: verified.",
+      "notes": {
+        "en": "GII 2026 publication states CC BY 4.0; confirm the database file carries the same terms before status=verified ship.",
+        "es": "La publicación GII 2026 indica CC BY 4.0; confirmar que el fichero de base de datos lleva los mismos términos antes de publicar como verified."
+      },
       "redistributable": true,
       "source_ids": [
         "wipo_gii"
@@ -1320,10 +1395,13 @@
       ],
       "name": {
         "en": "Global Startup Ecosystem Index",
-        "es": "\u00cdndice global de ecosistemas startup"
+        "es": "Índice global de ecosistemas startup"
       },
       "new_cells_since_previous": null,
-      "notes": "Likely proprietary; no open licence confirmed \u2014 BYOD.",
+      "notes": {
+        "en": "Likely proprietary; no open licence confirmed: BYOD.",
+        "es": "Probablemente propietario; sin licencia abierta confirmada: BYOD."
+      },
       "redistributable": false,
       "source_ids": [
         "startupblink"
@@ -1388,10 +1466,13 @@
       ],
       "name": {
         "en": "Environmental Performance Index",
-        "es": "\u00cdndice de desempe\u00f1o ambiental"
+        "es": "Índice de desempeño ambiental"
       },
       "new_cells_since_previous": null,
-      "notes": "epi.yale.edu downloads footer and FAQs: CC BY-NC-SA 4.0 \u2014 non-commercial; not shipped in the public release.",
+      "notes": {
+        "en": "epi.yale.edu downloads footer and FAQs: CC BY-NC-SA 4.0 (non-commercial); not shipped in the public redistributable bundle.",
+        "es": "Pie y FAQ de descargas en epi.yale.edu: CC BY-NC-SA 4.0 (no comercial); no se incluye en el paquete público redistribuible."
+      },
       "redistributable": false,
       "source_ids": [
         "yale_epi"
@@ -1456,10 +1537,13 @@
       ],
       "name": {
         "en": "CO2 emissions excluding LULUCF per capita (t CO2e/capita)",
-        "es": "Emisiones de CO2 excl. UTCUTS per c\u00e1pita (t CO2e/c\u00e1pita)"
+        "es": "Emisiones de CO2 excl. UTCUTS per cápita (t CO2e/cápita)"
       },
       "new_cells_since_previous": 7096,
-      "notes": "Replaces discontinued EN.ATM.CO2E.PC (WDI Database Archives). Different source/definition; do not splice with the archived series. series_breaks marks the catalog switch year (not an upstream splice).",
+      "notes": {
+        "en": "Replaces discontinued EN.ATM.CO2E.PC (WDI Database Archives). Different source/definition; do not splice with the old series.",
+        "es": "Sustituye EN.ATM.CO2E.PC discontinuado (archivos WDI). Fuente/definición distintas; no empalmar con la serie antigua."
+      },
       "redistributable": true,
       "source_ids": [
         "worldbank_wdi"
@@ -1524,10 +1608,13 @@
       ],
       "name": {
         "en": "Price level index (households and NPISHs final consumption)",
-        "es": "\u00cdndice de nivel de precios (consumo final hogares y NPSH)"
+        "es": "Índice de nivel de precios (consumo final hogares y NPSH)"
       },
       "new_cells_since_previous": 6320,
-      "notes": "Open price-level replacement for scraped consumer-price baskets. Indicator page states CC BY-4.0.",
+      "notes": {
+        "en": "Open price-level replacement for scraped consumer-price baskets. Indicator page states CC BY-4.0.",
+        "es": "Sustituto abierto de nivel de precios frente a cestas scrapeadas. La ficha del indicador indica CC BY-4.0."
+      },
       "redistributable": true,
       "source_ids": [
         "worldbank_wdi"
@@ -1574,7 +1661,10 @@
         "es": "Precio del producto en destino (PPAD)"
       },
       "new_cells_since_previous": null,
-      "notes": "Jose code; open candidate UVGAP/BACI unit values. licence to verify.",
+      "notes": {
+        "en": "Jose code; open candidate UVGAP/BACI unit values. licence to verify.",
+        "es": "Código Jose; candidata abierta UVGAP/valores unitarios BACI. Licencia por verificar."
+      },
       "redistributable": false,
       "source_ids": [
         "baci"
@@ -1620,7 +1710,10 @@
         "es": "Costes de transporte internacional (INTC)"
       },
       "new_cells_since_previous": null,
-      "notes": "Workbook freight tools; BYOD; licence UNKNOWN.",
+      "notes": {
+        "en": "Workbook freight tools; BYOD; licence UNKNOWN.",
+        "es": "Herramientas de flete del libro Excel; BYOD; licencia UNKNOWN."
+      },
       "redistributable": false,
       "source_ids": [
         "freight_manual"
@@ -1664,10 +1757,13 @@
       ],
       "name": {
         "en": "Cost to Import Border Compliance (CIBC)",
-        "es": "Coste de cumplimiento fronterizo a la importaci\u00f3n (CIBC)"
+        "es": "Coste de cumplimiento fronterizo a la importación (CIBC)"
       },
       "new_cells_since_previous": 0,
-      "notes": "Doing Business IC.IMP.CSBC.CD archived; flag archived series.",
+      "notes": {
+        "en": "Doing Business IC.IMP.CSBC.CD archived; flag archived series.",
+        "es": "Doing Business IC.IMP.CSBC.CD archivado; marcar serie archivada."
+      },
       "redistributable": false,
       "source_ids": [
         "worldbank_wdi"
@@ -1717,10 +1813,13 @@
       ],
       "name": {
         "en": "Logistics Performance Index (LPIN)",
-        "es": "\u00cdndice de desempe\u00f1o log\u00edstico (LPIN)"
+        "es": "Índice de desempeño logístico (LPIN)"
       },
       "new_cells_since_previous": 1068,
-      "notes": "Alias of LPI. Alias of catalog LPI (same series LP.LPI.OVRL.XQ). Do not double-weight with LPI.",
+      "notes": {
+        "en": "Alias of catalog LPI (same series LP.LPI.OVRL.XQ). Do not double-weight with LPI.",
+        "es": "Alias de LPI del listado (misma serie LP.LPI.OVRL.XQ). No ponderar junto con LPI."
+      },
       "redistributable": false,
       "source_ids": [
         "worldbank_lpi"
@@ -1764,10 +1863,13 @@
       ],
       "name": {
         "en": "Container Port Traffic (CPTR)",
-        "es": "Tr\u00e1fico de contenedores portuarios (CPTR)"
+        "es": "Tráfico de contenedores portuarios (CPTR)"
       },
       "new_cells_since_previous": 0,
-      "notes": "WDI IS.SHP.GOOD.TU candidate.",
+      "notes": {
+        "en": "WDI IS.SHP.GOOD.TU candidate.",
+        "es": "Candidata WDI IS.SHP.GOOD.TU."
+      },
       "redistributable": false,
       "source_ids": [
         "worldbank_wdi"
@@ -1810,10 +1912,13 @@
       "licence_ids": [],
       "name": {
         "en": "International Transport Transit Time (ITTT)",
-        "es": "Tiempo de tr\u00e1nsito internacional (ITTT)"
+        "es": "Tiempo de tránsito internacional (ITTT)"
       },
       "new_cells_since_previous": null,
-      "notes": "Sea-distances style BYOD; licence UNKNOWN.",
+      "notes": {
+        "en": "Sea-distances style BYOD; licence UNKNOWN.",
+        "es": "Estilo distancias marítimas; BYOD; licencia UNKNOWN."
+      },
       "redistributable": false,
       "source_ids": [
         "freight_manual"
@@ -1861,7 +1966,10 @@
         "es": "Aranceles aduaneros (CUTA)"
       },
       "new_cells_since_previous": null,
-      "notes": "Jose code; open candidate TARIF/WITS; often BYOD.",
+      "notes": {
+        "en": "Jose code; open candidate TARIF/WITS; often BYOD.",
+        "es": "Código Jose; candidata abierta TARIF/WITS; a menudo BYOD."
+      },
       "redistributable": false,
       "source_ids": [
         "wits_trains"
@@ -1905,10 +2013,13 @@
       ],
       "name": {
         "en": "Country Contribution to Interventions (CCTI)",
-        "es": "Contribuci\u00f3n a intervenciones comerciales (CCTI)"
+        "es": "Contribución a intervenciones comerciales (CCTI)"
       },
       "new_cells_since_previous": null,
-      "notes": "Global Trade Alert; BYOD; licence UNKNOWN.",
+      "notes": {
+        "en": "Global Trade Alert; BYOD; licence UNKNOWN.",
+        "es": "Global Trade Alert; BYOD; licencia UNKNOWN."
+      },
       "redistributable": false,
       "source_ids": [
         "global_trade_alert"
@@ -1953,10 +2064,13 @@
       ],
       "name": {
         "en": "Index of Economic Freedom (IOEF)",
-        "es": "\u00cdndice de libertad econ\u00f3mica (IOEF)"
+        "es": "Índice de libertad económica (IOEF)"
       },
       "new_cells_since_previous": null,
-      "notes": "Heritage IEF; BYOD; licence UNKNOWN.",
+      "notes": {
+        "en": "Heritage IEF; BYOD; licence UNKNOWN.",
+        "es": "Heritage IEF; BYOD; licencia UNKNOWN."
+      },
       "redistributable": false,
       "source_ids": [
         "heritage_ief"
@@ -2006,10 +2120,13 @@
       ],
       "name": {
         "en": "Cost of Living Index (CLI)",
-        "es": "\u00cdndice de coste de vida (CLI)"
+        "es": "Índice de coste de vida (CLI)"
       },
       "new_cells_since_previous": 6320,
-      "notes": "Alias of PLI. Proxy ICP for Jose CLI \u2014 same series as PLI (PA.NUS.PRVT.PLI). Do not double-weight with PLI.",
+      "notes": {
+        "en": "Proxy ICP for Jose CLI: same series as PLI (PA.NUS.PRVT.PLI). Do not double-weight with PLI.",
+        "es": "Proxy ICP para CLI de Jose: misma serie que PLI (PA.NUS.PRVT.PLI). No ponderar junto con PLI."
+      },
       "redistributable": false,
       "source_ids": [
         "worldbank_wdi"
@@ -2059,10 +2176,13 @@
       ],
       "name": {
         "en": "Inflation Annual (INAN)",
-        "es": "Inflaci\u00f3n anual (INAN)"
+        "es": "Inflación anual (INAN)"
       },
       "new_cells_since_previous": 6193,
-      "notes": "Alias of INFL. Jose code; alias of INFL (FP.CPI.TOTL.ZG). Do not double-weight with INFL.",
+      "notes": {
+        "en": "Jose code; alias of INFL (FP.CPI.TOTL.ZG). Do not double-weight with INFL.",
+        "es": "Código Jose; alias de INFL (FP.CPI.TOTL.ZG). No ponderar junto con INFL."
+      },
       "redistributable": false,
       "source_ids": [
         "worldbank_wdi"
@@ -2115,7 +2235,10 @@
         "es": "Tasa de desempleo (UNRA)"
       },
       "new_cells_since_previous": 6531,
-      "notes": "Alias of UNEMP. Jose code; alias of UNEMP (SL.UEM.TOTL.ZS). Do not double-weight with UNEMP.",
+      "notes": {
+        "en": "Jose code; alias of UNEMP (SL.UEM.TOTL.ZS). Do not double-weight with UNEMP.",
+        "es": "Código Jose; alias de UNEMP (SL.UEM.TOTL.ZS). No ponderar junto con UNEMP."
+      },
       "redistributable": false,
       "source_ids": [
         "worldbank_wdi"
@@ -2159,10 +2282,13 @@
       ],
       "name": {
         "en": "Fragile States Index (FSIN)",
-        "es": "\u00cdndice de estados fr\u00e1giles (FSIN)"
+        "es": "Índice de estados frágiles (FSIN)"
       },
       "new_cells_since_previous": null,
-      "notes": "BYOD; licence UNKNOWN.",
+      "notes": {
+        "en": "BYOD; licence UNKNOWN.",
+        "es": "BYOD; licencia UNKNOWN."
+      },
       "redistributable": false,
       "source_ids": [
         "fragile_states_index"
@@ -2214,7 +2340,10 @@
         "es": "Riesgo INFORM (INRI)"
       },
       "new_cells_since_previous": null,
-      "notes": "BYOD; licence UNKNOWN.",
+      "notes": {
+        "en": "BYOD; licence UNKNOWN.",
+        "es": "BYOD; licencia UNKNOWN."
+      },
       "redistributable": false,
       "source_ids": [
         "inform_risk"
@@ -2259,10 +2388,13 @@
       ],
       "name": {
         "en": "Democracy Index (DEIN)",
-        "es": "\u00cdndice de democracia (DEIN)"
+        "es": "Índice de democracia (DEIN)"
       },
       "new_cells_since_previous": null,
-      "notes": "EIU proprietary; BYOD; licence UNKNOWN.",
+      "notes": {
+        "en": "EIU proprietary; BYOD; licence UNKNOWN.",
+        "es": "EIU propietario; BYOD; licencia UNKNOWN."
+      },
       "redistributable": false,
       "source_ids": [
         "eiu_democracy"
@@ -2307,10 +2439,13 @@
       ],
       "name": {
         "en": "Globalization Index (GLIN)",
-        "es": "\u00cdndice de globalizaci\u00f3n (GLIN)"
+        "es": "Índice de globalización (GLIN)"
       },
       "new_cells_since_previous": null,
-      "notes": "KOF; BYOD; licence UNKNOWN.",
+      "notes": {
+        "en": "KOF; BYOD; licence UNKNOWN.",
+        "es": "KOF; BYOD; licencia UNKNOWN."
+      },
       "redistributable": false,
       "source_ids": [
         "kof_globalisation"
@@ -2359,10 +2494,13 @@
       ],
       "name": {
         "en": "Corruption Perceptions Index (CPIN)",
-        "es": "\u00cdndice de percepci\u00f3n de la corrupci\u00f3n (CPIN)"
+        "es": "Índice de percepción de la corrupción (CPIN)"
       },
       "new_cells_since_previous": null,
-      "notes": "Transparency CPI; BYOD; licence UNKNOWN.",
+      "notes": {
+        "en": "Transparency CPI; BYOD; licence UNKNOWN.",
+        "es": "Transparency CPI; BYOD; licencia UNKNOWN."
+      },
       "redistributable": false,
       "source_ids": [
         "transparency_cpi"
@@ -2375,7 +2513,7 @@
     },
     {
       "byod_only": true,
-      "citation": "Phase J IMSFE 2025 draft mapping. Sum of |origin\u2212dest| Hofstede dims; same family as CULT.",
+      "citation": "Phase J IMSFE 2025 draft mapping. Sum of |origin−dest| Hofstede dims; same family as CULT.",
       "coverage": null,
       "coverage_stats": null,
       "definition": null,
@@ -2410,7 +2548,10 @@
         "es": "Diferencia cultural (CUDI)"
       },
       "new_cells_since_previous": null,
-      "notes": "Sum of |origin\u2212dest| Hofstede dims; same family as CULT.",
+      "notes": {
+        "en": "Sum of |origin-dest| Hofstede dims; same family as CULT.",
+        "es": "Suma de |origen-destino| en dimensiones Hofstede; misma familia que CULT."
+      },
       "redistributable": false,
       "source_ids": [
         "hofstede"
@@ -2455,10 +2596,13 @@
       ],
       "name": {
         "en": "Road Quality by Country (RQBC)",
-        "es": "Calidad de carreteras por pa\u00eds (RQBC)"
+        "es": "Calidad de carreteras por país (RQBC)"
       },
       "new_cells_since_previous": null,
-      "notes": "Olive-oil LOGI swap for CPTR. Secondary aggregator; BYOD until licence verified.",
+      "notes": {
+        "en": "Olive-oil LOGI swap for CPTR. Secondary aggregator; BYOD until licence verified.",
+        "es": "Sustituto LOGI (aceite de oliva) de CPTR. Agregador secundario; BYOD hasta verificar licencia."
+      },
       "redistributable": false,
       "source_ids": [
         "world_population_review"
@@ -2502,10 +2646,13 @@
       ],
       "name": {
         "en": "International Trade Barrier Index (ITBI)",
-        "es": "\u00cdndice internacional de barreras al comercio (ITBI)"
+        "es": "Índice internacional de barreras al comercio (ITBI)"
       },
       "new_cells_since_previous": null,
-      "notes": "Olive-oil COMM swap for CCTI. BYOD until licence verified.",
+      "notes": {
+        "en": "Olive-oil COMM swap for CCTI. BYOD until licence verified.",
+        "es": "Sustituto COMM (aceite de oliva) de CCTI. BYOD hasta verificar licencia."
+      },
       "redistributable": false,
       "source_ids": [
         "trade_barrier_index"
@@ -2518,7 +2665,7 @@
     },
     {
       "byod_only": true,
-      "citation": "Phase A2 IMSFEM 2025 draft. Official candidate World Bank EN.GHG.CO2.MT.CE.AR5 (current WDI series, 1970\u20132024). Workbook also cites Global Carbon Atlas / IEA. Licence not human-verified for Atlas ship gate.",
+      "citation": "Phase A2 IMSFEM 2025 draft. Official candidate World Bank EN.GHG.CO2.MT.CE.AR5 (current WDI series, 1970–2024). Workbook also cites Global Carbon Atlas / IEA. Licence not human-verified for Atlas ship gate.",
       "coverage": null,
       "coverage_stats": null,
       "definition": null,
@@ -2557,10 +2704,13 @@
       ],
       "name": {
         "en": "Carbon Dioxide (CO2) Emissions (CADE)",
-        "es": "Emisiones de di\u00f3xido de carbono (CADE)"
+        "es": "Emisiones de dióxido de carbono (CADE)"
       },
       "new_cells_since_previous": 0,
-      "notes": "SUST criterion. Prefer WDI EN.GHG.CO2.MT.CE.AR5 over aggregators; BYOD until rights-verify.",
+      "notes": {
+        "en": "SUST criterion. Prefer WDI EN.GHG.CO2.MT.CE.AR5 over aggregators; BYOD until rights-verify.",
+        "es": "Criterio SUST. Preferir WDI EN.GHG.CO2.MT.CE.AR5 frente a agregadores; BYOD hasta verificar derechos."
+      },
       "redistributable": false,
       "source_ids": [
         "worldbank_wdi",
@@ -2608,10 +2758,13 @@
       ],
       "name": {
         "en": "Global Country Risk (GLCR)",
-        "es": "Riesgo pa\u00eds global (GLCR)"
+        "es": "Riesgo país global (GLCR)"
       },
       "new_cells_since_previous": null,
-      "notes": "Coface; proprietary \u2192 BYOD.",
+      "notes": {
+        "en": "Coface; proprietary: BYOD.",
+        "es": "Coface; propietario: BYOD."
+      },
       "redistributable": false,
       "source_ids": [
         "coface_country_risk"
@@ -2655,10 +2808,13 @@
       ],
       "name": {
         "en": "Global Sustainable Competitiveness Index (GLSI)",
-        "es": "\u00cdndice global de competitividad sostenible (GLSI)"
+        "es": "Índice global de competitividad sostenible (GLSI)"
       },
       "new_cells_since_previous": null,
-      "notes": "SolAbility GSCI; BYOD until licence verified.",
+      "notes": {
+        "en": "SolAbility GSCI; BYOD until licence verified.",
+        "es": "SolAbility GSCI; BYOD hasta verificar licencia."
+      },
       "redistributable": false,
       "source_ids": [
         "solability_gsci"
@@ -2671,7 +2827,7 @@
     },
     {
       "byod_only": null,
-      "citation": "Derived from World Bank WDI FP.CPI.TOTL.ZG as abs(x \u2212 2).",
+      "citation": "Derived from World Bank WDI FP.CPI.TOTL.ZG as abs(x − 2).",
       "coverage": null,
       "coverage_stats": {
         "coverage_pct": 79.3,
@@ -2694,10 +2850,13 @@
       ],
       "name": {
         "en": "Inflation deviation from 2% target",
-        "es": "Desviaci\u00f3n de la inflaci\u00f3n respecto al 2 %"
+        "es": "Desviación de la inflación respecto al 2 %"
       },
       "new_cells_since_previous": 6193,
-      "notes": "Candidate derived series abs(INFL \u2212 2). Does not replace verified INFL.",
+      "notes": {
+        "en": "Candidate derived series abs(INFL - 2). Does not replace verified INFL.",
+        "es": "Serie derivada candidata abs(INFL - 2). No sustituye a INFL verificada."
+      },
       "redistributable": true,
       "source_ids": [
         "worldbank_wdi"
@@ -2729,7 +2888,10 @@
         "es": "Ferias internacionales del sector"
       },
       "new_cells_since_previous": null,
-      "notes": "EXTRA-6 candidate. Sector via config/hs_to_fair_sector.yaml. Manual/BYOD until rights attested.",
+      "notes": {
+        "en": "EXTRA-6 candidate. Sector via config/hs_to_fair_sector.yaml. Manual/BYOD until rights attested.",
+        "es": "Candidata EXTRA-6. Sector vía config/hs_to_fair_sector.yaml. Manual/BYOD hasta atestar derechos."
+      },
       "redistributable": false,
       "source_ids": [
         "auma_fairs"
@@ -2742,7 +2904,7 @@
     },
     {
       "byod_only": true,
-      "citation": "Sum of exhibitors (or net m\u00b2) of sector fairs in the destination, latest available year.",
+      "citation": "Sum of exhibitors (or net m²) of sector fairs in the destination, latest available year.",
       "coverage": null,
       "coverage_stats": null,
       "definition": null,
@@ -2757,11 +2919,14 @@
       "last_upstream_change": null,
       "licence_ids": [],
       "name": {
-        "en": "Sector fair size (exhibitors / net m\u00b2)",
-        "es": "Tama\u00f1o de las ferias del sector"
+        "en": "Sector fair size (exhibitors / net m²)",
+        "es": "Tamaño de las ferias del sector"
       },
       "new_cells_since_previous": null,
-      "notes": "EXTRA-6 candidate. Manual drop / BYOD until rights attested.",
+      "notes": {
+        "en": "EXTRA-6 candidate. Manual drop / BYOD until rights attested.",
+        "es": "Candidata EXTRA-6. Carga manual / BYOD hasta atestar derechos."
+      },
       "redistributable": false,
       "source_ids": [
         "auma_fairs"
@@ -2793,7 +2958,10 @@
         "es": "Internacionalidad de las ferias"
       },
       "new_cells_since_previous": null,
-      "notes": "EXTRA-6 candidate. Manual drop / BYOD until rights attested.",
+      "notes": {
+        "en": "EXTRA-6 candidate. Manual drop / BYOD until rights attested.",
+        "es": "Candidata EXTRA-6. Carga manual / BYOD hasta atestar derechos."
+      },
       "redistributable": false,
       "source_ids": [
         "auma_fairs"
@@ -2822,10 +2990,13 @@
       "licence_ids": [],
       "name": {
         "en": "Origin promotion office in destination",
-        "es": "Oficina de promoci\u00f3n del pa\u00eds de origen"
+        "es": "Oficina de promoción del país de origen"
       },
       "new_cells_since_previous": null,
-      "notes": "EXTRA-6/7 candidate. Derived from promotion_office table; ProColombia proprietary \u2192 BYOD until permission.",
+      "notes": {
+        "en": "EXTRA-6/7 candidate. Derived from promotion_office table; ProColombia proprietary: BYOD until permission.",
+        "es": "Candidata EXTRA-6/7. Derivada de la tabla promotion_office; ProColombia propietario: BYOD hasta permiso."
+      },
       "redistributable": false,
       "source_ids": [
         "icex_events"
@@ -2854,10 +3025,13 @@
       "licence_ids": [],
       "name": {
         "en": "Origin promotion actions in destination",
-        "es": "Acciones de promoci\u00f3n del pa\u00eds origen"
+        "es": "Acciones de promoción del país origen"
       },
       "new_cells_since_previous": null,
-      "notes": "EXTRA-6/7 candidate. From promotion_event table per origin agency.",
+      "notes": {
+        "en": "EXTRA-6/7 candidate. From promotion_event table per origin agency.",
+        "es": "Candidata EXTRA-6/7. Desde la tabla promotion_event por agencia de origen."
+      },
       "redistributable": false,
       "source_ids": [
         "icex_events",

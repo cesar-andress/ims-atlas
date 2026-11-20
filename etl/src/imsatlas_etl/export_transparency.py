@@ -280,11 +280,19 @@ def _panel_coverage_stats(root: Path) -> dict[str, dict[str, Any]]:
         if {"variable_id", "value"}.issubset(cy.columns):
             long = cy.dropna(subset=["value"])
             for vid, g in long.groupby("variable_id"):
+                n_iso = int(g["iso3"].nunique())
+                y0, y1 = int(g["year"].min()), int(g["year"].max())
+                span = max(1, y1 - y0 + 1)
+                expected = n_iso * span
+                filled = int(len(g))
+                pct = round(100.0 * filled / expected, 1) if expected else None
+                if pct is not None:
+                    pct = min(pct, 100.0)
                 out[str(vid)] = {
-                    "n_countries": int(g["iso3"].nunique()),
-                    "year_min": int(g["year"].min()),
-                    "year_max": int(g["year"].max()),
-                    "coverage_pct": None,
+                    "n_countries": n_iso,
+                    "year_min": y0,
+                    "year_max": y1,
+                    "coverage_pct": pct,
                 }
         else:
             skip = {
@@ -350,11 +358,17 @@ def _panel_coverage_stats(root: Path) -> dict[str, dict[str, Any]]:
         for vid, g in cp.groupby("variable_id"):
             n_iso = int(g["iso3"].nunique())
             y0, y1 = int(g["year"].min()), int(g["year"].max())
+            span = max(1, y1 - y0 + 1)
+            expected = n_iso * span
+            filled = int(len(g))
+            pct = round(100.0 * filled / expected, 1) if expected else None
+            if pct is not None:
+                pct = min(pct, 100.0)
             out[str(vid)] = {
                 "n_countries": n_iso,
                 "year_min": y0,
                 "year_max": y1,
-                "coverage_pct": None,
+                "coverage_pct": pct,
             }
 
     by_path = _largest(
@@ -373,11 +387,19 @@ def _panel_coverage_stats(root: Path) -> dict[str, dict[str, Any]]:
         if {"variable_id", "value"}.issubset(by.columns) and dest_col:
             long = by.dropna(subset=["value"])
             for vid, g in long.groupby("variable_id"):
+                n_iso = int(g[dest_col].nunique())
+                y0, y1 = int(g["year"].min()), int(g["year"].max())
+                span = max(1, y1 - y0 + 1)
+                expected = n_iso * span
+                filled = int(len(g))
+                pct = round(100.0 * filled / expected, 1) if expected else None
+                if pct is not None:
+                    pct = min(pct, 100.0)
                 out[str(vid)] = {
-                    "n_countries": int(g[dest_col].nunique()),
-                    "year_min": int(g["year"].min()),
-                    "year_max": int(g["year"].max()),
-                    "coverage_pct": None,
+                    "n_countries": n_iso,
+                    "year_min": y0,
+                    "year_max": y1,
+                    "coverage_pct": pct,
                 }
         elif dest_col:
             # Wide gravity shape: distw / comlang_off / fta_wto columns.
@@ -461,8 +483,19 @@ def _variables_payload(
         notes = var.get("notes")
         alias = var.get("alias_of")
         if alias:
-            alias_note = f"Alias of {alias}."
-            notes = f"{alias_note} {notes}" if notes else alias_note
+            alias_note_en = f"Alias of {alias}."
+            alias_note_es = f"Alias de {alias}."
+            if isinstance(notes, dict):
+                en = str(notes.get("en") or "").strip()
+                es = str(notes.get("es") or "").strip()
+                notes = {
+                    "en": f"{alias_note_en} {en}".strip(),
+                    "es": f"{alias_note_es} {es}".strip(),
+                }
+            elif notes:
+                notes = f"{alias_note_en} {notes}".strip()
+            else:
+                notes = {"en": alias_note_en, "es": alias_note_es}
         row: dict[str, Any] = {
             "id": vid,
             "name": var.get("name"),

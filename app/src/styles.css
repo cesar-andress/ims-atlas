@@ -523,6 +523,7 @@ main {
   display: grid;
   grid-template-columns: minmax(14rem, 22rem) minmax(0, 1fr);
   gap: 1.25rem;
+  align-items: start;
 }
 
 @media (max-width: 800px) {
@@ -531,12 +532,32 @@ main {
   }
 }
 
+.catalog-list-search {
+  display: block;
+  margin-bottom: 0.65rem;
+}
+
+.catalog-list-search input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--border, #d4d4d8);
+  border-radius: 0.4rem;
+  background: var(--surface, #fff);
+  font: inherit;
+}
+
+.catalog-horizon {
+  margin: 0 0 0.75rem;
+}
+
 .factor-block h2 {
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   margin: 1rem 0 0.35rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   color: var(--muted);
+  font-weight: 650;
+  text-transform: none;
 }
 
 .catalog-list ul {
@@ -546,19 +567,25 @@ main {
 }
 
 .catalog-list li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.45rem;
 }
 
 .catalog-list button {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  gap: 0.15rem;
   width: 100%;
   text-align: left;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid transparent;
+  border-radius: 0.4rem;
+  background: color-mix(in srgb, var(--surface, #fff) 88%, #e8eef5);
 }
 
 .catalog-list button.active {
-  border-color: var(--accent);
+  border-color: var(--accent, #3a6ea5);
+  background: color-mix(in srgb, var(--accent, #3a6ea5) 10%, #fff);
 }
 
 .var-id {
@@ -576,6 +603,81 @@ main {
   flex-wrap: wrap;
   gap: 0.35rem;
   margin-top: 0.25rem;
+}
+
+.catalog-detail {
+  padding: 1rem 1.15rem 1.25rem;
+}
+
+.catalog-detail-head {
+  margin-bottom: 0.65rem;
+}
+
+.catalog-detail-factor {
+  margin: 0 0 0.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.72rem;
+}
+
+.catalog-detail-name {
+  margin: 0.15rem 0 0.35rem;
+  font-size: 1.05rem;
+}
+
+.catalog-detail-notes {
+  margin: 0.75rem 0;
+  line-height: 1.45;
+}
+
+.catalog-coverage {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border, #e4e4e7);
+}
+
+.catalog-coverage h3 {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+}
+
+.catalog-year-track {
+  position: relative;
+  height: 0.55rem;
+  margin: 0.55rem 0 0.25rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--border, #d4d4d8) 70%, transparent);
+  overflow: hidden;
+}
+
+.catalog-year-track-dense {
+  height: 0.28rem;
+  margin: 0.3rem 0 0.05rem;
+  width: 100%;
+}
+
+.catalog-year-reach {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: color-mix(in srgb, var(--accent, #3a6ea5) 28%, transparent);
+}
+
+.catalog-year-span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 999px;
+  background: var(--accent, #3a6ea5);
+}
+
+.catalog-year-axis {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+}
+
+.catalog-cell-coverage {
+  margin-top: 0.65rem;
 }
 
 .licence-badge {
