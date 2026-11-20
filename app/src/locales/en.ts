@@ -657,6 +657,15 @@ export const en = {
   looRankSensitivity: "Leave-one-out rank sensitivity",
   looHint:
     "Spearman of ranks after dropping each variable on the current analysis panel. Not a walk-forward backtest.",
+  backtestTableNdcgHint:
+    "Focal method compared with paper baselines (same target and horizon).",
+  backtestTableLiftHint:
+    "NDCG@10 difference of the focal method versus each baseline (95% CI).",
+  backtestColMethod: "Method",
+  backtestColBaseline: "Baseline",
+  backtestColContrast: "Contrast",
+  backtestColVariable: "Dropped variable",
+  backtestColCi: "95% CI",
   timeIntro:
     "Bump chart of destination ranks over years when a multi-year panel is available for the chosen origin and product.",
   bumpChartTitle: "Rank trajectories (bump)",

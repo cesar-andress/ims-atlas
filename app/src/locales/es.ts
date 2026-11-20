@@ -663,6 +663,15 @@ const es = {
   looRankSensitivity: "Sensibilidad leave-one-out",
   looHint:
     "Spearman de rangos tras quitar cada variable en el panel de análisis actual. No es un backtest walk-forward.",
+  backtestTableNdcgHint:
+    "Comparación del método focal con baselines del paper (mismo objetivo y horizonte).",
+  backtestTableLiftHint:
+    "Diferencia de NDCG@10 del método focal frente a cada baseline (IC 95%).",
+  backtestColMethod: "Método",
+  backtestColBaseline: "Baseline",
+  backtestColContrast: "Contraste",
+  backtestColVariable: "Variable omitida",
+  backtestColCi: "IC 95%",
   timeIntro:
     "Bump chart de rangos por año cuando hay un panel multi-año disponible para el origen y producto elegidos.",
   bumpChartTitle: "Evolución de puestos (bump)",

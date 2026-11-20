@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
+import { ChartFrame } from "../components/ChartFrame";
 import { ExportMenu } from "../components/ExportMenu";
 import { PermalinkLink } from "../components/PermalinkLink";
 import { formatScore } from "../format";
@@ -11,7 +12,12 @@ import { isColHs64Preset } from "../ranking/demoPanel";
 import { useAnalysis } from "../state/useAnalysis";
 import { scoreBlock, spearmanCorr } from "@ims-atlas/core";
 
+const Top10Chart = lazy(() =>
+  import("../components/Top10Chart").then((m) => ({ default: m.Top10Chart })),
+);
+
 type BacktestTarget = "intensive" | "new_markets" | "growth";
+type ChartHandle = { getDataURL: (opts: object) => string };
 
 function leaveOneOutSpearman(
   model: NonNullable<ReturnType<typeof useRankingModel>["model"]>,
@@ -51,12 +57,48 @@ function leaveOneOutSpearman(
   return rows;
 }
 
+function methodDisplay(method: string, lang: "es" | "en"): string {
+  if (method.startsWith("wsm|")) {
+    return lang === "es" ? "IMSFE (suma ponderada)" : "IMSFE (weighted sum)";
+  }
+  if (method === "import_volume") {
+    return lang === "es" ? "Volumen de importación" : "Import volume";
+  }
+  if (method === "gravity_ppml") {
+    return lang === "es" ? "Gravedad PPML" : "Gravity PPML";
+  }
+  if (method === "random") {
+    return lang === "es" ? "Aleatorio" : "Random";
+  }
+  return method;
+}
+
+function targetDisplay(target: BacktestTarget, lang: "es" | "en"): string {
+  if (target === "intensive") return lang === "es" ? "Intensivo" : "Intensive";
+  if (target === "new_markets")
+    return lang === "es" ? "Mercados nuevos" : "New markets";
+  return lang === "es" ? "Crecimiento" : "Growth";
+}
+
+function deltaTone(value: number): "pos" | "neg" | "flat" {
+  if (value > 0.0005) return "pos";
+  if (value < -0.0005) return "neg";
+  return "flat";
+}
+
+function formatDelta(value: number): string {
+  const s = formatScore(value);
+  return value > 0 ? `+${s}` : s;
+}
+
 export function Backtest() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language.startsWith("es") ? "es" : "en";
   const { config } = useAnalysis();
   const { model, error } = useRankingModel();
   const [fixture, setFixture] = useState<T4Fixture | null>(null);
   const [fixtureError, setFixtureError] = useState<string | null>(null);
+  const chartRef = useRef<ChartHandle | null>(null);
   const target: BacktestTarget = config.backtestTarget ?? "intensive";
   const horizon = config.backtestHorizon === 3 ? 3 : 1;
 
@@ -99,7 +141,23 @@ export function Backtest() {
 
   const focalNdgc = metricRows.find((r) => r.method === fixture?.focal_method);
 
+  const sortedMetrics = useMemo(
+    () => [...metricRows].sort((a, b) => b.mean - a.mean),
+    [metricRows],
+  );
+
+  const chartSeries = useMemo(
+    () =>
+      sortedMetrics.map((r) => ({
+        name: methodDisplay(r.method, lang).split(" (")[0] ?? r.method,
+        value: r.mean,
+      })),
+    [sortedMetrics, lang],
+  );
+
   const loo = useMemo(() => (model ? leaveOneOutSpearman(model) : []), [model]);
+  const looMin = loo.length ? Math.min(...loo.map((r) => r.spearman)) : 0;
+  const looMax = loo.length ? Math.max(...loo.map((r) => r.spearman)) : 1;
 
   const colRow = fixture?.col_hs64.find((r) => r.horizon_k === horizon);
   const paperPreset = isColHs64Preset({
@@ -120,47 +178,148 @@ export function Backtest() {
     >
       {() =>
         !paperPreset ? (
-          <div className="backtest-body" data-testid="backtest-blocked">
-            <p className="note" role="status">
-              {t("studyBacktestPaperOnly")}
-            </p>
-            <p className="muted small">
-              <PermalinkLink view="variables">{t("changeAnalysis")}</PermalinkLink>
-              {" · "}
-              <PermalinkLink view="analisis">{t("nav.analisis")}</PermalinkLink>
-            </p>
+          <div className="backtest-pro" data-testid="backtest-blocked">
+            <div className="backtest-empty results-card">
+              <p className="note" role="status">
+                {t("studyBacktestPaperOnly")}
+              </p>
+              <p className="muted small">
+                <PermalinkLink view="variables">{t("changeAnalysis")}</PermalinkLink>
+                {" · "}
+                <PermalinkLink view="analisis">{t("nav.analisis")}</PermalinkLink>
+              </p>
+            </div>
           </div>
         ) : fixture ? (
-          <div className="backtest-body" data-testid="backtest-body">
-            <p className="muted small" data-testid="backtest-context">
-              {t("backtestTarget")}: {target} · {t("backtestHorizon")}: k={horizon}
-              {" · "}
-              <PermalinkLink view="variables">{t("changeAnalysis")}</PermalinkLink>
-            </p>
-            <p className="callout" data-testid="backtest-disclaimer" role="note">
-              {t("backtestDisclaimer")}
-            </p>
-            <p className="muted small" data-testid="backtest-provenance">
-              {fixture.provenance}
-            </p>
+          <div className="backtest-pro" data-testid="backtest-body">
+            <header className="backtest-hero results-card">
+              <div className="backtest-hero-top">
+                <div>
+                  <p className="backtest-kicker">{t("nav.backtest")}</p>
+                  <h2 className="backtest-hero-title">
+                    {lang === "es"
+                      ? "Acuerdo predictivo walk-forward"
+                      : "Walk-forward predictive agreement"}
+                  </h2>
+                </div>
+                <div className="backtest-chips" data-testid="backtest-context">
+                  <span className="backtest-chip">
+                    <span className="backtest-chip-label">{t("backtestTarget")}</span>
+                    {targetDisplay(target, lang)}
+                  </span>
+                  <span className="backtest-chip">
+                    <span className="backtest-chip-label">{t("backtestHorizon")}</span>
+                    k={horizon}
+                  </span>
+                  <PermalinkLink view="variables" className="backtest-chip-link">
+                    {t("changeAnalysis")}
+                  </PermalinkLink>
+                </div>
+              </div>
 
-            {focalNdgc ? (
-              <p data-testid="focal-ndcg">
-                {fixture.focal_method} · NDCG@10 ={" "}
-                <span data-testid="focal-ndcg-mean" data-mean={String(focalNdgc.mean)}>
-                  {formatScore(focalNdgc.mean)}
-                </span>{" "}
-                [{formatScore(focalNdgc.ci95_low)}, {formatScore(focalNdgc.ci95_high)}]
-                · n=
-                {focalNdgc.n_blocks}
+              <p
+                className="backtest-disclaimer"
+                data-testid="backtest-disclaimer"
+                role="note"
+              >
+                {t("backtestDisclaimer")}
               </p>
-            ) : null}
+
+              {focalNdgc ? (
+                <div className="backtest-kpi-grid" data-testid="focal-ndcg">
+                  <article className="backtest-kpi backtest-kpi-primary">
+                    <p className="backtest-kpi-label">
+                      {lang === "es"
+                        ? "Método focal · NDCG@10"
+                        : "Focal method · NDCG@10"}
+                    </p>
+                    <p className="backtest-kpi-value font-tabular">
+                      <span
+                        data-testid="focal-ndcg-mean"
+                        data-mean={String(focalNdgc.mean)}
+                      >
+                        {formatScore(focalNdgc.mean)}
+                      </span>
+                    </p>
+                    <p className="backtest-kpi-meta muted small">
+                      IC 95%: [{formatScore(focalNdgc.ci95_low)},{" "}
+                      {formatScore(focalNdgc.ci95_high)}] · n={focalNdgc.n_blocks}
+                    </p>
+                    <p className="backtest-kpi-method muted small">
+                      {methodDisplay(fixture.focal_method, lang)}
+                    </p>
+                  </article>
+                  {colRow ? (
+                    <article className="backtest-kpi" data-testid="col-hs64-ndcg">
+                      <p className="backtest-kpi-label">COL · HS 64</p>
+                      <p className="backtest-kpi-value font-tabular">
+                        <span data-mean={String(colRow.mean_ndcg_at_10)}>
+                          {formatScore(colRow.mean_ndcg_at_10)}
+                        </span>
+                      </p>
+                      <p className="backtest-kpi-meta muted small">
+                        {lang === "es" ? "Horizonte" : "Horizon"} {colRow.horizon_k} ·
+                        n=
+                        {colRow.n_blocks} · A1
+                      </p>
+                    </article>
+                  ) : null}
+                  <article className="backtest-kpi">
+                    <p className="backtest-kpi-label">
+                      {lang === "es" ? "Métodos en tabla" : "Methods in table"}
+                    </p>
+                    <p className="backtest-kpi-value font-tabular">
+                      {metricRows.length}
+                    </p>
+                    <p className="backtest-kpi-meta muted small">
+                      {lang === "es"
+                        ? "Focal + tres baselines del paper"
+                        : "Focal + three paper baselines"}
+                    </p>
+                  </article>
+                </div>
+              ) : null}
+
+              <p
+                className="backtest-provenance muted small"
+                data-testid="backtest-provenance"
+              >
+                {fixture.provenance}
+              </p>
+            </header>
+
             <section
-              className="results-card backtest-table-card"
+              className="results-card backtest-panel"
+              data-export-surface="chart"
+            >
+              <ChartFrame
+                testIdPrefix="backtest-ndcg"
+                title={t("ndcgByMethod")}
+                chartRef={chartRef}
+                showOnScreenCredit
+                sourceLine={fixture.provenance}
+              >
+                <Suspense fallback={<p className="muted">{t("loading")}</p>}>
+                  <Top10Chart
+                    title={t("ndcgByMethod")}
+                    series={chartSeries}
+                    onReady={(c) => {
+                      chartRef.current = c;
+                    }}
+                  />
+                </Suspense>
+              </ChartFrame>
+            </section>
+
+            <section
+              className="results-card backtest-panel"
               data-export-surface="table"
             >
-              <div className="bump-table-head">
-                <h2>{t("ndcgByMethod")}</h2>
+              <div className="backtest-panel-head">
+                <div>
+                  <h2>{t("ndcgByMethod")}</h2>
+                  <p className="muted small">{t("backtestTableNdcgHint")}</p>
+                </div>
                 <ExportMenu
                   testIdPrefix="t4-metrics"
                   kind="table"
@@ -177,54 +336,73 @@ export function Backtest() {
                   ]}
                 />
               </div>
-              <div className="table-scroll bump-table-scroll">
-                <table className="bump-table" data-testid="t4-metrics-table">
+              <div className="backtest-table-wrap">
+                <table className="backtest-table" data-testid="t4-metrics-table">
                   <thead>
                     <tr>
-                      <th>Method</th>
-                      <th>NDCG@10</th>
-                      <th>CI low</th>
-                      <th>CI high</th>
-                      <th>n</th>
+                      <th scope="col">{t("backtestColMethod")}</th>
+                      <th scope="col">NDCG@10</th>
+                      <th scope="col">{t("backtestColCi")}</th>
+                      <th scope="col">n</th>
+                      <th scope="col" className="backtest-col-bar">
+                        {lang === "es" ? "Relativo" : "Relative"}
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {metricRows.map((r) => (
-                      <tr key={r.method} data-method={r.method}>
-                        <td>{r.method}</td>
-                        <td data-mean={String(r.mean)} className="font-tabular">
-                          {formatScore(r.mean)}
-                        </td>
-                        <td className="font-tabular">{formatScore(r.ci95_low)}</td>
-                        <td className="font-tabular">{formatScore(r.ci95_high)}</td>
-                        <td className="font-tabular">{r.n_blocks}</td>
-                      </tr>
-                    ))}
+                    {sortedMetrics.map((r) => {
+                      const focal = r.method === fixture.focal_method;
+                      const max = sortedMetrics[0]?.mean || 1;
+                      const pct = Math.max(8, (r.mean / max) * 100);
+                      return (
+                        <tr
+                          key={r.method}
+                          data-method={r.method}
+                          className={focal ? "backtest-row-focal" : undefined}
+                        >
+                          <th scope="row">
+                            <span className="backtest-method-name">
+                              {methodDisplay(r.method, lang)}
+                            </span>
+                            {focal ? (
+                              <span className="backtest-badge">
+                                {lang === "es" ? "Focal" : "Focal"}
+                              </span>
+                            ) : null}
+                            <span className="backtest-method-id muted">{r.method}</span>
+                          </th>
+                          <td
+                            data-mean={String(r.mean)}
+                            className="font-tabular backtest-num"
+                          >
+                            {formatScore(r.mean)}
+                          </td>
+                          <td className="font-tabular muted">
+                            {formatScore(r.ci95_low)} – {formatScore(r.ci95_high)}
+                          </td>
+                          <td className="font-tabular">{r.n_blocks}</td>
+                          <td className="backtest-col-bar">
+                            <span className="backtest-inline-bar" aria-hidden>
+                              <span style={{ width: `${pct}%` }} />
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
             </section>
 
-            {paperPreset && colRow ? (
-              <p className="muted" data-testid="col-hs64-ndcg">
-                COL · HS64 · horizon {colRow.horizon_k}: mean NDCG@10 ={" "}
-                <span data-mean={String(colRow.mean_ndcg_at_10)}>
-                  {formatScore(colRow.mean_ndcg_at_10)}
-                </span>{" "}
-                (n={colRow.n_blocks}, A1 origin_horizon)
-              </p>
-            ) : !paperPreset ? (
-              <p className="muted small" data-testid="backtest-other-product">
-                {t("backtestOtherProduct")}
-              </p>
-            ) : null}
-
             <section
-              className="results-card backtest-table-card"
+              className="results-card backtest-panel"
               data-export-surface="table"
             >
-              <div className="bump-table-head">
-                <h2>{t("pairedLift")}</h2>
+              <div className="backtest-panel-head">
+                <div>
+                  <h2>{t("pairedLift")}</h2>
+                  <p className="muted small">{t("backtestTableLiftHint")}</p>
+                </div>
                 <ExportMenu
                   testIdPrefix="t4-lift"
                   kind="table"
@@ -240,38 +418,47 @@ export function Backtest() {
                   ]}
                 />
               </div>
-              <div className="table-scroll bump-table-scroll">
-                <table className="bump-table" data-testid="t4-lift-table">
+              <div className="backtest-table-wrap">
+                <table className="backtest-table" data-testid="t4-lift-table">
                   <thead>
                     <tr>
-                      <th>Baseline</th>
-                      <th>Δ mean</th>
-                      <th>CI low</th>
-                      <th>CI high</th>
+                      <th scope="col">{t("backtestColBaseline")}</th>
+                      <th scope="col">Δ {lang === "es" ? "media" : "mean"}</th>
+                      <th scope="col">{t("backtestColCi")}</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {liftRows.map((r) => (
-                      <tr key={r.baseline} data-baseline={r.baseline}>
-                        <td>{r.baseline}</td>
-                        <td data-delta={String(r.delta_mean)} className="font-tabular">
-                          {formatScore(r.delta_mean)}
-                        </td>
-                        <td className="font-tabular">{formatScore(r.ci95_low)}</td>
-                        <td className="font-tabular">{formatScore(r.ci95_high)}</td>
-                      </tr>
-                    ))}
+                    {liftRows.map((r) => {
+                      const tone = deltaTone(r.delta_mean);
+                      return (
+                        <tr key={r.baseline} data-baseline={r.baseline}>
+                          <th scope="row">{methodDisplay(r.baseline, lang)}</th>
+                          <td
+                            data-delta={String(r.delta_mean)}
+                            className={`font-tabular backtest-delta backtest-delta-${tone}`}
+                          >
+                            {formatDelta(r.delta_mean)}
+                          </td>
+                          <td className="font-tabular muted">
+                            {formatScore(r.ci95_low)} – {formatScore(r.ci95_high)}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
             </section>
 
             <section
-              className="results-card backtest-table-card"
+              className="results-card backtest-panel"
               data-export-surface="table"
             >
-              <div className="bump-table-head">
-                <h2>{t("variableValue")}</h2>
+              <div className="backtest-panel-head">
+                <div>
+                  <h2>{t("variableValue")}</h2>
+                  <p className="muted small">{t("variableValueHint")}</p>
+                </div>
                 <ExportMenu
                   testIdPrefix="t6-ablation"
                   kind="table"
@@ -287,39 +474,49 @@ export function Backtest() {
                   ]}
                 />
               </div>
-              <p className="muted small bump-table-hint">{t("variableValueHint")}</p>
-              <div className="table-scroll bump-table-scroll">
-                <table className="bump-table" data-testid="t6-ablation-table">
+              <div className="backtest-table-wrap">
+                <table className="backtest-table" data-testid="t6-ablation-table">
                   <thead>
                     <tr>
-                      <th>Contrast</th>
-                      <th>Δ NDCG@10</th>
-                      <th>CI low</th>
-                      <th>CI high</th>
+                      <th scope="col">{t("backtestColContrast")}</th>
+                      <th scope="col">Δ NDCG@10</th>
+                      <th scope="col">{t("backtestColCi")}</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {fixture.ablation.map((r) => (
-                      <tr key={r.contrast} data-contrast={r.contrast}>
-                        <td>{r.contrast}</td>
-                        <td data-delta={String(r.delta_mean)} className="font-tabular">
-                          {formatScore(r.delta_mean)}
-                        </td>
-                        <td className="font-tabular">{formatScore(r.ci95_low)}</td>
-                        <td className="font-tabular">{formatScore(r.ci95_high)}</td>
-                      </tr>
-                    ))}
+                    {fixture.ablation.map((r) => {
+                      const tone = deltaTone(r.delta_mean);
+                      return (
+                        <tr key={r.contrast} data-contrast={r.contrast}>
+                          <th scope="row">
+                            <code className="backtest-code">{r.contrast}</code>
+                          </th>
+                          <td
+                            data-delta={String(r.delta_mean)}
+                            className={`font-tabular backtest-delta backtest-delta-${tone}`}
+                          >
+                            {formatDelta(r.delta_mean)}
+                          </td>
+                          <td className="font-tabular muted">
+                            {formatScore(r.ci95_low)} – {formatScore(r.ci95_high)}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
             </section>
 
             <section
-              className="results-card backtest-table-card"
+              className="results-card backtest-panel"
               data-export-surface="table"
             >
-              <div className="bump-table-head">
-                <h2>{t("looRankSensitivity")}</h2>
+              <div className="backtest-panel-head">
+                <div>
+                  <h2>{t("looRankSensitivity")}</h2>
+                  <p className="muted small">{t("looHint")}</p>
+                </div>
                 {model ? (
                   <ExportMenu
                     testIdPrefix="loo"
@@ -332,23 +529,41 @@ export function Backtest() {
                   />
                 ) : null}
               </div>
-              <p className="muted small bump-table-hint">{t("looHint")}</p>
               {model ? (
-                <div className="table-scroll bump-table-scroll">
-                  <table className="bump-table" data-testid="loo-table">
+                <div className="backtest-table-wrap">
+                  <table className="backtest-table" data-testid="loo-table">
                     <thead>
                       <tr>
-                        <th>Variable dropped</th>
-                        <th>Spearman vs full</th>
+                        <th scope="col">{t("backtestColVariable")}</th>
+                        <th scope="col">Spearman</th>
+                        <th scope="col" className="backtest-col-bar">
+                          {lang === "es" ? "Estabilidad" : "Stability"}
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
-                      {loo.map((r) => (
-                        <tr key={r.variable} data-variable={r.variable}>
-                          <td>{r.variable}</td>
-                          <td className="font-tabular">{formatScore(r.spearman)}</td>
-                        </tr>
-                      ))}
+                      {loo.map((r) => {
+                        const span = Math.max(1e-9, looMax - looMin);
+                        const pct = Math.max(6, ((r.spearman - looMin) / span) * 100);
+                        return (
+                          <tr key={r.variable} data-variable={r.variable}>
+                            <th scope="row">
+                              <code className="backtest-code">{r.variable}</code>
+                            </th>
+                            <td className="font-tabular backtest-num">
+                              {formatScore(r.spearman)}
+                            </td>
+                            <td className="backtest-col-bar">
+                              <span
+                                className="backtest-inline-bar backtest-bar-loo"
+                                aria-hidden
+                              >
+                                <span style={{ width: `${pct}%` }} />
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>
