@@ -18,7 +18,7 @@ const es = {
   demoSyntheticNote:
     "Panel sintético/E2E (no es dato de producto). No interpretar los rangos como resultados empíricos de calzado COL.",
   footerCredit:
-    "Desarrollado en el marco del proyecto de I+D+i [nombre/código del proyecto] de AISERV SYSTEMS SLU (Madrid, España).",
+    "Desarrollado por AISERV SYSTEMS SLU (Madrid, España) en el marco de un proyecto de I+D+i.",
   footerRepo: "Repositorio en GitHub",
   footerBacktest: "ims-backtest",
   demoByodExcluded:
@@ -39,6 +39,44 @@ const es = {
   homeCardVariablesBody: "Origen, producto, mercados, pesos y método en un solo sitio.",
   hubVariablesIntro:
     "Este es el único sitio donde se cambia el análisis: origen, producto, mercados, variables, pesos y método. Las opciones avanzadas van abajo, plegadas.",
+  variablesSummaryLine:
+    "{vars} variables · {crit} criterios · {markets} mercados · cobertura {coverage} · {warnings} avisos",
+  variablesExpertMode: "Modo experto (todo a la vista)",
+  guidedStepOrigin: "Elija origen, producto, año y región (o un preset).",
+  guidedStepMarkets: "Defina cómo preseleccionar mercados candidatos.",
+  guidedStepVariables: "Marque las variables que entrarán en el índice.",
+  guidedStepWeights: "Ajuste pesos, presets de estrategia, WeightLifter o Podium.",
+  guidedStepMethod: "Método, normalización y opciones avanzadas; luego guarde.",
+  guidedBack: "Atrás",
+  guidedNext: "Siguiente",
+  weightLifterTitle: "Estabilidad de pesos (WeightLifter)",
+  weightLifterIntro:
+    "Intervalo de cada peso en el que el nº 1 actual no cambia (sensibilidad uno-a-uno).",
+  weightLifterWinner: "Ganador de referencia",
+  weightLifterPending:
+    "Calcule un ranking (origen · HS · año) para ver los intervalos.",
+  podiumTitle: "Podium: ordene usted los mercados",
+  podiumIntro:
+    "Reordene los mercados como cree que deberían quedar; calculamos pesos que reproducen ese orden.",
+  podiumPending: "Hace falta un ranking cargado para usar Podium.",
+  podiumNeedMarkets: "Hacen falta al menos 2 mercados.",
+  podiumApply: "Aplicar pesos inferidos",
+  podiumApplied: "Pesos actualizados desde su orden.",
+  strategyPresetsIntro: "Presets de estrategia (reponderan con una explicación corta):",
+  strategyMassConsume: "Consumo masivo: coste y logística",
+  strategyPerishables: "Perecederos: tránsito",
+  strategySmeFirst: "Pyme primeriza: baja distancia cultural",
+  hopTitle: "Ranking animado (HOP)",
+  hopIntro:
+    "Cada fotograma es un ranking bajo pesos muestreados (Hullman et al.). No cambia la configuración.",
+  hopEmpty: "Sin muestras SMAA aún.",
+  hopPlay: "Reproducir",
+  hopPause: "Pausar",
+  hopReducedMotion: "Animación desactivada (prefers-reduced-motion).",
+  hopRankLine: "#{rank} {iso}",
+  yearPlay: "Reproducir años",
+  yearPlayHint: "Vista del fixture de puestos por año (no cambia el análisis).",
+  clusterKInVariables: "Cambiar k en Variables",
   mapViewOptions: "Vista del mapa",
   mapProjection: "Proyección del mapa",
   mapProjGlobe: "Globo",

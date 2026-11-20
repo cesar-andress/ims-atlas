@@ -18,7 +18,7 @@ export const en = {
   demoSyntheticNote:
     "E2E/synthetic panel (not product data). Do not treat ranks as empirical COL footwear results.",
   footerCredit:
-    "Developed within the R&D&I project [project name/code] of AISERV SYSTEMS SLU (Madrid, Spain).",
+    "Developed by AISERV SYSTEMS SLU (Madrid, Spain) as part of an R&D&I project.",
   footerRepo: "GitHub repository",
   footerBacktest: "ims-backtest",
   demoByodExcluded:
@@ -40,6 +40,43 @@ export const en = {
     "Define origin, product, markets, weights and method in one place.",
   hubVariablesIntro:
     "This is the only place that changes the analysis: origin, product, markets, variables, weights and method. Advanced options stay collapsed below.",
+  variablesSummaryLine:
+    "{vars} variables · {crit} criteria · {markets} markets · coverage {coverage} · {warnings} warnings",
+  variablesExpertMode: "Expert mode (show everything)",
+  guidedStepOrigin: "Pick origin, product, year and region (or a preset).",
+  guidedStepMarkets: "Choose how candidate markets are pre-selected.",
+  guidedStepVariables: "Tick the variables that enter the index.",
+  guidedStepWeights: "Adjust weights, strategy presets, WeightLifter or Podium.",
+  guidedStepMethod: "Method, normalisation and advanced options; then save.",
+  guidedBack: "Back",
+  guidedNext: "Next",
+  weightLifterTitle: "Weight stability (WeightLifter)",
+  weightLifterIntro:
+    "For each weight, the range where the current #1 stays the same (one-at-a-time sensitivity).",
+  weightLifterWinner: "Baseline winner",
+  weightLifterPending: "Compute a ranking (origin · HS · year) to see intervals.",
+  podiumTitle: "Podium: order the markets yourself",
+  podiumIntro:
+    "Reorder markets as you believe they should rank; we infer weights that reproduce that order.",
+  podiumPending: "A loaded ranking is required for Podium.",
+  podiumNeedMarkets: "At least 2 markets are required.",
+  podiumApply: "Apply inferred weights",
+  podiumApplied: "Weights updated from your order.",
+  strategyPresetsIntro: "Strategy presets (re-weight with a short explanation):",
+  strategyMassConsume: "Mass consumption: cost & logistics",
+  strategyPerishables: "Perishables: transit time",
+  strategySmeFirst: "First-time SME: low cultural distance",
+  hopTitle: "Animated ranking (HOP)",
+  hopIntro:
+    "Each frame is a ranking under sampled weights (Hullman et al.). Does not change the analysis.",
+  hopEmpty: "No SMAA samples yet.",
+  hopPlay: "Play",
+  hopPause: "Pause",
+  hopReducedMotion: "Animation off (prefers-reduced-motion).",
+  hopRankLine: "#{rank} {iso}",
+  yearPlay: "Play years",
+  yearPlayHint: "Fixture ranks by year (does not change the analysis).",
+  clusterKInVariables: "Change k in Variables",
   mapViewOptions: "Map view",
   mapProjection: "Map projection",
   mapProjGlobe: "Globe",

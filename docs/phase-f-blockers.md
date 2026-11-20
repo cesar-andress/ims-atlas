@@ -1,15 +1,15 @@
 # Phase F blockers (human)
 
-## Footer R&D&I project name/code — BLOCKER
+## Footer R&D&I credit — resolved without inventing a code
 
-The footer still uses the SPEC placeholder:
+The bracketed placeholder was shown on the live site. It is replaced by a neutral sentence
+that names no project:
 
-- EN: `Developed within the R&D&I project [project name/code] of AISERV SYSTEMS SLU (Madrid, Spain).`
-- ES: `Desarrollado en el marco del proyecto de I+D+i [nombre/código del proyecto] de AISERV SYSTEMS SLU (Madrid, España).`
+- ES: `Desarrollado por AISERV SYSTEMS SLU (Madrid, España) en el marco de un proyecto de I+D+i.`
+- EN: `Developed by AISERV SYSTEMS SLU (Madrid, Spain) as part of an R&D&I project.`
 
-UI marker: `data-testid="footer-rd-blocker"` on the footer credit paragraph.
-
-**Do not invent** the project name or code. Replace only when César supplies the exact AISERV wording.
+If César later supplies the exact project name/code, add it to `footerCredit` in both
+locales. `AppFooter` still flags any `[project name/code]` marker as `footer-rd-blocker`.
 
 ## Tag v1.1.0
 
