@@ -25,7 +25,7 @@ export function Docs() {
       </div>
       <p className="muted">{t("docsIntro")}</p>
       <p className="small">
-        <a href="/privacidad">{t("nav.privacy")}</a>
+        <PermalinkLink view="privacy">{t("nav.privacy")}</PermalinkLink>
         {" · "}
         <PermalinkLink view="paper">{t("nav.paper")}</PermalinkLink>
         {" · "}

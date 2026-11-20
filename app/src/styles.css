@@ -1097,6 +1097,25 @@ main:has(.builder) {
   font-size: 0.75rem;
 }
 
+.privacy-page {
+  max-width: 42rem;
+  padding: 0.5rem 0 2rem;
+}
+
+.privacy-page section {
+  margin-top: 1.25rem;
+}
+
+.privacy-page h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.1rem;
+}
+
+.privacy-page ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+}
+
 .market-map-wrap {
   display: flex;
   flex-direction: column;

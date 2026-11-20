@@ -41,6 +41,7 @@ const VIEWS = [
   "country",
   "sql",
   "advanced_tools",
+  "privacy",
 ] as const;
 
 export type ViewId = (typeof VIEWS)[number];

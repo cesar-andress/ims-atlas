@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
 import { AppUpdateBanner } from "./AppUpdateBanner";
 import { PermalinkLink } from "./PermalinkLink";
 import { AccessMenu } from "./AccessMenu";
@@ -116,9 +115,9 @@ export function AppFooter() {
           <PermalinkLink view="docs" data-testid="footer-docs">
             {t("footerDocs")}
           </PermalinkLink>
-          <Link to="/privacidad" data-testid="footer-privacy">
+          <PermalinkLink view="privacy" data-testid="footer-privacy">
             {t("nav.privacy")}
-          </Link>
+          </PermalinkLink>
           <a href={REPO_URL} rel="noopener noreferrer" target="_blank">
             {t("footerRepo")}
           </a>

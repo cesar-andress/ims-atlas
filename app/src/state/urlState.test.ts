@@ -41,6 +41,9 @@ describe("urlState", () => {
     expect(viewFromPath("/catalog")).toBe("catalog");
     expect(viewFromPath("/nope")).toBe("home");
     expect(viewFromPath("/status")).toBe("status");
+    expect(viewFromPath("/privacidad")).toBe("privacy");
+    expect(viewFromPath("/privacy")).toBe("privacy");
+    expect(pathForView("privacy")).toBe("/privacidad");
     expect(viewFromPath("/data/sources")).toBe("data_sources");
     expect(viewFromPath("/data/variables/IMPV")).toBe("data_variable");
     expect(focusVariableFromPath("/data/variables/IMPV")).toBe("IMPV");

@@ -5,6 +5,7 @@ import { ResultsShell, type ResultTab } from "./components/ResultsShell";
 import { ToastProvider } from "./components/ToastHost";
 import { HelpProvider } from "./help/HelpProvider";
 import { Home } from "./pages/Home";
+import { Privacy } from "./pages/Privacy";
 import { RankingModelProvider } from "./ranking/RankingModelContext";
 import { prefetchCriticalRoutes } from "./ranking/prefetchRoutes";
 import { scheduleIdle } from "./scheduleIdle";
@@ -117,9 +118,6 @@ const DataUpdates = lazy(() =>
   import("./pages/transparency/DataUpdates").then((m) => ({
     default: m.DataUpdates,
   })),
-);
-const Privacy = lazy(() =>
-  import("./pages/Privacy").then((m) => ({ default: m.Privacy })),
 );
 const DesignSystem = lazy(() =>
   import("./pages/DesignSystem").then((m) => ({ default: m.DesignSystem })),

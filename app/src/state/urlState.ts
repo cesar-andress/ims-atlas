@@ -130,6 +130,7 @@ export function configToSearch(config: AnalysisConfig): string {
 export function pathForView(view: ViewId, focusVariable?: string): string {
   if (view === "home") return "/";
   if (view === "status") return "/status";
+  if (view === "privacy") return "/privacidad";
   if (view === "data_sources") return "/data/sources";
   if (view === "data_pipeline") return "/data/pipeline";
   if (view === "data_releases") return "/data/releases";
@@ -145,6 +146,7 @@ export function viewFromPath(pathname: string): ViewId {
   const clean = pathname.replace(/\/+$/, "") || "/";
   if (clean === "/" || clean === "") return "home";
   if (clean === "/status") return "status";
+  if (clean === "/privacidad" || clean === "/privacy") return "privacy";
   if (clean === "/data/sources") return "data_sources";
   if (clean === "/data/pipeline") return "data_pipeline";
   if (clean === "/data/releases") return "data_releases";
