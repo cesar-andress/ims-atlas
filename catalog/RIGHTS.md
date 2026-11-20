@@ -16,11 +16,11 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 | wits_trains | custom | yes | no | unknown | no | yes | no | unknown | — | — |
 | hofstede | custom | yes | unknown | unknown | no | unknown | unknown | unknown | — | — |
 | itu_datahub | CC-BY-NC-SA-3.0-IGO | yes | yes | yes | no | yes | yes | no | — | — |
-| ef_epi | proprietary | unknown | unknown | unknown | unknown | yes | unknown | unknown | — | — |
+| ef_epi | proprietary | yes | unknown | unknown | unknown | yes | unknown | unknown | CA | 2026-11-20 |
 | odin | CC-BY-4.0 | yes | yes | yes | yes | yes | no | no | — | — |
-| gedi | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| gedi | UNKNOWN | yes | unknown | unknown | unknown | unknown | unknown | unknown | CA | 2026-11-20 |
 | wipo_gii | CC-BY-4.0 | yes | yes | yes | yes | yes | no | no | CA | 2026-11-20 |
-| startupblink | proprietary | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| startupblink | proprietary | yes | unknown | unknown | unknown | unknown | unknown | unknown | CA | 2026-11-20 |
 | yale_epi | CC-BY-NC-SA-4.0 | yes | yes | yes | no | yes | yes | no | CA | 2026-11-20 |
 | heritage_ief | proprietary | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
 | fragile_states_index | CC-BY-NC-SA-4.0 | yes | yes | yes | no | yes | yes | no | CA | 2026-11-20 |
@@ -29,17 +29,17 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 | kof_globalisation | custom | yes | no | unknown | no | yes | no | unknown | — | — |
 | transparency_cpi | CC-BY-4.0 | yes | yes | yes | yes | yes | no | no | CA | 2026-11-20 |
 | global_trade_alert | custom | yes | no | no | no | yes | no | no | CA | 2026-11-20 |
-| freight_manual | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| freight_manual | UNKNOWN | yes | unknown | unknown | unknown | unknown | unknown | unknown | CA | 2026-11-20 |
 | worldbank_doing_business | CC-BY-4.0 | yes | yes | yes | yes | yes | no | no | CA | 2026-11-20 |
 | imf_weo | custom | yes | yes | yes | no | yes | no | no | CA | 2026-11-20 |
 | wto_tariffs | custom | yes | no | yes | no | yes | no | no | CA | 2026-11-20 |
 | wto_itip | custom | yes | yes | unknown | no | yes | no | unknown | — | — |
 | numbeo | proprietary | yes | no | no | no | yes | no | yes | CA | 2026-11-20 |
-| preciosmundi | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| global_product_prices | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| sea_distances | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| preciosmundi | UNKNOWN | yes | unknown | unknown | unknown | unknown | unknown | unknown | CA | 2026-11-20 |
+| global_product_prices | UNKNOWN | yes | unknown | unknown | unknown | unknown | unknown | unknown | CA | 2026-11-20 |
+| sea_distances | UNKNOWN | yes | unknown | unknown | unknown | unknown | unknown | unknown | CA | 2026-11-20 |
 | searates | proprietary | unknown | no | no | no | yes | no | yes | — | — |
-| nauticalculator | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| nauticalculator | UNKNOWN | yes | unknown | unknown | unknown | unknown | unknown | unknown | CA | 2026-11-20 |
 | solability_gsci | CC-BY-NC-SA-4.0 | yes | yes | yes | no | yes | yes | no | CA | 2026-11-20 |
 | coface_country_risk | proprietary | no | no | no | no | unknown | no | yes | — | — |
 | global_carbon_atlas | custom | yes | no | unknown | unknown | yes | no | unknown | — | — |
@@ -51,8 +51,8 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 | unctadstat | CC-BY-3.0-IGO | yes | yes | yes | yes | yes | no | no | CA | 2026-11-20 |
 | culture_factor | proprietary | yes | unknown | unknown | no | unknown | unknown | unknown | — | — |
 | indexmundi | proprietary | unknown | no | no | no | unknown | no | yes | — | — |
-| knoema | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| theglobaleconomy | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| knoema | UNKNOWN | yes | unknown | unknown | unknown | unknown | unknown | unknown | CA | 2026-11-20 |
+| theglobaleconomy | UNKNOWN | yes | unknown | unknown | unknown | unknown | unknown | unknown | CA | 2026-11-20 |
 | geodatos | proprietary | unknown | no | unknown | no | unknown | no | unknown | — | — |
 | procolombia | proprietary | unknown | no | unknown | no | unknown | no | yes | — | — |
 | iso_country_codes_ref | custom | yes | yes | yes | unknown | yes | no | no | — | — |
@@ -90,20 +90,20 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 | EOC | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | REEXP | baci | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | ITU_IDI | itu_datahub | byod_only | evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| EF_EPI | ef_epi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| EF_EPI | ef_epi | byod_only | unknown rights: redistribute_raw, redistribute_derived, commercial_use, share_alike, no_derivatives |
 | ODIN | odin | byod_only | evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| GEDI | gedi | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| GEDI | gedi | byod_only | unknown rights: redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives |
 | GII | wipo_gii | ship_raw | redistribute_raw=yes with evidence and commercial ok |
-| STARTUPBLINK | startupblink | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| STARTUPBLINK | startupblink | byod_only | unknown rights: redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives |
 | EPI | yale_epi | byod_only | commercial_use=no under commercial_context=true |
 | CO2PC | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | PLI | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | PPAD | baci | ship_raw | redistribute_raw=yes with evidence and commercial ok |
-| INTC | freight_manual | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| INTC | freight_manual | byod_only | unknown rights: redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives |
 | CIBC | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | LPIN | worldbank_lpi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | CPTR | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
-| ITTT | freight_manual | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| ITTT | freight_manual | byod_only | unknown rights: redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives |
 | CUTA | wits_trains | byod_only | unknown rights: redistribute_derived, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
 | CCTI | global_trade_alert | byod_only | commercial_use=no under commercial_context=true |
 | IOEF | heritage_ief | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |

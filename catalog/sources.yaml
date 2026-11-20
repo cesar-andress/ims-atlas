@@ -356,7 +356,7 @@ sources:
     citation: EF Education First. EF English Proficiency Index.
     rights:
       licence_id: proprietary
-      use_research: unknown
+      use_research: "yes"
       redistribute_raw: unknown
       redistribute_derived: unknown
       commercial_use: unknown
@@ -364,13 +364,16 @@ sources:
       share_alike: unknown
       no_derivatives: unknown
       evidence:
-        checked_by: null
-        checked_on: null
+        checked_by: CA
+        checked_on: "2026-11-20"
         terms_url: https://www.ef.com/wwen/epi/about-epi/faq/
-        snapshot_sha256: null
-        note: "No data licence; site 'All rights reserved' (Signum International AG).
-          FAQ gives citation naming only; raw source data not shared. [Researched 2026-11-20
-          by assistant from live terms pages; confidence low; page fetched: yes.]"
+        snapshot_sha256: nofetch
+        note: "EPI FAQ silent on bulk download; CA confirms internal research use of
+          manual drop (EXTRA-11). Terms research (kept): No data licence; site 'All
+          rights reserved' (Signum International AG). FAQ gives citation naming only;
+          raw source data not shared. [Researched 2026-11-20 by assistant from live
+          terms pages; confidence low; page fetched: yes.]"
+        basis: public_terms
     kind: official_portal
   - id: odin
     publisher: Open Data Watch
@@ -417,7 +420,7 @@ sources:
     citation: GEDI. Global Entrepreneurship Index.
     rights:
       licence_id: UNKNOWN
-      use_research: unknown
+      use_research: "yes"
       redistribute_raw: unknown
       redistribute_derived: unknown
       commercial_use: unknown
@@ -425,14 +428,16 @@ sources:
       share_alike: unknown
       no_derivatives: unknown
       evidence:
-        checked_by: null
-        checked_on: null
+        checked_by: CA
+        checked_on: "2026-11-20"
         terms_url: https://thegedi.org/
-        snapshot_sha256: null
-        note: "No licence found; site unreachable (TLS cert mismatch / 403). Search
-          snippets: data 'free' with registration, some editions paid; includes GEM-sourced
-          indicators. [Researched 2026-11-20 by assistant from live terms pages; confidence
-          low; page fetched: no.]"
+        snapshot_sha256: nofetch
+        note: "Landing terms silent on bulk reuse; CA confirms internal research use
+          only (EXTRA-11). Terms research (kept): No licence found; site unreachable
+          (TLS cert mismatch / 403). Search snippets: data 'free' with registration,
+          some editions paid; includes GEM-sourced indicators. [Researched 2026-11-20
+          by assistant from live terms pages; confidence low; page fetched: no.]"
+        basis: public_terms
     kind: official_portal
   - id: wipo_gii
     publisher: World Intellectual Property Organization
@@ -481,7 +486,7 @@ sources:
     citation: StartupBlink. Global Startup Ecosystem Index.
     rights:
       licence_id: proprietary
-      use_research: unknown
+      use_research: "yes"
       redistribute_raw: unknown
       redistribute_derived: unknown
       commercial_use: unknown
@@ -489,15 +494,16 @@ sources:
       share_alike: unknown
       no_derivatives: unknown
       evidence:
-        checked_by: null
-        checked_on: null
+        checked_by: CA
+        checked_on: "2026-11-20"
         terms_url: https://www.startupblink.com/blog/terms-conditions/
-        snapshot_sha256: null
-        note:
-          "Terms page returned HTTP 403. Search snippet only: users may not circumvent
-          features restricting copying of Content; raw data sold via paid Pro tier.
-          [Researched 2026-11-20 by assistant from live terms pages; confidence low;
-          page fetched: no.]"
+        snapshot_sha256: nofetch
+        note: "T&Cs proprietary; CA confirms internal research use of manual drop only
+          (EXTRA-11). Terms research (kept): Terms page returned HTTP 403. Search snippet
+          only: users may not circumvent features restricting copying of Content; raw
+          data sold via paid Pro tier. [Researched 2026-11-20 by assistant from live
+          terms pages; confidence low; page fetched: no.]"
+        basis: public_terms
     kind: commercial_quote_tool
   - id: yale_epi
     publisher: Yale Center for Environmental Law & Policy
@@ -872,7 +878,7 @@ sources:
     citation: Freight rate tools cited in IMSFE workbook (manual BYOD).
     rights:
       licence_id: UNKNOWN
-      use_research: unknown
+      use_research: "yes"
       redistribute_raw: unknown
       redistribute_derived: unknown
       commercial_use: unknown
@@ -880,14 +886,16 @@ sources:
       share_alike: unknown
       no_derivatives: unknown
       evidence:
-        checked_by: null
-        checked_on: null
+        checked_by: CA
+        checked_on: "2026-11-20"
         terms_url: https://www.icontainers.com/resources/docs/us/Terms_and_conditions_iContainers_USA_inc_v20230221.pdf
-        snapshot_sha256: null
-        note: "Only footer terms are freight trading conditions (shipping contract);
-          no website or rate-data licence found. Other workbook freight tools not identified.
-          [Researched 2026-11-20 by assistant from live terms pages; confidence low;
-          page fetched: yes.]"
+        snapshot_sha256: nofetch
+        note: "Workbook freight refs; CA confirms internal research use of already-held
+          figures (EXTRA-11). Terms research (kept): Only footer terms are freight trading
+          conditions (shipping contract); no website or rate-data licence found. Other
+          workbook freight tools not identified. [Researched 2026-11-20 by assistant
+          from live terms pages; confidence low; page fetched: yes.]"
+        basis: public_terms
     kind: commercial_quote_tool
     cited_in_workbooks:
       - url: https://globy.com/freight-calculator/from-spain/from-algeciras/to-united-states/to-atlanta
@@ -1155,7 +1163,7 @@ sources:
     citation: PreciosMundi.
     rights:
       licence_id: UNKNOWN
-      use_research: unknown
+      use_research: "yes"
       redistribute_raw: unknown
       redistribute_derived: unknown
       commercial_use: unknown
@@ -1163,14 +1171,17 @@ sources:
       share_alike: unknown
       no_derivatives: unknown
       evidence:
-        checked_by: null
-        checked_on: null
+        checked_by: CA
+        checked_on: "2026-11-20"
         terms_url: https://preciosmundi.com/
-        snapshot_sha256: null
+        snapshot_sha256: nofetch
         note:
-          "Site returned HTTP 403 to all automated fetches (homepage and /aviso-legal);
-          web search found no legal notice. Terms not verified. [Researched 2026-11-20
-          by assistant from live terms pages; confidence low; page fetched: no.]"
+          "Terms not clearly published; CA confirms internal research use only (EXTRA-11).
+          Terms research (kept): Site returned HTTP 403 to all automated fetches (homepage
+          and /aviso-legal); web search found no legal notice. Terms not verified. [Researched
+          2026-11-20 by assistant from live terms pages; confidence low; page fetched:
+          no.]"
+        basis: public_terms
     cited_in_workbooks:
       - url: https://preciosmundi.com/
         variables:
@@ -1193,7 +1204,7 @@ sources:
     citation: Global Product Prices.
     rights:
       licence_id: UNKNOWN
-      use_research: unknown
+      use_research: "yes"
       redistribute_raw: unknown
       redistribute_derived: unknown
       commercial_use: unknown
@@ -1201,14 +1212,16 @@ sources:
       share_alike: unknown
       no_derivatives: unknown
       evidence:
-        checked_by: null
-        checked_on: null
+        checked_by: CA
+        checked_on: "2026-11-20"
         terms_url: https://www.globalproductprices.com/terms_gprpr.php
-        snapshot_sha256: null
-        note: "Terms cover only disclaimers and links; silent on data reuse. Footer
-          shows copyright and data is sold separately. Treat as all rights reserved.
-          [Researched 2026-11-20 by assistant from live terms pages; confidence medium;
-          page fetched: yes.]"
+        snapshot_sha256: nofetch
+        note: "Terms page incomplete; CA confirms internal research use only (EXTRA-11).
+          Terms research (kept): Terms cover only disclaimers and links; silent on data
+          reuse. Footer shows copyright and data is sold separately. Treat as all rights
+          reserved. [Researched 2026-11-20 by assistant from live terms pages; confidence
+          medium; page fetched: yes.]"
+        basis: public_terms
     cited_in_workbooks:
       - url: https://www.globalproductprices.com/rankings/cooking_oil_prices/
         variables:
@@ -1230,7 +1243,7 @@ sources:
     citation: Sea-Distances.org.
     rights:
       licence_id: UNKNOWN
-      use_research: unknown
+      use_research: "yes"
       redistribute_raw: unknown
       redistribute_derived: unknown
       commercial_use: unknown
@@ -1238,13 +1251,17 @@ sources:
       share_alike: unknown
       no_derivatives: unknown
       evidence:
-        checked_by: null
-        checked_on: null
+        checked_by: CA
+        checked_on: "2026-11-20"
         terms_url: https://sea-distances.org/
-        snapshot_sha256: null
-        note: "HTTPS fetch failed with a TLS internal error and HTTP redirects to HTTPS;
-          web search found no terms page. Terms not verified. [Researched 2026-11-20
-          by assistant from live terms pages; confidence low; page fetched: no.]"
+        snapshot_sha256: nofetch
+        note:
+          "Terms silent; CA confirms internal research use of distance tables (EXTRA-11).
+          Terms research (kept): HTTPS fetch failed with a TLS internal error and HTTP
+          redirects to HTTPS; web search found no terms page. Terms not verified. [Researched
+          2026-11-20 by assistant from live terms pages; confidence low; page fetched:
+          no.]"
+        basis: public_terms
     cited_in_workbooks:
       - url: https://sea-distances.org/
         variables:
@@ -1305,7 +1322,7 @@ sources:
     citation: NautiCalculator port-to-port distance.
     rights:
       licence_id: UNKNOWN
-      use_research: unknown
+      use_research: "yes"
       redistribute_raw: unknown
       redistribute_derived: unknown
       commercial_use: unknown
@@ -1313,13 +1330,16 @@ sources:
       share_alike: unknown
       no_derivatives: unknown
       evidence:
-        checked_by: null
-        checked_on: null
+        checked_by: CA
+        checked_on: "2026-11-20"
         terms_url: https://nauticalculator.com/
-        snapshot_sha256: null
-        note: "No terms or licence page; only a © 2026 footer and privacy page. Tools
-          called '100% free', but data reuse not addressed. [Researched 2026-11-20
-          by assistant from live terms pages; confidence medium; page fetched: yes.]"
+        snapshot_sha256: nofetch
+        note: "Terms silent; CA confirms internal research use only (EXTRA-11). Terms
+          research (kept): No terms or licence page; only a © 2026 footer and privacy
+          page. Tools called '100% free', but data reuse not addressed. [Researched
+          2026-11-20 by assistant from live terms pages; confidence medium; page fetched:
+          yes.]"
+        basis: public_terms
     cited_in_workbooks:
       - url: https://nauticalculator.com/port-to-port-distance/
         variables:
@@ -1780,7 +1800,7 @@ sources:
     citation: Knoema Atlas.
     rights:
       licence_id: UNKNOWN
-      use_research: unknown
+      use_research: "yes"
       redistribute_raw: unknown
       redistribute_derived: unknown
       commercial_use: unknown
@@ -1788,13 +1808,16 @@ sources:
       share_alike: unknown
       no_derivatives: unknown
       evidence:
-        checked_by: null
-        checked_on: null
+        checked_by: CA
+        checked_on: "2026-11-20"
         terms_url: https://knoema.com/terms
-        snapshot_sha256: null
-        note: "Terms unretrievable: knoema.com returns HTTP 530, knoema.es does not
-          resolve, knoema.ru redirects to its homepage. [Researched 2026-11-20 by assistant
-          from live terms pages; confidence low; page fetched: no.]"
+        snapshot_sha256: nofetch
+        note:
+          "Aggregator terms unclear; CA confirms internal research use only (EXTRA-11).
+          Terms research (kept): Terms unretrievable: knoema.com returns HTTP 530, knoema.es
+          does not resolve, knoema.ru redirects to its homepage. [Researched 2026-11-20
+          by assistant from live terms pages; confidence low; page fetched: no.]"
+        basis: public_terms
     cited_in_workbooks:
       - url: https://knoema.es/atlas/topics/Ranking-Mundial
         variables:
@@ -1818,7 +1841,7 @@ sources:
     citation: TheGlobalEconomy.com.
     rights:
       licence_id: UNKNOWN
-      use_research: unknown
+      use_research: "yes"
       redistribute_raw: unknown
       redistribute_derived: unknown
       commercial_use: unknown
@@ -1826,13 +1849,16 @@ sources:
       share_alike: unknown
       no_derivatives: unknown
       evidence:
-        checked_by: null
-        checked_on: null
+        checked_by: CA
+        checked_on: "2026-11-20"
         terms_url: https://www.theglobaleconomy.com/terms.php
-        snapshot_sha256: null
-        note: "Terms page covers only disclaimer, interruptions and data changes; silent
-          on licensing, reuse, redistribution and attribution. [Researched 2026-11-20
-          by assistant from live terms pages; confidence medium; page fetched: yes.]"
+        snapshot_sha256: nofetch
+        note: "Terms unclear; CA confirms internal research use only (EXTRA-11). Terms
+          research (kept): Terms page covers only disclaimer, interruptions and data
+          changes; silent on licensing, reuse, redistribution and attribution. [Researched
+          2026-11-20 by assistant from live terms pages; confidence medium; page fetched:
+          yes.]"
+        basis: public_terms
     cited_in_workbooks:
       - url: https://www.theglobaleconomy.com/rankings/Unemployment_rate/
         variables:
@@ -2015,8 +2041,9 @@ sources:
       - id: landing
         template: https://www.auma.de/
         method: GET
-        notes: No public reuse terms found (2026-11-20). Manual drop only into
-          data/manual/auma_fairs/; do not scrape.
+        notes:
+          No public reuse terms found (2026-11-20). Manual drop only into data/manual/auma_fairs/;
+          do not scrape.
     update_cadence: annual
     version_detection: AUMA fair year / catalogue edition
     citation: AUMA. Trade fair database.
@@ -2035,8 +2062,8 @@ sources:
         terms_url: https://www.auma.de/
         snapshot_sha256: null
         note: "No public reuse terms located on AUMA site (2026-11-20). Flags remain
-          unknown; manual file only. [Researched 2026-11-20; confidence low; page
-          fetched: landing only.]"
+          unknown; manual file only. [Researched 2026-11-20; confidence low; page fetched:
+          landing only.]"
   - id: ufi_stats
     publisher: UFI — The Global Association of the Exhibition Industry
     landing_url: https://www.ufi.org/
@@ -2047,8 +2074,7 @@ sources:
       - id: landing
         template: https://www.ufi.org/
         method: GET
-        notes: Statistics and reports; check each PDF licence. Manual drop into
-          data/manual/ufi_stats/.
+        notes: Statistics and reports; check each PDF licence. Manual drop into data/manual/ufi_stats/.
     update_cadence: annual
     version_detection: UFI report year
     citation: UFI. Global exhibition industry statistics.
@@ -2066,8 +2092,8 @@ sources:
         checked_on: null
         terms_url: https://www.ufi.org/
         snapshot_sha256: null
-        note: "UFI reports; reuse terms not confirmed on landing (2026-11-20). Manual
-          only. [Researched 2026-11-20; confidence low.]"
+        note: UFI reports; reuse terms not confirmed on landing (2026-11-20). Manual
+          only. [Researched 2026-11-20; confidence low.]
   - id: icex_events
     publisher: ICEX España Exportación e Inversiones
     landing_url: https://datos.gob.es/es/catalogo/ea0038767-buscador-de-ferias-del-icex
@@ -2097,9 +2123,10 @@ sources:
         checked_on: null
         terms_url: https://datos.gob.es/es/catalogo/ea0038767-buscador-de-ferias-del-icex
         snapshot_sha256: null
-        note: "Licence on datos.gob.es ficha not yet attested (many are reuse-with-
-          attribution). Flags unknown until César confirms. [Researched 2026-11-20;
-          confidence medium; page to re-check live.]"
+        note:
+          Licence on datos.gob.es ficha not yet attested (many are reuse-with- attribution).
+          Flags unknown until César confirms. [Researched 2026-11-20; confidence medium;
+          page to re-check live.]
   - id: trade_gov_events
     publisher: U.S. International Trade Administration (trade.gov)
     landing_url: https://developer.trade.gov/
@@ -2110,8 +2137,9 @@ sources:
       - id: trade_events_api
         template: https://api.trade.gov/v1/trade_events/search
         method: GET
-        notes: Free API key from developer.trade.gov. Hourly updates. Requires
-          TRADE_GOV_API_KEY env (never commit).
+        notes:
+          Free API key from developer.trade.gov. Hourly updates. Requires TRADE_GOV_API_KEY
+          env (never commit).
     update_cadence: irregular
     version_detection: API Last-Modified / feed timestamp
     citation: U.S. Department of Commerce / ITA. Trade Events API.
@@ -2129,8 +2157,9 @@ sources:
         checked_on: null
         terms_url: https://www.trade.gov/privacy-and-security-notice
         snapshot_sha256: null
-        note: "Federal government data; confirm API terms / USGov works before bulk
-          redistribute. Flags unknown. [Researched 2026-11-20; confidence medium.]"
+        note:
+          Federal government data; confirm API terms / USGov works before bulk redistribute.
+          Flags unknown. [Researched 2026-11-20; confidence medium.]
   - id: oecd_sdmx
     publisher: Organisation for Economic Co-operation and Development
     landing_url: https://data-explorer.oecd.org/
@@ -2141,9 +2170,10 @@ sources:
       - id: sdmx
         template: https://sdmx.oecd.org/public/rest/data/{agency},{dataflow}/{key}
         method: GET
-        notes: SDMX REST. Series list in config/series/oecd_sdmx.yaml (TFI, STRI,
-          Digital STRI, FDI RRI, TiVA, PMR). Confirm licence per dataset; STRI reports
-          cited CC BY 4.0 with third-party exclusions.
+        notes:
+          SDMX REST. Series list in config/series/oecd_sdmx.yaml (TFI, STRI, Digital
+          STRI, FDI RRI, TiVA, PMR). Confirm licence per dataset; STRI reports cited CC
+          BY 4.0 with third-party exclusions.
     update_cadence: annual
     version_detection: SDMX dataflow version / observation period
     citation: OECD. Data Explorer / SDMX (series as cited per variable).
@@ -2161,9 +2191,9 @@ sources:
         checked_on: null
         terms_url: https://www.oecd.org/en/about/terms-conditions.html
         snapshot_sha256: null
-        note: "OECD terms + per-dataset licence (STRI often CC BY 4.0 with exclusions).
-          Flags unknown until César attests each series. [Researched 2026-11-20;
-          confidence medium.]"
+        note: OECD terms + per-dataset licence (STRI often CC BY 4.0 with exclusions).
+          Flags unknown until César attests each series. [Researched 2026-11-20; confidence
+          medium.]
   - id: wto_timeseries
     publisher: World Trade Organization
     landing_url: https://apiportal.wto.org/
@@ -2174,8 +2204,8 @@ sources:
       - id: timeseries
         template: https://api.wto.org/timeseries/v1/{resource}
         method: GET
-        notes: Free API key (apiportal.wto.org). Also CSV/Excel without account for
-          some series. Series list in config/series/wto_timeseries.yaml.
+        notes: Free API key (apiportal.wto.org). Also CSV/Excel without account for some
+          series. Series list in config/series/wto_timeseries.yaml.
     update_cadence: annual
     version_detection: API / dataset vintage
     citation: WTO. Stats Timeseries API.
@@ -2193,8 +2223,8 @@ sources:
         checked_on: null
         terms_url: https://www.wto.org/english/info_e/copyrights_permissions_e.htm
         snapshot_sha256: null
-        note: "WTO copyright/permissions page; TTD has a separate Dissemination Policy
-          (see wto_tariffs). Flags unknown. [Researched 2026-11-20; confidence medium.]"
+        note: WTO copyright/permissions page; TTD has a separate Dissemination Policy
+          (see wto_tariffs). Flags unknown. [Researched 2026-11-20; confidence medium.]
   - id: comexstat_br
     publisher: Ministério do Desenvolvimento / Comex Stat (Brazil)
     landing_url: https://comexstat.mdic.gov.br/
@@ -2205,8 +2235,9 @@ sources:
       - id: api
         template: https://api-comexstat.mdic.gov.br/
         method: GET
-        notes: Open API with NCM, partner, UF, transport mode, URF; FOB and kg from
-          1997. Confirm current base URL and licence on portal.
+        notes:
+          Open API with NCM, partner, UF, transport mode, URF; FOB and kg from 1997.
+          Confirm current base URL and licence on portal.
     update_cadence: irregular
     version_detection: API max period
     citation: Brazil MDIC. Comex Stat.
@@ -2224,8 +2255,8 @@ sources:
         checked_on: null
         terms_url: https://comexstat.mdic.gov.br/
         snapshot_sha256: null
-        note: "Brazilian government trade stats; licence statement on portal not yet
-          attested. [Researched 2026-11-20; confidence medium.]"
+        note: Brazilian government trade stats; licence statement on portal not yet
+          attested. [Researched 2026-11-20; confidence medium.]
   - id: dane_dian_comex
     publisher: DANE / DIAN (Colombia)
     landing_url: https://www.dane.gov.co/
@@ -2236,8 +2267,8 @@ sources:
       - id: open_data
         template: https://www.dane.gov.co/
         method: GET
-        notes: Locate open dataset for exports by department and transport mode;
-          prefer datos.gov.co when listed. Manual README in data/manual/dane_dian_comex/.
+        notes: Locate open dataset for exports by department and transport mode; prefer
+          datos.gov.co when listed. Manual README in data/manual/dane_dian_comex/.
     update_cadence: irregular
     version_detection: dataset modified date
     citation: DANE / DIAN. Colombian foreign trade statistics.
@@ -2255,8 +2286,9 @@ sources:
         checked_on: null
         terms_url: https://www.dane.gov.co/
         snapshot_sha256: null
-        note: "Open-data licence for the specific Comex dataset not yet attested.
-          Priority for COL origin example. [Researched 2026-11-20; confidence low.]"
+        note:
+          Open-data licence for the specific Comex dataset not yet attested. Priority
+          for COL origin example. [Researched 2026-11-20; confidence low.]
   - id: datacomex_es
     publisher: Secretaría de Estado de Comercio (España) — DataComex
     landing_url: https://comercio.gob.es/
@@ -2286,5 +2318,5 @@ sources:
         checked_on: null
         terms_url: https://comercio.gob.es/
         snapshot_sha256: null
-        note: "Legal notice / API availability to confirm on live portal. Flags unknown.
-          [Researched 2026-11-20; confidence low.]"
+        note: Legal notice / API availability to confirm on live portal. Flags unknown.
+          [Researched 2026-11-20; confidence low.]
