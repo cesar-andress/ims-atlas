@@ -43,3 +43,15 @@ def ship_cell_variables(monkeypatch: pytest.MonkeyPatch) -> frozenset[str]:
 
     monkeypatch.setattr(release_mod, "_variable_gates", gates)
     return CELL_VARIABLES
+
+
+@pytest.fixture()
+def no_ship_gate(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Test-only: behave as if no source were attested (empty-release behaviour).
+
+    The real catalog ships attested open sources since CA's rights-verify run
+    (2026-11-20), so empty-release tests force the pre-attestation state.
+    """
+    from imsatlas_etl import gate as gate_mod
+
+    monkeypatch.setattr(gate_mod, "evidence_present", lambda _rights: False)

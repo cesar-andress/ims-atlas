@@ -62,7 +62,9 @@ def test_phase3_variables_and_coverage(phase3_root: Path) -> None:
     assert "BYOD" in text
 
 
-def test_release_strips_byod_variable_ids(phase3_root: Path) -> None:
+def test_release_strips_byod_variable_ids(
+    phase3_root: Path, no_ship_gate: None
+) -> None:
     result = run_release("0.1.0", root=phase3_root, staging=True, force=True)
     root = Path(result["path"])
     country = pd.read_parquet(root / "country_year.parquet")

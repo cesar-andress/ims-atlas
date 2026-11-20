@@ -40,7 +40,9 @@ def test_qa_passes_on_mini_world(pipeline_root: Path) -> None:
     assert (status_root(root=pipeline_root) / "qa.md").is_file()
 
 
-def test_release_excludes_byod_variable_columns(pipeline_root: Path) -> None:
+def test_release_excludes_byod_variable_columns(
+    pipeline_root: Path, no_ship_gate: None
+) -> None:
     result = run_release("0.1.0", root=pipeline_root, staging=True, force=True)
     assert result["n_included_variables"] == 0  # all unknown rights -> byod
     release_path = Path(result["path"])

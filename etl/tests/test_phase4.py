@@ -17,7 +17,7 @@ from imsatlas_etl.pipeline.runner import run_pipeline
 FIXTURE_ROOT = Path(__file__).parent / "fixtures" / "mini_world"
 
 
-def test_spec3_release_layout_and_budgets(tmp_path: Path) -> None:
+def test_spec3_release_layout_and_budgets(tmp_path: Path, no_ship_gate: None) -> None:
     run_pipeline(fixture_root=FIXTURE_ROOT, root=tmp_path, force=True)
     result = run_release("0.1.0", root=tmp_path, staging=True, force=True)
     dest = Path(result["path"])

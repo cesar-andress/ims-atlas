@@ -86,7 +86,9 @@ def test_cell_url_uses_api_alias_for_wgi() -> None:
     )
 
 
-def test_empty_release_writes_empty_spot_check(world_root: Path) -> None:
+def test_empty_release_writes_empty_spot_check(
+    world_root: Path, no_ship_gate: None
+) -> None:
     _public_with_cells(world_root)
     report = run_spot_check(n=200, seed=1, root=world_root)
     assert report["n_sampled"] == 0

@@ -151,7 +151,9 @@ def test_parquet_schema_is_fixed_even_when_empty(tmp_path: Path) -> None:
     assert table.schema.equals(PROVENANCE_SCHEMA, check_metadata=False)
 
 
-def test_empty_release_writes_empty_provenance(world_root: Path) -> None:
+def test_empty_release_writes_empty_provenance(
+    world_root: Path, no_ship_gate: None
+) -> None:
     result = run_release("0.1.0", root=world_root, staging=True, force=True)
     release = Path(result["path"])
     assert result["n_included_variables"] == 0

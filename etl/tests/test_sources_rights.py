@@ -54,13 +54,45 @@ def test_every_variable_source_ids_resolve() -> None:
             assert sid in registry
 
 
-def test_current_catalog_gate_is_byod_until_human_check() -> None:
+SHIP_RAW_SOURCES = frozenset(
+    {
+        "worldbank_wdi",
+        "worldbank_wgi",
+        "worldbank_lpi",
+        "baci",
+        "cepi_gravity",
+        "wipo_gii",
+        "inform_risk",
+        "transparency_cpi",
+        "worldbank_doing_business",
+        "unctadstat",
+    },
+)
+
+
+def test_source_gate_after_ca_attestation() -> None:
+    """CA attested 19 sources on 2026-11-20; only open licences ship publicly."""
+    from imsatlas_etl.gate import gate_one
+
+    deploy = load_deployment()
+    decisions = {
+        sid: gate_one(src["rights"], None, deploy)["decision"]
+        for sid, src in sources_by_id().items()
+    }
+    assert {s for s, d in decisions.items() if d == "ship_raw"} == SHIP_RAW_SOURCES
+    assert decisions["coface_country_risk"] == "local_only"
+    others = set(decisions) - SHIP_RAW_SOURCES - {"coface_country_risk"}
+    assert all(decisions[s] == "byod_only" for s in others)
+
+
+def test_catalog_variables_never_ship_from_unattested_sources() -> None:
     catalog = load_catalog()
     deploy = load_deployment()
     registry = sources_by_id()
     for var in catalog["variables"]:
         result = gate_for_variable(var, registry=registry, deployment=deploy)
-        assert result["decision"] in {"byod_only", "local_only"}
+        if result["decision"] in {"ship_raw", "ship_derived"}:
+            assert set(var["source_ids"]) <= SHIP_RAW_SOURCES, var["id"]
 
 
 def test_rights_report_cli(tmp_path) -> None:

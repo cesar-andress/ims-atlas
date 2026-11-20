@@ -15,6 +15,7 @@ from imsatlas_etl.pipeline.release import run_release, write_dual_release_report
 
 def test_public_and_internal_staging_paths(
     world_root: Path,
+    no_ship_gate: None,
     ship_cell_variables: frozenset[str],
 ) -> None:
     pub = run_release(
