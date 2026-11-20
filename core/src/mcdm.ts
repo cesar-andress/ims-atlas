@@ -55,10 +55,18 @@ function buildFactorCols(
   }
 
   const factorNames = [...factorCols.keys()];
+  if (factorNames.length === 0) {
+    throw new Error("No overlapping factors between weights and matrix");
+  }
   let fw = factorNames.map((f) => weights.factors[f] ?? 0);
   const fwSum = fw.reduce((a, b) => a + b, 0);
-  if (fwSum <= 0) throw new Error("No overlapping factors between weights and matrix");
-  fw = fw.map((x) => x / fwSum);
+  // Misaligned manual weights (e.g. openness_legacy vs panel "openness") used to
+  // yield fwSum=0 and crash the UI. Fall back to equal factor weights.
+  if (fwSum <= 0) {
+    fw = factorNames.map(() => 1 / factorNames.length);
+  } else {
+    fw = fw.map((x) => x / fwSum);
+  }
   return { factorNames, factorCols, fw };
 }
 

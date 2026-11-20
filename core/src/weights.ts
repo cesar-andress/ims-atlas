@@ -90,10 +90,32 @@ export function restrictWeights(
     factorMass[factor] = fw;
   }
   if (Object.keys(factorMass).length === 0) {
-    throw new Error("No variables left after restricting weights");
+    // Last resort: rebuild equal weights from any within-block that still has
+    // available variables (disjoint manual factor keys vs panel factors).
+    for (const [factor, vw] of Object.entries(w.variablesWithin)) {
+      const keep = Object.keys(vw).filter((v) => avail.has(v));
+      if (keep.length === 0) continue;
+      const sub: Record<string, number> = {};
+      for (const v of keep) sub[v] = vw[v]!;
+      newWithin[factor] = renormalizeRecord(sub);
+      factorMass[factor] = 1;
+    }
+    if (Object.keys(factorMass).length === 0) {
+      throw new Error("No variables left after restricting weights");
+    }
+    notes.push(
+      "factor weight keys did not match available variables; rebuilt equal factor weights",
+    );
   }
+  const massSum = Object.values(factorMass).reduce((a, b) => a + b, 0);
+  const factors =
+    massSum > 0
+      ? renormalizeRecord(factorMass)
+      : Object.fromEntries(
+          Object.keys(factorMass).map((f) => [f, 1 / Object.keys(factorMass).length]),
+        );
   return validateWeights({
-    factors: renormalizeRecord(factorMass),
+    factors,
     variablesWithin: newWithin,
     scheme: w.scheme,
     notes,
@@ -136,16 +158,56 @@ export function weightsManual(
   factors: Record<string, number>,
   variablesWithin: Record<string, Record<string, number>>,
 ): HierarchicalWeights {
-  const fw = renormalizeRecord({ ...factors });
   const within: Record<string, Record<string, number>> = {};
   for (const [f, vw] of Object.entries(variablesWithin)) {
+    if (Object.keys(vw).length === 0) continue;
     within[f] = renormalizeRecord({ ...vw });
   }
+  const withinKeys = Object.keys(within);
+  if (withinKeys.length === 0) {
+    throw new Error("No variables left after restricting weights");
+  }
+
+  // Keep only factor keys that have variables; if the UI sent a disjoint set
+  // (e.g. openness_legacy / sustainability vs panel demand/logistics), fall back
+  // to equal weights over the within keys so scoring never hard-crashes.
+  const notes: string[] = [];
+  const overlap: Record<string, number> = {};
+  for (const f of withinKeys) {
+    const w = factors[f];
+    if (typeof w === "number" && w > 0) overlap[f] = w;
+  }
+  let fw: Record<string, number>;
+  if (Object.keys(overlap).length > 0) {
+    const overlapNorm = renormalizeRecord(overlap);
+    fw = {};
+    for (const f of withinKeys) {
+      fw[f] = overlapNorm[f] ?? 0;
+    }
+    const mass = Object.values(fw).reduce((a, b) => a + b, 0);
+    if (mass <= 0) {
+      fw = Object.fromEntries(withinKeys.map((f) => [f, 1 / withinKeys.length]));
+      notes.push("manual factor weights had no positive overlap; using equal factors");
+    } else {
+      fw = renormalizeRecord(fw);
+      if (Object.keys(overlap).length < withinKeys.length) {
+        notes.push(
+          "manual factor weights missing some panel factors; residual share redistributed",
+        );
+      }
+    }
+  } else {
+    fw = Object.fromEntries(withinKeys.map((f) => [f, 1 / withinKeys.length]));
+    notes.push(
+      "manual factor weights did not match panel factors; using equal factor weights",
+    );
+  }
+
   return validateWeights({
     factors: fw,
     variablesWithin: within,
     scheme: "manual",
-    notes: [],
+    notes,
   });
 }
 

@@ -75,6 +75,16 @@ const ES_RULES: Rule[] = [
   ],
   [/^Excluded for missingness: (.+)$/, (m) => `Excluidas por falta de datos: ${m[1]}`],
   [/^Median-imputed cells: (\d+)$/, (m) => `Celdas rellenadas con la mediana: ${m[1]}`],
+  [
+    /^No variables left after restricting weights$/,
+    () =>
+      "Los pesos manuales no coinciden con los factores del panel. Elige «Pesos de expertos» o vuelve a ajustar los pesos.",
+  ],
+  [
+    /^No overlapping factors between weights and matrix$/,
+    () =>
+      "Los pesos y las variables no comparten factores. Restablece los pesos de expertos e inténtalo de nuevo.",
+  ],
 ];
 
 export function localizeWarning(message: string, lang: string): string {

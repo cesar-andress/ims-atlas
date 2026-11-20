@@ -8,8 +8,12 @@ export const FACTOR_LABELS: Record<string, { en: string; es: string }> = {
   product_fit: { en: "Product fit", es: "Ajuste del producto" },
   macro_risk: { en: "Macroeconomic risk", es: "Riesgo macroeconómico" },
   institutional: { en: "Institutional setting", es: "Entorno institucional" },
+  openness: { en: "Trade openness", es: "Apertura comercial" },
   openness_legacy: { en: "Trade openness", es: "Apertura comercial" },
+  communication: { en: "Communication", es: "Comunicación" },
+  entrepreneurship: { en: "Entrepreneurship", es: "Emprendimiento" },
   sustainability: { en: "Sustainability", es: "Sostenibilidad" },
+  promotion: { en: "Fairs and promotion", es: "Ferias y promoción" },
 };
 
 /**

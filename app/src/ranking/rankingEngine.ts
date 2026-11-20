@@ -525,16 +525,26 @@ export async function computeRanking(req: RankingRequest): Promise<RankingViewMo
     }
     weightScheme = "manual";
   } else if (weightScheme === "manual" && req.factorWeights) {
-    manualWeights = {
-      factors: req.factorWeights,
-      variablesWithin: Object.fromEntries(
-        [...new Set(variables.map((v) => v.factor))].map((f) => {
-          const vids = variables.filter((v) => v.factor === f).map((v) => v.id);
-          const equal = 1 / Math.max(vids.length, 1);
-          return [f, Object.fromEntries(vids.map((id) => [id, equal]))];
-        }),
-      ),
-    };
+    const panelFactors = [...new Set(variables.map((v) => v.factor))];
+    const within = Object.fromEntries(
+      panelFactors.map((f) => {
+        const vids = variables.filter((v) => v.factor === f).map((v) => v.id);
+        const equal = 1 / Math.max(vids.length, 1);
+        return [f, Object.fromEntries(vids.map((id) => [id, equal]))];
+      }),
+    );
+    // Prefer UI keys that match panel factors; ignore disjoint leftovers
+    // (historical openness_legacy sliders, etc.).
+    const matched: Record<string, number> = {};
+    for (const f of panelFactors) {
+      const w = req.factorWeights[f];
+      if (typeof w === "number" && Number.isFinite(w) && w > 0) matched[f] = w;
+    }
+    const factors =
+      Object.keys(matched).length > 0
+        ? matched
+        : Object.fromEntries(panelFactors.map((f) => [f, 1]));
+    manualWeights = { factors, variablesWithin: within };
   }
 
   const t0 = performance.now();

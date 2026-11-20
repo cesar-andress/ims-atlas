@@ -43,8 +43,11 @@ const FACTOR_ORDER = [
   "product_fit",
   "macro_risk",
   "institutional",
-  "openness_legacy",
+  "openness",
+  "communication",
+  "entrepreneurship",
   "sustainability",
+  "promotion",
 ] as const;
 
 type ConfigPanelProps = {

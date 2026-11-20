@@ -56,12 +56,22 @@ export function useSmaaModel(model: RankingViewModel | null): {
     setLoading(true);
     setError(null);
     const stats = weightStatsFromHierarchical(model.weights);
-    const tornado = tornadoWeightSensitivity(
-      model.normalized,
-      model.prepared.usedVariables,
-      model.weights,
-      { scale: 0.5, includeVariables: false },
-    );
+    let tornado: TornadoBar[] = [];
+    try {
+      tornado = tornadoWeightSensitivity(
+        model.normalized,
+        model.prepared.usedVariables,
+        model.weights,
+        { scale: 0.5, includeVariables: false },
+      );
+    } catch (err: unknown) {
+      if (!cancelled) {
+        setSmaaModel(null);
+        setError(err instanceof Error ? err.message : String(err));
+        setLoading(false);
+      }
+      return;
+    }
     void runSmaaWorker({
       type: "smaa_wsm",
       id: `smaa-${fingerprint.slice(0, 24)}`,

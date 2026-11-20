@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { CRITERION_COLOR, CRITERION_LABEL, isCriterionId } from "../design/criteria";
 import { useTranslation } from "../i18n";
+import { localizeWarning } from "../ranking/localizeWarning";
 import { useRankingModel } from "../ranking/useRankingModelApi";
 import { FACTOR_LABELS, setOneWeight } from "../state/criterionWeights";
 import { useAnalysis } from "../state/useAnalysis";
@@ -48,7 +49,7 @@ export function CriterionWeights() {
   if (error && !model) {
     return (
       <p className="error" role="alert" data-testid="criteria-error">
-        {error.message}
+        {localizeWarning(error.message, lang)}
       </p>
     );
   }
