@@ -1,7 +1,7 @@
 {
   "generated_from": "catalog/variables.yaml + release manifest + status/coverage",
   "is_fixture": false,
-  "n_variables": 51,
+  "n_variables": 56,
   "schema": "transparency-variables/v1",
   "variables": [
     {
@@ -1218,10 +1218,10 @@
         }
       },
       "coverage_stats": {
-        "coverage_pct": 100.0,
-        "n_countries": 3,
-        "year_max": 2022,
-        "year_min": 2020
+        "coverage_pct": null,
+        "n_countries": 142,
+        "year_max": 2026,
+        "year_min": 2025
       },
       "definition": null,
       "direction": "benefit",
@@ -1423,10 +1423,10 @@
         }
       },
       "coverage_stats": {
-        "coverage_pct": 100.0,
-        "n_countries": 3,
-        "year_max": 2022,
-        "year_min": 2020
+        "coverage_pct": null,
+        "n_countries": 203,
+        "year_max": 2024,
+        "year_min": 1990
       },
       "definition": null,
       "direction": "cost",
@@ -1491,10 +1491,10 @@
         }
       },
       "coverage_stats": {
-        "coverage_pct": 100.0,
-        "n_countries": 3,
-        "year_max": 2022,
-        "year_min": 2020
+        "coverage_pct": null,
+        "n_countries": 208,
+        "year_max": 2025,
+        "year_min": 1990
       },
       "definition": null,
       "direction": "cost",
@@ -2705,7 +2705,168 @@
       "status": "draft",
       "years": [
         2012,
-        2023
+        2024
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Count of international trade fairs in the destination for the HS sector (last 3 years).",
+      "coverage": null,
+      "coverage_stats": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "promotion",
+      "formula": null,
+      "gate": null,
+      "id": "FAIRS_N",
+      "last_checked": null,
+      "last_ingested": null,
+      "last_upstream_change": null,
+      "licence_ids": [],
+      "name": {
+        "en": "International sector trade fairs (count)",
+        "es": "Ferias internacionales del sector"
+      },
+      "new_cells_since_previous": null,
+      "notes": "EXTRA-6 candidate. Sector via config/hs_to_fair_sector.yaml. Manual/BYOD until rights attested.",
+      "redistributable": false,
+      "source_ids": [
+        "auma_fairs"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2024
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Sum of exhibitors (or net m\u00b2) of sector fairs in the destination, latest available year.",
+      "coverage": null,
+      "coverage_stats": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "promotion",
+      "formula": null,
+      "gate": null,
+      "id": "FAIRS_SIZE",
+      "last_checked": null,
+      "last_ingested": null,
+      "last_upstream_change": null,
+      "licence_ids": [],
+      "name": {
+        "en": "Sector fair size (exhibitors / net m\u00b2)",
+        "es": "Tama\u00f1o de las ferias del sector"
+      },
+      "new_cells_since_previous": null,
+      "notes": "EXTRA-6 candidate. Manual drop / BYOD until rights attested.",
+      "redistributable": false,
+      "source_ids": [
+        "auma_fairs"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2024
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Share of foreign exhibitors at sector fairs in the destination.",
+      "coverage": null,
+      "coverage_stats": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "promotion",
+      "formula": null,
+      "gate": null,
+      "id": "FAIRS_INTL",
+      "last_checked": null,
+      "last_ingested": null,
+      "last_upstream_change": null,
+      "licence_ids": [],
+      "name": {
+        "en": "International share of fair exhibitors",
+        "es": "Internacionalidad de las ferias"
+      },
+      "new_cells_since_previous": null,
+      "notes": "EXTRA-6 candidate. Manual drop / BYOD until rights attested.",
+      "redistributable": false,
+      "source_ids": [
+        "auma_fairs"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2024
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "1 if the origin country's trade-promotion agency has an office in the destination.",
+      "coverage": null,
+      "coverage_stats": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "promotion",
+      "formula": null,
+      "gate": null,
+      "id": "PROMO_OFFICE",
+      "last_checked": null,
+      "last_ingested": null,
+      "last_upstream_change": null,
+      "licence_ids": [],
+      "name": {
+        "en": "Origin promotion office in destination",
+        "es": "Oficina de promoci\u00f3n del pa\u00eds de origen"
+      },
+      "new_cells_since_previous": null,
+      "notes": "EXTRA-6/7 candidate. Derived from promotion_office table; ProColombia proprietary \u2192 BYOD until permission.",
+      "redistributable": false,
+      "source_ids": [
+        "icex_events"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2024
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Missions, matchmaking or pavilions by the origin agency in the destination (last 3 years).",
+      "coverage": null,
+      "coverage_stats": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "promotion",
+      "formula": null,
+      "gate": null,
+      "id": "PROMO_EVENTS",
+      "last_checked": null,
+      "last_ingested": null,
+      "last_upstream_change": null,
+      "licence_ids": [],
+      "name": {
+        "en": "Origin promotion actions in destination",
+        "es": "Acciones de promoci\u00f3n del pa\u00eds origen"
+      },
+      "new_cells_since_previous": null,
+      "notes": "EXTRA-6/7 candidate. From promotion_event table per origin agency.",
+      "redistributable": false,
+      "source_ids": [
+        "icex_events",
+        "trade_gov_events"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2024
       ]
     }
   ]
