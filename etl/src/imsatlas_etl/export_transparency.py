@@ -261,12 +261,20 @@ def _panel_coverage_stats(root: Path) -> dict[str, dict[str, Any]]:
     out: dict[str, dict[str, Any]] = {}
     curated = root / "data" / "curated"
     internal = root / "data" / "release" / "internal"
-    # Prefer newest internal release country_year if curated missing columns.
-    cy_path = curated / "country_year.parquet"
-    if not cy_path.is_file():
-        versions = sorted(internal.glob("v*/country_year.parquet"))
-        cy_path = versions[-1] if versions else cy_path
-    if cy_path.is_file():
+
+    def _largest(paths: list[Path]) -> Path | None:
+        existing = [p for p in paths if p.is_file()]
+        if not existing:
+            return None
+        return max(existing, key=lambda p: p.stat().st_size)
+
+    cy_path = _largest(
+        [
+            curated / "country_year.parquet",
+            *sorted(internal.glob("v*/country_year.parquet")),
+        ]
+    )
+    if cy_path is not None:
         cy = pd.read_parquet(cy_path)
         for col in cy.columns:
             if col in {"iso3", "year"}:
@@ -286,13 +294,27 @@ def _panel_coverage_stats(root: Path) -> dict[str, dict[str, Any]]:
                 "coverage_pct": round(100.0 * filled / grid, 1) if grid else None,
             }
 
-    cp_path = curated / "country_product.parquet"
-    if cp_path.is_file():
-        # Aggregate without loading every value into memory twice.
+    cp_candidates = [curated / "country_product.parquet"]
+    cp_candidates.extend(sorted(internal.glob("v*/country_product.parquet")))
+    cp_dirs = sorted(internal.glob("v*/country_product"))
+    cp_path = next((p for p in cp_candidates if p.is_file()), None)
+    if cp_path is None and cp_dirs:
+        # Partitioned dataset under release/internal/v*/country_product/
+        try:
+            cp = pd.read_parquet(
+                cp_dirs[-1],
+                columns=["iso3", "year", "variable_id", "value"],
+            )
+        except (OSError, ValueError, ImportError):
+            cp = None
+    elif cp_path is not None:
         cp = pd.read_parquet(
             cp_path,
             columns=["iso3", "year", "variable_id", "value"],
         )
+    else:
+        cp = None
+    if cp is not None and not cp.empty:
         cp = cp.dropna(subset=["value"])
         for vid, g in cp.groupby("variable_id"):
             n_iso = int(g["iso3"].nunique())
@@ -304,8 +326,13 @@ def _panel_coverage_stats(root: Path) -> dict[str, dict[str, Any]]:
                 "coverage_pct": None,
             }
 
-    by_path = curated / "bilateral_year.parquet"
-    if by_path.is_file():
+    by_path = _largest(
+        [
+            curated / "bilateral_year.parquet",
+            *sorted(internal.glob("v*/bilateral_year.parquet")),
+        ]
+    )
+    if by_path is not None:
         by = pd.read_parquet(by_path)
         # Map gravity columns → catalog ids used in the UI.
         col_to_vid = {
