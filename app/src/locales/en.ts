@@ -326,7 +326,41 @@ export const en = {
       "This app does not run third-party analytics or behavioural tracking in the browser.",
   },
   transparencyIntro:
-    "Freshness, QA and last pipeline run — values loaded from status/*.json only.",
+    "Freshness, QA and last ingest — values loaded from status/*.json only.",
+  statusPageIntro:
+    "This page shows whether automatic data updates are healthy: last ingest, quality alerts, and per-source status. It is not the app change log (that is Novedades / Updates).",
+  statusVerdictKicker: "Quick read",
+  statusVerdictOkTitle: "The latest ingest finished successfully",
+  statusVerdictOkBody:
+    "Sources were checked and/or downloaded without a blocking failure. Analyses can use the published data version.",
+  statusVerdictWarnTitle: "The latest ingest ended with a warning",
+  statusVerdictWarnBody:
+    "Quality checks slowed or flagged the run. Previous data remain available; review the ingest list below.",
+  statusVerdictFailTitle: "The latest ingest failed",
+  statusVerdictFailBody:
+    "A source or step did not complete. That does not erase the published version, but some series may not have refreshed.",
+  statusLastIngest: "Latest ingest",
+  statusWhatToDo: "What it means",
+  statusNextOk: "Nothing urgent. For change detail, open Updates.",
+  statusNextWarn: "Check the list below and Updates to see which source warned.",
+  statusNextFail: "Check red rows and per-source status; then Updates.",
+  statusRunId: "Technical run id",
+  statusKpiSourcesHint: "Entries registered in the sources list.",
+  statusKpiVarsHint: "Indicators defined in the variable list.",
+  statusSourcesOk: "Sources up to date",
+  statusSourcesOkHint: "Hourly check / download OK.",
+  statusQaClean: "No blocks",
+  statusQaWarns: "{n} warnings",
+  statusQaBlocked: "Blocked",
+  statusQaHint: "Warnings {warn} · blocks {block} (odd jumps, coverage, etc.).",
+  statusSpotLead:
+    "Random sample comparing published cells with the official source. Without public provenance, sampling cannot run.",
+  statusSpotNoProvenance:
+    "No published provenance to sample: the check is waiting. This does not mean the data version is missing.",
+  statusSpotCounts: "{ok} match · {bad} differ · {miss} unreachable",
+  statusOpenNovedades: "Open Updates",
+  statusSourcesLead:
+    "Automatic check result per source (up to date, pending, or failing).",
   transparencyNav: "Transparency pages",
   transparencySourcesIntro:
     "Source registry with rights, freshness and data versions from JSON.",
@@ -413,10 +447,10 @@ export const en = {
   transparencySpotUnreachable: "Spot-check unreachable",
   spotCheckTitle: "Spot check",
   spotCheckEmpty: "No spot-check results yet (empty data version or no sample run).",
-  runsCalendarTitle: "Run calendar",
+  runsCalendarTitle: "Recent ingests",
   runsCalendarIntro:
-    "Recent pipeline runs (green = ok, amber = blocked/warn, red = failed). Open a day for the per-source summary.",
-  runsCalendarEmpty: "No runs published in status/updates.json yet.",
+    "Green = OK, amber = warning/QA, red = failed. Each row is an attempt to refresh sources; the long detail is in Updates.",
+  runsCalendarEmpty: "No published ingests in the status history yet.",
   runsCalendarStatus: "Status",
   runsCalendarNewCells: "new cells",
   freshnessSourcesTitle: "Per-source status",

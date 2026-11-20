@@ -330,7 +330,42 @@ const es = {
       "Esta aplicación no ejecuta analítica de terceros ni seguimiento conductual en el navegador.",
   },
   transparencyIntro:
-    "Frescura, QA y última ejecución del pipeline: valores solo desde status/*.json.",
+    "Frescura, QA y última ejecución: valores solo desde status/*.json.",
+  statusPageIntro:
+    "Aquí se ve si la actualización automática de datos está sana: última ingestión, avisos de calidad y estado de cada fuente. No es el historial de cambios de la app (eso está en Novedades).",
+  statusVerdictKicker: "Lectura rápida",
+  statusVerdictOkTitle: "La última ingestión terminó bien",
+  statusVerdictOkBody:
+    "El sistema pudo comprobar y/o descargar fuentes sin fallo bloqueante. Los análisis pueden usar la versión de datos publicada.",
+  statusVerdictWarnTitle: "La última ingestión quedó en aviso",
+  statusVerdictWarnBody:
+    "Hay controles de calidad que frenaron o marcaron la corrida. Los datos previos siguen disponibles; revise el resumen de ejecuciones.",
+  statusVerdictFailTitle: "La última ingestión falló",
+  statusVerdictFailBody:
+    "Alguna fuente o paso no completó. Eso no borra la versión publicada, pero puede dejar series sin refrescar.",
+  statusLastIngest: "Última ingestión",
+  statusWhatToDo: "Qué significa",
+  statusNextOk: "Nada urgente. Si quiere el detalle de cambios, abra Novedades.",
+  statusNextWarn: "Revise el calendario abajo y Novedades para ver qué fuente avisó.",
+  statusNextFail:
+    "Revise el calendario (rojo) y el estado por fuente; luego Novedades.",
+  statusRunId: "Identificador técnico de la corrida",
+  statusKpiSourcesHint: "Entradas registradas en el listado de fuentes.",
+  statusKpiVarsHint: "Indicadores definidos en la lista de variables.",
+  statusSourcesOk: "Fuentes al día",
+  statusSourcesOkHint: "Comprobación horaria / descarga OK.",
+  statusQaClean: "Sin bloqueos",
+  statusQaWarns: "{n} avisos",
+  statusQaBlocked: "Con bloqueos",
+  statusQaHint: "Avisos {warn} · bloqueos {block} (saltos raros, cobertura, etc.).",
+  statusSpotLead:
+    "Muestreo aleatorio que compara celdas publicadas con la fuente oficial. Si no hay procedencia pública, no se puede muestrear.",
+  statusSpotNoProvenance:
+    "No hay procedencia publicada para muestrear: la comprobación queda en espera. No indica que falte la versión de los datos.",
+  statusSpotCounts: "{ok} coinciden · {bad} difieren · {miss} inalcanzables",
+  statusOpenNovedades: "Ver Novedades",
+  statusSourcesLead:
+    "Resultado de la comprobación automática por fuente (al día, pendiente o con fallo).",
   transparencyNav: "Páginas de transparencia",
   transparencySourcesIntro:
     "Registro de fuentes con derechos, frescura y versiones de los datos desde JSON.",
@@ -418,10 +453,10 @@ const es = {
   transparencySpotUnreachable: "Inalcanzables spot-check",
   spotCheckTitle: "Comprobación por muestreo",
   spotCheckEmpty: "Aún no hay resultados de spot-check (versión vacía o sin muestreo).",
-  runsCalendarTitle: "Calendario de ejecuciones",
+  runsCalendarTitle: "Últimas ingestiones",
   runsCalendarIntro:
-    "Últimas ejecuciones del pipeline (verde = ok, ámbar = bloqueada/aviso, rojo = fallida). Abre un día para el resumen por fuente.",
-  runsCalendarEmpty: "Todavía no hay ejecuciones publicadas en status/updates.json.",
+    "Verde = correcta, ámbar = aviso/QA, rojo = fallida. Cada fila es un intento de actualizar fuentes; el detalle largo está en Novedades.",
+  runsCalendarEmpty: "Todavía no hay ingestiones publicadas en el historial de estado.",
   runsCalendarStatus: "Estado",
   runsCalendarNewCells: "celdas nuevas",
   freshnessSourcesTitle: "Estado por fuente",

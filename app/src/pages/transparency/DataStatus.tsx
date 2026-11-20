@@ -1,11 +1,19 @@
-import { ExportMenu } from "../../components/ExportMenu";
 import { FixtureStatusBanner } from "../../components/FixtureStatusBanner";
+import { PermalinkLink } from "../../components/PermalinkLink";
 import { TransparencyShell } from "../../components/TransparencyShell";
+import { dataConfig } from "../../dataConfig";
+import {
+  humanizeSummaryLine,
+  modeLabel,
+  statusLabel,
+  type UpdateLang,
+} from "../../data/humanizeUpdates";
 import {
   loadFreshness,
   loadIndex,
   loadLatestRun,
   loadQa,
+  loadSources,
   loadSourcesState,
   loadSpotCheck,
   loadUpdates,
@@ -23,10 +31,10 @@ function runTone(status: string | null | undefined): "ok" | "warn" | "bad" {
   return "bad";
 }
 
-function sourceEmoji(
+function sourceKind(
   row: SourcesStateRow | undefined,
   freshnessStatus?: string,
-): string {
+): "ok" | "fail" | "pending" | "unknown" {
   const st = (row?.status || freshnessStatus || "").toLowerCase();
   if (
     st.startsWith("falta") ||
@@ -34,318 +42,433 @@ function sourceEmoji(
     st === "pending_file" ||
     st === "no_connector"
   ) {
-    return "⚪";
+    return "pending";
   }
   if (st === "fail" || st === "error" || (row?.consecutive_failures ?? 0) >= 3) {
-    return "🔴";
+    return "fail";
   }
   if (st === "ok" || st === "al_dia" || st === "fresh") {
-    return "🟢";
+    return "ok";
   }
-  return "🟡";
+  return "unknown";
+}
+
+function formatWhen(value: unknown, lang: UpdateLang): string {
+  if (typeof value !== "string" || !value.trim()) return "—";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return value;
+  return d.toLocaleString(lang === "es" ? "es-ES" : "en-GB", {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function formatInt(n: unknown, lang: UpdateLang): string {
+  const num = typeof n === "number" ? n : Number(n);
+  if (!Number.isFinite(num)) return "—";
+  return num.toLocaleString(lang === "es" ? "es-ES" : "en-GB");
+}
+
+function verdictCopy(
+  status: string | null | undefined,
+  t: (k: string) => string,
+): { title: string; body: string; tone: "ok" | "warn" | "bad" } {
+  const tone = runTone(status);
+  if (tone === "ok") {
+    return {
+      tone,
+      title: t("statusVerdictOkTitle"),
+      body: t("statusVerdictOkBody"),
+    };
+  }
+  if (tone === "warn") {
+    return {
+      tone,
+      title: t("statusVerdictWarnTitle"),
+      body: t("statusVerdictWarnBody"),
+    };
+  }
+  return {
+    tone,
+    title: t("statusVerdictFailTitle"),
+    body: t("statusVerdictFailBody"),
+  };
 }
 
 export function DataStatus() {
   const { t, i18n } = useTranslation();
-  const lang = i18n.language.startsWith("es") ? "es" : "en";
+  const lang: UpdateLang = i18n.language.startsWith("es") ? "es" : "en";
   const { data, error, loading } = useAsyncResource(async () => {
-    const [index, qa, freshness, run, spot, updates, sourcesState] = await Promise.all([
-      loadIndex(),
-      loadQa(),
-      loadFreshness(),
-      loadLatestRun(),
-      loadSpotCheck().catch((): Record<string, unknown> => ({
-        status: "missing",
-        samples: [],
-      })),
-      loadUpdates().catch(() => ({ runs: [] as const, n_runs: 0 })),
-      loadSourcesState().catch((): SourcesStatePayload => ({ sources: {} })),
-    ]);
-    return { index, qa, freshness, run, spot, updates, sourcesState };
+    const [index, qa, freshness, run, spot, updates, sourcesState, sources] =
+      await Promise.all([
+        loadIndex(),
+        loadQa(),
+        loadFreshness(),
+        loadLatestRun(),
+        loadSpotCheck().catch((): Record<string, unknown> => ({
+          status: "missing",
+          samples: [],
+        })),
+        loadUpdates().catch(() => ({ runs: [] as const, n_runs: 0 })),
+        loadSourcesState().catch((): SourcesStatePayload => ({ sources: {} })),
+        loadSources().catch(() => ({
+          sources: [] as { id: string; publisher?: string | null }[],
+        })),
+      ]);
+    return { index, qa, freshness, run, spot, updates, sourcesState, sources };
   }, []);
+
+  if (error) {
+    return (
+      <TransparencyShell
+        testId="data-status-view"
+        titleKey="nav.status"
+        introKey="statusPageIntro"
+      >
+        <p className="error">{error}</p>
+      </TransparencyShell>
+    );
+  }
+
+  if (loading || !data) {
+    return (
+      <TransparencyShell
+        testId="data-status-view"
+        titleKey="nav.status"
+        introKey="statusPageIntro"
+      >
+        <p className="muted">{t("loading")}</p>
+      </TransparencyShell>
+    );
+  }
+
+  const publishers = new Map<string, string>();
+  for (const s of data.sources.sources ?? []) {
+    if (s.id && s.publisher) publishers.set(s.id, s.publisher);
+  }
+
+  const dataVersion =
+    (typeof data.index.current_release === "string" &&
+      data.index.current_release.trim()) ||
+    dataConfig.release_version;
+  const lastStatus = String(data.index.latest_run_status ?? data.run.status ?? "");
+  const lastRunId = String(data.index.latest_run_id ?? data.run.run_id ?? "");
+  const lastWhen = formatWhen(
+    (data.run as { ended_at?: string }).ended_at ??
+      (data.run as { started_at?: string }).started_at ??
+      data.index.freshness_generated_at,
+    lang,
+  );
+  const verdict = verdictCopy(lastStatus, t);
+  const qaWarn = Number(data.index.qa_n_warn ?? data.qa.n_warn ?? 0);
+  const qaBlock = Number(data.index.qa_n_block ?? data.qa.n_block ?? 0);
+
+  const stateRows = data.sourcesState.sources ?? {};
+  const freshRows = ((data.freshness as { sources?: Record<string, unknown>[] })
+    .sources ?? []) as Record<string, unknown>[];
+  const ids = Array.from(
+    new Set([
+      ...Object.keys(stateRows),
+      ...freshRows.map((s) => String(s.source ?? "")),
+    ]),
+  ).filter(Boolean);
+  const okSources = ids.filter(
+    (id) =>
+      sourceKind(
+        stateRows[id],
+        String(freshRows.find((s) => String(s.source) === id)?.status ?? ""),
+      ) === "ok",
+  ).length;
+
+  const recentRuns = [...(data.updates.runs ?? [])].slice().reverse().slice(0, 12);
+
+  const spotNote =
+    typeof data.spot.note === "string" && data.spot.note.trim() ? data.spot.note : null;
+  const spotEmptyReason = spotNote?.toLowerCase().includes("provenance")
+    ? t("statusSpotNoProvenance")
+    : spotNote
+      ? spotNote
+      : t("spotCheckEmpty");
+
   return (
     <TransparencyShell
       testId="data-status-view"
       titleKey="nav.status"
-      introKey="transparencyIntro"
+      introKey="statusPageIntro"
     >
-      {error ? <p className="error">{error}</p> : null}
-      {loading || !data ? (
-        <p className="muted">{t("loading")}</p>
-      ) : (
-        <>
-          <FixtureStatusBanner
-            isFixture={Boolean(
-              data.index.is_fixture ??
-              (data.freshness as { is_fixture?: boolean }).is_fixture,
-            )}
-            message={
-              data.index.fixture_banner ??
-              (data.freshness as { fixture_banner?: string | null }).fixture_banner ??
-              null
-            }
-          />
-          <dl className="status-grid" data-testid="status-summary">
-            <dt>{t("transparencyRelease")}</dt>
-            <dd data-from-json="current_release">{data.index.current_release}</dd>
-            <dt>{t("transparencyFreshnessAt")}</dt>
-            <dd data-from-json="freshness_generated_at">
-              {String(
-                data.index.freshness_generated_at ?? data.freshness.generated_at ?? "—",
-              )}
-            </dd>
-            <dt>{t("transparencyQaStatus")}</dt>
-            <dd data-from-json="qa_status">
-              {String(data.index.qa_status ?? data.qa.status)}
-            </dd>
-            <dt>{t("transparencyQaWarn")}</dt>
-            <dd data-from-json="qa_n_warn">
-              {String(data.index.qa_n_warn ?? data.qa.n_warn)}
-            </dd>
-            <dt>{t("transparencyQaBlock")}</dt>
-            <dd data-from-json="qa_n_block">
-              {String(data.index.qa_n_block ?? data.qa.n_block)}
-            </dd>
-            <dt>{t("transparencyLastRun")}</dt>
-            <dd data-from-json="latest_run_id">
-              {String(data.index.latest_run_id ?? data.run.run_id)}
-            </dd>
-            <dt>{t("transparencyLastRunStatus")}</dt>
-            <dd data-from-json="latest_run_status">
-              {String(data.index.latest_run_status ?? data.run.status)}
-            </dd>
-            <dt>{t("transparencyNSources")}</dt>
-            <dd data-from-json="n_sources">{String(data.index.n_sources)}</dd>
-            <dt>{t("transparencyNVariables")}</dt>
-            <dd data-from-json="n_variables">{String(data.index.n_variables)}</dd>
-            <dt>{t("spotCheckTitle")}</dt>
-            <dd data-from-json="spot_check.status">{displayCell(data.spot.status)}</dd>
+      <FixtureStatusBanner
+        isFixture={Boolean(
+          data.index.is_fixture ??
+          (data.freshness as { is_fixture?: boolean }).is_fixture,
+        )}
+        message={
+          data.index.fixture_banner ??
+          (data.freshness as { fixture_banner?: string | null }).fixture_banner ??
+          null
+        }
+      />
+
+      <div className="status-page">
+        <section
+          className={`status-verdict results-card status-verdict-${verdict.tone}`}
+          data-testid="status-verdict"
+        >
+          <p className="status-verdict-kicker muted small">
+            {t("statusVerdictKicker")}
+          </p>
+          <h2>{verdict.title}</h2>
+          <p className="status-verdict-body">{verdict.body}</p>
+          <dl className="status-verdict-meta">
+            <div>
+              <dt>{t("dataVersion")}</dt>
+              <dd data-testid="status-data-version">
+                {dataVersion ? (
+                  <a
+                    href={`${dataConfig.release_base_path}/v${dataVersion}/manifest.json`}
+                  >
+                    v{dataVersion}
+                  </a>
+                ) : (
+                  "—"
+                )}
+              </dd>
+            </div>
+            <div>
+              <dt>{t("statusLastIngest")}</dt>
+              <dd>
+                <span
+                  className={`updates-status updates-status-${verdict.tone === "bad" ? "fail" : verdict.tone}`}
+                >
+                  {statusLabel(lastStatus, lang)}
+                </span>
+                <span className="muted"> · {lastWhen}</span>
+              </dd>
+            </div>
+            <div>
+              <dt>{t("statusWhatToDo")}</dt>
+              <dd className="small">
+                {verdict.tone === "ok"
+                  ? t("statusNextOk")
+                  : verdict.tone === "warn"
+                    ? t("statusNextWarn")
+                    : t("statusNextFail")}
+              </dd>
+            </div>
           </dl>
+          <p className="muted small status-run-id">
+            {t("statusRunId")}: <code>{lastRunId || "—"}</code>
+          </p>
+        </section>
+
+        <div className="status-kpis" data-testid="status-summary">
+          <div className="status-kpi results-card">
+            <p className="status-kpi-label">{t("transparencyNSources")}</p>
+            <p className="status-kpi-value font-tabular">
+              {formatInt(data.index.n_sources, lang)}
+            </p>
+            <p className="muted small">{t("statusKpiSourcesHint")}</p>
+          </div>
+          <div className="status-kpi results-card">
+            <p className="status-kpi-label">{t("transparencyNVariables")}</p>
+            <p className="status-kpi-value font-tabular">
+              {formatInt(data.index.n_variables, lang)}
+            </p>
+            <p className="muted small">{t("statusKpiVarsHint")}</p>
+          </div>
+          <div className="status-kpi results-card">
+            <p className="status-kpi-label">{t("statusSourcesOk")}</p>
+            <p className="status-kpi-value font-tabular">
+              {okSources}/{ids.length || "—"}
+            </p>
+            <p className="muted small">{t("statusSourcesOkHint")}</p>
+          </div>
+          <div className="status-kpi results-card">
+            <p className="status-kpi-label">{t("transparencyQaStatus")}</p>
+            <p className="status-kpi-value font-tabular">
+              {qaBlock > 0
+                ? t("statusQaBlocked")
+                : qaWarn > 0
+                  ? t("statusQaWarns").replace("{n}", String(qaWarn))
+                  : t("statusQaClean")}
+            </p>
+            <p className="muted small">
+              {t("statusQaHint")
+                .replace("{warn}", String(qaWarn))
+                .replace("{block}", String(qaBlock))}
+            </p>
+          </div>
+        </div>
+
+        <section
+          className="results-card status-section"
+          data-testid="spot-check-section"
+        >
+          <h3>{t("spotCheckTitle")}</h3>
+          <p className="muted small">{t("statusSpotLead")}</p>
           {Array.isArray(data.spot.samples) &&
           (data.spot.samples as unknown[]).length > 0 ? (
-            <section data-testid="spot-check-section">
-              <h2>{t("spotCheckTitle")}</h2>
-              <p className="muted small">
-                {t("transparencySpotCheckAt")}: {displayCell(data.spot.generated_at)} ·
-                matches=
-                {displayCell(data.spot.matches)} · mismatches=
-                {displayCell(data.spot.mismatches)} · unreachable=
-                {displayCell(data.spot.unreachable)}
-              </p>
-              <div data-export-surface="table">
-                <ExportMenu
-                  testIdPrefix="spot-check"
-                  kind="table"
-                  title="Spot check"
-                  tableRows={[
-                    [
-                      "variable_id",
-                      "iso3",
-                      "year",
-                      "release_value",
-                      "upstream_value",
-                      "status",
-                      "detail",
-                    ],
-                    ...(data.spot.samples as Record<string, unknown>[]).map((c) => [
-                      String(c.variable_id ?? ""),
-                      String(c.iso3 ?? ""),
-                      String(c.year ?? ""),
-                      String(c.release_value ?? ""),
-                      String(c.upstream_value ?? ""),
-                      String(c.status ?? ""),
-                      String(c.detail ?? data.spot.note ?? ""),
-                    ]),
-                  ]}
-                />
-                <table className="data-table">
-                  <thead>
-                    <tr>
-                      <th>{t("spotCheckVariable")}</th>
-                      <th>{t("spotCheckIso")}</th>
-                      <th>{t("spotCheckYear")}</th>
-                      <th>{t("spotCheckExpected")}</th>
-                      <th>{t("spotCheckObserved")}</th>
-                      <th>{t("spotCheckResult")}</th>
-                      <th>{t("spotCheckNote")}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {(data.spot.samples as Record<string, unknown>[]).map((c, i) => (
-                      <tr key={i}>
-                        <td>{displayCell(c.variable_id)}</td>
-                        <td>{displayCell(c.iso3)}</td>
-                        <td>{displayCell(c.year)}</td>
-                        <td>{displayCell(c.release_value)}</td>
-                        <td>{displayCell(c.upstream_value)}</td>
-                        <td>{displayCell(c.status)}</td>
-                        <td>{displayCell(c.detail ?? data.spot.note)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
+            <p className="small">
+              {t("transparencySpotCheckAt")}: {formatWhen(data.spot.generated_at, lang)}{" "}
+              ·{" "}
+              {t("statusSpotCounts")
+                .replace("{ok}", String(data.spot.matches ?? 0))
+                .replace("{bad}", String(data.spot.mismatches ?? 0))
+                .replace("{miss}", String(data.spot.unreachable ?? 0))}
+            </p>
           ) : (
-            <p className="muted" data-testid="spot-check-empty">
-              {displayCell(data.spot.note) !== "—"
-                ? displayCell(data.spot.note)
-                : t("spotCheckEmpty")}
+            <p className="status-callout" data-testid="spot-check-empty">
+              {spotEmptyReason}
             </p>
           )}
+        </section>
 
-          <section data-testid="runs-calendar" className="runs-calendar">
-            <h2>{t("runsCalendarTitle")}</h2>
-            <p className="muted small">{t("runsCalendarIntro")}</p>
-            {(data.updates.runs?.length ?? 0) === 0 ? (
-              <p className="muted">{t("runsCalendarEmpty")}</p>
-            ) : (
-              <ul className="runs-calendar-list">
-                {[...data.updates.runs]
-                  .slice()
-                  .reverse()
-                  .slice(0, 30)
-                  .map((r) => {
-                    const tone = runTone(r.status);
-                    const day = (r.started_at ?? r.run_id ?? "").slice(0, 10);
-                    const summary =
-                      r.summaries && r.summaries.length > 0
-                        ? r.summaries.slice(0, 3).join("; ")
-                        : lang === "es"
-                          ? "Sin resumen de fuentes."
-                          : "No source summary.";
-                    return (
-                      <li
-                        key={r.run_id}
-                        className={`runs-calendar-item runs-${tone}`}
-                        data-testid={`run-${r.run_id}`}
-                      >
-                        <span className={`runs-dot runs-dot-${tone}`} aria-hidden />
-                        <div>
-                          <strong className="font-tabular">{day}</strong>{" "}
-                          <span className="muted small">{r.run_id}</span>
-                          <div className="small">
-                            {t("runsCalendarStatus")}: {String(r.status ?? "—")}
-                            {r.n_new_cells != null
-                              ? ` · +${r.n_new_cells} ${t("runsCalendarNewCells")}`
-                              : ""}
-                          </div>
-                          <p className="small muted">{summary}</p>
-                        </div>
-                      </li>
-                    );
-                  })}
-              </ul>
-            )}
-          </section>
+        <section className="results-card status-section" data-testid="runs-calendar">
+          <header className="status-section-head">
+            <div>
+              <h3>{t("runsCalendarTitle")}</h3>
+              <p className="muted small">{t("runsCalendarIntro")}</p>
+            </div>
+            <PermalinkLink view="data_sources" hash="novedades" className="btn ghost">
+              {t("statusOpenNovedades")}
+            </PermalinkLink>
+          </header>
+          {recentRuns.length === 0 ? (
+            <p className="muted">{t("runsCalendarEmpty")}</p>
+          ) : (
+            <ul className="status-runs-list">
+              {recentRuns.map((r) => {
+                const tone = runTone(r.status);
+                const summaries = (r.summaries ?? [])
+                  .slice(0, 3)
+                  .map((line) => humanizeSummaryLine(line, lang, publishers));
+                return (
+                  <li
+                    key={r.run_id}
+                    className={`status-run-item status-run-${tone}`}
+                    data-testid={`run-${r.run_id}`}
+                  >
+                    <span className={`runs-dot runs-dot-${tone}`} aria-hidden />
+                    <div className="status-run-body">
+                      <p className="status-run-title">
+                        <strong className="font-tabular">
+                          {formatWhen(r.ended_at ?? r.started_at, lang)}
+                        </strong>{" "}
+                        <span
+                          className={`updates-status updates-status-${tone === "bad" ? "fail" : tone}`}
+                        >
+                          {statusLabel(r.status, lang)}
+                        </span>
+                        <span className="muted small">
+                          {" "}
+                          · {modeLabel(r.mode, lang)}
+                        </span>
+                      </p>
+                      <p className="small muted">
+                        {r.n_new_cells != null
+                          ? t("updatesNewCells").replace(
+                              "{n}",
+                              formatInt(r.n_new_cells, lang),
+                            )
+                          : null}
+                        {r.n_new_cells != null ? " · " : null}
+                        <code className="small">{r.run_id}</code>
+                      </p>
+                      {summaries.length ? (
+                        <ul className="status-run-summaries">
+                          {summaries.map((line) => (
+                            <li key={line}>{line}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="small muted">{t("transparencyUpdatesNoDiff")}</p>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
 
-          {(() => {
-            const stateRows = data.sourcesState.sources ?? {};
-            const freshRows = ((
-              data.freshness as { sources?: Record<string, unknown>[] }
-            ).sources ?? []) as Record<string, unknown>[];
-            const ids = Array.from(
-              new Set([
-                ...Object.keys(stateRows),
-                ...freshRows.map((s) => String(s.source ?? "")),
-              ]),
-            ).filter(Boolean);
-            const ok = ids.filter((id) => {
-              const row = stateRows[id];
-              const fr = freshRows.find((s) => String(s.source) === id);
-              const emoji = sourceEmoji(row, String(fr?.status ?? ""));
-              return emoji === "🟢";
-            }).length;
-            const byTier = (tier: string) => {
-              const list = ids.filter((id) => (stateRows[id]?.tier || "?") === tier);
-              const okT = list.filter(
-                (id) => sourceEmoji(stateRows[id]) === "🟢",
-              ).length;
-              return { total: list.length, ok: okT };
-            };
-            const a = byTier("A");
-            const b = byTier("B");
-            const c = byTier("C");
-            return (
-              <section data-testid="freshness-sources">
-                <h2>{t("sourcesWorkingTitle")}</h2>
-                <p
-                  className="sources-working-count"
-                  data-testid="sources-working-count"
-                >
-                  <strong className="font-tabular" style={{ fontSize: "1.75rem" }}>
-                    {t("sourcesWorkingCount")
-                      .replace("{ok}", String(ok))
-                      .replace("{total}", String(ids.length))}
-                  </strong>
-                </p>
-                <ul className="muted small" data-testid="sources-tier-summary">
-                  <li>
-                    {t("sourcesTierA")
-                      .replace("{ok}", String(a.ok))
-                      .replace("{total}", String(a.total))}
-                  </li>
-                  <li>
-                    {t("sourcesTierB")
-                      .replace("{ok}", String(b.ok))
-                      .replace("{total}", String(b.total))}
-                  </li>
-                  <li>{t("sourcesTierC").replace("{total}", String(c.total))}</li>
-                </ul>
-                <table className="data-table small">
-                  <thead>
-                    <tr>
-                      <th aria-label="estado" />
-                      <th>{t("transparencySource")}</th>
-                      <th>{t("sourcesColTier")}</th>
-                      <th>{t("freshnessStatus")}</th>
-                      <th>{t("freshnessVersion")}</th>
-                      <th>{t("sourcesColRows")}</th>
-                      <th>{t("sourcesColYear")}</th>
-                      <th>{t("sourcesColChecked")}</th>
+        <section
+          className="results-card status-section"
+          data-testid="freshness-sources"
+        >
+          <h3>{t("sourcesWorkingTitle")}</h3>
+          <p className="muted small">{t("statusSourcesLead")}</p>
+          <p className="sources-working-count" data-testid="sources-working-count">
+            <strong className="font-tabular">
+              {t("sourcesWorkingCount")
+                .replace("{ok}", String(okSources))
+                .replace("{total}", String(ids.length))}
+            </strong>
+          </p>
+          <div className="table-scroll">
+            <table className="data-table small">
+              <thead>
+                <tr>
+                  <th>{t("freshnessStatus")}</th>
+                  <th>{t("transparencySource")}</th>
+                  <th>{t("sourcesColTier")}</th>
+                  <th>{t("freshnessVersion")}</th>
+                  <th>{t("sourcesColRows")}</th>
+                  <th>{t("sourcesColYear")}</th>
+                  <th>{t("sourcesColChecked")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ids.map((id) => {
+                  const row = stateRows[id];
+                  const fr = freshRows.find((s) => String(s.source) === id);
+                  const kind = sourceKind(row, String(fr?.status ?? ""));
+                  const label =
+                    kind === "ok"
+                      ? t("sourcesEmojiOk")
+                      : kind === "fail"
+                        ? t("sourcesEmojiFail")
+                        : kind === "pending"
+                          ? t("sourcesEmojiFile")
+                          : t("sourcesEmojiPending");
+                  const pub = publishers.get(id);
+                  return (
+                    <tr key={id}>
+                      <td>
+                        <span className={`status-source-pill status-source-${kind}`}>
+                          {label}
+                        </span>
+                      </td>
+                      <td>
+                        <code>{displayCell(id)}</code>
+                        {pub ? <div className="muted small">{pub}</div> : null}
+                      </td>
+                      <td>{displayCell(row?.tier ?? "—")}</td>
+                      <td className="font-tabular">
+                        {displayCell(
+                          row?.version ?? fr?.ingested_version ?? fr?.upstream_version,
+                        )}
+                      </td>
+                      <td className="font-tabular">
+                        {typeof row?.rows === "number"
+                          ? formatInt(row.rows, lang)
+                          : "—"}
+                      </td>
+                      <td className="font-tabular">
+                        {displayCell(row?.last_year ?? "—")}
+                      </td>
+                      <td className="font-tabular small">
+                        {formatWhen(row?.checked_at ?? fr?.checked_at ?? null, lang)}
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {ids.map((id) => {
-                      const row = stateRows[id];
-                      const fr = freshRows.find((s) => String(s.source) === id);
-                      const emoji = sourceEmoji(row, String(fr?.status ?? ""));
-                      return (
-                        <tr key={id}>
-                          <td aria-label={emoji}>{emoji}</td>
-                          <td>{displayCell(id)}</td>
-                          <td>{displayCell(row?.tier ?? "—")}</td>
-                          <td>
-                            {displayCell(
-                              row?.status ?? fr?.status ?? (fr?.stale ? "stale" : "ok"),
-                            )}
-                          </td>
-                          <td className="font-tabular">
-                            {displayCell(
-                              row?.version ??
-                                fr?.ingested_version ??
-                                fr?.upstream_version,
-                            )}
-                          </td>
-                          <td className="font-tabular">
-                            {displayCell(row?.rows ?? "—")}
-                          </td>
-                          <td className="font-tabular">
-                            {displayCell(row?.last_year ?? "—")}
-                          </td>
-                          <td className="font-tabular small">
-                            {displayCell(row?.checked_at ?? fr?.checked_at ?? "—")}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </section>
-            );
-          })()}
-        </>
-      )}
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
     </TransparencyShell>
   );
 }
