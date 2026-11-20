@@ -229,6 +229,8 @@ export const en = {
   searchTitle: "Global search",
   searchPlaceholder: "Countries (ISO3), variables, HS, sources, projects…",
   searchEmpty: "No matches.",
+  searchHint:
+    "Type an ISO3, variable, HS, source or project. Enter opens the highlighted hit.",
   searchGroup: {
     countries: "Countries",
     variables: "Variables",

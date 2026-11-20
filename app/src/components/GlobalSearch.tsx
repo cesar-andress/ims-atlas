@@ -12,10 +12,17 @@ import { listProjects } from "../state/projectIdb";
 import type { ViewId } from "../state/schema";
 import { useAnalysis } from "../state/useAnalysis";
 
+function hashForHit(hit: SearchHit): string | undefined {
+  if (hit.view !== "data_sources") return undefined;
+  if (hit.focusVariable) return "catalogo";
+  if (hit.group === "sources") return "fuentes";
+  return "fuentes";
+}
+
 export function GlobalSearch() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
-  const { setConfig, setView } = useAnalysis();
+  const { setConfig } = useAnalysis();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
@@ -78,8 +85,8 @@ export function GlobalSearch() {
     if (hit.focusVariable) patch.focusVariable = hit.focusVariable;
     if (hit.focusCountry) patch.focusCountry = hit.focusCountry;
     if (hit.hs) patch.hs = hit.hs;
-    setConfig(patch);
-    setView(hit.view as ViewId);
+    const hash = hashForHit(hit);
+    setConfig(patch, hash !== undefined ? { hash } : undefined);
     setOpen(false);
     setQuery("");
   }
@@ -106,10 +113,14 @@ export function GlobalSearch() {
         {t("searchOpen")} <kbd>/</kbd>
       </button>
       {open ? (
-        <div
+        <form
           className="global-search-panel"
           role="dialog"
           aria-label={t("searchTitle")}
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (flat[active]) go(flat[active]!);
+          }}
         >
           <input
             ref={inputRef}
@@ -117,6 +128,7 @@ export function GlobalSearch() {
             data-testid="global-search-input"
             value={query}
             placeholder={t("searchPlaceholder")}
+            autoComplete="off"
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "ArrowDown") {
@@ -125,9 +137,13 @@ export function GlobalSearch() {
               } else if (e.key === "ArrowUp") {
                 e.preventDefault();
                 setActive((i) => Math.max(0, i - 1));
-              } else if (e.key === "Enter" && flat[active]) {
+              } else if (e.key === "Enter") {
+                // Always stop the browser from "submitting" / reloading.
                 e.preventDefault();
-                go(flat[active]!);
+                if (flat[active]) go(flat[active]!);
+              } else if (e.key === "Escape") {
+                e.preventDefault();
+                setOpen(false);
               }
             }}
           />
@@ -135,6 +151,7 @@ export function GlobalSearch() {
             {query.trim() && flat.length === 0 ? (
               <p className="muted small">{t("searchEmpty")}</p>
             ) : null}
+            {!query.trim() ? <p className="muted small">{t("searchHint")}</p> : null}
             {grouped.map((g) => (
               <div key={g.group}>
                 <h3 className="small">{t(`searchGroup.${g.group}`)}</h3>
@@ -170,7 +187,7 @@ export function GlobalSearch() {
           >
             {t("close")}
           </button>
-        </div>
+        </form>
       ) : null}
     </div>
   );

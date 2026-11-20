@@ -1,14 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
-import { PageShell } from "../components/PageShell";
 import { ExportMenu } from "../components/ExportMenu";
+import { PageShell } from "../components/PageShell";
+import { PermalinkLink } from "../components/PermalinkLink";
 import { VariableBasket } from "../components/VariableBasket";
-import { addToBasket } from "../state/variableBasket";
 import { loadCatalogPreview } from "../data/catalogLoader";
+import { getAtlasDataClient } from "../data/duckdbClient";
 import type { CatalogVariable } from "../data/types";
 import { useTranslation } from "../i18n";
 import { LATEST_COMPLETE_YEAR } from "../state/schema";
 import { useAnalysis } from "../state/useAnalysis";
-import { PermalinkLink } from "../components/PermalinkLink";
+import { addToBasket } from "../state/variableBasket";
+import { FACTOR_LABELS } from "../state/criterionWeights";
 
 type FlatCell = {
   variableId: string;
@@ -20,7 +22,7 @@ type FlatCell = {
   value: number | null;
 };
 
-function flattenCatalog(vars: CatalogVariable[]): FlatCell[] {
+function flattenDemo(vars: CatalogVariable[]): FlatCell[] {
   const out: FlatCell[] = [];
   for (const v of vars) {
     const demo = v.coverage_demo;
@@ -42,11 +44,19 @@ function flattenCatalog(vars: CatalogVariable[]): FlatCell[] {
   return out;
 }
 
-/** Phase E /explore — variable × country × year (catalog demo / release). */
+function factorLabel(factor: string, lang: "en" | "es"): string {
+  return FACTOR_LABELS[factor]?.[lang] ?? factor;
+}
+
+/** Phase E /explore — variable × country × year (release parquet or demo). */
 export function Explore() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language.startsWith("es") ? "es" : "en";
   const { config, setConfig } = useAnalysis();
   const [vars, setVars] = useState<CatalogVariable[]>([]);
+  const [liveRows, setLiveRows] = useState<FlatCell[] | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [loadingData, setLoadingData] = useState(true);
   const [factor, setFactor] = useState(config.exploreFactor ?? "");
   const [source, setSource] = useState(config.exploreSource ?? "");
   const [licence, setLicence] = useState<"all" | "open" | "closed">(
@@ -71,7 +81,51 @@ export function Explore() {
     void loadCatalogPreview().then((c) => setVars(c.variables));
   }, []);
 
-  const flat = useMemo(() => flattenCatalog(vars), [vars]);
+  useEffect(() => {
+    let cancelled = false;
+    setLoadingData(true);
+    setLoadError(null);
+    const client = getAtlasDataClient();
+    void (async () => {
+      try {
+        await client.init();
+        await client.loadRelease();
+        const ids = vars.map((v) => v.id).slice(0, 40);
+        const rows = await client.queryCountryYear({
+          ...(ids.length ? { variableIds: ids } : {}),
+          limit: 8000,
+        });
+        if (cancelled) return;
+        const byId = new Map(vars.map((v) => [v.id, v]));
+        const flat: FlatCell[] = rows.map((r) => {
+          const v = byId.get(r.variable_id);
+          return {
+            variableId: r.variable_id,
+            factor: v?.factor ?? "",
+            source: v?.source_ids[0] ?? "",
+            redistributable: Boolean(v?.redistributable),
+            iso3: r.iso3,
+            year: r.year,
+            value: r.value,
+          };
+        });
+        setLiveRows(flat);
+      } catch (err) {
+        if (!cancelled) {
+          setLiveRows(null);
+          setLoadError(err instanceof Error ? err.message : String(err));
+        }
+      } finally {
+        if (!cancelled) setLoadingData(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [vars]);
+
+  const demoFlat = useMemo(() => flattenDemo(vars), [vars]);
+  const flat = liveRows && liveRows.length > 0 ? liveRows : demoFlat;
 
   const factors = useMemo(() => [...new Set(vars.map((v) => v.factor))].sort(), [vars]);
   const sources = useMemo(
@@ -118,6 +172,7 @@ export function Explore() {
   const slice = filtered.slice(windowStart, windowStart + PAGE);
 
   function syncFilters(patch: Parameters<typeof setConfig>[0]) {
+    // Hash is preserved by AnalysisContext when the path stays on /data/sources.
     setConfig(patch);
   }
 
@@ -130,7 +185,12 @@ export function Explore() {
   }
 
   return (
-    <PageShell testId="explore-view" titleKey="nav.explore" className="explore-page">
+    <PageShell
+      testId="explore-view"
+      titleKey="nav.explore"
+      className="explore-page"
+      omitTitleWhenEmbedded
+    >
       <p className="muted">{t("exploreIntro")}</p>
       <VariableBasket compact />
 
@@ -143,13 +203,13 @@ export function Explore() {
             onChange={(e) => {
               const v = e.target.value;
               setFactor(v);
-              if (v) syncFilters({ exploreFactor: v });
+              syncFilters({ exploreFactor: v || undefined });
             }}
           >
             <option value="">{t("exploreAll")}</option>
             {factors.map((f) => (
               <option key={f} value={f}>
-                {f}
+                {factorLabel(f, lang)}
               </option>
             ))}
           </select>
@@ -162,7 +222,7 @@ export function Explore() {
             onChange={(e) => {
               const v = e.target.value;
               setSource(v);
-              if (v) syncFilters({ exploreSource: v });
+              syncFilters({ exploreSource: v || undefined });
             }}
           >
             <option value="">{t("exploreAll")}</option>
@@ -239,7 +299,7 @@ export function Explore() {
               setVisibleCols((c) => ({ ...c, factor: e.target.checked }))
             }
           />{" "}
-          factor
+          {t("transparencyFactor")}
         </label>
         <label className="explore-cols">
           <input
@@ -249,13 +309,16 @@ export function Explore() {
               setVisibleCols((c) => ({ ...c, source: e.target.checked }))
             }
           />{" "}
-          source
+          {t("transparencySource")}
         </label>
       </div>
 
       <p className="small muted" data-testid="explore-count">
-        {t("exploreRows").replace("{n}", String(filtered.length))}
-        {filtered.length === 0 ? ` — ${t("exploreEmptyRelease")}` : ""}
+        {loadingData
+          ? t("loading")
+          : t("exploreRows").replace("{n}", String(filtered.length))}
+        {!loadingData && filtered.length === 0 ? ` — ${t("exploreEmptyRelease")}` : ""}
+        {loadError ? ` · ${loadError}` : ""}
       </p>
 
       <div className="explore-table-wrap" data-export-surface="table">
@@ -283,8 +346,8 @@ export function Explore() {
                   {t("variables")}
                 </button>
               </th>
-              {visibleCols.factor ? <th>factor</th> : null}
-              {visibleCols.source ? <th>source</th> : null}
+              {visibleCols.factor ? <th>{t("transparencyFactor")}</th> : null}
+              {visibleCols.source ? <th>{t("transparencySource")}</th> : null}
               <th>
                 <button type="button" onClick={() => setSortKey("iso3")}>
                   ISO3
@@ -304,13 +367,14 @@ export function Explore() {
               <tr key={`${r.variableId}-${r.iso3}-${r.year}`}>
                 <td>
                   <PermalinkLink
-                    view="data_variable"
+                    view="data_sources"
+                    hash="catalogo"
                     patch={{ focusVariable: r.variableId }}
                   >
                     {r.variableId}
                   </PermalinkLink>
                 </td>
-                {visibleCols.factor ? <td>{r.factor}</td> : null}
+                {visibleCols.factor ? <td>{factorLabel(r.factor, lang)}</td> : null}
                 {visibleCols.source ? <td>{r.source}</td> : null}
                 <td>
                   <button

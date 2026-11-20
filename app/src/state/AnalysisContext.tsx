@@ -106,46 +106,68 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
       parsed.view !== view ||
       (focusVariable && parsed.focusVariable !== focusVariable)
     ) {
+      const pathname = pathForView(view, next.focusVariable);
       navigate(
         {
-          pathname: pathForView(view, next.focusVariable),
+          pathname,
           search: configToSearch(next),
+          // Keep Fuentes y datos tab (#explorar, …) when the path stays put.
+          ...(pathname === location.pathname && location.hash
+            ? { hash: location.hash }
+            : {}),
         },
         { replace: true },
       );
     }
-  }, [location.pathname, location.search, navigate]);
+  }, [location.pathname, location.search, location.hash, navigate]);
 
   const commit = useCallback(
-    (next: AnalysisConfig, opts?: { markDirty?: boolean }) => {
-      if (sameConfig(configRef.current, next)) return;
+    (next: AnalysisConfig, opts?: { markDirty?: boolean; hash?: string }) => {
+      if (sameConfig(configRef.current, next) && opts?.hash === undefined) {
+        return;
+      }
       setConfigState(next);
       if (opts?.markDirty !== false) setDirty(true);
+      const pathname = pathForView(next.view, next.focusVariable);
+      const samePath = pathname === location.pathname;
+      let hash: string | undefined;
+      if (opts?.hash !== undefined) {
+        hash = opts.hash
+          ? opts.hash.startsWith("#")
+            ? opts.hash
+            : `#${opts.hash}`
+          : "";
+      } else if (samePath) {
+        hash = location.hash || undefined;
+      } else {
+        hash = "";
+      }
       navigate({
-        pathname: pathForView(next.view, next.focusVariable),
+        pathname,
         search: configToSearch(next),
+        ...(hash !== undefined ? { hash } : {}),
       });
     },
-    [navigate],
+    [navigate, location.pathname, location.hash],
   );
 
   const setConfig = useCallback(
-    (patch: Partial<AnalysisConfig>) => {
-      commit({ ...configRef.current, ...patch, v: 1 });
+    (patch: Partial<AnalysisConfig>, opts?: { markDirty?: boolean; hash?: string }) => {
+      commit({ ...configRef.current, ...patch, v: 1 }, opts);
     },
     [commit],
   );
 
   const replaceConfig = useCallback(
-    (next: AnalysisConfig) => {
-      commit({ ...next, v: 1 });
+    (next: AnalysisConfig, opts?: { markDirty?: boolean; hash?: string }) => {
+      commit({ ...next, v: 1 }, opts);
     },
     [commit],
   );
 
   const setView = useCallback(
-    (view: ViewId) => {
-      commit({ ...configRef.current, view, v: 1 }, { markDirty: false });
+    (view: ViewId, opts?: { markDirty?: boolean; hash?: string }) => {
+      commit({ ...configRef.current, view, v: 1 }, { markDirty: false, ...opts });
     },
     [commit],
   );

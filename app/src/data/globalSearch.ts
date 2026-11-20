@@ -87,9 +87,10 @@ export function runGlobalSearch(
     hits.push({
       group: "variables",
       id: v.id,
-      label: `${v.id} — ${varLabel(v, lang)}`,
+      label: `${v.id} · ${varLabel(v, lang)}`,
       sub: v.factor,
-      view: "data_variable",
+      // Stay inside Fuentes y datos → Lista de variables.
+      view: "data_sources",
       focusVariable: v.id,
     });
   }
@@ -99,7 +100,7 @@ export function runGlobalSearch(
     hits.push({
       group: "hs",
       id: h.code,
-      label: `HS${h.code} — ${lang === "es" ? h.name.es : h.name.en}`,
+      label: `HS${h.code} · ${lang === "es" ? h.name.es : h.name.en}`,
       view: "variables",
       hs: h.code,
     });
@@ -116,7 +117,7 @@ export function runGlobalSearch(
     hits.push({
       group: "sources",
       id: s.id,
-      label: s.name ? `${s.id} — ${s.name}` : s.id,
+      label: s.name ? `${s.id} · ${s.name}` : s.id,
       view: "data_sources",
     });
   }

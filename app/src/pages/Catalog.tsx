@@ -130,8 +130,16 @@ export function Catalog() {
     error,
     loading,
   } = useAsyncResource(() => loadCatalogPreview(), []);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(
+    config.focusVariable ?? null,
+  );
   const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    if (config.focusVariable) {
+      setSelectedId(config.focusVariable);
+    }
+  }, [config.focusVariable]);
 
   useEffect(() => {
     if (catalog && !selectedId) {

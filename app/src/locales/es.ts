@@ -232,6 +232,8 @@ const es = {
   searchTitle: "Búsqueda global",
   searchPlaceholder: "Países (ISO3), variables, HS, fuentes, proyectos…",
   searchEmpty: "Sin resultados.",
+  searchHint:
+    "Escribe un ISO3, variable, HS, fuente o proyecto. Enter abre el resultado marcado.",
   searchGroup: {
     countries: "Países",
     variables: "Variables",
