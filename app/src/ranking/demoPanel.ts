@@ -21,7 +21,11 @@ export type DemoPanel = {
   /** Import volume proxy (IMPV) per candidate for min-imports filter. */
   importVolume: Record<string, number>;
   coveragePct: Record<string, number>;
-  expectedExpertRanking: { iso3: string; score: number; rank: number }[];
+  /**
+   * EXTRA-10: golden order for tests — follows IMPV (or published block order),
+   * not an expert survey ranking. Never show this as «ranking experto» in the UI.
+   */
+  goldenImportOrder: { iso3: string; score: number; rank: number }[];
   /** BYOD-only ids omitted from the public demo (gate). */
   excludedByod: { id: string; reason: string }[];
   notes: string[];
@@ -53,7 +57,9 @@ type GoldenFile = {
     variables: { id: string; factor: string; direction: Direction }[];
     candidates: string[];
     raw: Record<string, number | null | string>[];
-    ranking_expert: { iso3: string; score: number; rank: number }[];
+    /** Preferred (EXTRA-10). Legacy key ranking_expert kept for older goldens. */
+    ranking_impv_order?: { iso3: string; score: number; rank: number }[];
+    ranking_expert?: { iso3: string; score: number; rank: number }[];
     notes?: string[];
     excluded_byod?: { id: string; reason: string }[];
   };
@@ -119,7 +125,7 @@ function panelFromBlock(
     values,
     importVolume,
     coveragePct,
-    expectedExpertRanking: block.ranking_expert,
+    goldenImportOrder: block.ranking_impv_order ?? block.ranking_expert ?? [],
     excludedByod: block.excluded_byod ?? [],
     notes: block.notes ?? [],
     synthetic,

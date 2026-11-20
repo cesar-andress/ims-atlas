@@ -7,15 +7,24 @@ import {
   loadLatestRun,
   loadQa,
   loadSpotCheck,
+  loadUpdates,
 } from "../../data/transparency";
 import { displayCell } from "../../formatDisplay";
 import { useTranslation } from "../../i18n";
 import { useAsyncResource } from "../../state/useAsyncResource";
 
+function runTone(status: string | null | undefined): "ok" | "warn" | "bad" {
+  const s = (status ?? "").toLowerCase();
+  if (s === "ok" || s === "pass" || s === "success") return "ok";
+  if (s === "qa_blocked" || s === "warn" || s === "partial") return "warn";
+  return "bad";
+}
+
 export function DataStatus() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language.startsWith("es") ? "es" : "en";
   const { data, error, loading } = useAsyncResource(async () => {
-    const [index, qa, freshness, run, spot] = await Promise.all([
+    const [index, qa, freshness, run, spot, updates] = await Promise.all([
       loadIndex(),
       loadQa(),
       loadFreshness(),
@@ -24,8 +33,9 @@ export function DataStatus() {
         status: "missing",
         samples: [],
       })),
+      loadUpdates().catch(() => ({ runs: [] as const, n_runs: 0 })),
     ]);
-    return { index, qa, freshness, run, spot };
+    return { index, qa, freshness, run, spot, updates };
   }, []);
 
   return (
@@ -158,6 +168,80 @@ export function DataStatus() {
                 : t("spotCheckEmpty")}
             </p>
           )}
+
+          <section data-testid="runs-calendar" className="runs-calendar">
+            <h2>{t("runsCalendarTitle")}</h2>
+            <p className="muted small">{t("runsCalendarIntro")}</p>
+            {(data.updates.runs?.length ?? 0) === 0 ? (
+              <p className="muted">{t("runsCalendarEmpty")}</p>
+            ) : (
+              <ul className="runs-calendar-list">
+                {[...data.updates.runs]
+                  .slice()
+                  .reverse()
+                  .slice(0, 30)
+                  .map((r) => {
+                    const tone = runTone(r.status);
+                    const day = (r.started_at ?? r.run_id ?? "").slice(0, 10);
+                    const summary =
+                      r.summaries && r.summaries.length > 0
+                        ? r.summaries.slice(0, 3).join("; ")
+                        : lang === "es"
+                          ? "Sin resumen de fuentes."
+                          : "No source summary.";
+                    return (
+                      <li
+                        key={r.run_id}
+                        className={`runs-calendar-item runs-${tone}`}
+                        data-testid={`run-${r.run_id}`}
+                      >
+                        <span className={`runs-dot runs-dot-${tone}`} aria-hidden />
+                        <div>
+                          <strong className="font-tabular">{day}</strong>{" "}
+                          <span className="muted small">{r.run_id}</span>
+                          <div className="small">
+                            {t("runsCalendarStatus")}: {String(r.status ?? "—")}
+                            {r.n_new_cells != null
+                              ? ` · +${r.n_new_cells} ${t("runsCalendarNewCells")}`
+                              : ""}
+                          </div>
+                          <p className="small muted">{summary}</p>
+                        </div>
+                      </li>
+                    );
+                  })}
+              </ul>
+            )}
+          </section>
+
+          {Array.isArray((data.freshness as { sources?: unknown }).sources) ? (
+            <section data-testid="freshness-sources">
+              <h2>{t("freshnessSourcesTitle")}</h2>
+              <table className="data-table small">
+                <thead>
+                  <tr>
+                    <th>{t("transparencySource")}</th>
+                    <th>{t("freshnessStatus")}</th>
+                    <th>{t("freshnessVersion")}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(
+                    (data.freshness as { sources: Record<string, unknown>[] })
+                      .sources ?? []
+                  ).map((s) => (
+                    <tr key={String(s.source)}>
+                      <td>{displayCell(s.source)}</td>
+                      <td>{displayCell(s.status ?? (s.stale ? "stale" : "ok"))}</td>
+                      <td className="font-tabular">
+                        {displayCell(s.upstream_version ?? s.ingested_version)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
+          ) : null}
         </>
       )}
     </TransparencyShell>
