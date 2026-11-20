@@ -56,6 +56,14 @@ def _cfg() -> wits.WitsConfig:
     )
 
 
+def test_parse_trn_xml_treats_no_records_as_empty() -> None:
+    empty = wits.parse_trn_xml(b"Not Found - NoRecordsFound")
+    assert list(empty.columns) == wits.LINE_COLUMNS
+    assert empty.empty
+    assert wits.parse_trn_xml(b"").empty
+    assert wits.parse_trn_xml(b"<not><xml").empty
+
+
 def test_reporter_codes_eu_and_gbr_rule() -> None:
     numeric = {"COL": "170", "GBR": "826", "USA": "840"}
     assert wits.reporter_code("ESP", 2019, numeric) == "918"

@@ -141,10 +141,20 @@ def _local(tag: str) -> str:
 
 
 def parse_trn_xml(body: bytes) -> pd.DataFrame:
-    """Parse a StructureSpecific TRN message: one row per product/year Obs."""
+    """Parse a StructureSpecific TRN message: one row per product/year Obs.
+
+    Empty bodies, publisher ``NoRecordsFound`` HTML, and non-XML error payloads
+    are treated as gaps (empty frame), never as hard failures.
+    """
     if not body.strip():
         return pd.DataFrame(columns=LINE_COLUMNS)
-    root = ET.fromstring(body.decode("utf-8", errors="replace"))  # noqa: S314
+    text = body.decode("utf-8", errors="replace").strip()
+    if not text.startswith("<") or "NoRecordsFound" in text:
+        return pd.DataFrame(columns=LINE_COLUMNS)
+    try:
+        root = ET.fromstring(text)  # noqa: S314
+    except ET.ParseError:
+        return pd.DataFrame(columns=LINE_COLUMNS)
     rows: list[dict[str, Any]] = []
     for series in root.iter():
         if _local(series.tag) != "Series":
