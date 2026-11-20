@@ -177,14 +177,17 @@ def test_cli_run_fixture_mode_exit_0(
     assert "mode=fixture" in result.stdout
 
 
-def test_cli_check_live_without_manual_files_exit_2(
+def test_cli_check_live_without_manual_files_soft_ok(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    """EXTRA-4: missing manual drop is reported, not a hard failure."""
     monkeypatch.setenv("ATLAS_ROOT", str(tmp_path))
     result = runner.invoke(app, ["check", "--source", "hofstede"])
-    assert result.exit_code == 2
-    assert "manual drop" in result.stderr
+    assert result.exit_code == 0, result.stdout + result.stderr
+    freshness = json.loads((tmp_path / "status/freshness.json").read_text())
+    row = next(r for r in freshness["sources"] if r["source"] == "hofstede")
+    assert row["status"] == "falta fichero (manual)"
 
 
 def test_cli_extract_live_without_manual_files_records_missing(
@@ -209,10 +212,14 @@ def test_cli_extract_live_without_manual_files_records_missing(
 
 
 def test_live_check_ignores_fixture_raw_versions(live_stubs: Path) -> None:
+    from imsatlas_etl.pipeline.io_paths import PIPELINE_SOURCES
+
     run_pipeline(fixture_root=FIXTURE_ROOT, root=live_stubs, force=True)
     rows = check_mod.run_check(root=live_stubs)
-    assert all(r["ingested_version"] is None and r["stale"] for r in rows)
+    core = [r for r in rows if r["source"] in PIPELINE_SOURCES]
+    assert all(r["ingested_version"] is None and r["stale"] for r in core)
     run_pipeline(root=live_stubs, force=True)
     rows = check_mod.run_check(root=live_stubs)
-    assert all(r["ingested_version"] == "live-2024-01-15" for r in rows)
-    assert all(not r["stale"] for r in rows)
+    core = [r for r in rows if r["source"] in PIPELINE_SOURCES]
+    assert all(r["ingested_version"] == "live-2024-01-15" for r in core)
+    assert all(not r["stale"] for r in core)

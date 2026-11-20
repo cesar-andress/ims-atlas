@@ -5,32 +5,57 @@ import { LicenceBadge } from "../components/LicenceBadge";
 import { PermalinkLink } from "../components/PermalinkLink";
 import { loadCatalogPreview } from "../data/catalogLoader";
 import type { CatalogVariable } from "../data/types";
+import {
+  aliasCollisionsFromCatalog,
+  variableDataStatus,
+  type VariableDataKind,
+} from "../data/variableDataStatus";
 import { useTranslation } from "../i18n";
 import { useRankingModel } from "../ranking/useRankingModelApi";
 import { useAnalysis } from "../state/useAnalysis";
-
-const PRESETS = {
-  imsfe18: null as string[] | null, // fill from catalog demand… when opened
-  openOnly: null as string[] | null,
-} as const;
 
 function varName(v: CatalogVariable, lang: string): string {
   if (typeof v.name === "string") return v.name;
   return lang === "es" ? v.name.es : v.name.en;
 }
 
-function coverageRatio(v: CatalogVariable): number {
-  const demo = v.coverage_demo;
-  if (!demo) return 0;
-  let total = 0;
-  let ok = 0;
-  for (const byIso of Object.values(demo)) {
-    for (const val of Object.values(byIso)) {
-      total += 1;
-      if (val !== null && Number.isFinite(val)) ok += 1;
-    }
+function badgeLabel(kind: VariableDataKind, t: (k: string) => string): string {
+  if (kind === "complete") return `✅ ${t("varDataComplete")}`;
+  if (kind === "partial") return `⚠️ ${t("varDataPartial")}`;
+  if (kind === "team") return `🔒 ${t("varDataTeam")}`;
+  return `⛔ ${t("varDataNone")}`;
+}
+
+function coveragePctFromStats(v: CatalogVariable): number {
+  const st = variableDataStatus(v);
+  if (st.kind === "none" || st.kind === "team") return 0;
+  if (st.coveragePct != null) return st.coveragePct / 100;
+  if (st.nCountries != null && st.nCountries > 0)
+    return Math.min(1, st.nCountries / 200);
+  return 0;
+}
+
+function warnForVariable(
+  v: CatalogVariable,
+  lang: string,
+  t: (k: string) => string,
+  year: number | null | undefined,
+): string | null {
+  const st = variableDataStatus(v, { year });
+  const name = varName(v, lang);
+  if (st.kind === "none") {
+    return t("varDataWarnNone").replace("{name}", name);
   }
-  return total === 0 ? 0 : ok / total;
+  if (st.kind === "team" && (st.nCountries == null || st.nCountries <= 0)) {
+    return t("varDataWarnTeam").replace("{name}", name);
+  }
+  if (st.kind === "partial") {
+    return t("varDataWarnPartial")
+      .replace("{name}", name)
+      .replace("{n}", String(st.nCountries ?? "—"))
+      .replace("{y1}", String(st.yearMax ?? "—"));
+  }
+  return null;
 }
 
 function ProjectVariablesBody() {
@@ -79,18 +104,28 @@ function ProjectVariablesBody() {
     return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0]));
   }, [right]);
 
+  const selectionWarnings = useMemo(() => {
+    const out: string[] = [];
+    for (const v of right) {
+      const w = warnForVariable(v, lang, t, config.year);
+      if (w) out.push(w);
+    }
+    const aliases = aliasCollisionsFromCatalog(chosen, catalog);
+    if (aliases.length) {
+      out.push(t("varAliasWarn").replace("{pairs}", aliases.join(", ")));
+    }
+    return out;
+  }, [right, lang, t, config.year, chosen, catalog]);
+
   const corrWarns = useMemo(() => {
     if (right.length < 2) return [];
     const cols = right.map((v) => v.id);
     const series = right.map((v) => {
-      const demo = v.coverage_demo ?? {};
-      const flat: number[] = [];
-      for (const byIso of Object.values(demo)) {
-        for (const val of Object.values(byIso)) {
-          flat.push(val !== null && Number.isFinite(val) ? (val as number) : 0);
-        }
-      }
-      return flat.slice(0, 24);
+      const n = v.coverage_stats?.n_countries ?? 0;
+      // Synthetic flat series for correlation heuristic only (not real values).
+      return Array.from({ length: Math.min(24, Math.max(3, n || 3)) }, (_, i) =>
+        i % 2 === 0 ? 1 : 0.5,
+      );
     });
     if (series.some((s) => s.length < 3)) return [];
     const mat = correlationMatrix(cols, series);
@@ -101,11 +136,8 @@ function ProjectVariablesBody() {
   const covAvg =
     right.length === 0
       ? 0
-      : right.reduce((s, v) => s + coverageRatio(v), 0) / right.length;
-  const nWarns =
-    corrWarns.length +
-    right.filter((v) => !v.redistributable).length +
-    right.filter((v) => coverageRatio(v) < 0.5 && v.coverage_demo).length;
+      : right.reduce((s, v) => s + coveragePctFromStats(v), 0) / right.length;
+  const nWarns = selectionWarnings.length + corrWarns.length;
 
   function setChosen(ids: string[]) {
     setConfig({ variableIds: ids });
@@ -127,8 +159,6 @@ function ProjectVariablesBody() {
     setChosen(catalog.map((v) => v.id));
   }
 
-  void PRESETS;
-
   return (
     <div className="project-vars" data-testid="project-variables-body">
       <div className="project-vars-summary" data-testid="project-vars-summary">
@@ -138,6 +168,17 @@ function ProjectVariablesBody() {
           .replace("{cov}", `${Math.round(covAvg * 100)}`)
           .replace("{w}", String(nWarns))}
       </div>
+      {selectionWarnings.length > 0 ? (
+        <ul
+          className="project-vars-data-warns"
+          data-testid="project-vars-data-warns"
+          role="status"
+        >
+          {selectionWarnings.map((w) => (
+            <li key={w.slice(0, 80)}>{w}</li>
+          ))}
+        </ul>
+      ) : null}
       <div className="project-vars-presets">
         <button type="button" data-testid="preset-open-only" onClick={applyOpenOnly}>
           {t("projectPresetOpen")}
@@ -160,27 +201,36 @@ function ProjectVariablesBody() {
             placeholder={t("projectSearch")}
           />
           <ul className="project-var-cards">
-            {left.map((v) => (
-              <li key={v.id} className="project-var-card">
-                <div>
-                  <strong>{v.id}</strong>{" "}
-                  <span className="muted small">{varName(v, lang)}</span>
-                </div>
-                <div className="small muted">
-                  {v.factor} · {v.source_ids[0] ?? "—"}
-                </div>
-                <LicenceBadge licenceId={v.licence_ids[0] ?? "UNKNOWN"} />
-                <div
-                  className="coverage-bar"
-                  title={`${Math.round(coverageRatio(v) * 100)}%`}
-                >
-                  <span style={{ width: `${coverageRatio(v) * 100}%` }} />
-                </div>
-                <button type="button" onClick={() => add(v.id)}>
-                  {t("projectVarAdd")}
-                </button>
-              </li>
-            ))}
+            {left.map((v) => {
+              const st = variableDataStatus(v, { year: config.year });
+              return (
+                <li key={v.id} className="project-var-card">
+                  <div>
+                    <strong>{v.id}</strong>{" "}
+                    <span className="muted small">{varName(v, lang)}</span>
+                  </div>
+                  <div className="small muted">
+                    {v.factor} · {v.source_ids[0] ?? "—"}
+                  </div>
+                  <span
+                    className={`var-data-badge var-data-${st.kind}`}
+                    data-testid={`var-data-${v.id}`}
+                  >
+                    {badgeLabel(st.kind, t)}
+                  </span>
+                  <LicenceBadge licenceId={v.licence_ids[0] ?? "UNKNOWN"} />
+                  <div
+                    className="coverage-bar"
+                    title={`${Math.round(coveragePctFromStats(v) * 100)}%`}
+                  >
+                    <span style={{ width: `${coveragePctFromStats(v) * 100}%` }} />
+                  </div>
+                  <button type="button" onClick={() => add(v.id)}>
+                    {t("projectVarAdd")}
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </section>
         <section aria-label={t("projectVarsChosen")}>
@@ -189,30 +239,39 @@ function ProjectVariablesBody() {
             <div key={factor} className="project-var-factor">
               <h3>{factor}</h3>
               <ul className="project-var-cards">
-                {vars.map((v) => (
-                  <li key={v.id} className="project-var-card chosen">
-                    <div>
-                      <strong>{v.id}</strong>
-                      {!v.redistributable ? (
-                        <span className="warn small"> {t("projectWarnLicence")}</span>
-                      ) : null}
-                    </div>
-                    <label className="small">
-                      {t("transparencyDirection")}{" "}
-                      <select
-                        value={v.direction === "cost" ? "cost" : "benefit"}
-                        disabled
-                        title={t("projectDirHint")}
+                {vars.map((v) => {
+                  const st = variableDataStatus(v, { year: config.year });
+                  return (
+                    <li key={v.id} className="project-var-card chosen">
+                      <div>
+                        <strong>{v.id}</strong>
+                        {!v.redistributable ? (
+                          <span className="warn small"> {t("projectWarnLicence")}</span>
+                        ) : null}
+                      </div>
+                      <span
+                        className={`var-data-badge var-data-${st.kind}`}
+                        data-testid={`var-data-chosen-${v.id}`}
                       >
-                        <option value="benefit">benefit</option>
-                        <option value="cost">cost</option>
-                      </select>
-                    </label>
-                    <button type="button" onClick={() => remove(v.id)}>
-                      {t("projectVarRemove")}
-                    </button>
-                  </li>
-                ))}
+                        {badgeLabel(st.kind, t)}
+                      </span>
+                      <label className="small">
+                        {t("transparencyDirection")}{" "}
+                        <select
+                          value={v.direction === "cost" ? "cost" : "benefit"}
+                          disabled
+                          title={t("projectDirHint")}
+                        >
+                          <option value="benefit">benefit</option>
+                          <option value="cost">cost</option>
+                        </select>
+                      </label>
+                      <button type="button" onClick={() => remove(v.id)}>
+                        {t("projectVarRemove")}
+                      </button>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}

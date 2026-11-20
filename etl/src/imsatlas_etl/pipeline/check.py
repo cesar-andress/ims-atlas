@@ -7,12 +7,18 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from imsatlas_etl.connectors.http import SourceUnavailableError
 from imsatlas_etl.pipeline.io_paths import (
+    EXTRA_FRESHNESS_SOURCES,
     PIPELINE_SOURCES,
     freshness_path,
     ingested_versions,
 )
 from imsatlas_etl.pipeline.terms import annotate_terms_changed
+
+KNOWN_CHECK_SOURCES = tuple(
+    dict.fromkeys([*PIPELINE_SOURCES, *EXTRA_FRESHNESS_SOURCES]),
+)
 
 
 def _now_iso() -> str:
@@ -27,6 +33,31 @@ def _ingested_version(
 ) -> str | None:
     versions = ingested_versions(source_id, mode=mode, root=root)
     return versions[-1] if versions else None
+
+
+def _baci_latest_year(root: Path | None) -> int | None:
+    """Read year_max from config/pins/baci.json when present."""
+    from imsatlas_etl.paths import repo_root
+
+    pin = (root or repo_root()) / "config" / "pins" / "baci.json"
+    if not pin.is_file():
+        return None
+    try:
+        data = json.loads(pin.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return None
+    opts = data.get("options") if isinstance(data, dict) else None
+    if isinstance(opts, dict) and opts.get("year_max") is not None:
+        try:
+            return int(opts["year_max"])
+        except (TypeError, ValueError):
+            return None
+    if isinstance(data, dict) and data.get("year_max") is not None:
+        try:
+            return int(data["year_max"])
+        except (TypeError, ValueError):
+            return None
+    return None
 
 
 def check_source_offline(
@@ -54,6 +85,7 @@ def check_source_offline(
         "ingested_version": ingested,
         "stale": stale,
         "mode": "fixture",
+        "status": "ok",
     }
 
 
@@ -105,14 +137,53 @@ def _live_probe(source_id: str, *, root: Path | None) -> dict[str, Any]:
     raise ValueError(f"unsupported live check source: {source_id}")
 
 
+def _missing_manual_row(
+    source_id: str,
+    *,
+    root: Path | None,
+    err: str,
+) -> dict[str, Any]:
+    """EXTRA-4: missing manual drop is a reported status, not a hard failure."""
+    return {
+        "source": source_id,
+        "checked_at": _now_iso(),
+        "upstream_version": None,
+        "upstream_changed_at": None,
+        "ingested_version": _ingested_version(source_id, root=root, mode="live"),
+        "stale": True,
+        "mode": "live",
+        "status": "falta fichero (manual)",
+        "note": err,
+    }
+
+
 def check_source_live(source_id: str, *, root: Path | None = None) -> dict[str, Any]:
     """Live version probe.
 
     World Bank sources use the API ``lastupdated``; manual-drop sources use the
-    pinned version or a content hash. Raises ``SourceUnavailableError`` when the
-    network call fails or the manual file is missing.
+    pinned version or a content hash. Missing manual files return a soft
+    ``falta fichero (manual)`` row (EXTRA-4) instead of aborting the batch.
     """
-    probe = _live_probe(source_id, root=root)
+    try:
+        probe = _live_probe(source_id, root=root)
+    except SourceUnavailableError as exc:
+        # EXTRA-4: missing manual drop is soft; network/API failures still raise.
+        msg = str(exc).lower()
+        if "manual" in msg or "missing" in msg or "no data file" in msg:
+            return _missing_manual_row(source_id, root=root, err=str(exc))
+        raise
+    except ValueError as exc:
+        return {
+            "source": source_id,
+            "checked_at": _now_iso(),
+            "upstream_version": None,
+            "upstream_changed_at": None,
+            "ingested_version": _ingested_version(source_id, root=root, mode="live"),
+            "stale": True,
+            "mode": "live",
+            "status": "no conectada",
+            "note": str(exc),
+        }
     ingested = _ingested_version(source_id, root=root, mode="live")
     upstream_version = str(probe["upstream_version"])
     return {
@@ -123,6 +194,7 @@ def check_source_live(source_id: str, *, root: Path | None = None) -> dict[str, 
         "ingested_version": ingested,
         "stale": ingested != upstream_version,
         "mode": "live",
+        "status": "ok",
         "note": probe.get("note"),
     }
 
@@ -134,12 +206,33 @@ def run_check(
     root: Path | None = None,
     force: bool = False,  # noqa: ARG001 — reserved for cache bypass
 ) -> list[dict[str, Any]]:
-    selected = list(sources) if sources else list(PIPELINE_SOURCES)
+    if sources is not None:
+        selected = list(sources)
+    elif fixture_root is not None:
+        selected = list(PIPELINE_SOURCES)
+    else:
+        selected = list(KNOWN_CHECK_SOURCES)
     rows: list[dict[str, Any]] = []
     for source_id in selected:
-        if source_id not in PIPELINE_SOURCES:
+        if source_id not in KNOWN_CHECK_SOURCES:
             raise ValueError(f"unknown pipeline source: {source_id}")
         if fixture_root is not None:
+            if source_id not in PIPELINE_SOURCES:
+                # EXTRA sources have no fixtures — soft-skip in offline mode.
+                rows.append(
+                    {
+                        "source": source_id,
+                        "checked_at": _now_iso(),
+                        "upstream_version": None,
+                        "upstream_changed_at": None,
+                        "ingested_version": None,
+                        "stale": True,
+                        "mode": "fixture",
+                        "status": "falta fichero (manual)",
+                        "note": "no fixture for EXTRA freshness source",
+                    },
+                )
+                continue
             rows.append(
                 check_source_offline(source_id, fixture_root=fixture_root, root=root),
             )
@@ -149,8 +242,9 @@ def run_check(
     out = freshness_path(root=root)
     out.parent.mkdir(parents=True, exist_ok=True)
     by_id: dict[str, dict[str, Any]] = {}
-    live_partial = fixture_root is None and set(selected) != set(PIPELINE_SOURCES)
-    if out.is_file() and set(selected) != set(PIPELINE_SOURCES):
+    known_set = set(KNOWN_CHECK_SOURCES)
+    live_partial = fixture_root is None and set(selected) != known_set
+    if out.is_file() and set(selected) != known_set:
         try:
             previous = json.loads(out.read_text(encoding="utf-8"))
             for old in previous.get("sources") or []:
@@ -165,8 +259,8 @@ def run_check(
             by_id = {}
     for row in rows:
         by_id[str(row["source"])] = row
-    ordered = [by_id[sid] for sid in PIPELINE_SOURCES if sid in by_id]
-    ordered += [by_id[sid] for sid in sorted(by_id) if sid not in PIPELINE_SOURCES]
+    ordered = [by_id[sid] for sid in KNOWN_CHECK_SOURCES if sid in by_id]
+    ordered += [by_id[sid] for sid in sorted(by_id) if sid not in known_set]
     # Pure comparison against locally stored terms snapshots (no network).
     ordered = annotate_terms_changed(ordered, root=root)
     checked = {str(r["source"]) for r in rows}
@@ -178,12 +272,16 @@ def run_check(
         mode = "live"
     else:
         mode = "fixture" if fixture_root is not None else "live"
-    payload = {
+    payload: dict[str, Any] = {
         "generated_at": _now_iso(),
         "mode": mode,
         "is_fixture": mode == "fixture",
         "sources": ordered,
     }
+    baci_year = _baci_latest_year(root)
+    if baci_year is not None:
+        payload["latest_complete_year"] = baci_year
+        payload["latest_partial_year"] = baci_year
     out.write_text(
         json.dumps(payload, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",

@@ -195,6 +195,20 @@ export const en = {
   projectPresetOpen: "Open data only",
   projectPresetAll: "All variables",
   projectWarnLicence: "(licence may block redistribution)",
+  varDataComplete: "Complete data",
+  varDataPartial: "Partial data",
+  varDataNone: "No data yet",
+  varDataTeam: "Team only",
+  varDataWarnNone:
+    "“{name}” has no data yet. It will not count in the ranking until data arrives.",
+  varDataWarnPartial:
+    "“{name}” has partial data ({n} markets · latest year {y1}). Scoring uses available cells and flags them in results.",
+  varDataWarnTeam:
+    "“{name}” is team-only (source does not allow redistribution; upload your own if needed).",
+  varAliasWarn:
+    "You selected duplicate aliases ({pairs}). Weight will not be doubled — keep only one of each pair.",
+  resultsDataWarnings:
+    "{none} variables with no data were unused; {partial} with partial data.",
   projectDirHint:
     "Direction comes from the variable list (editable in a later version).",
   projectCoverageIntro:

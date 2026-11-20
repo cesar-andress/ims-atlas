@@ -30,6 +30,8 @@ export type CatalogVariable = {
   notes?: string | undefined;
   gate_decision?: string | undefined;
   audience_public?: boolean | undefined;
+  /** EXTRA-10: same series as another catalog id (do not double-weight). */
+  alias_of?: string | undefined;
   coverage_stats?: CatalogCoverageStats | undefined;
   /** @deprecated retired demo grid — prefer coverage_stats */
   coverage_demo?: Record<string, Record<string, number | null>> | undefined;

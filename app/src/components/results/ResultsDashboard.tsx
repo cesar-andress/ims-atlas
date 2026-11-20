@@ -211,6 +211,26 @@ export function ResultsDashboard({ model }: Props) {
         </p>
       ) : null}
 
+      {(() => {
+        const excluded = model.prepared.excludedVariables ?? [];
+        const partial = model.warnings.filter((w) =>
+          /partial|missingness|Median-imputed|sin datos|tree variables/i.test(w),
+        ).length;
+        const none = excluded.length;
+        if (none === 0 && partial === 0) return null;
+        return (
+          <p
+            className="results-data-warnings"
+            data-testid="results-data-warnings"
+            role="status"
+          >
+            {t("resultsDataWarnings")
+              .replace("{none}", String(none))
+              .replace("{partial}", String(partial))}
+          </p>
+        );
+      })()}
+
       <div className="results-kpis" data-testid="results-kpis">
         <article className="results-card kpi">
           <h2>{lang === "es" ? "Mercado nº 1" : "Top market"}</h2>

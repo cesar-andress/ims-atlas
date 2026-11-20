@@ -32,6 +32,20 @@ PIPELINE_SOURCES = (
     "imf_weo",
 )
 
+# EXTRA-4: also report these in freshness.json as ok / falta fichero / no conectada.
+# Not part of the core extract set until a connector + fixture exists.
+EXTRA_FRESHNESS_SOURCES = (
+    "auma_fairs",
+    "icex_events",
+    "trade_gov_events",
+    "dane_dian_comex",
+    "wto_tariffs",
+    "wto_itip",
+    "fragile_states_index",
+    "kof_globalisation",
+    "global_trade_alert",
+)
+
 PHASE3_INDEX_SOURCES = (
     "itu_datahub",
     "ef_epi",

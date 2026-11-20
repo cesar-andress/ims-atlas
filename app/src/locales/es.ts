@@ -197,6 +197,20 @@ const es = {
   projectPresetOpen: "Solo datos abiertos",
   projectPresetAll: "Todas las variables",
   projectWarnLicence: "(la licencia puede bloquear redistribución)",
+  varDataComplete: "Datos completos",
+  varDataPartial: "Datos parciales",
+  varDataNone: "Sin datos todavía",
+  varDataTeam: "Solo equipo",
+  varDataWarnNone:
+    "«{name}» todavía no tiene datos. No contará en el ranking hasta que lleguen.",
+  varDataWarnPartial:
+    "«{name}» tiene datos parciales ({n} mercados · último año {y1}). Se calculará con lo disponible y se marcará en los resultados.",
+  varDataWarnTeam:
+    "«{name}» es solo para el equipo (la fuente no permite redistribuir; súbela tú si hace falta).",
+  varAliasWarn:
+    "Has elegido alias duplicados ({pairs}). No se duplicará el peso: usa solo una de cada pareja.",
+  resultsDataWarnings:
+    "{none} variables sin datos no se han usado; {partial} con datos parciales.",
   projectDirHint:
     "La dirección viene de la lista de variables (editable en una versión posterior).",
   projectCoverageIntro:

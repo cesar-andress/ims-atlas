@@ -28,6 +28,16 @@ MANUAL_FILES: dict[str, str] = {
     "hofstede": "dimensions.csv",
     **{source_id: "values.csv" for source_id in PHASE3_INDEX_SOURCES},
     **{source_id: "indicators.csv" for source_id in INDICATOR_FILE_SOURCES},
+    # EXTRA-4/6/7/9 documented drops (README-only until a file is placed)
+    "auma_fairs": "fairs.csv",
+    "icex_events": "events.csv",
+    "trade_gov_events": "events.csv",
+    "dane_dian_comex": "trade.csv",
+    "wto_tariffs": "tariffs.csv",
+    "wto_itip": "ntm.csv",
+    "fragile_states_index": "values.csv",
+    "kof_globalisation": "values.csv",
+    "global_trade_alert": "values.csv",
 }
 
 
