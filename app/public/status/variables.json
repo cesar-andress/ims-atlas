@@ -10,14 +10,14 @@
       "coverage": null,
       "definition": null,
       "direction": "benefit",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "demand",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "IMPV",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -25,7 +25,7 @@
         "source_ids": [
           "baci"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "IMPV",
       "last_checked": "2026-11-20T09:52:22Z",
@@ -40,7 +40,7 @@
       "source_ids": [
         "baci"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -52,14 +52,14 @@
       "coverage": null,
       "definition": null,
       "direction": "benefit",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "demand",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "IMPC",
-        "included": false,
+        "included": true,
         "reasons": [
           "source[0]: redistribute_raw=yes with evidence and commercial ok",
           "source[1]: redistribute_raw=yes with evidence and commercial ok"
@@ -69,7 +69,7 @@
           "baci",
           "worldbank_wdi"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "IMPC",
       "last_checked": "2026-11-20T09:52:22Z",
@@ -85,7 +85,7 @@
         "baci",
         "worldbank_wdi"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -97,14 +97,14 @@
       "coverage": null,
       "definition": null,
       "direction": "benefit",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "demand",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "GRW",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -112,7 +112,7 @@
         "source_ids": [
           "baci"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "GRW",
       "last_checked": "2026-11-20T09:52:22Z",
@@ -127,7 +127,7 @@
       "source_ids": [
         "baci"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -139,14 +139,14 @@
       "coverage": null,
       "definition": null,
       "direction": "benefit",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "demand",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "GDPPC",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -154,7 +154,7 @@
         "source_ids": [
           "worldbank_wdi"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "GDPPC",
       "last_checked": "2026-11-20T09:52:21Z",
@@ -169,7 +169,7 @@
       "source_ids": [
         "worldbank_wdi"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -181,14 +181,14 @@
       "coverage": null,
       "definition": null,
       "direction": "cost",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "cost_access",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "DIST",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -196,7 +196,7 @@
         "source_ids": [
           "cepi_gravity"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "DIST",
       "last_checked": "2026-11-20T16:45:05Z",
@@ -211,7 +211,7 @@
       "source_ids": [
         "cepi_gravity"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -266,14 +266,14 @@
       "coverage": null,
       "definition": null,
       "direction": "benefit",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "cost_access",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "FTA",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -281,7 +281,7 @@
         "source_ids": [
           "cepi_gravity"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "FTA",
       "last_checked": "2026-11-20T16:45:05Z",
@@ -296,7 +296,7 @@
       "source_ids": [
         "cepi_gravity"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -308,14 +308,14 @@
       "coverage": null,
       "definition": null,
       "direction": "benefit",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "logistics",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "LPI",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -323,7 +323,7 @@
         "source_ids": [
           "worldbank_lpi"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "LPI",
       "last_checked": "2026-11-20T09:52:21Z",
@@ -338,7 +338,7 @@
       "source_ids": [
         "worldbank_lpi"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -350,14 +350,14 @@
       "coverage": null,
       "definition": null,
       "direction": "cost",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "competition",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "ASIASH",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -365,7 +365,7 @@
         "source_ids": [
           "baci"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "ASIASH",
       "last_checked": "2026-11-20T09:52:22Z",
@@ -380,7 +380,7 @@
       "source_ids": [
         "baci"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -392,14 +392,14 @@
       "coverage": null,
       "definition": null,
       "direction": "cost",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "competition",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "HHI",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -407,7 +407,7 @@
         "source_ids": [
           "baci"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "HHI",
       "last_checked": "2026-11-20T09:52:22Z",
@@ -422,7 +422,7 @@
       "source_ids": [
         "baci"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -434,14 +434,14 @@
       "coverage": null,
       "definition": null,
       "direction": "cost",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "product_fit",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "UVGAP",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -449,7 +449,7 @@
         "source_ids": [
           "baci"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "UVGAP",
       "last_checked": "2026-11-20T09:52:22Z",
@@ -464,7 +464,7 @@
       "source_ids": [
         "baci"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -519,14 +519,14 @@
       "coverage": null,
       "definition": null,
       "direction": "benefit",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "product_fit",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "LANG",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -534,7 +534,7 @@
         "source_ids": [
           "cepi_gravity"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "LANG",
       "last_checked": "2026-11-20T16:45:05Z",
@@ -549,7 +549,7 @@
       "source_ids": [
         "cepi_gravity"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -561,14 +561,14 @@
       "coverage": null,
       "definition": null,
       "direction": "cost",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "macro_risk",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "INFL",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -576,7 +576,7 @@
         "source_ids": [
           "worldbank_wdi"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "INFL",
       "last_checked": "2026-11-20T09:52:21Z",
@@ -591,7 +591,7 @@
       "source_ids": [
         "worldbank_wdi"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -603,14 +603,14 @@
       "coverage": null,
       "definition": null,
       "direction": "cost",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "macro_risk",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "UNEMP",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -618,7 +618,7 @@
         "source_ids": [
           "worldbank_wdi"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "UNEMP",
       "last_checked": "2026-11-20T09:52:21Z",
@@ -633,7 +633,7 @@
       "source_ids": [
         "worldbank_wdi"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -645,14 +645,14 @@
       "coverage": null,
       "definition": null,
       "direction": "benefit",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "institutional",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "GOV",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -660,7 +660,7 @@
         "source_ids": [
           "worldbank_wgi"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "GOV",
       "last_checked": "2026-11-20T09:52:21Z",
@@ -675,7 +675,7 @@
       "source_ids": [
         "worldbank_wgi"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -687,14 +687,14 @@
       "coverage": null,
       "definition": null,
       "direction": "benefit",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "openness",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "EOC",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -702,7 +702,7 @@
         "source_ids": [
           "worldbank_wdi"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "EOC",
       "last_checked": "2026-11-20T09:52:21Z",
@@ -717,7 +717,7 @@
       "source_ids": [
         "worldbank_wdi"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -729,14 +729,14 @@
       "coverage": null,
       "definition": null,
       "direction": "cost",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "openness",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "REEXP",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -744,7 +744,7 @@
         "source_ids": [
           "baci"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "REEXP",
       "last_checked": "2026-11-20T09:52:22Z",
@@ -759,7 +759,7 @@
       "source_ids": [
         "baci"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -1021,14 +1021,14 @@
       },
       "definition": null,
       "direction": "benefit",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "entrepreneurship",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "GII",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -1036,7 +1036,7 @@
         "source_ids": [
           "wipo_gii"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "GII",
       "last_checked": "2026-11-20T09:52:21Z",
@@ -1051,7 +1051,7 @@
       "source_ids": [
         "wipo_gii"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2013,
         2026
@@ -1196,14 +1196,14 @@
       },
       "definition": null,
       "direction": "cost",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "sustainability",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "CO2PC",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -1211,7 +1211,7 @@
         "source_ids": [
           "worldbank_wdi"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "CO2PC",
       "last_checked": "2026-11-20T09:52:21Z",
@@ -1226,7 +1226,7 @@
       "source_ids": [
         "worldbank_wdi"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -1254,14 +1254,14 @@
       },
       "definition": null,
       "direction": "cost",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "cost_access",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "PLI",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -1269,7 +1269,7 @@
         "source_ids": [
           "worldbank_wdi"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "PLI",
       "last_checked": "2026-11-20T09:52:21Z",
@@ -1284,7 +1284,7 @@
       "source_ids": [
         "worldbank_wdi"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -1296,14 +1296,14 @@
       "coverage": null,
       "definition": null,
       "direction": "benefit",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "cost_access",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "PPAD",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -1311,7 +1311,7 @@
         "source_ids": [
           "baci"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "PPAD",
       "last_checked": "2026-11-20T09:52:22Z",
@@ -1326,7 +1326,7 @@
       "source_ids": [
         "baci"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -1381,14 +1381,14 @@
       "coverage": null,
       "definition": null,
       "direction": "cost",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "cost_access",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "CIBC",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -1396,7 +1396,7 @@
         "source_ids": [
           "worldbank_wdi"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "CIBC",
       "last_checked": "2026-11-20T09:52:21Z",
@@ -1411,7 +1411,7 @@
       "source_ids": [
         "worldbank_wdi"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -1423,14 +1423,14 @@
       "coverage": null,
       "definition": null,
       "direction": "benefit",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "logistics",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "LPIN",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -1438,7 +1438,7 @@
         "source_ids": [
           "worldbank_lpi"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "LPIN",
       "last_checked": "2026-11-20T09:52:21Z",
@@ -1453,7 +1453,7 @@
       "source_ids": [
         "worldbank_lpi"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -1465,14 +1465,14 @@
       "coverage": null,
       "definition": null,
       "direction": "benefit",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "logistics",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "CPTR",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -1480,7 +1480,7 @@
         "source_ids": [
           "worldbank_wdi"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "CPTR",
       "last_checked": "2026-11-20T09:52:21Z",
@@ -1495,7 +1495,7 @@
       "source_ids": [
         "worldbank_wdi"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -1678,14 +1678,14 @@
       "coverage": null,
       "definition": null,
       "direction": "benefit",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "macro_risk",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "CLI",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -1693,7 +1693,7 @@
         "source_ids": [
           "worldbank_wdi"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "CLI",
       "last_checked": "2026-11-20T09:52:21Z",
@@ -1708,7 +1708,7 @@
       "source_ids": [
         "worldbank_wdi"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -1720,14 +1720,14 @@
       "coverage": null,
       "definition": null,
       "direction": "cost",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "macro_risk",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "INAN",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -1735,7 +1735,7 @@
         "source_ids": [
           "worldbank_wdi"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "INAN",
       "last_checked": "2026-11-20T09:52:21Z",
@@ -1750,7 +1750,7 @@
       "source_ids": [
         "worldbank_wdi"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -1762,14 +1762,14 @@
       "coverage": null,
       "definition": null,
       "direction": "cost",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "macro_risk",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "UNRA",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -1777,7 +1777,7 @@
         "source_ids": [
           "worldbank_wdi"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "UNRA",
       "last_checked": "2026-11-20T09:52:21Z",
@@ -1792,7 +1792,7 @@
       "source_ids": [
         "worldbank_wdi"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -1846,14 +1846,14 @@
       "coverage": null,
       "definition": null,
       "direction": "cost",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "institutional",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "INRI",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -1861,7 +1861,7 @@
         "source_ids": [
           "inform_risk"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "INRI",
       "last_checked": "2026-11-20T09:52:21Z",
@@ -1876,7 +1876,7 @@
       "source_ids": [
         "inform_risk"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
@@ -1974,14 +1974,14 @@
       "coverage": null,
       "definition": null,
       "direction": "benefit",
-      "download_allowed": false,
+      "download_allowed": true,
       "factor": "product_fit",
       "formula": null,
       "gate": {
         "audience": "public",
         "decision": "ship_raw",
         "id": "CPIN",
-        "included": false,
+        "included": true,
         "reasons": [
           "redistribute_raw=yes with evidence and commercial ok"
         ],
@@ -1989,7 +1989,7 @@
         "source_ids": [
           "transparency_cpi"
         ],
-        "status": "draft"
+        "status": "verified"
       },
       "id": "CPIN",
       "last_checked": "2026-11-20T09:52:21Z",
@@ -2004,7 +2004,7 @@
       "source_ids": [
         "transparency_cpi"
       ],
-      "status": "draft",
+      "status": "verified",
       "years": [
         2012,
         2023
