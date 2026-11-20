@@ -9,6 +9,7 @@ import {
   loadSourcesState,
   loadSpotCheck,
   loadUpdates,
+  type SourcesStatePayload,
   type SourcesStateRow,
 } from "../../data/transparency";
 import { displayCell } from "../../formatDisplay";
@@ -58,7 +59,9 @@ export function DataStatus() {
         samples: [],
       })),
       loadUpdates().catch(() => ({ runs: [] as const, n_runs: 0 })),
-      loadSourcesState().catch(() => ({ sources: {} })),
+      loadSourcesState().catch(
+        (): SourcesStatePayload => ({ sources: {} }),
+      ),
     ]);
     return { index, qa, freshness, run, spot, updates, sourcesState };
   }, []);
