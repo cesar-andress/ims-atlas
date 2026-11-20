@@ -2,6 +2,8 @@ import { lazy, Suspense, useMemo, useRef } from "react";
 import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
 import { ExportMenu } from "../components/ExportMenu";
+import { HopRanking } from "../components/uncertainty/HopRanking";
+import { hopSamplesFromRanks } from "../components/uncertainty/hopSamples";
 import { QuantileDotPlot } from "../components/uncertainty/QuantileDotPlot";
 import { acceptabilityToRankProb } from "../components/uncertainty/rankProb";
 import { TopKProbabilityBars } from "../components/uncertainty/TopKProbabilityBars";
@@ -67,6 +69,11 @@ export function Uncertainty() {
       .slice(0, 18);
   }, [smaaModel]);
 
+  const hopFrames = useMemo(() => {
+    if (!smaaModel) return [];
+    return hopSamplesFromRanks(smaaModel.smaa.alternatives, smaaModel.smaa.ranks, 40);
+  }, [smaaModel]);
+
   return (
     <AnalysisPage
       testId="uncertainty-view"
@@ -108,6 +115,17 @@ export function Uncertainty() {
                 <QuantileDotPlot
                   rows={qdpRows}
                   caption="Each row: 20 dots ≈ rank under sampled weights (Kay et al., CHI 2016)."
+                />
+
+                <h2>{t("hopTitle")}</h2>
+                <p className="muted small">{t("hopIntro")}</p>
+                <HopRanking
+                  samples={hopFrames}
+                  labelFor={(iso, rank) =>
+                    t("hopRankLine")
+                      .replace("{rank}", String(rank))
+                      .replace("{iso}", iso)
+                  }
                 />
 
                 <div data-export-surface="chart">

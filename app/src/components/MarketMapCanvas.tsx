@@ -26,6 +26,7 @@ type Props = {
   selected?: string | undefined;
   focusQuery?: string | undefined;
   showHulls?: boolean | undefined;
+  clusterLabels?: Record<number, string> | undefined;
 };
 
 export function MarketMapCanvas({
@@ -39,6 +40,7 @@ export function MarketMapCanvas({
   selected,
   focusQuery = "",
   showHulls = false,
+  clusterLabels,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [view, setView] = useState({ scale: 1, tx: 0, ty: 0 });
@@ -105,6 +107,7 @@ export function MarketMapCanvas({
       ...(selected ? { selected } : {}),
       ...(focusSet ? { focusSet } : {}),
       showHulls,
+      ...(clusterLabels ? { clusterLabels } : {}),
     });
     setLastFrameMs(ms);
   }, [
@@ -119,6 +122,7 @@ export function MarketMapCanvas({
     selected,
     focusSet,
     showHulls,
+    clusterLabels,
   ]);
 
   useEffect(() => {
@@ -155,6 +159,7 @@ export function MarketMapCanvas({
       ...(selected ? { selected } : {}),
       ...(focusSet ? { focusSet } : {}),
       showHulls,
+      ...(clusterLabels ? { clusterLabels } : {}),
     });
     const raw = off.toDataURL("image/png");
     void composeChartPng(

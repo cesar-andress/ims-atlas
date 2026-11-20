@@ -75,6 +75,8 @@ export function paintMarketMapFrame(
     focusSet?: Set<string>;
     view: { scale: number; tx: number; ty: number };
     showHulls?: boolean;
+    /** Cluster id → short characterisation (e.g. top factors). */
+    clusterLabels?: Record<number, string>;
   },
 ): number {
   const t0 = typeof performance !== "undefined" ? performance.now() : Date.now();
@@ -190,7 +192,11 @@ export function paintMarketMapFrame(
       const cy = hull.reduce((s, p) => s + p.y, 0) / hull.length;
       ctx.fillStyle = color;
       ctx.font = `bold ${12 / view.scale}px Inter, sans-serif`;
-      ctx.fillText(`C${c}`, cx, cy);
+      const label =
+        opts.clusterLabels?.[c] !== undefined
+          ? `C${c}: ${opts.clusterLabels[c]}`
+          : `C${c}`;
+      ctx.fillText(label, cx, cy);
     }
   }
 

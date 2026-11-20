@@ -17,6 +17,19 @@ Follow-up (audits): removed `results-study-nav` second row; `chrome="results"` o
 Matrix / Compare / Time / Factors; plain-language method labels in
 `AnalysisSummary` and normalisation options; GUI-0 screenshots light+dark.
 
+### GUI remaining (2026-11-20)
+
+| Item | Where |
+|------|--------|
+| Variables summary bar + guided stepper + expert toggle | `/variables` |
+| WeightLifter intervals + Podium order → weights | Variables · Pesos only |
+| Strategy presets (mass / perishables / SME) | Variables · Pesos |
+| HOP animated ranking | Uncertainty (read-only) |
+| Cluster factor labels + silhouette → Variables link | Map |
+| Year play from rank-years fixture | Map (view overlay; no config edit) |
+
+Editable controls on result screens remain **0** (`input`/`select`/`textarea`).
+
 ---
 
 # IMS Atlas — visual design notes (Phase W)

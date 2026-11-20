@@ -35,11 +35,8 @@ test.describe("Phase W/U/M GUI flow", () => {
       .getByTestId("main-nav")
       .getByRole("link", { name: "Variables", exact: true })
       .click(); // 2
-    await expect(page.getByTestId("builder-view")).toBeVisible({ timeout: 15_000 });
-    await page.getByTestId("analysis-load-preset").click(); // 3
-    await expect(page.getByTestId("builder-to-ranking")).toBeVisible({
-      timeout: 10_000,
-    });
+    await expect(page.getByTestId("variables-hub")).toBeVisible({ timeout: 15_000 });
+    await page.getByTestId("apply-col-hs64").click(); // 3
     await page
       .getByTestId("main-nav")
       .getByRole("link", { name: "Analysis", exact: true })
@@ -100,6 +97,40 @@ test.describe("Phase W/U/M GUI flow", () => {
     await expect(page.getByTestId("uncertainty-body")).toBeVisible({ timeout: 25_000 });
     await expect(page.getByTestId("topk-prob-bars")).toBeVisible({ timeout: 25_000 });
     await expect(page.getByTestId("quantile-dot-plot")).toBeVisible();
+    await expect(page.getByTestId("hop-ranking")).toBeVisible({ timeout: 25_000 });
+  });
+
+  test("Variables guided chrome + summary; WeightLifter in Pesos step", async ({
+    page,
+  }) => {
+    await page.goto(`/variables?c=${encodeConfig({ ...COL, view: "variables" })}`);
+    await expect(page.getByTestId("variables-hub")).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByTestId("variables-summary-bar")).toBeVisible();
+    await expect(page.getByTestId("variables-guided-chrome")).toBeVisible();
+    await expect(page.getByTestId("origin-input")).toBeVisible();
+    await page.getByTestId("guided-next").click();
+    await page.getByTestId("guided-next").click();
+    await page.getByTestId("guided-next").click();
+    await expect(page.getByTestId("weight-scheme")).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByTestId("weightlifter-panel")).toBeVisible({
+      timeout: 20_000,
+    });
+    await expect(page.getByTestId("podium-panel")).toBeVisible();
+    await expect(page.getByTestId("strategy-presets")).toBeVisible();
+  });
+
+  test("map cluster descriptors list is present", async ({ page }) => {
+    await page.goto(
+      `/map?c=${encodeConfig({
+        ...COL,
+        view: "map",
+        clusterK: 4,
+        mapSeed: 42,
+      })}`,
+    );
+    await expect(page.getByTestId("cluster-descriptors")).toBeVisible({
+      timeout: 25_000,
+    });
   });
 
   test("backtest card blocked for HS 6401", async ({ page }) => {

@@ -372,6 +372,74 @@ textarea:focus-visible {
   margin: 0 auto 1rem;
 }
 
+.variables-summary-bar {
+  max-width: 52rem;
+  margin: 0 auto 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.variables-guided-chrome {
+  max-width: 52rem;
+  margin: 0 auto 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.guided-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.guided-progress-fill {
+  height: 100%;
+  background: var(--primary, #0f766e);
+  transition: width 180ms ease;
+}
+
+.weightlifter,
+.podium,
+.strategy-presets,
+.hop-ranking,
+.year-play {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.podium-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.podium-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hop-list {
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guided-progress-fill {
+    transition: none;
+  }
+}
+
 .header-overflow {
   position: relative;
 }
