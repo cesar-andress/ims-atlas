@@ -69,7 +69,11 @@ def fetch_response(
     ``SourceUnavailableError``.
     """
     sess = session or requests.Session()
-    sess.headers.update({"User-Agent": USER_AGENT, "Accept": "*/*"})
+    # Do not clobber Accept/User-Agent already set by the caller.
+    if "User-Agent" not in sess.headers:
+        sess.headers["User-Agent"] = USER_AGENT
+    if "Accept" not in sess.headers:
+        sess.headers["Accept"] = "*/*"
     last_error = "no attempt made"
     for attempt in range(1, attempts + 1):
         retry_after: str | None = None

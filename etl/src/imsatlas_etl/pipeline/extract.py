@@ -25,11 +25,14 @@ from imsatlas_etl.connectors import (
 )
 from imsatlas_etl.connectors import worldbank as wb
 from imsatlas_etl.pipeline.io_paths import (
+    HOURLY_LIVE_SOURCES,
     INDICATOR_FILE_SOURCES,
     PHASE3_INDEX_SOURCES,
     PIPELINE_SOURCES,
     freshness_path,
 )
+
+_EXTRACTABLE = frozenset([*PIPELINE_SOURCES, *HOURLY_LIVE_SOURCES])
 
 
 def _versions_from_freshness(
@@ -172,8 +175,8 @@ def run_extract(
 
     selected = list(sources) if sources else list(PIPELINE_SOURCES)
     for source_id in selected:
-        if source_id not in PIPELINE_SOURCES:
-            raise ValueError(f"unknown pipeline source: {source_id}")
+        if source_id not in _EXTRACTABLE:
+            raise ValueError(f"unknown extract source: {source_id}")
     # Live partial runs: only extract sources present in freshness.
     path = freshness_path(root=root)
     if not path.is_file():

@@ -40,12 +40,12 @@ API_ROOT = (
 )
 
 
-def _data_url(*, year_from: int = 2010) -> str:
-    # c[INDICATOR] accepts space-separated list in SDMX 3 filter syntax.
-    ind = "+".join(INDICATORS)
+def _data_url(indicator: str, *, year_from: int = 2010) -> str:
+    # One indicator per request: multi-indicator ``+`` filters often return
+    # an empty STRUCTURE CSV or JSON from this API.
     q = (
         f"c[TIME_PERIOD]=ge:{year_from}-01"
-        f"&c[INDICATOR]={quote(ind, safe='+')}"
+        f"&c[INDICATOR]={quote(indicator, safe='')}"
         f"&c[FREQUENCY]=A"
     )
     return f"{API_ROOT}?{q}"
@@ -53,10 +53,7 @@ def _data_url(*, year_from: int = 2010) -> str:
 
 def probe_version() -> dict[str, Any]:
     # Cheap probe: one indicator, one recent year window.
-    url = (
-        f"{API_ROOT}?c[TIME_PERIOD]=ge:2024-01"
-        f"&c[INDICATOR]=NGDP_RPCH&c[FREQUENCY]=A&firstNObservations=5"
-    )
+    url = _data_url("NGDP_RPCH", year_from=2024) + "&firstNObservations=5"
     body, headers = fetch_bytes(
         url,
         timeout=60.0,
@@ -145,27 +142,39 @@ def extract_live(
             "path": str(dest),
             "skipped": True,
         }
-    url = _data_url()
-    body, headers = fetch_bytes(
-        url,
-        timeout=180.0,
-        extra_headers={"Accept": "text/csv"},
-    )
-    # Keep verbatim SDMX CSV next to tidy table.
-    raw_path = dest.parent / "weo_sdmx.csv"
-    write_artifact(
-        raw_path,
-        body,
-        url=url,
-        headers=headers,
-        extra_meta={"mode": "live", "version": version},
-    )
-    table = _parse_csv(body)
+    frames: list[pd.DataFrame] = []
+    last_headers: dict[str, str] = {}
+    last_url = ""
+    for ind in INDICATORS:
+        url = _data_url(ind)
+        last_url = url
+        body, headers = fetch_bytes(
+            url,
+            timeout=180.0,
+            extra_headers={"Accept": "text/csv"},
+        )
+        last_headers = headers
+        head = body[:80].lstrip()
+        if head.startswith(b"{") or head.startswith(b"["):
+            raise ValueError(
+                f"{SOURCE_ID}: API returned JSON instead of CSV for {ind} "
+                f"(first bytes={head[:40]!r})",
+            )
+        write_artifact(
+            dest.parent / f"weo_{ind}.csv",
+            body,
+            url=url,
+            headers=headers,
+            extra_meta={"mode": "live", "version": version, "indicator": ind},
+        )
+        frames.append(_parse_csv(body))
+    table = pd.concat(frames, ignore_index=True)
+    table = table.sort_values(["indicator", "iso3", "year"]).reset_index(drop=True)
     meta = write_artifact(
         dest,
         table.to_csv(index=False).encode("utf-8"),
-        url=url,
-        headers=headers,
+        url=last_url,
+        headers=last_headers,
         extra_meta={
             "mode": "live",
             "version": version,
