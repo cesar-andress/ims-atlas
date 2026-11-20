@@ -56,7 +56,23 @@ function buildFactorCols(
 
   const factorNames = [...factorCols.keys()];
   if (factorNames.length === 0) {
-    throw new Error("No overlapping factors between weights and matrix");
+    // No shared factor/variable ids: degrade to equal per-column factors so
+    // UI paths (WeightLifter OAT, tornado) never white-screen the Variables page.
+    // Callers that need a hard failure should check notes / empty overlap upstream.
+    if (columns.length === 0) {
+      throw new Error("No overlapping factors between weights and matrix");
+    }
+    const eq = 1 / columns.length;
+    for (let j = 0; j < columns.length; j++) {
+      const id = columns[j]!;
+      factorCols.set(id, { idxs: [j], w: [1] });
+    }
+    const names = columns.slice();
+    return {
+      factorNames: names,
+      factorCols,
+      fw: names.map(() => eq),
+    };
   }
   let fw = factorNames.map((f) => weights.factors[f] ?? 0);
   const fwSum = fw.reduce((a, b) => a + b, 0);

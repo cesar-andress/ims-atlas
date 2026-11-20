@@ -27,4 +27,45 @@ describe("oneAtATimeWinnerThresholds", () => {
     expect(a?.lowerBeforeChange).not.toBeNull();
     expect(a?.challengerAtLower).toBe("BBB");
   });
+
+  it("does not throw when baseline mass sits on one factor (w→0 OAT)", () => {
+    const normalized = [
+      [10, 1],
+      [1, 10],
+    ];
+    const weights = {
+      factors: { A: 1, B: 0 },
+      variablesWithin: { A: { a1: 1 }, B: { b1: 1 } },
+      scheme: "manual",
+      notes: [],
+    };
+    expect(() =>
+      oneAtATimeWinnerThresholds({
+        normalized,
+        columns: ["a1", "b1"],
+        candidates: ["AAA", "BBB"],
+        weights,
+        steps: 11,
+      }),
+    ).not.toThrow();
+  });
+
+  it("handles a sole factor without throwing", () => {
+    const normalized = [[1], [2]];
+    const weights = {
+      factors: { A: 1 },
+      variablesWithin: { A: { a1: 1 } },
+      scheme: "manual",
+      notes: [],
+    };
+    expect(() =>
+      oneAtATimeWinnerThresholds({
+        normalized,
+        columns: ["a1"],
+        candidates: ["AAA", "BBB"],
+        weights,
+        steps: 5,
+      }),
+    ).not.toThrow();
+  });
 });

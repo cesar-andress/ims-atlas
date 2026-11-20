@@ -38,11 +38,25 @@ function withFactorWeight(
 ): HierarchicalWeights {
   const factors = { ...base.factors };
   const others = Object.keys(factors).filter((f) => f !== factor);
+  const clamped = Math.min(1, Math.max(0, w));
+  // Sole factor: OAT cannot redistribute; keep a valid simplex.
+  if (others.length === 0) {
+    factors[factor] = 1;
+    return {
+      ...base,
+      factors,
+      scheme: "manual",
+      notes: [...base.notes, `oat:${factor}=${clamped} (sole factor)`],
+    };
+  }
   const rest = others.reduce((s, f) => s + (base.factors[f] ?? 0), 0);
-  factors[factor] = w;
-  const remain = Math.max(0, 1 - w);
+  factors[factor] = clamped;
+  const remain = Math.max(0, 1 - clamped);
   if (rest <= 0) {
-    for (const f of others) factors[f] = 0;
+    // Others had zero mass (or were missing): share the remainder equally so
+    // hierarchicalWsm never sees an all-zero factor vector (UI white-screen).
+    const share = remain / others.length;
+    for (const f of others) factors[f] = share;
   } else {
     for (const f of others) {
       factors[f] = ((base.factors[f] ?? 0) / rest) * remain;
@@ -52,7 +66,7 @@ function withFactorWeight(
     ...base,
     factors,
     scheme: "manual",
-    notes: [...base.notes, `oat:${factor}=${w}`],
+    notes: [...base.notes, `oat:${factor}=${clamped}`],
   };
 }
 

@@ -42,8 +42,14 @@ function scaleFactor(
   if (!(factor in factors)) return weights;
   factors[factor] = Math.max(0, factors[factor]! * mult);
   const total = Object.values(factors).reduce((x, y) => x + y, 0);
-  if (total <= 0) return weights;
-  for (const k of Object.keys(factors)) factors[k] = factors[k]! / total;
+  if (total <= 0) {
+    // Avoid all-zero factor vectors (hierarchicalWsm / UI crash).
+    const keys = Object.keys(factors);
+    const eq = 1 / Math.max(1, keys.length);
+    for (const k of keys) factors[k] = eq;
+  } else {
+    for (const k of Object.keys(factors)) factors[k] = factors[k]! / total;
+  }
   return validateWeights({
     factors,
     variablesWithin: weights.variablesWithin,

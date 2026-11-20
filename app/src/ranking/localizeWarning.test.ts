@@ -29,9 +29,9 @@ describe("localizeWarning", () => {
   });
 
   it("translates weight/matrix mismatch errors", () => {
-    expect(localizeWarning("No variables left after restricting weights", "es")).toMatch(
-      /pesos manuales/i,
-    );
+    expect(
+      localizeWarning("No variables left after restricting weights", "es"),
+    ).toMatch(/pesos manuales/i);
     expect(
       localizeWarning("No overlapping factors between weights and matrix", "es"),
     ).toMatch(/factores/i);

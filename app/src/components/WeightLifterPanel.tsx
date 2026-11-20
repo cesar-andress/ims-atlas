@@ -12,13 +12,18 @@ export function WeightLifterPanel() {
 
   const rows = useMemo(() => {
     if (!model) return [];
-    return oneAtATimeWinnerThresholds({
-      normalized: model.normalized,
-      columns: model.prepared.usedVariables,
-      candidates: model.prepared.candidates,
-      weights: model.weights,
-      steps: 51,
-    });
+    try {
+      return oneAtATimeWinnerThresholds({
+        normalized: model.normalized,
+        columns: model.prepared.usedVariables,
+        candidates: model.prepared.candidates,
+        weights: model.weights,
+        steps: 51,
+      });
+    } catch {
+      // Never blank the Variables page: OAT is diagnostic-only.
+      return [];
+    }
   }, [model]);
 
   if (!model || rows.length === 0) {

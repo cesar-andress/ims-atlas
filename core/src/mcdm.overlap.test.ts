@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { factorContributions } from "./mcdm.js";
+import { factorContributions, hierarchicalWsm } from "./mcdm.js";
 import { restrictWeights, weightsManual } from "./weights.js";
 import { scoreBlock } from "./score.js";
 import type { VariableSpec } from "./types.js";
@@ -9,6 +9,24 @@ describe("overlapping factors bug", () => {
     { id: "IMPV", factor: "demand", direction: "benefit" },
     { id: "LPI", factor: "logistics", direction: "benefit" },
   ];
+
+  it("hierarchicalWsm degrades when variablesWithin miss all columns", () => {
+    const scores = hierarchicalWsm(
+      [
+        [1, 2],
+        [3, 4],
+      ],
+      ["IMPV", "LPI"],
+      {
+        factors: { ghost: 1 },
+        variablesWithin: { ghost: { NOPE: 1 } },
+        scheme: "manual",
+        notes: [],
+      },
+    );
+    expect(scores).toHaveLength(2);
+    expect(scores.every((s) => Number.isFinite(s))).toBe(true);
+  });
 
   it("weightsManual with disjoint UI keys still scores", () => {
     const w = weightsManual(
