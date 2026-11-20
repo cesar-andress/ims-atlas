@@ -45,6 +45,8 @@ ssh vpn-aplicaciones
 cd /opt/services/ims-atlas
 git pull --ff-only
 mkdir -p status data/release
+# Host nginx reads gitignored status/ before the Vite dist copy — sync after pull.
+./deploy/sync-public-status.sh
 # Node build (see below if no host Node)
 pnpm install --frozen-lockfile
 VITE_BASE=/ pnpm --filter @ims-atlas/core build
@@ -89,6 +91,7 @@ vpn-aplicaciones has no system Node; build with the official image:
 
 ```bash
 cd /opt/services/ims-atlas
+./deploy/sync-public-status.sh
 docker run --rm -v /opt/services/ims-atlas:/w -w /w -e VITE_BASE=/ node:20-alpine \
   sh -c 'corepack enable && corepack prepare pnpm@9.15.0 --activate && pnpm install --frozen-lockfile && pnpm --filter @ims-atlas/core build && pnpm --filter @ims-atlas/app build'
 docker compose -f deploy/docker-compose.yml up -d

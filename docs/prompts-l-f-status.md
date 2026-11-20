@@ -4,8 +4,8 @@ Agent audit against the pasted PROMPTS order. **Do not invent** rights, R&D text
 
 | Phase | Status | Notes |
 |-------|--------|-------|
-| L | Done (code) + ops partial | Live connectors, changes/history, updates UI, ef_epi, version banner. Live ETL ran locally; **no public release publish** until rights-verify. |
-| I | Done (code + edge) | ABIERTO/CERRADO stores, Entrar, privacy, Authelia live (`/datos-cerrados` → 302 auth). Users/emails still César-only. |
+| L | Done (code) + ops | Live connectors, changes/history, updates UI, ef_epi, version banner. Fixed `latest.json` pointer + fixture banner on live status; public `/status` shows live WB run (`is_fixture:false`). **No public release publish** until rights-verify. |
+| I | Done (code + edge) | ABIERTO/CERRADO stores, Entrar, privacy, Authelia live (`/datos-cerrados` → 302 auth). Deploy syncs `app/public/status` → host `status/` (`deploy/sync-public-status.sh`). Users/emails still César-only. |
 | D | Done (code) | Provenance, Verificar, verify-release, reproduce, spot-check UI. Spot-check network run is hand ops. |
 | H | Partial | Product banners + HS paths exist; full BACI HS4/6 product features need live BACI + rights before ship. |
 | R | Blocked human | Rights still `unknown` / `checked_by: null`. Dual staging scaffolding exists; public cells empty by gate. |
