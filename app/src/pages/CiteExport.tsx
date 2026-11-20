@@ -10,6 +10,7 @@ import {
   DATA_DOI,
   SOFTWARE_DOI,
 } from "../cite/citations";
+import { LANDING_PUBLICATIONS, formatPublicationApa } from "../landing/publications";
 import { hashConfig } from "../cite/configHash";
 import { downloadText, rankingToCsv } from "../cite/exportDownload";
 import { dataConfig } from "../dataConfig";
@@ -80,6 +81,17 @@ function CiteBody({
       >
         {t("download")} APA
       </button>
+
+      <h2 data-testid="cite-method-pubs-title">Metodología (publicaciones)</h2>
+      <ol data-testid="cite-method-pubs">
+        {LANDING_PUBLICATIONS.map((p) => (
+          <li key={p.id}>
+            <a href={p.url} rel="noopener noreferrer" target="_blank">
+              {formatPublicationApa(p)}
+            </a>
+          </li>
+        ))}
+      </ol>
 
       <h2>BibTeX</h2>
       <pre data-testid="cite-bibtex">{bib}</pre>

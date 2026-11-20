@@ -1,16 +1,11 @@
 # IMS Atlas — Caddy fragment for aiserv-server (vpn-server).
-# Merge into the existing atlas.aiserv.es server block; do not commit secrets here.
+# Source of truth for production: cesar-andress/aiserv-server caddy/Caddyfile.
+# Docs: deploy/README-access.md
 #
-# Prerequisites:
-#   - auth.aiserv.es already reverse_proxy to Authelia on 10.204.0.3:9091
-#   - IMS Atlas nginx on 10.204.0.3:8121 (deploy/docker-compose.yml)
-#   - Authelia rule: domain atlas.aiserv.es, resources ^/datos-cerrados/.*$, group equipo, two_factor
-#
-# Docs: https://www.authelia.com/integration/proxies/caddy/
+# Prompt 4: Authelia for everything except a minimal public whitelist
+# (landing, metodologia, privacidad, aviso-legal, robots, favicon, og, assets).
 
 # --- whoami (authenticate, then synthesize JSON from forward_auth headers) ---
-# Caddy passes Remote-* headers to the next handler after a successful forward_auth.
-# Place this route BEFORE the generic /datos-cerrados/* reverse_proxy if both exist.
 handle /datos-cerrados/whoami.json {
 	forward_auth 10.204.0.3:9091 {
 		uri /api/authz/forward-auth
@@ -18,14 +13,34 @@ handle /datos-cerrados/whoami.json {
 	}
 	header Cache-Control "private, no-store"
 	header X-Robots-Tag "noindex, nofollow"
-	# App expects {user, name, groups} (see app/src/auth/accessSession.ts).
 	header Content-Type application/json
 	respond `{"user":"{http.request.header.Remote-User}","name":"{http.request.header.Remote-Name}","groups":["{http.request.header.Remote-Groups}"],"email":"{http.request.header.Remote-Email}"}`
 }
 
-# --- cerrada store (team Parquet manifests and sidecars) ---
-@cerrado path /datos-cerrados/*
-handle @cerrado {
+# --- Public marketing (no session) ---
+@atlas_public {
+	path /
+	path /metodologia
+	path /privacidad
+	path /aviso-legal
+	path /robots.txt
+	path /favicon.ico
+	path /favicon.svg
+	path /og-landing.svg
+	path /assets/*
+}
+
+handle @atlas_public {
+	reverse_proxy 10.204.0.3:8121 {
+		header_up Host {host}
+		header_up X-Real-IP {remote_host}
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Forwarded-Proto {scheme}
+	}
+}
+
+# --- Everything else (app + data + status + cerrada) behind Authelia ---
+handle {
 	forward_auth 10.204.0.3:9091 {
 		uri /api/authz/forward-auth
 		copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
@@ -33,10 +48,11 @@ handle @cerrado {
 	header Cache-Control "private, no-store"
 	header X-Robots-Tag "noindex, nofollow"
 	reverse_proxy 10.204.0.3:8121 {
+		header_up Host {host}
+		header_up X-Real-IP {remote_host}
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Forwarded-Proto {scheme}
 		header_up X-Atlas-Auth-User {http.request.header.Remote-User}
 		header_up X-Atlas-Auth-Groups {http.request.header.Remote-Groups}
 	}
 }
-
-# Optional: forward client IP for Authelia regulation / logs (tune trusted_proxies globally)
-# trusted_proxies 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16

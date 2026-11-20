@@ -2,7 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 
 async function assertHeaderFitsViewport(page: Page, width: number, height: number) {
   await page.setViewportSize({ width, height });
-  await page.goto("/");
+  await page.goto("/inicio");
 
   const header = page.getByTestId("site-header");
   await expect(header).toBeVisible();

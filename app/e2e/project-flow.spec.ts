@@ -25,7 +25,7 @@ test.describe("Default language", () => {
   test("Spanish is the default; the ES/EN switch changes it and is remembered", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto("/inicio");
     await expect(page.getByTestId("home-view").locator("h1")).toHaveText(
       "Tus proyectos",
     );
@@ -53,7 +53,7 @@ test.describe("Home and project bar", () => {
   test("first visit creates the example project; the bar is hidden on Home", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto("/inicio");
     const example = page.locator('[data-example="1"]');
     await expect(example).toBeVisible({ timeout: 15_000 });
     await expect(example).toContainText("Colombian footwear");
@@ -67,7 +67,7 @@ test.describe("Home and project bar", () => {
   test("opening the example shows the bar, chips and the three steps", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto("/inicio");
     await page.locator('[data-example="1"]').click();
     await expect(page.getByTestId("results-dashboard")).toBeVisible({
       timeout: 20_000,
@@ -177,7 +177,7 @@ test.describe("Datos, Fuentes y datos and footer", () => {
   test("footer links open Fuentes y datos tabs; team tools are not in the footer", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto("/inicio");
     const footer = page.getByTestId("site-footer");
     await expect(footer).toBeVisible();
     await expect(footer.getByTestId("footer-sources")).toBeVisible();

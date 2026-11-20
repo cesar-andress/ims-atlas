@@ -19,7 +19,7 @@ test.describe("GUI remaining: tour, LineUp, compare, clicks", () => {
   });
 
   test("example project in 2 clicks, then the three steps", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/inicio");
     const example = page.locator('[data-example="1"]');
     await expect(example).toBeVisible({ timeout: 15_000 }); // click 1 target
     await example.click();
@@ -59,7 +59,7 @@ test.describe("GUI remaining: tour, LineUp, compare, clicks", () => {
     await page.addInitScript(() => {
       localStorage.removeItem("ims-atlas.first-visit-dismissed");
     });
-    await page.goto("/");
+    await page.goto("/inicio");
     await expect(page.getByTestId("home-first-time")).toBeVisible();
     await page.getByTestId("home-tour-open").click();
     await expect(page.getByTestId("onboarding-tour")).toBeVisible();

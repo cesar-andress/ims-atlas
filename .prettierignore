@@ -7,6 +7,7 @@ pnpm-lock.yaml
 uv.lock
 *.md
 catalog/variables.yaml
+catalog/sources.yaml
 catalog/LICENSES.md
 etl/tests/fixtures/**
 core/fixtures/

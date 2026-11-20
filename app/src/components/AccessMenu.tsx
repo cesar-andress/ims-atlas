@@ -82,6 +82,8 @@ export function AccessMenu() {
             {t("access.login")}
           </button>
         </>
+      ) : status === "ungated" ? (
+        <span className="access-menu-muted small" data-testid="access-ungated" />
       ) : (
         <details className="access-user-menu">
           <summary className="access-user-summary">

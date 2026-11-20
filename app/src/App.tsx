@@ -1,11 +1,11 @@
 import { lazy, Suspense, useEffect, type ReactElement } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { RequireSession } from "./auth/RequireSession";
 import { AppShellFrame } from "./components/AppChrome";
 import { ResultsShell, type ResultTab } from "./components/ResultsShell";
 import { ToastProvider } from "./components/ToastHost";
 import { HelpProvider } from "./help/HelpProvider";
 import { Home } from "./pages/Home";
-import { Privacy } from "./pages/Privacy";
 import { RankingModelProvider } from "./ranking/RankingModelContext";
 import { prefetchCriticalRoutes } from "./ranking/prefetchRoutes";
 import { scheduleIdle } from "./scheduleIdle";
@@ -154,51 +154,54 @@ function AppShell() {
   }, []);
 
   return (
-    <AppShellFrame showConfig={false} configSlot={null}>
-      <Suspense fallback={<RouteFallback />}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/datos" element={<ProjectDatos />} />
-          <Route path="/variables" element={<VariablesHub />} />
-          <Route path="/analisis" element={results("ranking", <Ranking />)} />
-          <Route path="/advanced_tools" element={<AdvancedTools />} />
-          <Route path="/design" element={<DesignSystem />} />
-          <Route path="/catalog" element={<Catalog />} />
-          <Route path="/builder" element={<Builder />} />
-          <Route path="/ranking" element={results("ranking", <Ranking />)} />
-          <Route path="/matrix" element={results("matrix", <Matrix />)} />
-          <Route path="/map" element={results("map", <MarketMap />)} />
-          <Route path="/uncertainty" element={results(null, <Uncertainty />)} />
-          <Route path="/backtest" element={results("backtest", <Backtest />)} />
-          <Route path="/time" element={results("time", <TimeExplorer />)} />
-          <Route path="/cite" element={<CiteExport />} />
-          <Route path="/byod" element={<Byod />} />
-          <Route path="/imsfe_import" element={<ImsfeImport />} />
-          <Route path="/ai_verify" element={<AiVerify />} />
-          <Route path="/docs" element={<Docs />} />
-          <Route path="/paper" element={<PaperSupport />} />
-          <Route path="/changelog" element={<Changelog />} />
-          <Route path="/factors" element={<Factors />} />
-          <Route path="/compare" element={results("compare", <Compare />)} />
-          <Route path="/norm_lab" element={<NormLab />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/project_variables" element={<ProjectVariables />} />
-          <Route path="/project_coverage" element={<ProjectCoverage />} />
-          <Route path="/project_dashboard" element={<ProjectDashboard />} />
-          <Route path="/explore" element={<Explore />} />
-          <Route path="/explore_analysis" element={<ExploreAnalysis />} />
-          <Route path="/country" element={<CountryProfile />} />
-          <Route path="/sql" element={<SqlConsole />} />
-          <Route path="/status" element={<DataStatus />} />
-          <Route path="/data/sources" element={<FuentesDatos />} />
-          <Route path="/data/variables/:id" element={<DataVariable />} />
-          <Route path="/data/pipeline" element={<DataPipeline />} />
-          <Route path="/data/releases" element={<DataReleases />} />
-          <Route path="/data/updates" element={<DataUpdates />} />
-          <Route path="/privacidad" element={<Privacy />} />
-        </Routes>
-      </Suspense>
-    </AppShellFrame>
+    <RequireSession>
+      <AppShellFrame showConfig={false} configSlot={null}>
+        <Suspense fallback={<RouteFallback />}>
+          <Routes>
+            {/* Public `/` is landing.html (nginx). App home lives at /inicio. */}
+            <Route path="/" element={<Navigate to="/inicio" replace />} />
+            <Route path="/inicio" element={<Home />} />
+            <Route path="/datos" element={<ProjectDatos />} />
+            <Route path="/variables" element={<VariablesHub />} />
+            <Route path="/analisis" element={results("ranking", <Ranking />)} />
+            <Route path="/advanced_tools" element={<AdvancedTools />} />
+            <Route path="/design" element={<DesignSystem />} />
+            <Route path="/catalog" element={<Catalog />} />
+            <Route path="/builder" element={<Builder />} />
+            <Route path="/ranking" element={results("ranking", <Ranking />)} />
+            <Route path="/matrix" element={results("matrix", <Matrix />)} />
+            <Route path="/map" element={results("map", <MarketMap />)} />
+            <Route path="/uncertainty" element={results(null, <Uncertainty />)} />
+            <Route path="/backtest" element={results("backtest", <Backtest />)} />
+            <Route path="/time" element={results("time", <TimeExplorer />)} />
+            <Route path="/cite" element={<CiteExport />} />
+            <Route path="/byod" element={<Byod />} />
+            <Route path="/imsfe_import" element={<ImsfeImport />} />
+            <Route path="/ai_verify" element={<AiVerify />} />
+            <Route path="/docs" element={<Docs />} />
+            <Route path="/paper" element={<PaperSupport />} />
+            <Route path="/changelog" element={<Changelog />} />
+            <Route path="/factors" element={<Factors />} />
+            <Route path="/compare" element={results("compare", <Compare />)} />
+            <Route path="/norm_lab" element={<NormLab />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/project_variables" element={<ProjectVariables />} />
+            <Route path="/project_coverage" element={<ProjectCoverage />} />
+            <Route path="/project_dashboard" element={<ProjectDashboard />} />
+            <Route path="/explore" element={<Explore />} />
+            <Route path="/explore_analysis" element={<ExploreAnalysis />} />
+            <Route path="/country" element={<CountryProfile />} />
+            <Route path="/sql" element={<SqlConsole />} />
+            <Route path="/status" element={<DataStatus />} />
+            <Route path="/data/sources" element={<FuentesDatos />} />
+            <Route path="/data/variables/:id" element={<DataVariable />} />
+            <Route path="/data/pipeline" element={<DataPipeline />} />
+            <Route path="/data/releases" element={<DataReleases />} />
+            <Route path="/data/updates" element={<DataUpdates />} />
+          </Routes>
+        </Suspense>
+      </AppShellFrame>
+    </RequireSession>
   );
 }
 

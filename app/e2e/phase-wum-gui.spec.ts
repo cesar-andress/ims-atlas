@@ -27,7 +27,7 @@ test.describe("Phase W/U/M GUI flow", () => {
   });
 
   test("example project reaches the ranking in 2 clicks", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/inicio");
     await expect(page.getByTestId("home-projects")).toBeVisible();
     await page.locator('[data-example="1"]').click(); // 1: open the example card
     await expect(page.getByTestId("results-dashboard")).toBeVisible({
@@ -41,7 +41,7 @@ test.describe("Phase W/U/M GUI flow", () => {
   test("header is one row: logo, project switcher, help, language, team login", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto("/inicio");
     const header = page.getByTestId("site-header");
     await expect(header).toBeVisible();
     await expect(page.getByTestId("project-switcher")).toBeVisible();

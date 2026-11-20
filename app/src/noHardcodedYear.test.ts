@@ -33,6 +33,8 @@ describe("no hard-coded analysis year 2023 in app/src (EXTRA-4)", () => {
       const rel = f.slice(ROOT.length + 1);
       // Locales may still mention 2023 for published paper backtest facts.
       if (rel.startsWith("locales/")) continue;
+      // Bibliographic publication years on the public landing.
+      if (rel === "landing/publications.ts") continue;
       const text = readFileSync(f, "utf8");
       if (/\b2023\b/.test(text)) hits.push(rel);
     }

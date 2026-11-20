@@ -1,11 +1,34 @@
 import { execSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv, type Plugin } from "vite";
 
 const appRoot = dirname(fileURLToPath(import.meta.url));
+
+const LANDING_PATHS = new Set(["/", "/metodologia", "/privacidad", "/aviso-legal"]);
+
+/** Dev + preview: public marketing routes serve landing.html (MPA). */
+function landingHtmlFallback(): Plugin {
+  function rewrite(req: { url?: string }, _res: unknown, next: () => void): void {
+    const raw = req.url ?? "/";
+    const pathOnly = raw.split("?")[0] ?? "/";
+    if (LANDING_PATHS.has(pathOnly)) {
+      req.url = `/landing.html${raw.includes("?") ? raw.slice(raw.indexOf("?")) : ""}`;
+    }
+    next();
+  }
+  return {
+    name: "ims-atlas-landing-html",
+    configureServer(server) {
+      server.middlewares.use(rewrite);
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(rewrite);
+    },
+  };
+}
 
 /** Write /version.json so clients can detect a newer deploy and reload. */
 function emitVersionJson(): Plugin {
@@ -100,7 +123,7 @@ export default defineConfig(({ mode }) => {
   const base = env.VITE_BASE || process.env.VITE_BASE || "/";
   return {
     base,
-    plugins: [react(), emitVersionJson(), compressAssets()],
+    plugins: [react(), landingHtmlFallback(), emitVersionJson(), compressAssets()],
     server: {
       fs: {
         // Phase N Changelog imports repo-root CHANGELOG.md via ?raw.
@@ -135,6 +158,10 @@ export default defineConfig(({ mode }) => {
           ),
       },
       rollupOptions: {
+        input: {
+          main: resolve(appRoot, "index.html"),
+          landing: resolve(appRoot, "landing.html"),
+        },
         output: {
           manualChunks(id) {
             if (id.includes("node_modules")) {

@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test.describe("Phase F polish", () => {
   test("footer shows Atlas credit and no bracketed placeholder", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/inicio");
     await expect(page.getByTestId("footer-atlas-credit")).toContainText("IMS Atlas");
     await expect(page.getByTestId("footer-atlas-credit")).toContainText(
       "AISERV SYSTEMS SLU",

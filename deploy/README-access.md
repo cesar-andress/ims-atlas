@@ -11,15 +11,17 @@ ims-atlas checkout).
 | **Edge** | Caddy on vpn-server (`aiserv-server`) — TLS, `forward_auth`, headers |
 | **Portal** | `https://auth.aiserv.es` — already proxies to Authelia on vpn-aplicaciones **`10.204.0.3:9091`** (do not republish Authelia on `0.0.0.0`) |
 | **App origin** | nginx on vpn-aplicaciones `10.204.0.3:8121` — public SPA + static cerrada tree at `/datos-cerrados/` |
-| **Policy** | Authelia `access_control`: default **deny**; rule for `atlas.aiserv.es` + `resources: ['^/datos-cerrados/.*$']` + `subject: ['group:equipo']` → **two_factor** |
+| **Policy** | Authelia `access_control` for `*.aiserv.es` (one_factor). Caddy on vpn-server applies `forward_auth` to **all** `atlas.aiserv.es` paths except a public whitelist (landing, metodología, privacidad, aviso-legal, robots, favicon, og, `/assets/*`). |
 
 nginx serves files only; it does **not** authenticate. Caddy enforces Authelia on
-the edge. Local Playwright coverage uses `deploy/docker-compose.access-e2e.yml`
+the edge. Public HTML shells are `landing.html` for `/`, `/metodologia`, `/privacidad`,
+`/aviso-legal`. The SPA (`index.html`) and `/data/*`, `/status/*`, `/datos-cerrados/*`
+require a session. Local Playwright coverage uses `deploy/docker-compose.access-e2e.yml`
 (Caddy + Authelia + nginx).
 
-Apply the Caddy snippet from `deploy/caddy/atlas-datos-cerrados.snippet` on
-aiserv-server (patch file in the same directory). Do **not** commit aiserv-server
-changes from this repo.
+Production Caddyfile lives in **aiserv-server** (`caddy/Caddyfile`); the fragment
+`deploy/caddy/atlas-datos-cerrados.snippet` documents the intended atlas block.
+Deploy with `./scripts/deploy-caddy.sh` on vpn-server — never edit `/etc/caddy` by hand.
 
 ## Secrets (`*_FILE`)
 

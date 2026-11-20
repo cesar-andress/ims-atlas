@@ -13,7 +13,7 @@ test.describe("Phase 12 docs + a11y basics", () => {
   });
 
   test("skip link targets main content", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/inicio");
     const skip = page.locator(".skip-link");
     await expect(skip).toHaveAttribute("href", "#main-content");
     await expect(page.locator("#main-content")).toBeVisible();

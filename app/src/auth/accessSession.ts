@@ -7,11 +7,17 @@ export type WhoAmIUser = {
   groups: string[];
 };
 
-export type AccessSessionStatus = "loading" | "anonymous" | "authenticated";
+export type AccessSessionStatus =
+  | "loading"
+  | "anonymous"
+  | "authenticated"
+  /** Whoami endpoint missing (local Vite / CI without Authelia) — do not gate. */
+  | "ungated";
 
 export type AccessSessionState =
   | { status: "loading" }
   | { status: "anonymous" }
+  | { status: "ungated" }
   | { status: "authenticated"; profile: WhoAmIUser };
 
 async function fetchWhoAmI(whoamiPath: string): Promise<AccessSessionState> {
@@ -29,6 +35,10 @@ async function fetchWhoAmI(whoamiPath: string): Promise<AccessSessionState> {
         Accept: "application/json",
       },
     });
+    // No Authelia edge in this environment (local/CI): leave the SPA usable.
+    if (res.status === 404) {
+      return { status: "ungated" };
+    }
     if (
       res.type === "opaqueredirect" ||
       res.status === 401 ||
@@ -111,7 +121,9 @@ export function useAccessSession(): UseAccessSessionResult {
       ? "loading"
       : state.status === "authenticated"
         ? "authenticated"
-        : "anonymous";
+        : state.status === "ungated"
+          ? "ungated"
+          : "anonymous";
 
   const profile = state.status === "authenticated" ? state.profile : undefined;
 
