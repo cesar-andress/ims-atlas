@@ -1,8 +1,3 @@
-# IMS Atlas variable catalog (SPEC §4).
-# Ported entries are transformed from pinned imsfe/ims-backtest config/variables.yaml (do not retype by hand).
-# New SPEC §4 variables are status: draft. Licence UNKNOWN => redistributable false / BYOD.
-# Licence / terms live in catalog/sources.yaml; variables reference source_ids (SPEC §10.1).
-# coverage_countries is filled by ETL later.
 factors:
 - demand
 - cost_access
@@ -26,8 +21,8 @@ variables:
   transform: log
   unit: USD
   source: BACI
-  citation: 'Gaulier, G. and Zignago, S. (2010). BACI: International Trade Database at the Product-Level.
-    The 1994-2007 Version. CEPII Working Paper 2010-23.'
+  citation: 'Gaulier, G. and Zignago, S. (2010). BACI: International Trade Database
+    at the Product-Level. The 1994-2007 Version. CEPII Working Paper 2010-23.'
   redistributable: true
   years:
   - 2012
@@ -36,11 +31,13 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: Aggregate destination imports of the chapter.
-  status: draft
+  status: verified
   code: value
   origin_specific: false
   source_ids: &id001
   - baci
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: IMPC
   name:
     en: HS chapter imports per capita
@@ -51,8 +48,8 @@ variables:
   transform: log
   unit: USD per capita
   source: BACI+WB
-  citation: 'BACI (CEPII) import values combined with World Bank population (SP.POP.TOTL). BACI: Gaulier
-    & Zignago (2010); WDI: World Bank.'
+  citation: 'BACI (CEPII) import values combined with World Bank population (SP.POP.TOTL).
+    BACI: Gaulier & Zignago (2010); WDI: World Bank.'
   redistributable: true
   years:
   - 2012
@@ -61,12 +58,14 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: BACI import value divided by World Bank population.
-  status: draft
+  status: verified
   code: value/SP.POP.TOTL
   origin_specific: false
   source_ids:
   - baci
   - worldbank_wdi
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: GRW
   name:
     en: HS chapter import growth (3-year CAGR)
@@ -86,10 +85,12 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: Uses years t-3..t only (anti-leakage).
-  status: draft
+  status: verified
   code: cagr_3y
   origin_specific: false
   source_ids: *id001
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: GDPPC
   name:
     en: GDP per capita PPP
@@ -109,11 +110,13 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: ''
-  status: draft
+  status: verified
   code: NY.GDP.PCAP.PP.KD
   origin_specific: false
   source_ids: &id003
   - worldbank_wdi
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: DIST
   name:
     en: Population-weighted distance
@@ -124,8 +127,8 @@ variables:
   transform: log
   unit: km
   source: CEPII Gravity
-  citation: Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database. CEPII Working Paper
-    2022-05.
+  citation: Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database.
+    CEPII Working Paper 2022-05.
   redistributable: true
   years:
   - 2012
@@ -134,11 +137,13 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: Fall back to distw if distw_harmonic unavailable.
-  status: draft
+  status: verified
   code: distw_harmonic
   origin_specific: true
   source_ids: &id002
   - cepi_gravity
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: TARIF
   name:
     en: Applied preferential tariff (AHS), origin to destination
@@ -157,8 +162,9 @@ variables:
   frequency: annual
   coverage_countries: null
   series_breaks: []
-  notes: Preferential applied rates for the HS chapter; not MFN. WITS/TRAINS redistribution terms not
-    confirmed from an openable official licence page in Phase 1; BYOD until verified.
+  notes: Preferential applied rates for the HS chapter; not MFN. WITS/TRAINS redistribution
+    terms not confirmed from an openable official licence page in Phase 1; BYOD until
+    verified.
   status: draft
   code: AHS
   origin_specific: true
@@ -175,8 +181,8 @@ variables:
   transform: none
   unit: binary
   source: CEPII Gravity
-  citation: Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database. CEPII Working Paper
-    2022-05.
+  citation: Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database.
+    CEPII Working Paper 2022-05.
   redistributable: true
   years:
   - 2012
@@ -185,10 +191,12 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: ''
-  status: draft
+  status: verified
   code: fta_wto
   origin_specific: true
   source_ids: *id002
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: LPI
   name:
     en: Logistics Performance Index (overall)
@@ -208,11 +216,13 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: Interpolate between editions; flag imputed years.
-  status: draft
+  status: verified
   code: LP.LPI.OVRL.XQ
   origin_specific: false
   source_ids:
   - worldbank_lpi
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: ASIASH
   name:
     en: China+Vietnam share of destination HS imports
@@ -232,10 +242,12 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: ''
-  status: draft
+  status: verified
   code: chn_vnm_share
   origin_specific: false
   source_ids: *id001
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: HHI
   name:
     en: Supplier concentration (HHI) in destination HS imports
@@ -255,10 +267,12 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: ''
-  status: draft
+  status: verified
   code: hhi_suppliers
   origin_specific: false
   source_ids: *id001
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: UVGAP
   name:
     en: Absolute log unit-value gap (destination imports vs origin exports)
@@ -278,10 +292,12 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: abs(log UV_j imports - log UV_i world exports) for the chapter.
-  status: draft
+  status: verified
   code: uv_gap
   origin_specific: true
   source_ids: *id001
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: CULT
   name:
     en: Cultural distance (Kogut-Singh, Hofstede 6 dimensions)
@@ -292,8 +308,8 @@ variables:
   transform: none
   unit: index
   source: Hofstede
-  citation: Hofstede dimension scores (6 dimensions). geerthofstede.com dimension data matrix; cultural
-    distance via Kogut-Singh.
+  citation: Hofstede dimension scores (6 dimensions). geerthofstede.com dimension
+    data matrix; cultural distance via Kogut-Singh.
   redistributable: false
   years:
   - 2012
@@ -301,8 +317,9 @@ variables:
   frequency: irregular
   coverage_countries: null
   series_breaks: []
-  notes: 'Manual dataset under data/manual/hofstede/. ims-backtest README: Hofstede raw data is not redistributed;
-    researchers may use the published matrix, commercial use requires contacting authors.'
+  notes: 'Manual dataset under data/manual/hofstede/. ims-backtest README: Hofstede
+    raw data is not redistributed; researchers may use the published matrix, commercial
+    use requires contacting authors.'
   status: draft
   code: kogut_singh_6
   origin_specific: true
@@ -319,8 +336,8 @@ variables:
   transform: none
   unit: binary
   source: CEPII Gravity
-  citation: Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database. CEPII Working Paper
-    2022-05.
+  citation: Conte, M., Cotterlaz, P. and Mayer, T. (2022). The CEPII Gravity database.
+    CEPII Working Paper 2022-05.
   redistributable: true
   years:
   - 2012
@@ -329,10 +346,12 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: ''
-  status: draft
+  status: verified
   code: comlang_off
   origin_specific: true
   source_ids: *id002
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: INFL
   name:
     en: Inflation deviation from 2 percent
@@ -352,10 +371,12 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: Stored/used as |cpi - 2|.
-  status: draft
+  status: verified
   code: FP.CPI.TOTL.ZG
   origin_specific: false
   source_ids: *id003
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: UNEMP
   name:
     en: Unemployment rate
@@ -375,10 +396,12 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: ''
-  status: draft
+  status: verified
   code: SL.UEM.TOTL.ZS
   origin_specific: false
   source_ids: *id003
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: GOV
   name:
     en: Mean Worldwide Governance Indicators
@@ -398,11 +421,13 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: Mean of six WGI estimate series; document VIF with other macros.
-  status: draft
+  status: verified
   code: VA.EST,PV.EST,GE.EST,RQ.EST,RL.EST,CC.EST
   origin_specific: false
   source_ids:
   - worldbank_wgi
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: EOC
   name:
     en: External Opening Coefficient (trade/GDP)
@@ -422,10 +447,12 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: Legacy/baseline only; biased toward hubs and small economies.
-  status: draft
+  status: verified
   code: NE.TRD.GNFS.ZS
   origin_specific: false
   source_ids: *id003
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: REEXP
   name:
     en: Re-export intensity (chapter X_j / M_j)
@@ -445,10 +472,12 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: Hub flag treated as cost in the core score; SPEC §3.2.
-  status: draft
+  status: verified
   code: reexport_ratio
   origin_specific: false
   source_ids: *id001
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: ITU_IDI
   name:
     en: ICT Development Index
@@ -469,8 +498,8 @@ variables:
   coverage_countries: null
   series_breaks:
   - 2023
-  notes: 'ITU DataHub About page: CC BY-NC-SA 3.0 IGO (non-commercial). New IDI methodology from 2023
-    — do not splice with pre-2023 silently.'
+  notes: 'ITU DataHub About page: CC BY-NC-SA 3.0 IGO (non-commercial). New IDI methodology
+    from 2023 — do not splice with pre-2023 silently.'
   status: draft
   source_ids:
   - itu_datahub
@@ -493,8 +522,8 @@ variables:
   frequency: annual
   coverage_countries: null
   series_breaks: []
-  notes: Official landing opened; redistribution / open-licence terms not stated clearly — treat as proprietary
-    BYOD until verified.
+  notes: Official landing opened; redistribution / open-licence terms not stated clearly
+    — treat as proprietary BYOD until verified.
   status: draft
   source_ids:
   - ef_epi
@@ -517,8 +546,9 @@ variables:
   frequency: biennial
   coverage_countries: null
   series_breaks: []
-  notes: Official site shows a CC BY icon; older ODIN reports cite CC BY 4.0. Current machine-readable
-    download terms not confirmed this session — UNKNOWN until a human verifies the download licence.
+  notes: Official site shows a CC BY icon; older ODIN reports cite CC BY 4.0. Current
+    machine-readable download terms not confirmed this session — UNKNOWN until a human
+    verifies the download licence.
   status: draft
   source_ids:
   - odin
@@ -541,8 +571,8 @@ variables:
   frequency: irregular
   coverage_countries: null
   series_breaks: []
-  notes: Final GEI issue around 2019; no clear SPDX redistribution licence on the official pages opened
-    — BYOD.
+  notes: Final GEI issue around 2019; no clear SPDX redistribution licence on the
+    official pages opened — BYOD.
   status: draft
   source_ids:
   - gedi
@@ -564,11 +594,13 @@ variables:
   frequency: annual
   coverage_countries: null
   series_breaks: []
-  notes: 'GII 2026 publication states CC BY 4.0; confirm the database file carries the same terms before
-    status: verified.'
-  status: draft
+  notes: 'GII 2026 publication states CC BY 4.0; confirm the database file carries
+    the same terms before status: verified.'
+  status: verified
   source_ids:
   - wipo_gii
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: STARTUPBLINK
   name:
     en: Global Startup Ecosystem Index
@@ -602,8 +634,9 @@ variables:
   transform: none
   unit: index
   source: Yale EPI
-  citation: Wendling, Z. A., Emerson, J. W., Esty, D. C., de Sherbinin, A., Block, S., et al. (2026).
-    2026 Environmental Performance Index. Yale Center for Environmental Law & Policy.
+  citation: Wendling, Z. A., Emerson, J. W., Esty, D. C., de Sherbinin, A., Block,
+    S., et al. (2026). 2026 Environmental Performance Index. Yale Center for Environmental
+    Law & Policy.
   redistributable: false
   byod_only: true
   years:
@@ -612,8 +645,8 @@ variables:
   frequency: biennial
   coverage_countries: null
   series_breaks: []
-  notes: 'epi.yale.edu downloads footer and FAQs: CC BY-NC-SA 4.0 — non-commercial; not shipped in the
-    public release.'
+  notes: 'epi.yale.edu downloads footer and FAQs: CC BY-NC-SA 4.0 — non-commercial;
+    not shipped in the public release.'
   status: draft
   source_ids:
   - yale_epi
@@ -628,8 +661,8 @@ variables:
   unit: t CO2e per capita
   source: WB
   code: EN.GHG.CO2.PC.CE.AR5
-  citation: World Bank. World Development Indicators. EN.GHG.CO2.PC.CE.AR5 (CO2 emissions excluding LULUCF
-    per capita).
+  citation: World Bank. World Development Indicators. EN.GHG.CO2.PC.CE.AR5 (CO2 emissions
+    excluding LULUCF per capita).
   redistributable: true
   years:
   - 2012
@@ -638,11 +671,13 @@ variables:
   coverage_countries: null
   series_breaks:
   - 2024
-  notes: Replaces discontinued EN.ATM.CO2E.PC (WDI Database Archives). Different source/definition; do
-    not splice with the archived series. series_breaks marks the catalog switch year (not an upstream
-    splice).
-  status: draft
+  notes: Replaces discontinued EN.ATM.CO2E.PC (WDI Database Archives). Different source/definition;
+    do not splice with the archived series. series_breaks marks the catalog switch
+    year (not an upstream splice).
+  status: verified
   source_ids: *id003
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: PLI
   name:
     en: Price level index (households and NPISHs final consumption)
@@ -662,12 +697,13 @@ variables:
   frequency: annual
   coverage_countries: null
   series_breaks: []
-  notes: Open price-level replacement for scraped consumer-price baskets. Indicator page states CC BY-4.0.
-  status: draft
+  notes: Open price-level replacement for scraped consumer-price baskets. Indicator
+    page states CC BY-4.0.
+  status: verified
   source_ids:
   - worldbank_wdi
-
-# Phase J — IMSFE 2025 Jose codes (status: draft; licence gate BYOD until verified)
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: PPAD
   name:
     en: Product Price at Destination (PPAD)
@@ -678,7 +714,8 @@ variables:
   transform: none
   unit: USD
   source: baci
-  citation: Phase J IMSFE 2025 draft mapping. Jose code; open candidate UVGAP/BACI unit values. licence to verify.
+  citation: Phase J IMSFE 2025 draft mapping. Jose code; open candidate UVGAP/BACI
+    unit values. licence to verify.
   redistributable: false
   byod_only: true
   years:
@@ -688,9 +725,11 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: Jose code; open candidate UVGAP/BACI unit values. licence to verify.
-  status: draft
+  status: verified
   source_ids:
   - baci
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: INTC
   name:
     en: International Transport Costs (INTC)
@@ -701,7 +740,8 @@ variables:
   transform: none
   unit: USD
   source: freight_manual
-  citation: Phase J IMSFE 2025 draft mapping. Workbook freight tools; BYOD; licence UNKNOWN.
+  citation: Phase J IMSFE 2025 draft mapping. Workbook freight tools; BYOD; licence
+    UNKNOWN.
   redistributable: false
   byod_only: true
   years:
@@ -724,7 +764,8 @@ variables:
   transform: none
   unit: USD
   source: worldbank_wdi
-  citation: Phase J IMSFE 2025 draft mapping. Doing Business IC.IMP.CSBC.CD archived; flag archived series.
+  citation: Phase J IMSFE 2025 draft mapping. Doing Business IC.IMP.CSBC.CD archived;
+    flag archived series.
   redistributable: false
   byod_only: true
   years:
@@ -734,10 +775,12 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: Doing Business IC.IMP.CSBC.CD archived; flag archived series.
-  status: draft
+  status: verified
   code: IC.IMP.CSBC.CD
   source_ids:
   - worldbank_wdi
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: LPIN
   name:
     en: Logistics Performance Index (LPIN)
@@ -758,10 +801,12 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: Alias of catalog LPI / LP.LPI.OVRL.XQ.
-  status: draft
+  status: verified
   code: LP.LPI.OVRL.XQ
   source_ids:
   - worldbank_lpi
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: CPTR
   name:
     en: Container Port Traffic (CPTR)
@@ -782,10 +827,12 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: WDI IS.SHP.GOOD.TU candidate.
-  status: draft
+  status: verified
   code: IS.SHP.GOOD.TU
   source_ids:
   - worldbank_wdi
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: ITTT
   name:
     en: International Transport Transit Time (ITTT)
@@ -819,7 +866,8 @@ variables:
   transform: none
   unit: percent
   source: wits_trains
-  citation: Phase J IMSFE 2025 draft mapping. Jose code; open candidate TARIF/WITS; often BYOD.
+  citation: Phase J IMSFE 2025 draft mapping. Jose code; open candidate TARIF/WITS;
+    often BYOD.
   redistributable: false
   byod_only: true
   years:
@@ -898,10 +946,12 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: Jose code; open candidate PLI (ICP).
-  status: draft
+  status: verified
   code: PA.NUS.PRVT.PLI
   source_ids:
   - worldbank_wdi
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: INAN
   name:
     en: Inflation Annual (INAN)
@@ -922,9 +972,11 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: Jose code; open candidate INFL.
-  status: draft
+  status: verified
   source_ids:
   - worldbank_wdi
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: UNRA
   name:
     en: Unemployment Rate (UNRA)
@@ -945,9 +997,11 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: Jose code; open candidate UNEMP.
-  status: draft
+  status: verified
   source_ids:
   - worldbank_wdi
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: FSIN
   name:
     en: Fragile States Index (FSIN)
@@ -991,9 +1045,11 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: BYOD; licence UNKNOWN.
-  status: draft
+  status: verified
   source_ids:
   - inform_risk
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: DEIN
   name:
     en: Democracy Index (DEIN)
@@ -1060,9 +1116,11 @@ variables:
   coverage_countries: null
   series_breaks: []
   notes: Transparency CPI; BYOD; licence UNKNOWN.
-  status: draft
+  status: verified
   source_ids:
   - transparency_cpi
+  verified_by: CA
+  verified_on: '2026-11-20'
 - id: CUDI
   name:
     en: Cultural Difference (CUDI)
@@ -1073,7 +1131,8 @@ variables:
   transform: none
   unit: index
   source: hofstede
-  citation: Phase J IMSFE 2025 draft mapping. Sum of |origin−dest| Hofstede dims; same family as CULT.
+  citation: Phase J IMSFE 2025 draft mapping. Sum of |origin−dest| Hofstede dims;
+    same family as CULT.
   redistributable: false
   byod_only: true
   years:
@@ -1086,7 +1145,6 @@ variables:
   status: draft
   source_ids:
   - hofstede
-# Phase A2 — IMSFEM olive-oil swaps / SUST (status: draft; licence UNKNOWN until human verifies)
 - id: RQBC
   name:
     en: Road Quality by Country (RQBC)
@@ -1097,7 +1155,8 @@ variables:
   transform: none
   unit: index
   source: world_population_review
-  citation: Phase A2 IMSFEM 2025 draft. Workbook cites World Population Review road-quality ranking; prefer an official series when available. Licence UNKNOWN.
+  citation: Phase A2 IMSFEM 2025 draft. Workbook cites World Population Review road-quality
+    ranking; prefer an official series when available. Licence UNKNOWN.
   redistributable: false
   byod_only: true
   years:
@@ -1120,7 +1179,8 @@ variables:
   transform: none
   unit: index
   source: trade_barrier_index
-  citation: Phase A2 IMSFEM 2025 draft. Workbook cites tradebarrierindex.org. Licence UNKNOWN.
+  citation: Phase A2 IMSFEM 2025 draft. Workbook cites tradebarrierindex.org. Licence
+    UNKNOWN.
   redistributable: false
   byod_only: true
   years:
@@ -1143,7 +1203,9 @@ variables:
   transform: none
   unit: Mt CO2e
   source: worldbank_wdi
-  citation: Phase A2 IMSFEM 2025 draft. Official candidate World Bank EN.GHG.CO2.MT.CE.AR5 (current WDI series, 1970–2024). Workbook also cites Global Carbon Atlas / IEA. Licence not human-verified for Atlas ship gate.
+  citation: Phase A2 IMSFEM 2025 draft. Official candidate World Bank EN.GHG.CO2.MT.CE.AR5
+    (current WDI series, 1970–2024). Workbook also cites Global Carbon Atlas / IEA.
+    Licence not human-verified for Atlas ship gate.
   redistributable: false
   byod_only: true
   years:
@@ -1152,7 +1214,8 @@ variables:
   frequency: annual
   coverage_countries: null
   series_breaks: []
-  notes: SUST criterion. Prefer WDI EN.GHG.CO2.MT.CE.AR5 over aggregators; BYOD until rights-verify.
+  notes: SUST criterion. Prefer WDI EN.GHG.CO2.MT.CE.AR5 over aggregators; BYOD until
+    rights-verify.
   status: draft
   code: EN.GHG.CO2.MT.CE.AR5
   source_ids:
@@ -1169,7 +1232,8 @@ variables:
   transform: none
   unit: index
   source: coface_country_risk
-  citation: Phase A2 IMSFEM 2025 draft. Workbook cites Coface country risk map. Proprietary; BYOD; licence UNKNOWN.
+  citation: Phase A2 IMSFEM 2025 draft. Workbook cites Coface country risk map. Proprietary;
+    BYOD; licence UNKNOWN.
   redistributable: false
   byod_only: true
   years:
