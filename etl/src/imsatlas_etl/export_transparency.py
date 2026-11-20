@@ -276,23 +276,44 @@ def _panel_coverage_stats(root: Path) -> dict[str, dict[str, Any]]:
     )
     if cy_path is not None:
         cy = pd.read_parquet(cy_path)
-        for col in cy.columns:
-            if col in {"iso3", "year"}:
-                continue
-            sub = cy[["iso3", "year", col]].dropna()
-            if sub.empty:
-                continue
-            n_iso = int(sub["iso3"].nunique())
-            y0, y1 = int(sub["year"].min()), int(sub["year"].max())
-            # Approximate coverage vs full iso×year grid of the panel.
-            grid = int(cy["iso3"].nunique() * max(1, cy["year"].nunique()))
-            filled = int(len(sub))
-            out[str(col)] = {
-                "n_countries": n_iso,
-                "year_min": y0,
-                "year_max": y1,
-                "coverage_pct": round(100.0 * filled / grid, 1) if grid else None,
+        # Long release shape: iso3, year, variable_id, value, …
+        if {"variable_id", "value"}.issubset(cy.columns):
+            long = cy.dropna(subset=["value"])
+            for vid, g in long.groupby("variable_id"):
+                out[str(vid)] = {
+                    "n_countries": int(g["iso3"].nunique()),
+                    "year_min": int(g["year"].min()),
+                    "year_max": int(g["year"].max()),
+                    "coverage_pct": None,
+                }
+        else:
+            skip = {
+                "iso3",
+                "year",
+                "variable_id",
+                "value",
+                "flag_imputed",
+                "flag_locf",
             }
+            for col in cy.columns:
+                if col in skip:
+                    continue
+                sub = cy[["iso3", "year", col]].dropna()
+                if sub.empty:
+                    continue
+                n_iso = int(sub["iso3"].nunique())
+                y0, y1 = int(sub["year"].min()), int(sub["year"].max())
+                grid = int(cy["iso3"].nunique() * max(1, cy["year"].nunique()))
+                filled = int(len(sub))
+                pct = round(100.0 * filled / grid, 1) if grid else None
+                if pct is not None:
+                    pct = min(pct, 100.0)
+                out[str(col)] = {
+                    "n_countries": n_iso,
+                    "year_min": y0,
+                    "year_max": y1,
+                    "coverage_pct": pct,
+                }
 
     cp_candidates = [curated / "country_product.parquet"]
     cp_candidates.extend(sorted(internal.glob("v*/country_product.parquet")))
@@ -402,11 +423,11 @@ def _variables_payload(
         cov_matrix = coverage.get(vid)
         stats = _coverage_stats_for(cov_matrix)
         if not stats:
-            # Fall back: by variable id, then by upstream code column.
+            # Fall back: by variable id, then by upstream WB-style code column.
             stats = panel_stats.get(vid)
             if not stats:
                 code = str(var.get("code") or "").split(",")[0].strip()
-                if code:
+                if code and code not in {"value", "variable_id"}:
                     stats = panel_stats.get(code)
         notes = var.get("notes")
         alias = var.get("alias_of")
