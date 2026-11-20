@@ -44,4 +44,45 @@ describe("rankingEngine COL HS64", () => {
       expect(Math.abs(got.score - exp.score)).toBeLessThanOrEqual(1e-9);
     }
   });
+
+  it("wires ADVANCE zeroPolicy into scores", async () => {
+    const base = await computeRanking({
+      origin: "COL",
+      hs: "64",
+      year: 2023,
+      weightScheme: "expert_mean",
+      normalization: "ratio_legacy",
+      mcdm: "wsm",
+    });
+    const eps = await computeRanking({
+      origin: "COL",
+      hs: "64",
+      year: 2023,
+      weightScheme: "expert_mean",
+      normalization: "ratio_legacy",
+      mcdm: "wsm",
+      zeroPolicy: "epsilon",
+      zeroEpsilon: 0.1,
+    });
+    expect(eps.warnings.some((w) => w.includes("Zero policy"))).toBe(true);
+    // Same length; at least one score may move when zeros are substituted.
+    expect(eps.ranking.length).toBe(base.ranking.length);
+  });
+
+  it("wires methodFamily tree + preselect top N", async () => {
+    const model = await computeRanking({
+      origin: "COL",
+      hs: "64",
+      year: 2023,
+      methodFamily: "imsfe_2025",
+      normalization: "ratio_legacy",
+      mcdm: "wsm",
+      preselectMode: "top_n",
+      preselectTopN: 30,
+      preselectPick: "imports",
+    });
+    expect(model.ranking.length).toBeLessThanOrEqual(30);
+    expect(model.ranking.length).toBeGreaterThanOrEqual(20);
+    expect(model.warnings.some((w) => w.includes("Criteria tree"))).toBe(true);
+  });
 });

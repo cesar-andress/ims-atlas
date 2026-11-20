@@ -1,6 +1,7 @@
 import { lazy, Suspense, useMemo, useRef, useState } from "react";
 import {
   CRITERIA_TREE_PRESETS,
+  combinedRankGrid,
   compareExportTables,
   compareProjects,
 } from "@ims-atlas/core";
@@ -20,6 +21,38 @@ type ChartHandle = { getDataURL: (opts: object) => string };
 
 type SeriesRow = { name: string; value: number };
 type ComboRow = { name: string; total: number; factor: number };
+
+function CombinedSplitTable({ model }: { model: RankingViewModel }) {
+  const grid = useMemo(() => {
+    const eocIdx = model.panel.variables.findIndex((v) => v.id === "EOC");
+    if (eocIdx < 0) return null;
+    const imsfe: Record<string, number> = {};
+    const eoc: Record<string, number> = {};
+    for (const r of model.ranking) {
+      imsfe[r.iso3] = r.score;
+      const i = model.panel.candidates.indexOf(r.iso3);
+      if (i < 0) continue;
+      const v = model.panel.values[i]?.[eocIdx];
+      if (typeof v === "number" && Number.isFinite(v)) eoc[r.iso3] = v;
+    }
+    if (Object.keys(eoc).length < 5) return null;
+    return combinedRankGrid(imsfe, eoc);
+  }, [model]);
+  if (!grid) return null;
+  return (
+    <div className="muted small" data-testid="combined-rank-grid">
+      <p>Top-10 under EOC/IMSFE splits 30/70 … 70/30</p>
+      <ul>
+        {grid.grid.map((row) => (
+          <li key={row.a}>
+            {(row.a * 100).toFixed(0)}/{(row.b * 100).toFixed(0)}:{" "}
+            {row.top10.slice(0, 5).join(", ")}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 function csvBody(rows: SeriesRow[] | ComboRow[], mode: "value" | "combo"): string {
   if (mode === "combo") {
@@ -143,6 +176,12 @@ function CompareBody({ model }: { model: RankingViewModel }) {
           {Math.round((config.combinedEocWeight ?? 0.5) * 100)}/
           {Math.round((1 - (config.combinedEocWeight ?? 0.5)) * 100)}
         </p>
+        {model.combined ? (
+          <p className="muted small" data-testid="combined-applied">
+            Combined a={model.combined.a.toFixed(2)} applied to ranking
+          </p>
+        ) : null}
+        <CombinedSplitTable model={model} />
         <button
           type="button"
           className="btn"

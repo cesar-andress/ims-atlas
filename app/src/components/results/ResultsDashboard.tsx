@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import {
   IMSFE_EOC_QUADRANTS,
   messageFor,
+  orderKeysByWeight,
   type ImsfeEocQuadrant,
 } from "@ims-atlas/core";
 import { ExportMenu } from "../ExportMenu";
@@ -47,14 +48,16 @@ function quadrantCss(q: ImsfeEocQuadrant | null): {
   };
 }
 
-function criterionList(model: RankingViewModel): CriterionId[] {
+function criterionList(model: RankingViewModel, orderByWeight = false): CriterionId[] {
   const keys = Object.keys(model.weights.factors);
+  if (orderByWeight) {
+    return orderKeysByWeight(model.weights.factors, keys).filter(isCriterionId);
+  }
   const ordered = CRITERION_ORDER.filter((c) => keys.includes(c));
   const rest = keys.filter(
     (k) => isCriterionId(k) && !ordered.includes(k),
   ) as CriterionId[];
   if (ordered.length + rest.length > 0) return [...ordered, ...rest];
-  // Fallback: factors present in scores
   const fromScores = new Set<string>();
   for (const row of Object.values(model.factorScores)) {
     for (const k of Object.keys(row)) fromScores.add(k);
@@ -86,7 +89,10 @@ export function ResultsDashboard({ model }: Props) {
   const methodWarnings = useMemo(() => collectMethodWarnings(config), [config]);
   const [showAll, setShowAll] = useState(false);
 
-  const criteria = useMemo(() => criterionList(model), [model]);
+  const criteria = useMemo(
+    () => criterionList(model, config.orderByWeight === true),
+    [model, config.orderByWeight],
+  );
   const qByIso = useMemo(() => {
     const m = new Map<string, ImsfeEocQuadrant>();
     for (const p of eoc?.points ?? []) m.set(p.iso3, p.quadrant);

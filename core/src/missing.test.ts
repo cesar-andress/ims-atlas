@@ -34,4 +34,22 @@ describe("prepareBlock", () => {
     expect(prep.imputedMask[0]![0]).toBe(true);
     expect(prep.matrix.length).toBe(20);
   });
+
+  it("impute=none drops variables with residual gaps (no fill)", () => {
+    const n = 20;
+    const candidates = Array.from(
+      { length: n },
+      (_, i) => `C${String(i).padStart(2, "0")}`,
+    );
+    const values = candidates.map((_, i) => [i === 0 ? null : 10 + i, 100 + i]);
+    const prep = prepareBlock({
+      candidates,
+      columns: ["GAP", "FULL"],
+      values,
+      policy: { maxMissingShare: 0.2, minCandidates: 20, impute: "none" },
+    });
+    expect(prep.usedVariables).toEqual(["FULL"]);
+    expect(prep.excludedVariables).toContain("GAP");
+    expect(prep.nImputedCells).toBe(0);
+  });
 });

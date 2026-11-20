@@ -40,5 +40,10 @@ export type PreparedBlock = {
 export type MissingDataPolicy = {
   maxMissingShare: number;
   minCandidates: number;
-  impute: "median";
+  /**
+   * Residual-gap policy after the missing-share filter.
+   * - median: fill gaps with the column median (default; never drops destinations)
+   * - none: exclude any variable that still has a gap (no silent fill)
+   */
+  impute: "median" | "none";
 };

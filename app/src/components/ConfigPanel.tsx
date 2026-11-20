@@ -145,10 +145,6 @@ export function ConfigPanel({
     if (!code) return [];
     return topImporterHints(code);
   }, [config.hs, hsQuery]);
-  const originHits = useMemo(
-    () => searchOrigins(originDraft).slice(0, 12),
-    [originDraft],
-  );
   const hsTree = useMemo(() => hsCategoryTree(), []);
 
   const selectedVars = useMemo(() => {

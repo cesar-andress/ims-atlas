@@ -81,24 +81,52 @@ export function prepareBlock(input: PrepareBlockInput): PreparedBlock {
     );
   }
 
+  if (policy.impute === "none") {
+    const stillUsed: string[] = [];
+    for (const col of used) {
+      const j = columns.indexOf(col);
+      let gap = false;
+      for (let i = 0; i < nCand; i++) {
+        if (!isFiniteNumber(values[i]![j])) {
+          gap = true;
+          break;
+        }
+      }
+      if (gap) {
+        excluded.push(col);
+        notes.push(`exclude ${col}: residual gaps with impute=none`);
+      } else {
+        stillUsed.push(col);
+      }
+    }
+    used.length = 0;
+    used.push(...stillUsed);
+    if (used.length === 0) {
+      throw new Error(
+        `No usable variables after impute=none filter (excluded=${excluded.join(",")})`,
+      );
+    }
+  } else if (policy.impute !== "median") {
+    throw new Error(`Unknown impute policy: ${policy.impute}`);
+  }
+
   const usedIdx = used.map((u) => columns.indexOf(u));
   const matrix: number[][] = [];
   const imputedMask: boolean[][] = [];
   let nImputed = 0;
 
-  if (policy.impute !== "median") {
-    throw new Error(`Unknown impute policy: ${policy.impute}`);
-  }
-
-  const medians = usedIdx.map((j) => {
-    const colVals: number[] = [];
-    for (let i = 0; i < nCand; i++) {
-      const v = values[i]![j];
-      if (isFiniteNumber(v)) colVals.push(v);
-    }
-    const m = median(colVals);
-    return Number.isFinite(m) ? m : 0;
-  });
+  const medians =
+    policy.impute === "median"
+      ? usedIdx.map((j) => {
+          const colVals: number[] = [];
+          for (let i = 0; i < nCand; i++) {
+            const v = values[i]![j];
+            if (isFiniteNumber(v)) colVals.push(v);
+          }
+          const m = median(colVals);
+          return Number.isFinite(m) ? m : 0;
+        })
+      : usedIdx.map(() => 0);
 
   for (let i = 0; i < nCand; i++) {
     const row: number[] = [];
@@ -119,10 +147,12 @@ export function prepareBlock(input: PrepareBlockInput): PreparedBlock {
     imputedMask.push(maskRow);
   }
 
-  for (let k = 0; k < used.length; k++) {
-    const n = imputedMask.reduce((acc, r) => acc + (r[k] ? 1 : 0), 0);
-    if (n > 0) {
-      notes.push(`impute ${used[k]}: n=${n} median=${medians[k]}`);
+  if (policy.impute === "median") {
+    for (let k = 0; k < used.length; k++) {
+      const n = imputedMask.reduce((acc, r) => acc + (r[k] ? 1 : 0), 0);
+      if (n > 0) {
+        notes.push(`impute ${used[k]}: n=${n} median=${medians[k]}`);
+      }
     }
   }
 
