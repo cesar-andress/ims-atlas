@@ -4,6 +4,7 @@ import { BarChart } from "echarts/charts";
 import { GridComponent, TooltipComponent } from "echarts/components";
 import { CanvasRenderer, SVGRenderer } from "echarts/renderers";
 import type { TornadoBar } from "@ims-atlas/core";
+import { useEchartsHost } from "../charts/useEchartsHost";
 
 echarts.use([BarChart, GridComponent, TooltipComponent, CanvasRenderer, SVGRenderer]);
 
@@ -14,23 +15,9 @@ type Props = {
 
 /** Factor weight ±50% tornado (mean |Δrank|). */
 export function TornadoChart({ bars, onReady }: Props) {
-  const ref = useRef<HTMLDivElement>(null);
-  const chartRef = useRef<echarts.ECharts | null>(null);
+  const elRef = useRef<HTMLDivElement>(null);
+  const chartRef = useEchartsHost(elRef, onReady, "svg");
   const factors = bars.filter((b) => b.level === "factor");
-
-  useEffect(() => {
-    if (!ref.current) return;
-    const chart = echarts.init(ref.current, undefined, { renderer: "svg" });
-    chartRef.current = chart;
-    onReady?.(chart);
-    const onResize = () => chart.resize();
-    window.addEventListener("resize", onResize);
-    return () => {
-      window.removeEventListener("resize", onResize);
-      chart.dispose();
-      chartRef.current = null;
-    };
-  }, [onReady]);
 
   useEffect(() => {
     const chart = chartRef.current;
@@ -60,11 +47,11 @@ export function TornadoChart({ bars, onReady }: Props) {
       true,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps -- factors derived from bars
-  }, [bars]);
+  }, [bars, chartRef]);
 
   return (
     <div
-      ref={ref}
+      ref={elRef}
       className="chart-box"
       data-testid="tornado-chart"
       role="img"

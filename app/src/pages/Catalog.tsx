@@ -1,12 +1,38 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "../i18n";
-import { CoverageHeatmap } from "../components/CoverageHeatmap";
 import { LicenceBadge } from "../components/LicenceBadge";
 import { PageShell } from "../components/PageShell";
 import { loadCatalogPreview } from "../data/catalogLoader";
 import type { CatalogVariable } from "../data/types";
 import { useAnalysis } from "../state/useAnalysis";
 import { useAsyncResource } from "../state/useAsyncResource";
+
+function statusLabel(v: CatalogVariable, t: (k: string) => string): string {
+  if (v.status === "verified") return t("statusReviewed");
+  return t("statusPendingReview");
+}
+
+function audienceLabel(v: CatalogVariable, t: (k: string) => string): string {
+  if (v.audience_public) return t("audiencePublic");
+  return t("audienceTeamOnly");
+}
+
+function coverageLine(v: CatalogVariable, t: (k: string) => string): string {
+  const s = v.coverage_stats;
+  if (!s?.n_countries && s?.year_min == null) return t("coverageNone");
+  const n = s.n_countries ?? "—";
+  const y0 = s.year_min ?? "—";
+  const y1 = s.year_max ?? y0;
+  const pct =
+    s.coverage_pct != null && Number.isFinite(s.coverage_pct)
+      ? String(Math.round(s.coverage_pct))
+      : "—";
+  return t("coverageSummary")
+    .replace("{n}", String(n))
+    .replace("{y0}", String(y0))
+    .replace("{y1}", String(y1))
+    .replace("{pct}", pct);
+}
 
 export function Catalog() {
   const { t, i18n } = useTranslation();
@@ -71,6 +97,7 @@ export function Catalog() {
                           type="button"
                           className={v.id === selectedId ? "active" : ""}
                           onClick={() => setSelectedId(v.id)}
+                          data-testid={`catalog-var-${v.id}`}
                         >
                           <span className="var-id">{v.id}</span>
                           <span className="var-name">{name}</span>
@@ -90,26 +117,34 @@ export function Catalog() {
           <div className="catalog-detail">
             {selected ? (
               <>
-                <h2>{selected.id}</h2>
+                <h2 data-testid="catalog-detail-id">{selected.id}</h2>
                 <p>
                   {typeof selected.name === "string"
                     ? selected.name
                     : (selected.name[lang] ?? selected.id)}
                 </p>
-                <p className="muted">
-                  {t("status")}: {selected.status ?? "—"} · redistributable:{" "}
-                  {String(selected.redistributable)}
+                <p className="muted" data-testid="catalog-detail-status">
+                  {statusLabel(selected, t)} · {audienceLabel(selected, t)}
                 </p>
-                <div className="badge-row">
-                  {selected.licence_ids.map((lic) => (
-                    <LicenceBadge key={lic} licenceId={lic} />
-                  ))}
+                <div className="badge-row" data-testid="catalog-detail-licences">
+                  {selected.licence_ids.length ? (
+                    selected.licence_ids.map((lic) => (
+                      <LicenceBadge key={lic} licenceId={lic} />
+                    ))
+                  ) : (
+                    <span className="muted">{t("coverageNone")}</span>
+                  )}
                 </div>
                 {selected.citation ? (
                   <p className="citation">{selected.citation}</p>
                 ) : null}
+                {selected.notes ? (
+                  <p className="muted small" data-testid="catalog-detail-notes">
+                    {selected.notes}
+                  </p>
+                ) : null}
                 <h3>{t("coverage")}</h3>
-                <CoverageHeatmap variable={selected} />
+                <p data-testid="catalog-detail-coverage">{coverageLine(selected, t)}</p>
               </>
             ) : (
               <p className="muted">{t("selectVariable")}</p>

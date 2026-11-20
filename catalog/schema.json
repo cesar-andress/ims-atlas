@@ -141,6 +141,11 @@
           "items": { "type": "integer" }
         },
         "notes": { "type": "string" },
+        "alias_of": {
+          "type": "string",
+          "minLength": 1,
+          "description": "When set, this variable is an alias of another catalog id (same upstream series)."
+        },
         "status": { "type": "string", "enum": ["draft", "verified"] },
         "byod_only": {
           "type": "boolean",

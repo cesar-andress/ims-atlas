@@ -1,12 +1,13 @@
 [Unit]
-Description=Weekly IMS Atlas full pipeline (after freshness check)
+Description=Daily IMS Atlas full pipeline (after freshness check)
 After=ims-atlas-check.timer
 
 [Timer]
-# Sunday 04:30 UTC — check timer is weekly with random delay; pipeline follows.
-OnCalendar=Sun *-*-* 04:30:00
+# Daily 03:00 Europe/Madrid (EXTRA-5 / EXTRA-10).
+OnCalendar=*-*-* 03:00:00
+Timezone=Europe/Madrid
 Persistent=true
-RandomizedDelaySec=30m
+RandomizedDelaySec=15m
 Unit=ims-atlas-pipeline.service
 
 [Install]

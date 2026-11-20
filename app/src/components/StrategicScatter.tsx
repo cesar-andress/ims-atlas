@@ -9,6 +9,9 @@ import {
 } from "echarts/components";
 import { CanvasRenderer, SVGRenderer } from "echarts/renderers";
 import type { StrategicMatrixResult } from "@ims-atlas/core";
+import { useEchartsHost } from "../charts/useEchartsHost";
+import { countryLabel } from "../design/formatLocale";
+import { useTranslation } from "../i18n";
 
 echarts.use([
   ScatterChart,
@@ -33,41 +36,45 @@ type Props = {
 };
 
 export function StrategicScatter({ matrix, onReady }: Props) {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const chartRef = useRef<echarts.ECharts | null>(null);
-
-  useEffect(() => {
-    if (!ref.current) return;
-    const chart = echarts.init(ref.current, undefined, { renderer: "svg" });
-    chartRef.current = chart;
-    onReady?.(chart);
-    const onResize = () => chart.resize();
-    window.addEventListener("resize", onResize);
-    return () => {
-      window.removeEventListener("resize", onResize);
-      chart.dispose();
-      chartRef.current = null;
-    };
-  }, [onReady]);
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language.startsWith("es") ? "es" : "en";
+  const elRef = useRef<HTMLDivElement | null>(null);
+  const chartRef = useEchartsHost(elRef, onReady, "svg");
 
   useEffect(() => {
     const chart = chartRef.current;
     if (!chart) return;
+    const loc = lang === "es" ? "es" : "en";
+    const qName = (q: number) => t(`quadrantQ${q}` as "quadrantQ1");
+    const top15 = new Set(
+      [...matrix.points]
+        .sort((a, b) => a.rank - b.rank)
+        .slice(0, 15)
+        .map((p) => p.iso3),
+    );
     const series = ([1, 2, 3, 4] as const).map((q) => ({
-      name: `Q${q}`,
+      name: qName(q),
       type: "scatter" as const,
       data: matrix.points
         .filter((p) => p.quadrant === q)
         .map((p) => ({
           value: [p.fit, p.attractiveness, p.score],
-          name: p.iso3,
+          name: countryLabel(p.iso3, loc),
+          iso3: p.iso3,
           rank: p.rank,
+          labelTop: top15.has(p.iso3),
         })),
-      symbolSize: (val: number[]) => 8 + 18 * (val[2] ?? 0),
-      itemStyle: { color: QUAD_COLORS[q] },
+      symbolSize: 6,
+      itemStyle: {
+        color: QUAD_COLORS[q],
+        opacity: 0.8,
+        borderColor: "#fff",
+        borderWidth: 1,
+      },
       label: {
         show: true,
-        formatter: (p: { name?: string }) => p.name ?? "",
+        formatter: (p: { data?: { labelTop?: boolean; name?: string } }) =>
+          p.data?.labelTop ? (p.data.name ?? "") : "",
         fontSize: 10,
         position: "right" as const,
       },
@@ -80,22 +87,23 @@ export function StrategicScatter({ matrix, onReady }: Props) {
             name?: string;
             value?: number[];
             seriesName?: string;
-            data?: { rank?: number };
+            data?: { rank?: number; iso3?: string };
           }) => {
             const v = p.value ?? [];
-            return `${p.name}<br/>Fit=${v[0]?.toFixed(3)}<br/>A=${v[1]?.toFixed(3)}<br/>score=${v[2]?.toFixed(3)}<br/>${p.seriesName} · #${p.data?.rank ?? "?"}`;
+            const label = p.name ?? p.data?.iso3 ?? "";
+            return `${label}<br/>${t("fit")}=${v[0]?.toFixed(3)}<br/>${t("attractiveness")}=${v[1]?.toFixed(3)}<br/>${p.seriesName} · #${p.data?.rank ?? "?"}`;
           },
         },
         legend: { top: 0 },
-        grid: { left: 56, right: 24, top: 40, bottom: 48 },
+        grid: { left: 64, right: 32, top: 48, bottom: 56 },
         xAxis: {
-          name: "Fit",
+          name: t("fit"),
           type: "value",
           scale: true,
           splitLine: { show: true },
         },
         yAxis: {
-          name: "Attractiveness",
+          name: t("attractiveness"),
           type: "value",
           scale: true,
           splitLine: { show: true },
@@ -116,15 +124,16 @@ export function StrategicScatter({ matrix, onReady }: Props) {
       },
       true,
     );
-  }, [matrix]);
+  }, [matrix, chartRef, t, lang]);
 
   return (
     <div
       className="strategic-scatter"
       data-testid="strategic-scatter"
-      ref={ref}
+      ref={elRef}
       role="img"
-      aria-label="Strategic matrix attractiveness versus fit"
+      aria-label={t("matrixScatterAria")}
+      style={{ width: "100%", minHeight: 560, height: 560 }}
     />
   );
 }

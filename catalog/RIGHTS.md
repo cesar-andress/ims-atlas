@@ -112,6 +112,7 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 | CADE | worldbank_wdi,global_carbon_atlas,iea_ghg | byod_only | source[0]: redistribute_raw=yes with evidence and commercial ok; source[1]: unknown rights: redistribute_derived, commercial_use, no_derivatives; source[1]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256); source[2]: unknown rights: redistribute_derived, commercial_use, no_derivatives; source[2]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
 | GLCR | coface_country_risk | local_only | unknown rights: attribution_required; evidence incomplete (checked_by/on, terms_url, snapshot_sha256); use_research=no |
 | GLSI | solability_gsci | byod_only | commercial_use=no under commercial_context=true |
+| INFL_DEV | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 
 ## Needs human rights check
 

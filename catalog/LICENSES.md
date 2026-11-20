@@ -54,3 +54,4 @@ Generated from `catalog/variables.yaml` + `catalog/sources.yaml`. Do not edit by
 | CADE | worldbank_wdi,global_carbon_atlas,iea_ghg | CC-BY-4.0; custom; proprietary | no (BYOD) | Phase A2 IMSFEM 2025 draft. Official candidate World Bank EN.GHG.CO2.MT.CE.AR5 (current WDI series, 1970–2024). Workbook also cites Global Carbon Atlas / IEA. Licence not human-verified for Atlas ship gate. |
 | GLCR | coface_country_risk | proprietary | no (BYOD) | Phase A2 IMSFEM 2025 draft. Workbook cites Coface country risk map. Proprietary; BYOD; licence UNKNOWN. |
 | GLSI | solability_gsci | CC-BY-NC-SA-4.0 | no (BYOD) | Phase A2 IMSFEM 2025 draft. Workbook cites SolAbility GSCI. Licence UNKNOWN. |
+| INFL_DEV | worldbank_wdi | CC-BY-4.0 | yes | Derived from World Bank WDI FP.CPI.TOTL.ZG as abs(x − 2). |

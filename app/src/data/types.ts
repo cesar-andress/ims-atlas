@@ -9,6 +9,13 @@ export type CountryYearRow = {
   flag_locf: boolean;
 };
 
+export type CatalogCoverageStats = {
+  n_countries?: number | undefined;
+  year_min?: number | undefined;
+  year_max?: number | undefined;
+  coverage_pct?: number | undefined;
+};
+
 export type CatalogVariable = {
   id: string;
   name: { en: string; es: string } | string;
@@ -20,6 +27,11 @@ export type CatalogVariable = {
   licence_ids: string[];
   years?: number[] | undefined;
   citation?: string | undefined;
+  notes?: string | undefined;
+  gate_decision?: string | undefined;
+  audience_public?: boolean | undefined;
+  coverage_stats?: CatalogCoverageStats | undefined;
+  /** @deprecated retired demo grid — prefer coverage_stats */
   coverage_demo?: Record<string, Record<string, number | null>> | undefined;
 };
 

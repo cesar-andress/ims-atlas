@@ -3,6 +3,7 @@ import * as echarts from "echarts/core";
 import { BarChart } from "echarts/charts";
 import { GridComponent, LegendComponent, TooltipComponent } from "echarts/components";
 import { CanvasRenderer, SVGRenderer } from "echarts/renderers";
+import { useEchartsHost } from "../charts/useEchartsHost";
 
 echarts.use([
   BarChart,
@@ -29,22 +30,8 @@ export function RankAcceptabilityChart({
   topN = 12,
   onReady,
 }: Props) {
-  const ref = useRef<HTMLDivElement>(null);
-  const chartRef = useRef<echarts.ECharts | null>(null);
-
-  useEffect(() => {
-    if (!ref.current) return;
-    const chart = echarts.init(ref.current, undefined, { renderer: "svg" });
-    chartRef.current = chart;
-    onReady?.(chart);
-    const onResize = () => chart.resize();
-    window.addEventListener("resize", onResize);
-    return () => {
-      window.removeEventListener("resize", onResize);
-      chart.dispose();
-      chartRef.current = null;
-    };
-  }, [onReady]);
+  const elRef = useRef<HTMLDivElement>(null);
+  const chartRef = useEchartsHost(elRef, onReady, "svg");
 
   useEffect(() => {
     const chart = chartRef.current;
@@ -76,11 +63,11 @@ export function RankAcceptabilityChart({
       },
       true,
     );
-  }, [alternatives, acceptability, topN]);
+  }, [alternatives, acceptability, topN, chartRef]);
 
   return (
     <div
-      ref={ref}
+      ref={elRef}
       className="chart-box"
       data-testid="smaa-acceptability-chart"
       role="img"

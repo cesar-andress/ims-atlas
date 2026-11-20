@@ -81,7 +81,7 @@ def test_catalog_has_eighteen_ported_and_status_mix() -> None:
     assert by_status["CULT"] == "draft"
     assert by_status["ITU_IDI"] == "draft"
     assert sum(1 for s in by_status.values() if s == "verified") == 28
-    assert sum(1 for s in by_status.values() if s == "draft") == 22
+    assert sum(1 for s in by_status.values() if s == "draft") == 23
     openness = [v for v in data["variables"] if v["id"] in {"EOC", "REEXP"}]
     assert all(v["factor"] == "openness" for v in openness)
 

@@ -1,8 +1,10 @@
 import { useRef } from "react";
 import { IMSFE_EOC_QUADRANTS, type ImsfeEocQuadrant } from "@ims-atlas/core";
 import { AnalysisPage } from "../components/AnalysisPage";
+import { ChartFrame } from "../components/ChartFrame";
 import { ExportMenu } from "../components/ExportMenu";
 import { StrategicScatter } from "../components/StrategicScatter";
+import { countryLabel } from "../design/formatLocale";
 import { useTranslation } from "../i18n";
 import { useImsfeEocMatrix } from "../ranking/useImsfeEocMatrix";
 import { useRankingModel } from "../ranking/useRankingModelApi";
@@ -62,8 +64,10 @@ export function Matrix() {
               {eocMatrix ? (
                 <>
                   <p className="muted small" data-testid="matrix-cuts">
-                    cut IMSFE={eocMatrix.cutImsfe.toFixed(3)} · cut EOC=
-                    {eocMatrix.cutEoc.toFixed(3)} · n={eocMatrix.points.length}
+                    {t("matrixCutsEoc")
+                      .replace("{a}", eocMatrix.cutImsfe.toFixed(3))
+                      .replace("{fit}", eocMatrix.cutEoc.toFixed(3))
+                      .replace("{n}", String(eocMatrix.points.length))}
                   </p>
                   <div data-export-surface="table">
                     <ExportMenu
@@ -86,7 +90,7 @@ export function Matrix() {
                     <table className="ranking-table" data-testid="matrix-table">
                       <thead>
                         <tr>
-                          <th>ISO3</th>
+                          <th>{t("countryCode")}</th>
                           <th>IMSFE</th>
                           <th>EOC</th>
                           <th>{t("quadrant")}</th>
@@ -136,37 +140,43 @@ export function Matrix() {
         return matrix ? (
           <>
             <p className="muted small" data-testid="matrix-cuts">
-              cut A={matrix.cutAttractiveness.toFixed(3)} · cut Fit=
-              {matrix.cutFit.toFixed(3)} · n={matrix.points.length}
+              {t("matrixCuts")
+                .replace("{a}", matrix.cutAttractiveness.toFixed(3))
+                .replace("{fit}", matrix.cutFit.toFixed(3))
+                .replace("{n}", String(matrix.points.length))}
             </p>
-            <div data-export-surface="chart">
-              <ExportMenu
-                testIdPrefix="matrix-scatter"
-                kind="chart"
-                title="Strategic matrix scatter"
-                chartRef={scatterRef}
-              />
+            <ChartFrame
+              testIdPrefix="matrix-scatter"
+              title={t("nav.matrix")}
+              chartRef={scatterRef}
+              projectLine={
+                config.origin && config.hs
+                  ? `${config.origin} · HS ${config.hs}${config.year ? ` · ${config.year}` : ""}`
+                  : undefined
+              }
+            >
               <StrategicScatter
                 matrix={matrix}
                 onReady={(c) => {
                   scatterRef.current = c;
                 }}
               />
-            </div>
+            </ChartFrame>
             <div data-export-surface="table">
               <ExportMenu
                 testIdPrefix="matrix"
                 kind="table"
-                title="Strategic matrix"
+                title={t("nav.matrix")}
                 tableRows={[
-                  ["iso3", "attractiveness", "fit", "quadrant", "rank"],
+                  ["country", "iso3", "attractiveness", "fit", "quadrant", "rank"],
                   ...[...matrix.points]
                     .sort((a, b) => a.rank - b.rank)
                     .map((p) => [
+                      countryLabel(p.iso3, lang.startsWith("es") ? "es" : "en"),
                       p.iso3,
                       p.attractiveness.toFixed(4),
                       p.fit.toFixed(4),
-                      String(p.quadrant),
+                      t(`quadrantQ${p.quadrant}` as "quadrantQ1"),
                       String(p.rank),
                     ]),
                 ]}
@@ -174,7 +184,7 @@ export function Matrix() {
               <table className="ranking-table" data-testid="matrix-table">
                 <thead>
                   <tr>
-                    <th>ISO3</th>
+                    <th>{t("countryCode")}</th>
                     <th>{t("attractiveness")}</th>
                     <th>{t("fit")}</th>
                     <th>{t("quadrant")}</th>
@@ -201,10 +211,12 @@ export function Matrix() {
                           }
                         }}
                       >
-                        <td>{p.iso3}</td>
+                        <td>
+                          {countryLabel(p.iso3, lang.startsWith("es") ? "es" : "en")}
+                        </td>
                         <td>{p.attractiveness.toFixed(4)}</td>
                         <td>{p.fit.toFixed(4)}</td>
-                        <td>Q{p.quadrant}</td>
+                        <td>{t(`quadrantQ${p.quadrant}` as "quadrantQ1")}</td>
                         <td>{p.rank}</td>
                       </tr>
                     ))}

@@ -370,7 +370,7 @@ variables:
   frequency: annual
   coverage_countries: null
   series_breaks: []
-  notes: Stored/used as |cpi - 2|.
+  notes: Raw annual CPI inflation (FP.CPI.TOTL.ZG). For |x − 2| use candidate INFL_DEV.
   status: verified
   code: FP.CPI.TOTL.ZG
   origin_specific: false
@@ -800,13 +800,14 @@ variables:
   frequency: annual
   coverage_countries: null
   series_breaks: []
-  notes: Alias of catalog LPI / LP.LPI.OVRL.XQ.
+  notes: Alias of catalog LPI (same series LP.LPI.OVRL.XQ). Do not double-weight with LPI.
   status: verified
   code: LP.LPI.OVRL.XQ
   source_ids:
   - worldbank_lpi
   verified_by: CA
   verified_on: '2026-11-20'
+  alias_of: LPI
 - id: CPTR
   name:
     en: Container Port Traffic (CPTR)
@@ -945,13 +946,14 @@ variables:
   frequency: annual
   coverage_countries: null
   series_breaks: []
-  notes: Jose code; open candidate PLI (ICP).
+  notes: Proxy ICP for Jose CLI — same series as PLI (PA.NUS.PRVT.PLI). Do not double-weight with PLI.
   status: verified
   code: PA.NUS.PRVT.PLI
   source_ids:
   - worldbank_wdi
   verified_by: CA
   verified_on: '2026-11-20'
+  alias_of: PLI
 - id: INAN
   name:
     en: Inflation Annual (INAN)
@@ -971,12 +973,14 @@ variables:
   frequency: annual
   coverage_countries: null
   series_breaks: []
-  notes: Jose code; open candidate INFL.
+  notes: Jose code; alias of INFL (FP.CPI.TOTL.ZG). Do not double-weight with INFL.
   status: verified
+  code: FP.CPI.TOTL.ZG
   source_ids:
   - worldbank_wdi
   verified_by: CA
   verified_on: '2026-11-20'
+  alias_of: INFL
 - id: UNRA
   name:
     en: Unemployment Rate (UNRA)
@@ -996,12 +1000,14 @@ variables:
   frequency: annual
   coverage_countries: null
   series_breaks: []
-  notes: Jose code; open candidate UNEMP.
+  notes: Jose code; alias of UNEMP (SL.UEM.TOTL.ZS). Do not double-weight with UNEMP.
   status: verified
+  code: SL.UEM.TOTL.ZS
   source_ids:
   - worldbank_wdi
   verified_by: CA
   verified_on: '2026-11-20'
+  alias_of: UNEMP
 - id: FSIN
   name:
     en: Fragile States Index (FSIN)
@@ -1269,3 +1275,27 @@ variables:
   status: draft
   source_ids:
   - solability_gsci
+- id: INFL_DEV
+  name:
+    en: Inflation deviation from 2% target
+    es: Desviación de la inflación respecto al 2 %
+  factor: macro_risk
+  level: country
+  direction: cost
+  transform: none
+  unit: percentage points
+  source: WB
+  citation: Derived from World Bank WDI FP.CPI.TOTL.ZG as abs(x − 2).
+  redistributable: true
+  years:
+  - 2012
+  - 2023
+  frequency: annual
+  coverage_countries: null
+  series_breaks: []
+  notes: Candidate derived series abs(INFL − 2). Does not replace verified INFL.
+  status: draft
+  code: FP.CPI.TOTL.ZG
+  origin_specific: false
+  source_ids:
+  - worldbank_wdi

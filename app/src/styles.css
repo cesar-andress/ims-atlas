@@ -1061,11 +1061,40 @@ main:has(.builder) {
 
 .strategic-scatter {
   width: 100%;
-  height: 28rem;
+  min-height: 35rem;
+  height: 35rem;
   border: 1px solid var(--border);
   border-radius: 0.35rem;
   background: var(--surface);
-  margin-bottom: 1rem;
+  margin-bottom: 0;
+}
+
+.chart-frame {
+  width: 100%;
+  margin: 0 0 1rem;
+}
+
+.chart-frame-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.chart-frame-title {
+  font-weight: 600;
+  margin: 0;
+}
+
+.chart-frame-body {
+  width: 100%;
+}
+
+.chart-frame-credit {
+  margin: 0.35rem 0 0;
+  font-size: 0.75rem;
 }
 
 .market-map-wrap {

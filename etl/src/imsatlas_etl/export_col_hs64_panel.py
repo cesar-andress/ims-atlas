@@ -142,11 +142,13 @@ def build_col_hs64_live_panel(*, root: Path | None = None) -> dict[str, Any]:
         "variables": variables,
         "candidates": candidates_out,
         "raw": kept,
+        # Key kept for golden/engine tests; never label this as an expert ranking in UI.
+        "ranking_impv_order": ranking[:50],
         "ranking_expert": ranking[:50],
         "notes": [
             "Built from live curated World Bank + BACI HS64 + CEPII Gravity.",
             "EOC proxied by NE.TRD.GNFS.ZS until a dedicated openness series ships.",
-            "ranking_expert follows IMPV order (not Jose workbook ranks).",
+            "ranking_impv_order follows IMPV only (not an expert survey ranking).",
         ],
         "excluded_byod": [],
     }

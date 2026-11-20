@@ -208,6 +208,52 @@ def _sources_payload(
     }
 
 
+def _coverage_stats_for(
+    matrix: dict[str, dict[str, int]] | None,
+) -> dict[str, Any] | None:
+    """Publish counts only (no cell values) for the SPA variable list."""
+    if not matrix:
+        return None
+    years: set[int] = set()
+    countries_with = 0
+    cells = 0
+    filled = 0
+    for _iso, by_year in matrix.items():
+        if not isinstance(by_year, dict):
+            continue
+        row_hit = False
+        for y, flag in by_year.items():
+            cells += 1
+            try:
+                years.add(int(y))
+            except (TypeError, ValueError):
+                pass
+            if int(flag or 0) > 0:
+                filled += 1
+                row_hit = True
+        if row_hit:
+            countries_with += 1
+    if countries_with == 0 and not years:
+        return None
+    return {
+        "n_countries": countries_with,
+        "year_min": min(years) if years else None,
+        "year_max": max(years) if years else None,
+        "coverage_pct": round(100.0 * filled / cells, 1) if cells else None,
+    }
+
+
+def _licence_ids_for_var(var: dict[str, Any], sources_by: dict[str, Any]) -> list[str]:
+    out: list[str] = []
+    for sid in var.get("source_ids") or []:
+        src = sources_by.get(str(sid)) or {}
+        rights = src.get("rights") or {}
+        lic = (rights.get("licence") or {}).get("id") or rights.get("licence_id")
+        if lic and str(lic) != "UNKNOWN" and str(lic) not in out:
+            out.append(str(lic))
+    return out
+
+
 def _variables_payload(
     manifest: dict[str, Any] | None,
     coverage: dict[str, dict[str, dict[str, int]]],
@@ -216,6 +262,11 @@ def _variables_payload(
     root: Path,
 ) -> dict[str, Any]:
     catalog = load_catalog()
+    sources_by = {
+        str(s["id"]): s
+        for s in (load_sources().get("sources") or [])
+        if isinstance(s, dict) and "id" in s
+    }
     status_fields = variables_status_fields(
         catalog["variables"],
         freshness,
@@ -230,26 +281,38 @@ def _variables_payload(
     for var in catalog["variables"]:
         vid = str(var["id"])
         gate = gates.get(vid)
-        rows.append(
-            {
-                "id": vid,
-                "name": var.get("name"),
-                "factor": var.get("factor"),
-                "direction": var.get("direction"),
-                "status": var.get("status"),
-                "redistributable": var.get("redistributable"),
-                "byod_only": var.get("byod_only"),
-                "source_ids": list(var.get("source_ids") or []),
-                "years": var.get("years"),
-                "citation": var.get("citation"),
-                "formula": var.get("formula"),
-                "definition": var.get("definition"),
-                "gate": gate,
-                "coverage": coverage.get(vid),
-                "download_allowed": bool(gate and gate.get("included")),
-                **status_fields.get(vid, {}),
-            },
-        )
+        cov_matrix = coverage.get(vid)
+        stats = _coverage_stats_for(cov_matrix)
+        notes = var.get("notes")
+        alias = var.get("alias_of")
+        if alias:
+            alias_note = f"Alias of {alias}."
+            notes = f"{alias_note} {notes}" if notes else alias_note
+        row: dict[str, Any] = {
+            "id": vid,
+            "name": var.get("name"),
+            "factor": var.get("factor"),
+            "direction": var.get("direction"),
+            "status": var.get("status"),
+            "redistributable": var.get("redistributable"),
+            "byod_only": var.get("byod_only"),
+            "source_ids": list(var.get("source_ids") or []),
+            "licence_ids": _licence_ids_for_var(var, sources_by),
+            "years": var.get("years"),
+            "citation": var.get("citation"),
+            "formula": var.get("formula"),
+            "definition": var.get("definition"),
+            "gate": gate,
+            "coverage": cov_matrix,
+            "coverage_stats": stats,
+            "download_allowed": bool(gate and gate.get("included")),
+            **status_fields.get(vid, {}),
+        }
+        if notes:
+            row["notes"] = notes
+        if alias:
+            row["alias_of"] = alias
+        rows.append(row)
     return {
         "schema": "transparency-variables/v1",
         "generated_from": "catalog/variables.yaml + release manifest + status/coverage",
