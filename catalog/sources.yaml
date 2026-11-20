@@ -1,7 +1,3 @@
-# Source registry (SPEC §10). Rights flags researched 2026-11-20 from live terms pages
-# (clause, confidence and fetch status in evidence.note). checked_by is set only by a human
-# via `atlas-etl rights-verify` (scripts/rights-confirm.sh). CA attested 19 sources on 2026-11-20.
-# Phase A0: kind + cited_in_workbooks from Jose's IMSFE workbooks (WORKBOOK_SOURCES.md).
 sources:
   - id: worldbank_wdi
     publisher: World Bank
