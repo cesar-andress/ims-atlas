@@ -20,6 +20,7 @@ const Top10Chart = lazy(() =>
 type ChartHandle = { getDataURL: (opts: object) => string };
 
 function CombinedSplitTable({ model }: { model: RankingViewModel }) {
+  const { t } = useTranslation();
   const grid = useMemo(() => {
     const eocIdx = model.panel.variables.findIndex((v) => v.id === "EOC");
     if (eocIdx < 0) return null;
@@ -27,9 +28,9 @@ function CombinedSplitTable({ model }: { model: RankingViewModel }) {
     const eoc: Record<string, number> = {};
     for (const r of model.ranking) {
       imsfe[r.iso3] = r.score;
-      const i = model.panel.candidates.indexOf(r.iso3);
-      if (i < 0) continue;
-      const v = model.panel.values[i]?.[eocIdx];
+      const idx = model.panel.candidates.indexOf(r.iso3);
+      if (idx < 0) continue;
+      const v = model.panel.values[idx]?.[eocIdx];
       if (typeof v === "number" && Number.isFinite(v)) eoc[r.iso3] = v;
     }
     if (Object.keys(eoc).length < 5) return null;
@@ -37,22 +38,38 @@ function CombinedSplitTable({ model }: { model: RankingViewModel }) {
   }, [model]);
   if (!grid) return null;
   return (
-    <div className="muted small" data-testid="combined-rank-grid">
-      <p>Top-10 under EOC/IMSFE splits 30/70 … 70/30</p>
-      <ul>
-        {grid.grid.map((row) => (
-          <li key={row.a}>
-            {(row.a * 100).toFixed(0)}/{(row.b * 100).toFixed(0)}:{" "}
-            {row.top10.slice(0, 5).join(", ")}
-          </li>
-        ))}
-      </ul>
+    <div className="combined-split" data-testid="combined-rank-grid">
+      <h3 className="compare-subhead">{t("combinedSplitHeading")}</h3>
+      <p className="muted small">{t("combinedSplitHint")}</p>
+      <div className="table-scroll">
+        <table className="combined-split-table">
+          <thead>
+            <tr>
+              <th scope="col">{t("combinedSplitRatio")}</th>
+              <th scope="col">{t("combinedSplitTop")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {grid.grid.map((row) => (
+              <tr key={row.a}>
+                <td className="font-tabular">
+                  {(row.a * 100).toFixed(0)}/{(row.b * 100).toFixed(0)}
+                </td>
+                <td className="font-tabular combined-split-isos">
+                  {row.top10.slice(0, 5).join(" · ")}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
 
 function CompareBody({ model }: { model: RankingViewModel }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language.startsWith("es") ? "es" : "en";
   const { config } = useAnalysis();
   const [radarPicks, setRadarPicks] = useState<string[]>(() =>
     model.ranking.slice(0, 2).map((r) => r.iso3),
@@ -88,6 +105,14 @@ function CompareBody({ model }: { model: RankingViewModel }) {
       },
     ]);
   }, [model]);
+
+  const [projA, projB] = familyCompare.projects;
+  const onlyA = (projA?.variableIds ?? []).filter(
+    (v) => !(projB?.variableIds ?? []).includes(v),
+  );
+  const onlyB = (projB?.variableIds ?? []).filter(
+    (v) => !(projA?.variableIds ?? []).includes(v),
+  );
 
   const topTotal = useMemo(
     () =>
@@ -129,6 +154,9 @@ function CompareBody({ model }: { model: RankingViewModel }) {
     [model, factorKey],
   );
 
+  const eocPct = Math.round((config.combinedEocWeight ?? 0.5) * 100);
+  const imsfePct = 100 - eocPct;
+
   return (
     <div className="compare-grid" data-testid="compare-charts">
       <section className="results-card" data-testid="market-radar-section">
@@ -147,27 +175,75 @@ function CompareBody({ model }: { model: RankingViewModel }) {
           }
         />
       </section>
+
       <section className="results-card" data-testid="project-family-compare">
         <h2>{t("projectFamilyCompare")}</h2>
-        <ul className="muted small">
-          {familyCompare.methodDiffNotes.map((n) => (
-            <li key={n}>{n}</li>
+        <p className="lead-tight">{t("projectFamilyIntro")}</p>
+
+        <div className="family-compare-cards">
+          {familyCompare.projects.map((p) => (
+            <article
+              key={p.id}
+              className="family-card"
+              data-testid={`family-card-${p.id}`}
+            >
+              <h3>{p.label}</h3>
+              <dl className="family-card-meta">
+                <div>
+                  <dt>{t("familyCriteria")}</dt>
+                  <dd className="font-tabular">{p.nCriteria}</dd>
+                </div>
+                <div>
+                  <dt>{t("familyVariables")}</dt>
+                  <dd className="font-tabular">{p.variableIds.length}</dd>
+                </div>
+              </dl>
+              <p className="muted small family-card-note">{p.methodNotes[0] ?? "—"}</p>
+              <p className="small">
+                <span className="muted">{t("familyTopMarkets")}: </span>
+                <span className="font-tabular">{p.topMarkets.join(" · ")}</span>
+              </p>
+            </article>
           ))}
-        </ul>
-        <p className="muted small">
-          {t("combinedSplitLabel")}:{" "}
-          {Math.round((config.combinedEocWeight ?? 0.5) * 100)}/
-          {Math.round((1 - (config.combinedEocWeight ?? 0.5)) * 100)}
-        </p>
-        {model.combined ? (
-          <p className="muted small" data-testid="combined-applied">
-            Combined a={model.combined.a.toFixed(2)} applied to ranking
-          </p>
+        </div>
+
+        {(onlyA.length > 0 || onlyB.length > 0) && projA && projB ? (
+          <ul className="family-diff-list">
+            {onlyA.length > 0 ? (
+              <li>
+                <strong>{projA.label}</strong>
+                {lang === "es" ? " añade: " : " adds: "}
+                <span className="font-tabular">{onlyA.join(", ")}</span>
+              </li>
+            ) : null}
+            {onlyB.length > 0 ? (
+              <li>
+                <strong>{projB.label}</strong>
+                {lang === "es" ? " añade: " : " adds: "}
+                <span className="font-tabular">{onlyB.join(", ")}</span>
+              </li>
+            ) : null}
+          </ul>
         ) : null}
+
+        <p className="small family-split-line">
+          <span className="muted">{t("combinedSplitLabel")}: </span>
+          <span className="font-tabular">
+            {eocPct}/{imsfePct}
+          </span>
+          {model.combined ? (
+            <span className="muted" data-testid="combined-applied">
+              {" · "}
+              {t("combinedApplied").replace("{a}", model.combined.a.toFixed(2))}
+            </span>
+          ) : null}
+        </p>
+
         <CombinedSplitTable model={model} />
+
         <button
           type="button"
-          className="btn"
+          className="btn btn-secondary"
           data-testid="export-project-compare"
           onClick={() => {
             const tables = compareExportTables(familyCompare);
@@ -190,11 +266,17 @@ function CompareBody({ model }: { model: RankingViewModel }) {
           {t("exportProjectCompare")}
         </button>
       </section>
-      <section data-testid="compare-total" data-export-surface="chart">
+
+      <section
+        className="results-card"
+        data-testid="compare-total"
+        data-export-surface="chart"
+      >
         <ChartFrame
           testIdPrefix="total"
           title={t("parityTop10Total")}
           chartRef={totalRef}
+          showOnScreenCredit
         >
           <Suspense fallback={<p className="muted">{t("loading")}</p>}>
             <Top10Chart
@@ -208,11 +290,16 @@ function CompareBody({ model }: { model: RankingViewModel }) {
         </ChartFrame>
       </section>
 
-      <section data-testid="compare-factor" data-export-surface="chart">
+      <section
+        className="results-card"
+        data-testid="compare-factor"
+        data-export-surface="chart"
+      >
         <ChartFrame
           testIdPrefix="factor"
           title={`${t("parityTop10Factor")}: ${factorKey}`}
           chartRef={factorRef}
+          showOnScreenCredit
         >
           <Suspense fallback={<p className="muted">{t("loading")}</p>}>
             <Top10Chart
@@ -226,11 +313,16 @@ function CompareBody({ model }: { model: RankingViewModel }) {
         </ChartFrame>
       </section>
 
-      <section data-testid="compare-combo" data-export-surface="chart">
+      <section
+        className="results-card"
+        data-testid="compare-combo"
+        data-export-surface="chart"
+      >
         <ChartFrame
           testIdPrefix="combo"
           title={t("parityTop10Combo")}
           chartRef={comboRef}
+          showOnScreenCredit
         >
           <Suspense fallback={<p className="muted">{t("loading")}</p>}>
             <Top10Chart

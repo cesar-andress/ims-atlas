@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useTranslation } from "../i18n";
+import { CRITERION_LABEL, isCriterionId } from "../design/criteria";
 import { formatScoreLocale } from "../design/formatLocale";
 import type { RankingViewModel } from "../ranking/rankingEngine";
 
@@ -9,7 +10,12 @@ type Props = {
   onToggle: (iso3: string) => void;
 };
 
-/** Side-by-side radar-ish table for 2–4 markets (read-only compare). */
+function factorLabel(id: string, lang: "es" | "en"): string {
+  if (isCriterionId(id)) return CRITERION_LABEL[id][lang];
+  return id.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+/** Side-by-side factor table for 2–4 markets (read-only compare). */
 export function MarketRadarCompare({ model, selected, onToggle }: Props) {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
@@ -18,15 +24,15 @@ export function MarketRadarCompare({ model, selected, onToggle }: Props) {
 
   return (
     <div className="market-radar-compare" data-testid="market-radar-compare">
-      <p className="muted small">{t("compareMarketsIntro")}</p>
-      <div className="flex flex-wrap gap-2 mb-3">
+      <p className="lead-tight">{t("compareMarketsIntro")}</p>
+      <div className="compare-picks" role="group" aria-label={t("nav.compare")}>
         {model.ranking.slice(0, 12).map((r) => {
           const on = picks.includes(r.iso3);
           return (
             <button
               key={r.iso3}
               type="button"
-              className={`btn ${on ? "btn-primary" : "btn-secondary"}`}
+              className={`btn compare-pick ${on ? "btn-primary" : "btn-secondary"}`}
               data-testid={`compare-pick-${r.iso3}`}
               aria-pressed={on}
               onClick={() => onToggle(r.iso3)}
@@ -42,46 +48,57 @@ export function MarketRadarCompare({ model, selected, onToggle }: Props) {
           {t("compareNeedTwo")}
         </p>
       ) : (
-        <div className="table-scroll">
-          <table data-testid="compare-radar-table">
+        <div className="table-scroll compare-radar-scroll">
+          <table className="compare-radar-table" data-testid="compare-radar-table">
             <thead>
               <tr>
-                <th>{t("variables")}</th>
+                <th scope="col">{t("variables")}</th>
                 {picks.map((iso) => (
-                  <th key={iso}>{iso}</th>
+                  <th key={iso} scope="col">
+                    {iso}
+                  </th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {factors.map((f) => (
                 <tr key={f}>
-                  <td>{f}</td>
+                  <th scope="row">{factorLabel(f, lang)}</th>
                   {picks.map((iso) => {
                     const v = model.factorScores[iso]?.[f] ?? 0;
+                    const pct = Math.max(4, Math.min(100, (v / 10) * 100));
                     return (
                       <td key={iso}>
-                        <div
-                          className="compare-bar"
-                          style={{ width: `${Math.max(4, (v / 10) * 100)}%` }}
-                          title={formatScoreLocale(v, lang)}
-                        />
-                        <span className="font-tabular text-xs">
-                          {formatScoreLocale(v, lang)}
-                        </span>
+                        <div className="compare-metric">
+                          <span className="font-tabular compare-metric-val">
+                            {formatScoreLocale(v, lang)}
+                          </span>
+                          <span
+                            className="compare-bar-track"
+                            aria-hidden
+                            title={formatScoreLocale(v, lang)}
+                          >
+                            <span
+                              className="compare-bar"
+                              style={{ width: `${pct}%` }}
+                            />
+                          </span>
+                        </div>
                       </td>
                     );
                   })}
                 </tr>
               ))}
-              <tr>
-                <td>
-                  <strong>IMSFE</strong>
-                </td>
+              <tr className="compare-radar-total">
+                <th scope="row">IMSFE</th>
                 {picks.map((iso) => {
                   const row = model.ranking.find((r) => r.iso3 === iso);
                   return (
                     <td key={iso} className="font-tabular">
-                      #{row?.rank} · {formatScoreLocale(row?.score ?? 0, lang)}
+                      <span className="compare-rank">#{row?.rank}</span>
+                      <span className="compare-score">
+                        {formatScoreLocale(row?.score ?? 0, lang)}
+                      </span>
                     </td>
                   );
                 })}

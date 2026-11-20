@@ -104,60 +104,77 @@ export function ExportMenu(props: ExportMenuProps) {
     downloadBlob(blob, props.xlsxFilename ?? `${props.testIdPrefix}.xlsx`);
   }
 
+  const chartReady = props.kind === "chart" && props.chartRef;
+  const hasTable = Boolean(props.tableRows?.length);
+
   return (
     <div
       className={props.className ?? "export-menu"}
       data-testid={`export-menu-${props.testIdPrefix}`}
       data-exportable={props.kind}
     >
-      <span className="export-menu-label">{t("exportMenu")}</span>
-      {props.kind === "chart" && props.chartRef ? (
+      {chartReady ? (
         <>
           <button
             type="button"
             className="btn btn-secondary export-png-primary"
             data-testid={`export-${props.testIdPrefix}-png-4x`}
             disabled={busy}
+            title={t("chartDownloadPng4xHint")}
             onClick={() => void onPng(4)}
           >
             {t("chartDownloadPng4x")}
           </button>
-          <button
-            type="button"
-            data-testid={`export-${props.testIdPrefix}-png`}
-            disabled={busy}
-            onClick={() => void onPng(2)}
+          <div
+            className="export-menu-group"
+            role="group"
+            aria-label={t("exportMoreFormats")}
           >
-            PNG 2×
-          </button>
-          <button
-            type="button"
-            data-testid={`export-${props.testIdPrefix}-png-1x`}
-            disabled={busy}
-            onClick={() => void onPng(1)}
-          >
-            PNG 1×
-          </button>
-          <button
-            type="button"
-            data-testid={`export-${props.testIdPrefix}-svg`}
-            onClick={onSvg}
-          >
-            SVG
-          </button>
-          <button
-            type="button"
-            data-testid={`export-${props.testIdPrefix}-pdf`}
-            onClick={onPdfFigure}
-          >
-            PDF
-          </button>
+            <button
+              type="button"
+              className="export-menu-chip"
+              data-testid={`export-${props.testIdPrefix}-png`}
+              disabled={busy}
+              onClick={() => void onPng(2)}
+            >
+              PNG 2×
+            </button>
+            <button
+              type="button"
+              className="export-menu-chip"
+              data-testid={`export-${props.testIdPrefix}-png-1x`}
+              disabled={busy}
+              onClick={() => void onPng(1)}
+            >
+              PNG 1×
+            </button>
+            <button
+              type="button"
+              className="export-menu-chip"
+              data-testid={`export-${props.testIdPrefix}-svg`}
+              onClick={onSvg}
+            >
+              SVG
+            </button>
+            <button
+              type="button"
+              className="export-menu-chip"
+              data-testid={`export-${props.testIdPrefix}-pdf`}
+              onClick={onPdfFigure}
+            >
+              PDF
+            </button>
+          </div>
         </>
       ) : null}
-      {props.tableRows ? (
-        <>
+      {hasTable ? (
+        <div className="export-menu-group" role="group" aria-label={t("exportMenu")}>
+          {!chartReady ? (
+            <span className="export-menu-label">{t("exportMenu")}</span>
+          ) : null}
           <button
             type="button"
+            className="export-menu-chip"
             data-testid={`export-${props.testIdPrefix}-csv`}
             onClick={onCsv}
           >
@@ -165,12 +182,13 @@ export function ExportMenu(props: ExportMenuProps) {
           </button>
           <button
             type="button"
+            className="export-menu-chip"
             data-testid={`export-${props.testIdPrefix}-xlsx`}
             onClick={onXlsx}
           >
             XLSX
           </button>
-        </>
+        </div>
       ) : null}
     </div>
   );
