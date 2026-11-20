@@ -36,6 +36,7 @@ export function Matrix() {
       model={model}
       error={error}
       allowWithoutModel
+      chrome="results"
     >
       {() => {
         if (mode === "imsfe_eoc") {

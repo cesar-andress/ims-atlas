@@ -13,6 +13,10 @@
 Target: **0** `input` / `select` / `textarea` inside `main` on every results view
 (`e2e/results-readonly.spec.ts`).
 
+Follow-up (audits): removed `results-study-nav` second row; `chrome="results"` on
+Matrix / Compare / Time / Factors; plain-language method labels in
+`AnalysisSummary` and normalisation options; GUI-0 screenshots light+dark.
+
 ---
 
 # IMS Atlas — visual design notes (Phase W)

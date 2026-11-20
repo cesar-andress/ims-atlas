@@ -1,5 +1,6 @@
 import { useTranslation } from "../i18n";
 import { hsLabel } from "../data/hsProducts";
+import { methodPlainLabel } from "../design/plainLabels";
 import { useAnalysis } from "../state/useAnalysis";
 
 /** Shared read-only summary of the current analysis config (Builder + empty states). */
@@ -28,19 +29,25 @@ export function AnalysisSummary() {
       </div>
       <div>
         <dt>{t("weightScheme")}</dt>
-        <dd>{config.weightScheme ?? "expert_mean"}</dd>
+        <dd title={config.weightScheme ?? "expert_mean"}>
+          {methodPlainLabel("weight", config.weightScheme ?? "expert_mean", t)}
+        </dd>
       </div>
       <div>
         <dt>{t("normalization")}</dt>
-        <dd>{config.normalization ?? "minmax"}</dd>
+        <dd title={config.normalization ?? "minmax"}>
+          {methodPlainLabel("norm", config.normalization ?? "minmax", t)}
+        </dd>
       </div>
       <div>
         <dt>{t("method")}</dt>
-        <dd>{config.mcdm ?? "wsm"}</dd>
+        <dd title={config.mcdm ?? "wsm"}>
+          {methodPlainLabel("mcdm", config.mcdm ?? "wsm", t)}
+        </dd>
       </div>
       <div>
-        <dt>{t("missingThreshold")}</dt>
-        <dd>{config.missingThreshold ?? 0.2}</dd>
+        <dt>{t("missingThresholdPlain")}</dt>
+        <dd title={t("missingThreshold")}>{config.missingThreshold ?? 0.2}</dd>
       </div>
     </dl>
   );

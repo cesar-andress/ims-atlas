@@ -211,25 +211,13 @@ export function ResultsDashboard({ model }: Props) {
         </div>
       </header>
 
-      <ProductContextBanner />
-
-      <nav
-        className="results-study-nav"
-        data-testid="analysis-tabs"
-        aria-label="Studies"
-      >
-        <PermalinkLink view="ranking">{t("nav.ranking")}</PermalinkLink>
-        <PermalinkLink view="matrix">{t("nav.matrix")}</PermalinkLink>
-        <PermalinkLink view="map">{t("nav.map")}</PermalinkLink>
-        <PermalinkLink view="compare">{t("nav.compare")}</PermalinkLink>
-        <PermalinkLink view="uncertainty">{t("nav.uncertainty")}</PermalinkLink>
-      </nav>
-
       {notice ? (
         <p className="results-notice" data-testid="results-notice" role="status">
           {notice}
         </p>
-      ) : null}
+      ) : (
+        <ProductContextBanner />
+      )}
 
       <div className="results-kpis" data-testid="results-kpis">
         <article className="results-card kpi">

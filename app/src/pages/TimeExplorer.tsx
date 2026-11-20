@@ -108,6 +108,7 @@ export function TimeExplorer() {
       model={model}
       error={pageError}
       allowWithoutModel
+      chrome="results"
       controls={
         fixture ? (
           <div className="matrix-controls" data-testid="time-controls">

@@ -223,6 +223,7 @@ export function Compare() {
       titleKey="nav.compare"
       model={model}
       error={error}
+      chrome="results"
     >
       {(m) => (m ? <CompareBody model={m} /> : null)}
     </AnalysisPage>

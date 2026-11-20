@@ -66,6 +66,29 @@ test.describe("GUI-0 results dashboard", () => {
     );
   });
 
+  test("screenshots 1440 and 390 dark", async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem("ims-atlas-theme", "dark");
+    });
+    await page.goto(`/ranking?c=${encodeConfig(COL)}`);
+    await expect(page.getByTestId("results-dashboard")).toBeVisible({
+      timeout: 20_000,
+    });
+    await page.evaluate(() => {
+      document.documentElement.dataset.theme = "dark";
+    });
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await expect(page.getByTestId("results-dashboard")).toHaveScreenshot(
+      "gui0-results-1440-dark.png",
+      { maxDiffPixelRatio: 0.05 },
+    );
+    await page.setViewportSize({ width: 390, height: 844 });
+    await expect(page.getByTestId("results-dashboard")).toHaveScreenshot(
+      "gui0-results-390-dark.png",
+      { maxDiffPixelRatio: 0.06 },
+    );
+  });
+
   test("axe: no serious/critical violations on results", async ({ page }) => {
     await page.goto(`/ranking?c=${encodeConfig(COL)}`);
     await expect(page.getByTestId("results-dashboard")).toBeVisible({

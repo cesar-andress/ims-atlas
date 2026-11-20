@@ -16,7 +16,10 @@ export function methodPlainLabel(
   if (kind === "norm") {
     if (id === "minmax") return t("normLabelMinmax");
     if (id === "ratio_legacy") return t("normLabelRatio");
-    if (id === "zscore" || id === "robust_z") return t("normLabelZscore");
+    if (id === "zscore") return t("normLabelZscore");
+    if (id === "robust_z") return t("normLabelRobustZ");
+    if (id === "rank") return t("normLabelRank");
+    if (id === "log_minmax") return t("normLabelLogMinmax");
   }
   if (kind === "weight") {
     if (id === "equal") return t("weightLabelEqual");

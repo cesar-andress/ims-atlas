@@ -155,6 +155,7 @@ export function Factors() {
       titleKey="nav.factors"
       model={model}
       error={error}
+      chrome="results"
     >
       {(m) => (m ? <FactorsBody model={m} /> : null)}
     </AnalysisPage>

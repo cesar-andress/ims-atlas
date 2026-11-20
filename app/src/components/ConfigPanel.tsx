@@ -857,13 +857,13 @@ export function ConfigPanel({ layout = "aside" }: ConfigPanelProps) {
                 {t("normLabelZscore")}
               </option>
               <option value="robust_z" title="robust_z">
-                robust_z
+                {t("normLabelRobustZ")}
               </option>
               <option value="rank" title="rank">
-                rank
+                {t("normLabelRank")}
               </option>
               <option value="log_minmax" title="log_minmax">
-                log_minmax
+                {t("normLabelLogMinmax")}
               </option>
             </select>
           </label>
