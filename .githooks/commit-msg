@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Reject any Co-authored-by and non-cesar identities in the commit message.
+set -euo pipefail
+
+MSG_FILE="${1:-}"
+[[ -n "$MSG_FILE" && -f "$MSG_FILE" ]] || exit 0
+
+if grep -Eiq '^[[:space:]]*Co-[Aa]uthored-[Bb]y:' "$MSG_FILE"; then
+  echo "githooks/commit-msg: Co-authored-by trailers are forbidden." >&2
+  echo "  Sole author must be César Andrés <cesar.andres@unir.net> (GitHub: cesar-andress)." >&2
+  echo "  Remove the trailer and commit again." >&2
+  exit 1
+fi
+
+if grep -Eiq 'cursoragent@|noreply@anthropic\.com|noreply@openai\.com|copilot@|aiserv\.pro' "$MSG_FILE"; then
+  echo "githooks/commit-msg: bot/tool emails are forbidden in the commit message." >&2
+  exit 1
+fi

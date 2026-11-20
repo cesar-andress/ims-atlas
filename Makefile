@@ -12,6 +12,7 @@ setup:
 	$(PNPM) install
 	$(PNPM) --filter @ims-atlas/app exec playwright install chromium
 	cd etl && $(UV) sync --extra backtest --group dev
+	./scripts/install-git-hooks.sh
 	@echo "setup ok (ims-backtest @ config/ims-backtest.json tag)"
 
 cname:

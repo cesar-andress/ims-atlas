@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Enforce sole human authorship: César Andrés / cesar-andress (UNIR).
+set -euo pipefail
+
+REQUIRED_NAME="César Andrés"
+REQUIRED_EMAIL="cesar.andres@unir.net"
+
+# Keep local identity pinned (does not touch global git config).
+git config --local user.name "$REQUIRED_NAME"
+git config --local user.email "$REQUIRED_EMAIL"
+git config --local core.hooksPath .githooks
+
+author_name="${GIT_AUTHOR_NAME:-$(git config --local user.name)}"
+author_email="${GIT_AUTHOR_EMAIL:-$(git config --local user.email)}"
+committer_name="${GIT_COMMITTER_NAME:-$author_name}"
+committer_email="${GIT_COMMITTER_EMAIL:-$author_email}"
+
+fail() {
+  echo "githooks/pre-commit: $*" >&2
+  exit 1
+}
+
+[[ "$author_name" == "$REQUIRED_NAME" ]] || fail "author.name must be '$REQUIRED_NAME' (got '$author_name')"
+[[ "$author_email" == "$REQUIRED_EMAIL" ]] || fail "author.email must be '$REQUIRED_EMAIL' (got '$author_email')"
+[[ "$committer_name" == "$REQUIRED_NAME" ]] || fail "committer.name must be '$REQUIRED_NAME' (got '$committer_name')"
+[[ "$committer_email" == "$REQUIRED_EMAIL" ]] || fail "committer.email must be '$REQUIRED_EMAIL' (got '$committer_email')"
+
+# Block tool/bot identities even if someone exports GIT_* for the commit.
+for identity in "$author_name <$author_email>" "$committer_name <$committer_email>"; do
+  low=$(printf '%s' "$identity" | tr '[:upper:]' '[:lower:]')
+  case "$low" in
+    *cursor*|*cursoragent*|*aiserv*|*anthropic*|*openai*|*copilot*|*noreply*)
+      fail "forbidden author/committer identity: $identity"
+      ;;
+  esac
+done

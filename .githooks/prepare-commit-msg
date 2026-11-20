@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Strip injected Co-authored-by trailers before commit-msg runs.
+set -euo pipefail
+
+MSG_FILE="${1:-}"
+[[ -n "$MSG_FILE" && -f "$MSG_FILE" ]] || exit 0
+
+python3 - "$MSG_FILE" <<'PY'
+import re
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+text = path.read_text(encoding="utf-8")
+lines = text.splitlines()
+kept = [ln for ln in lines if not re.match(r"(?i)^Co-Authored-By:\s*", ln)]
+while kept and kept[-1].strip() == "":
+    kept.pop()
+path.write_text("\n".join(kept) + ("\n" if kept else ""), encoding="utf-8")
+PY
