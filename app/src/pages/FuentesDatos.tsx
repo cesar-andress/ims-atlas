@@ -51,25 +51,49 @@ export function FuentesDatos() {
   const Panel = FUENTES_TABS.find((tab) => tab.id === active)!.Panel;
 
   return (
-    <section data-testid="fuentes-datos" aria-labelledby="fuentes-datos-title">
-      <h1 id="fuentes-datos-title">{t("fuentesTitle")}</h1>
-      <p className="lead">{t("fuentesLead")}</p>
-      <GlobalSearch />
-      <p className="muted small" data-testid="data-versions">
-        {t("appVersion")}: <span data-testid="app-version">{APP_VERSION}</span> ·{" "}
-        {t("dataVersion")}:{" "}
-        <a href={releaseUrl("manifest.json")} data-testid="data-version-link">
-          v{dataConfig.release_version}
-        </a>{" "}
-        · <PermalinkLink view="changelog">{t("fuentesChangelog")}</PermalinkLink>
-      </p>
-      <nav className="tabs" aria-label={t("fuentesTitle")} data-testid="fuentes-tabs">
+    <section
+      className="fuentes-page"
+      data-testid="fuentes-datos"
+      aria-labelledby="fuentes-datos-title"
+    >
+      <header className="fuentes-hero results-card">
+        <p className="fuentes-kicker">{t("fuentesKicker")}</p>
+        <h1 id="fuentes-datos-title">{t("fuentesTitle")}</h1>
+        <p className="fuentes-lead">{t("fuentesLead")}</p>
+        <div className="fuentes-toolbar">
+          <GlobalSearch />
+          <p className="fuentes-meta muted small" data-testid="data-versions">
+            <span>
+              {t("appVersion")}: <span data-testid="app-version">{APP_VERSION}</span>
+            </span>
+            <span className="fuentes-meta-sep" aria-hidden>
+              ·
+            </span>
+            <span>
+              {t("dataVersion")}:{" "}
+              <a href={releaseUrl("manifest.json")} data-testid="data-version-link">
+                v{dataConfig.release_version}
+              </a>
+            </span>
+            <span className="fuentes-meta-sep" aria-hidden>
+              ·
+            </span>
+            <PermalinkLink view="changelog">{t("fuentesChangelog")}</PermalinkLink>
+          </p>
+        </div>
+      </header>
+
+      <nav
+        className="fuentes-tabs"
+        aria-label={t("fuentesTitle")}
+        data-testid="fuentes-tabs"
+      >
         {FUENTES_TABS.map((tab) => (
           <PermalinkLink
             key={tab.id}
             view="data_sources"
             hash={tab.id}
-            className="tab"
+            className={`fuentes-tab${tab.id === active ? " is-active" : ""}`}
             aria-current={tab.id === active ? "page" : undefined}
             data-testid={`fuentes-tab-${tab.id}`}
           >
@@ -77,9 +101,10 @@ export function FuentesDatos() {
           </PermalinkLink>
         ))}
       </nav>
+
       <EmbeddedPanelContext.Provider value={true}>
         <Suspense fallback={<p className="muted">{t("loading")}</p>}>
-          <div data-testid={`fuentes-panel-${active}`}>
+          <div className="fuentes-panel" data-testid={`fuentes-panel-${active}`}>
             <Panel />
           </div>
         </Suspense>

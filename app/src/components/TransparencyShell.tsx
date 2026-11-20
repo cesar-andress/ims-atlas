@@ -29,8 +29,8 @@ export function TransparencyShell({ testId, titleKey, introKey, children }: Prop
   const embedded = useEmbeddedPanel();
 
   return (
-    <PageShell testId={testId} titleKey={titleKey}>
-      <p className="muted">{t(introKey)}</p>
+    <PageShell testId={testId} titleKey={titleKey} omitTitleWhenEmbedded>
+      {embedded ? null : <p className="muted">{t(introKey)}</p>}
       {embedded ? null : (
         <nav className="transparency-nav" aria-label={t("transparencyNav")}>
           {TRANSPARENCY_VIEWS.map((view) => (
