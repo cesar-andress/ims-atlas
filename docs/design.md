@@ -28,6 +28,22 @@ Matrix / Compare / Time / Factors; plain-language method labels in
 | Cluster factor labels + silhouette → Variables link | Map |
 | Year play from rank-years fixture | Map (view overlay; no config edit) |
 
+### GUI gap close-up (2026-11-20 b)
+
+| Item | Status |
+|------|--------|
+| `/builder` → redirect `/variables`; permalink `view:builder` remaps | Done |
+| Backtest deep-link hard-blocked unless COL·HS64·2023 | Done |
+| RankAcceptability 10-colour chart behind `<details>` | Done |
+| ValueCharts nested weight bars in Pesos | Done |
+| Datos hub variable cards from catalog | Done |
+| Análisis gallery cards: combined / VOSviewer / correlation | Done |
+| LineUp column-width weight drag | Still open |
+| Onboarding tour / Lighthouse 100 / 5 click-tasks | Still open |
+| Full visual regression matrix (all views × light/dark × 1440/390) | Still open |
+| Compare 2–4 markets radar | Still open |
+| Map hatch for non-candidates; arc width by imports | Still open |
+
 Editable controls on result screens remain **0** (`input`/`select`/`textarea`).
 
 ---

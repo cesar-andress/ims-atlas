@@ -58,7 +58,7 @@ export function VariableBasket({ compact = false }: { compact?: boolean }) {
             {t("basketClear")}
           </button>
         ) : null}
-        <PermalinkLink view="builder">{t("basketToBuilder")}</PermalinkLink>
+        <PermalinkLink view="variables">{t("basketToBuilder")}</PermalinkLink>
       </header>
       {ids.length === 0 ? (
         <p className="muted">{t("basketEmpty")}</p>

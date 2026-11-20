@@ -228,7 +228,10 @@ function asIntInRange(v: unknown, lo: number, hi: number): number | undefined {
 }
 
 function parseViewId(v: unknown, fallback: ViewId = "home"): ViewId {
-  return typeof v === "string" && VIEW_SET.has(v) ? (v as ViewId) : fallback;
+  if (typeof v !== "string") return fallback;
+  // Legacy "builder" permalinks resolve to Variables (sole Cambiar análisis place).
+  if (v === "builder") return "variables";
+  return VIEW_SET.has(v) ? (v as ViewId) : fallback;
 }
 
 /** Lightweight drop-in for the former Zod ViewIdSchema. */

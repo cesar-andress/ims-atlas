@@ -45,12 +45,14 @@ test.describe("COL HS64 2023 IMSFE ranking", () => {
       missingThreshold: 0.2,
       lang: "en",
     };
-    await page.goto(`/builder?c=${encodeConfig(config)}`);
-    await expect(page.getByTestId("builder-view")).toBeVisible();
-    await expect(page.getByTestId("builder-summary")).toContainText("COL");
-    await expect(page.getByTestId("builder-summary")).toContainText("2023");
-
-    await page.getByTestId("builder-to-ranking").click();
+    await page.goto(`/variables?c=${encodeConfig({ ...config, view: "variables" })}`);
+    await expect(page.getByTestId("variables-hub")).toBeVisible();
+    await expect(page.getByTestId("variables-summary-bar")).toContainText("COL");
+    await page
+      .getByTestId("main-nav")
+      .getByRole("link", { name: /Analysis|Análisis/i })
+      .click();
+    await page.getByTestId("study-open-ranking").click();
     await expect(page.getByTestId("ranking-view")).toBeVisible({ timeout: 15_000 });
     await expect(page.getByTestId("ranking-table")).toBeVisible({ timeout: 15_000 });
 
@@ -123,7 +125,7 @@ test.describe("COL HS64 2023 IMSFE ranking", () => {
     await page.goto(`/?c=${encodeConfig(config)}`);
     await expect(page.getByTestId("site-header")).toBeVisible();
     await expect(page.locator("footer.site-footer")).toContainText(
-      "Desarrollado en el marco",
+      "Desarrollado por AISERV SYSTEMS SLU",
     );
     await expect(page.locator("html")).toHaveAttribute("lang", "es");
   });

@@ -19,6 +19,7 @@ import { ExpertSurveyPanel } from "./ExpertSurveyPanel";
 import { HelpButton } from "./HelpButton";
 import { PermalinkLink } from "./PermalinkLink";
 import { PodiumPanel } from "./PodiumPanel";
+import { ValueChartsPanel } from "./ValueChartsPanel";
 import { WeightLifterPanel } from "./WeightLifterPanel";
 
 /** Hide blocks when Variables guided mode is on a different step. */
@@ -941,6 +942,7 @@ export function ConfigPanel({
               config.methodFamily === "imsfe_2025" ||
               config.methodFamily === "imsfem_2025_olive") && <ExpertSurveyPanel />}
 
+            <ValueChartsPanel />
             <WeightLifterPanel />
             <PodiumPanel />
           </GuidedBlock>

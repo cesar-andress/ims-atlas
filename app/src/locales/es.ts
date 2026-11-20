@@ -77,6 +77,23 @@ const es = {
   yearPlay: "Reproducir años",
   yearPlayHint: "Vista del fixture de puestos por año (no cambia el análisis).",
   clusterKInVariables: "Cambiar k en Variables",
+  valueChartsTitle: "Pesos jerárquicos (ValueCharts)",
+  valueChartsIntro:
+    "Ancho = peso del criterio; debajo, la participación de cada variable dentro del criterio.",
+  valueChartsPending: "Calcule un ranking para ver la jerarquía de pesos.",
+  smaaAcceptAdvanced: "Vista avanzada: aceptabilidad por puesto (SMAA)",
+  smaaAcceptAdvancedHint:
+    "Barras apiladas por puesto; preferimos puntos cuantílicos y HOP arriba. Solo para lectura experta.",
+  hubDatosVariables: "Variables de la publicación",
+  hubDatosVariablesEmpty:
+    "La publicación pública aún no incluye variables redistribuibles verificadas.",
+  hubDatosVerify: "Verificar",
+  studyCombined: "Puntuación combinada IMSFE+EOC",
+  studyCombinedBody: "Factores y contribución; útil cuando hay apertura comercial.",
+  studyVos: "Mapa de similitud (VOSviewer)",
+  studyVosBody: "Clusters SMACOF de mercados con cascos y etiquetas.",
+  studyCorr: "Correlación entre variables",
+  studyCorrBody: "Explorar relaciones entre indicadores de la selección.",
   mapViewOptions: "Vista del mapa",
   mapProjection: "Proyección del mapa",
   mapProjGlobe: "Globo",

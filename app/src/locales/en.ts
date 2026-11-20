@@ -77,6 +77,23 @@ export const en = {
   yearPlay: "Play years",
   yearPlayHint: "Fixture ranks by year (does not change the analysis).",
   clusterKInVariables: "Change k in Variables",
+  valueChartsTitle: "Hierarchical weights (ValueCharts)",
+  valueChartsIntro:
+    "Bar width = criterion weight; nested shares are variables within each criterion.",
+  valueChartsPending: "Compute a ranking to see the weight hierarchy.",
+  smaaAcceptAdvanced: "Advanced: rank acceptability (SMAA)",
+  smaaAcceptAdvancedHint:
+    "Stacked bars by rank; prefer quantile dots and HOP above. Expert read-only view.",
+  hubDatosVariables: "Release variables",
+  hubDatosVariablesEmpty:
+    "The public release still has no redistributable verified variables.",
+  hubDatosVerify: "Verify",
+  studyCombined: "Combined IMSFE+EOC score",
+  studyCombinedBody: "Factors and contribution when commercial openness is available.",
+  studyVos: "Similarity map (VOSviewer)",
+  studyVosBody: "SMACOF market clusters with hulls and labels.",
+  studyCorr: "Variable correlation",
+  studyCorrBody: "Explore relationships among indicators in the selection.",
   mapViewOptions: "Map view",
   mapProjection: "Map projection",
   mapProjGlobe: "Globe",

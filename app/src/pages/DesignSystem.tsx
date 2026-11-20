@@ -128,7 +128,7 @@ export function DesignSystem() {
             title={t("designEmptyTitle")}
             body={t("designEmptyBody")}
             action={
-              <PermalinkLink view="builder" className="btn btn-primary">
+              <PermalinkLink view="variables" className="btn btn-primary">
                 {t("changeAnalysis")}
               </PermalinkLink>
             }

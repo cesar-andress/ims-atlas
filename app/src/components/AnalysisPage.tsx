@@ -76,7 +76,7 @@ export function AnalysisPage({
           <div className="results-header-actions">
             <HelpButton />
             <PermalinkLink
-              view="builder"
+              view="variables"
               className="btn btn-secondary"
               data-testid="change-analysis"
             >
@@ -139,7 +139,7 @@ export function AnalysisPage({
             >
               {t("presetColHs64")}
             </button>{" "}
-            <PermalinkLink view="builder">{t("nav.builder")}</PermalinkLink>
+            <PermalinkLink view="variables">{t("changeAnalysis")}</PermalinkLink>
             {" · "}
             <PermalinkLink view="status">{t("nav.status")}</PermalinkLink>
           </p>

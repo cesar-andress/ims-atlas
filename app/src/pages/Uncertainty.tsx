@@ -128,23 +128,27 @@ export function Uncertainty() {
                   }
                 />
 
-                <div data-export-surface="chart">
-                  <ExportMenu
-                    testIdPrefix="smaa-accept"
-                    kind="chart"
-                    title="SMAA rank acceptability"
-                    chartRef={acceptRef}
-                  />
-                  <Suspense fallback={<p className="muted">{t("loading")}</p>}>
-                    <RankAcceptabilityChart
-                      alternatives={smaaModel.smaa.alternatives}
-                      acceptability={smaaModel.smaa.acceptability}
-                      onReady={(c) => {
-                        acceptRef.current = c;
-                      }}
+                <details className="mt-4" data-testid="smaa-accept-advanced">
+                  <summary>{t("smaaAcceptAdvanced")}</summary>
+                  <p className="muted small">{t("smaaAcceptAdvancedHint")}</p>
+                  <div data-export-surface="chart">
+                    <ExportMenu
+                      testIdPrefix="smaa-accept"
+                      kind="chart"
+                      title="SMAA rank acceptability"
+                      chartRef={acceptRef}
                     />
-                  </Suspense>
-                </div>
+                    <Suspense fallback={<p className="muted">{t("loading")}</p>}>
+                      <RankAcceptabilityChart
+                        alternatives={smaaModel.smaa.alternatives}
+                        acceptability={smaaModel.smaa.acceptability}
+                        onReady={(c) => {
+                          acceptRef.current = c;
+                        }}
+                      />
+                    </Suspense>
+                  </div>
+                </details>
 
                 <h2>{t("pTopKTable")} (table)</h2>
                 <div className="table-scroll" data-export-surface="table">

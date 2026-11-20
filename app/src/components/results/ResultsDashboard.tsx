@@ -192,7 +192,7 @@ export function ResultsDashboard({ model }: Props) {
         <div className="results-header-actions">
           <HelpButton />
           <PermalinkLink
-            view="builder"
+            view="variables"
             className="btn btn-secondary"
             data-testid="change-analysis"
           >

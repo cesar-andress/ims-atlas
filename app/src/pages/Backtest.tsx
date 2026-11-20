@@ -119,7 +119,18 @@ export function Backtest() {
       chrome="results"
     >
       {() =>
-        fixture ? (
+        !paperPreset ? (
+          <div className="backtest-body" data-testid="backtest-blocked">
+            <p className="note" role="status">
+              {t("studyBacktestPaperOnly")}
+            </p>
+            <p className="muted small">
+              <PermalinkLink view="variables">{t("changeAnalysis")}</PermalinkLink>
+              {" · "}
+              <PermalinkLink view="analisis">{t("nav.analisis")}</PermalinkLink>
+            </p>
+          </div>
+        ) : fixture ? (
           <div className="backtest-body" data-testid="backtest-body">
             <p className="muted small" data-testid="backtest-context">
               {t("backtestTarget")}: {target} · {t("backtestHorizon")}: k={horizon}

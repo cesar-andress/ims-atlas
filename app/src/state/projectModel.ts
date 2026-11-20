@@ -61,7 +61,7 @@ export function createEmptyProject(
   partial?: Partial<AtlasProject> & { config?: AnalysisConfig },
 ): AtlasProject {
   const now = new Date().toISOString();
-  const config = partial?.config ?? { v: 1 as const, view: "builder" as const };
+  const config = partial?.config ?? { v: 1 as const, view: "variables" as const };
   return {
     schemaVersion: 2,
     kind: "ims-atlas-project",

@@ -25,6 +25,7 @@ export type SearchHit = {
     | "explore"
     | "data_variable"
     | "catalog"
+    | "variables"
     | "builder"
     | "country"
     | "projects"
@@ -99,7 +100,7 @@ export function runGlobalSearch(
       group: "hs",
       id: h.code,
       label: `HS${h.code} — ${lang === "es" ? h.name.es : h.name.en}`,
-      view: "builder",
+      view: "variables",
       hs: h.code,
     });
   }

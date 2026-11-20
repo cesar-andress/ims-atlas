@@ -6,38 +6,66 @@ import { isAnalysisReady } from "../../state/views";
 import type { ViewId } from "../../state/schema";
 
 type Study = {
+  id: string;
   view: ViewId;
   titleKey: string;
   bodyKey: string;
-  needsYears?: number;
-  needsEoc?: boolean;
   paperOnly?: boolean;
 };
 
 const STUDIES: Study[] = [
-  { view: "ranking", titleKey: "studyRanking", bodyKey: "studyRankingBody" },
   {
+    id: "ranking",
+    view: "ranking",
+    titleKey: "studyRanking",
+    bodyKey: "studyRankingBody",
+  },
+  {
+    id: "matrix",
     view: "matrix",
     titleKey: "studyMatrix",
     bodyKey: "studyMatrixBody",
-    needsEoc: true,
   },
-  { view: "map", titleKey: "studyMap", bodyKey: "studyMapBody" },
-  { view: "compare", titleKey: "studyCompare", bodyKey: "studyCompareBody" },
-  { view: "time", titleKey: "studyTime", bodyKey: "studyTimeBody", needsYears: 3 },
+  { id: "map", view: "map", titleKey: "studyMap", bodyKey: "studyMapBody" },
   {
+    id: "compare",
+    view: "compare",
+    titleKey: "studyCompare",
+    bodyKey: "studyCompareBody",
+  },
+  { id: "time", view: "time", titleKey: "studyTime", bodyKey: "studyTimeBody" },
+  {
+    id: "uncertainty",
     view: "uncertainty",
     titleKey: "studyUncertainty",
     bodyKey: "studyUncertaintyBody",
   },
   {
+    id: "backtest",
     view: "backtest",
     titleKey: "studyBacktest",
     bodyKey: "studyBacktestBody",
     paperOnly: true,
   },
-  { view: "factors", titleKey: "studyFactors", bodyKey: "studyFactorsBody" },
-  { view: "cite", titleKey: "studyCite", bodyKey: "studyCiteBody" },
+  {
+    id: "combined",
+    view: "factors",
+    titleKey: "studyCombined",
+    bodyKey: "studyCombinedBody",
+  },
+  {
+    id: "vos",
+    view: "map",
+    titleKey: "studyVos",
+    bodyKey: "studyVosBody",
+  },
+  {
+    id: "corr",
+    view: "explore_analysis",
+    titleKey: "studyCorr",
+    bodyKey: "studyCorrBody",
+  },
+  { id: "cite", view: "cite", titleKey: "studyCite", bodyKey: "studyCiteBody" },
 ];
 
 function availability(
@@ -45,18 +73,13 @@ function availability(
   ready: boolean,
   origin: string | undefined,
   hs: string | undefined,
+  year: number | undefined,
 ): { ok: boolean; reasonKey?: string } {
   if (!ready) return { ok: false, reasonKey: "studyNeedSelection" };
   if (study.paperOnly) {
     const paper =
-      (origin ?? "").toUpperCase() === "COL" && (hs === "64" || hs === "6401");
-    // Honest gate: backtest release is paper COL·HS64; HS 6401 selection must not show mismatched numbers.
-    if ((origin ?? "").toUpperCase() === "COL" && hs === "6401") {
-      return { ok: false, reasonKey: "studyBacktestPaperOnly" };
-    }
-    if (!paper && study.view === "backtest") {
-      return { ok: false, reasonKey: "studyBacktestPaperOnly" };
-    }
+      (origin ?? "").toUpperCase() === "COL" && hs === "64" && year === 2023;
+    if (!paper) return { ok: false, reasonKey: "studyBacktestPaperOnly" };
   }
   return { ok: true };
 }
@@ -73,18 +96,24 @@ export function AnalisisGallery() {
       <p className="note small" data-testid="analisis-context">
         {config.origin ?? "—"} · HS {config.hs ?? "—"} · {config.year ?? "—"}
         {" · "}
-        <PermalinkLink view="builder">{t("changeAnalysis")}</PermalinkLink>
+        <PermalinkLink view="variables">{t("changeAnalysis")}</PermalinkLink>
       </p>
       <div className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4">
         {STUDIES.map((study) => {
-          const avail = availability(study, ready, config.origin, config.hs);
+          const avail = availability(
+            study,
+            ready,
+            config.origin,
+            config.hs,
+            config.year,
+          );
           return (
             <div
-              key={study.view}
+              key={study.id}
               className={`rounded-card border border-border bg-surface p-4 ${
                 avail.ok ? "" : "opacity-70"
               }`}
-              data-testid={`study-card-${study.view}`}
+              data-testid={`study-card-${study.id}`}
               data-available={avail.ok ? "1" : "0"}
             >
               <div
@@ -101,14 +130,14 @@ export function AnalisisGallery() {
                 <PermalinkLink
                   view={study.view}
                   className="btn btn-primary mt-3 inline-flex"
-                  data-testid={`study-open-${study.view}`}
+                  data-testid={`study-open-${study.id}`}
                 >
                   {t("studyOpen")}
                 </PermalinkLink>
               ) : (
                 <p
                   className="m-0 mt-3 text-xs text-ink-3"
-                  data-testid={`study-blocked-${study.view}`}
+                  data-testid={`study-blocked-${study.id}`}
                 >
                   {t(avail.reasonKey ?? "studyNeedSelection")}
                 </p>

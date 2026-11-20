@@ -145,4 +145,22 @@ test.describe("Phase W/U/M GUI flow", () => {
       /HS 64|artículo|paper/i,
     );
   });
+
+  test("backtest deep-link blocked for non-paper config", async ({ page }) => {
+    await page.goto(
+      `/backtest?c=${encodeConfig({ ...COL, hs: "6401", view: "backtest" })}`,
+    );
+    await expect(page.getByTestId("backtest-blocked")).toBeVisible({
+      timeout: 15_000,
+    });
+    await expect(page.getByTestId("backtest-body")).toHaveCount(0);
+  });
+
+  test("ValueCharts panel appears in Variables Pesos step", async ({ page }) => {
+    await page.goto(`/variables?c=${encodeConfig({ ...COL, view: "variables" })}`);
+    await page.getByTestId("variables-expert-toggle").check();
+    await expect(page.getByTestId("valuecharts-panel")).toBeVisible({
+      timeout: 20_000,
+    });
+  });
 });

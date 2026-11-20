@@ -262,7 +262,7 @@ export function ExploreAnalysis() {
       </section>
 
       <p>
-        <PermalinkLink view="builder">{t("exploreSendBuilder")}</PermalinkLink>
+        <PermalinkLink view="variables">{t("exploreSendBuilder")}</PermalinkLink>
       </p>
     </PageShell>
   );

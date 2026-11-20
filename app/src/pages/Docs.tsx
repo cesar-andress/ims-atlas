@@ -54,7 +54,7 @@ export function Docs() {
           <li>{t("docs.getting_started.s5")}</li>
         </ol>
         <p className="small">
-          <PermalinkLink view="builder">{t("nav.builder")}</PermalinkLink>
+          <PermalinkLink view="variables">{t("nav.builder")}</PermalinkLink>
           {" · "}
           <PermalinkLink view="explore">{t("nav.explore")}</PermalinkLink>
         </p>
@@ -106,7 +106,7 @@ export function Docs() {
         <ol>
           <li>
             {t("docs.imsfe.s1")}{" "}
-            <PermalinkLink view="builder">{t("nav.builder")}</PermalinkLink>
+            <PermalinkLink view="variables">{t("nav.builder")}</PermalinkLink>
           </li>
           <li>
             {t("docs.imsfe.s2")}{" "}
@@ -263,7 +263,7 @@ export function Docs() {
             <li>{t("docs.tutorial.exporter3")}</li>
           </ol>
           <p>
-            <PermalinkLink view="builder">{t("nav.builder")}</PermalinkLink>
+            <PermalinkLink view="variables">{t("nav.builder")}</PermalinkLink>
           </p>
         </article>
         <article>
