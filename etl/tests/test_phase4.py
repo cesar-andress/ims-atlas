@@ -55,14 +55,16 @@ def test_byte_identical_rebuild_and_zenodo(tmp_path: Path) -> None:
 
 
 def test_config_data_json_matches_default_version() -> None:
-    cfg = json.loads((repo_root() / "config" / "data.json").read_text(encoding="utf-8"))
-    current = (
-        (repo_root() / "data/release/public/CURRENT")
-        .read_text(encoding="utf-8")
-        .strip()
-    )
-    assert current.startswith("v")
-    assert cfg["release_version"] == current.removeprefix("v")
+    root = repo_root()
+    cfg = json.loads((root / "config" / "data.json").read_text(encoding="utf-8"))
+    # CI clean checkouts have no gitignored data/release/; the committed SPA
+    # pointer is the source of truth for the configured public version.
+    spa_current = (root / "app/public/data/CURRENT").read_text(encoding="utf-8").strip()
+    assert cfg["release_version"] == spa_current.removeprefix("v")
+    release_ptr = root / "data/release/public/CURRENT"
+    if release_ptr.is_file():
+        release_current = release_ptr.read_text(encoding="utf-8").strip()
+        assert cfg["release_version"] == release_current.removeprefix("v")
     assert cfg["release_base_path"] == "/data"
     # Staging path helper still uses v-prefix
     assert staging_release_dir().name == "staging"

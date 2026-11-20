@@ -308,13 +308,14 @@ def write_transparency_bundle(
             ),
         )
 
-    current_ptr = (
-        (root / "data" / "release" / "public" / "CURRENT")
-        .read_text(
-            encoding="utf-8",
-        )
-        .strip()
-    )
+    current_ptr = ""
+    for candidate in (
+        root / "data" / "release" / "public" / "CURRENT",
+        root / "app" / "public" / "data" / "CURRENT",
+    ):
+        if candidate.is_file():
+            current_ptr = candidate.read_text(encoding="utf-8").strip()
+            break
     raw_version = release_version or current_ptr or "1.0.0"
     version = raw_version[1:] if raw_version.startswith("v") else raw_version
     manifest_path = (
