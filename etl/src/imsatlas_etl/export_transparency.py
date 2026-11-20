@@ -319,22 +319,32 @@ def _panel_coverage_stats(root: Path) -> dict[str, dict[str, Any]]:
     cp_candidates.extend(sorted(internal.glob("v*/country_product.parquet")))
     cp_dirs = sorted(internal.glob("v*/country_product"))
     cp_path = next((p for p in cp_candidates if p.is_file()), None)
-    if cp_path is None and cp_dirs:
-        # Partitioned dataset under release/internal/v*/country_product/
+    cp: Any = None
+    if cp_path is not None:
         try:
             cp = pd.read_parquet(
-                cp_dirs[-1],
+                cp_path,
                 columns=["iso3", "year", "variable_id", "value"],
             )
         except (OSError, ValueError, ImportError):
             cp = None
-    elif cp_path is not None:
-        cp = pd.read_parquet(
-            cp_path,
-            columns=["iso3", "year", "variable_id", "value"],
-        )
-    else:
-        cp = None
+    elif cp_dirs:
+        # Hive-style partitions may mix parquet with DuckDB index.json — only
+        # read *.parquet files.
+        parts = sorted(cp_dirs[-1].rglob("*.parquet"))
+        frames: list[Any] = []
+        for part in parts:
+            try:
+                frames.append(
+                    pd.read_parquet(
+                        part,
+                        columns=["iso3", "year", "variable_id", "value"],
+                    )
+                )
+            except (OSError, ValueError, ImportError):
+                continue
+        if frames:
+            cp = pd.concat(frames, ignore_index=True)
     if cp is not None and not cp.empty:
         cp = cp.dropna(subset=["value"])
         for vid, g in cp.groupby("variable_id"):
@@ -422,13 +432,17 @@ def _variables_payload(
         gate = gates.get(vid)
         cov_matrix = coverage.get(vid)
         stats = _coverage_stats_for(cov_matrix)
-        if not stats:
-            # Fall back: by variable id, then by upstream WB-style code column.
-            stats = panel_stats.get(vid)
-            if not stats:
-                code = str(var.get("code") or "").split(",")[0].strip()
-                if code and code not in {"value", "variable_id"}:
-                    stats = panel_stats.get(code)
+        panel = panel_stats.get(vid)
+        if not panel:
+            code = str(var.get("code") or "").split(",")[0].strip()
+            if code and code not in {"value", "variable_id"}:
+                panel = panel_stats.get(code)
+        # Prefer panel counts when CSV coverage is a tiny fixture grid.
+        if panel and (
+            not stats
+            or int(stats.get("n_countries") or 0) < int(panel.get("n_countries") or 0)
+        ):
+            stats = panel
         notes = var.get("notes")
         alias = var.get("alias_of")
         if alias:
