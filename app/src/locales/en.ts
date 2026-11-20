@@ -978,7 +978,11 @@ export const en = {
   // Project flow (Home, project bar, steps, results, sources and data)
   project: "Project",
   projectChoose: "Choose a project",
-  projectSwitch: "Switch project (opens your project list)",
+  projectSwitch: "Switch project",
+  projectSwitchList: "Projects saved in this browser",
+  projectSwitchEmpty: "No saved projects yet.",
+  projectSwitchNew: "New project",
+  projectSwitchManage: "See all",
   projectUntitled: "Untitled project",
   homeAria: "IMS Atlas, home",
   helpButton: "Help",

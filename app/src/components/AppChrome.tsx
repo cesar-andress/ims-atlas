@@ -5,6 +5,7 @@ import { PermalinkLink } from "./PermalinkLink";
 import { AccessMenu } from "./AccessMenu";
 import { LangSwitch } from "./LangSwitch";
 import { ProjectBar } from "./ProjectBar";
+import { ProjectSwitcher } from "./ProjectSwitcher";
 import { TeamAccessBanner } from "./TeamAccessBanner";
 import { HelpDrawer } from "./HelpDrawer";
 import { useHelp } from "../help/helpContext";
@@ -25,27 +26,6 @@ function Logo() {
         strokeWidth="1.6"
       />
     </svg>
-  );
-}
-
-/** Header button that opens the project list (Home) and names the open project. */
-function ProjectSwitcher() {
-  const { t } = useTranslation();
-  const { config, activeProject } = useAnalysis();
-  const name =
-    activeProject?.name ??
-    (isProjectScreen(config.view) ? t("projectUntitled") : t("projectChoose"));
-  return (
-    <PermalinkLink
-      view="home"
-      className="switch"
-      data-testid="project-switcher"
-      aria-label={t("projectSwitch")}
-    >
-      <small>{t("project")}</small>
-      <b data-testid="header-project-name">{name}</b>
-      <span aria-hidden="true">▾</span>
-    </PermalinkLink>
   );
 }
 

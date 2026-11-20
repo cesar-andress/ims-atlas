@@ -985,7 +985,11 @@ const es = {
   // Project flow (Home, project bar, steps, results, sources and data)
   project: "Proyecto",
   projectChoose: "Elige un proyecto",
-  projectSwitch: "Cambiar de proyecto (abre tu lista de proyectos)",
+  projectSwitch: "Cambiar de proyecto",
+  projectSwitchList: "Proyectos guardados en este navegador",
+  projectSwitchEmpty: "Aún no hay proyectos guardados.",
+  projectSwitchNew: "Nuevo proyecto",
+  projectSwitchManage: "Ver todos",
   projectUntitled: "Proyecto sin nombre",
   homeAria: "IMS Atlas, inicio",
   helpButton: "Ayuda",
