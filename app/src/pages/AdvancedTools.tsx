@@ -2,56 +2,132 @@ import { PageShell } from "../components/PageShell";
 import { PermalinkLink } from "../components/PermalinkLink";
 import { useTranslation } from "../i18n";
 import type { ViewId } from "../state/schema";
+import { useAnalysis } from "../state/useAnalysis";
 
-const TOOLS: { view: ViewId; titleKey: string; bodyKey: string }[] = [
-  { view: "design", titleKey: "nav.design", bodyKey: "advancedToolDesign" },
-  { view: "norm_lab", titleKey: "nav.norm_lab", bodyKey: "advancedToolNormLab" },
-  { view: "sql", titleKey: "nav.sql", bodyKey: "advancedToolSql" },
+type ToolLink = {
+  view: ViewId;
+  titleKey: string;
+  bodyKey: string;
+  hash?: string;
+};
+
+type ToolGroup = {
+  titleKey: string;
+  tools: ToolLink[];
+};
+
+const GROUPS: ToolGroup[] = [
   {
-    view: "imsfe_import",
-    titleKey: "nav.imsfe_import",
-    bodyKey: "advancedToolImsfeImport",
+    titleKey: "advancedGroupData",
+    tools: [
+      {
+        view: "data_sources",
+        titleKey: "nav.data_sources",
+        bodyKey: "advancedToolFuentes",
+      },
+      {
+        view: "data_pipeline",
+        titleKey: "nav.data_pipeline",
+        bodyKey: "advancedToolPipeline",
+      },
+    ],
   },
-  { view: "ai_verify", titleKey: "nav.ai_verify", bodyKey: "advancedToolAiVerify" },
-  { view: "paper", titleKey: "nav.paper", bodyKey: "advancedToolPaper" },
-  { view: "catalog", titleKey: "nav.catalog", bodyKey: "advancedToolCatalog" },
-  { view: "status", titleKey: "nav.status", bodyKey: "advancedToolStatus" },
   {
-    view: "data_pipeline",
-    titleKey: "nav.data_pipeline",
-    bodyKey: "advancedToolPipeline",
+    titleKey: "advancedGroupMethod",
+    tools: [
+      {
+        view: "norm_lab",
+        titleKey: "nav.norm_lab",
+        bodyKey: "advancedToolNormLab",
+      },
+      {
+        view: "imsfe_import",
+        titleKey: "nav.imsfe_import",
+        bodyKey: "advancedToolImsfeImport",
+      },
+      {
+        view: "ai_verify",
+        titleKey: "nav.ai_verify",
+        bodyKey: "advancedToolAiVerify",
+      },
+      {
+        view: "paper",
+        titleKey: "nav.paper",
+        bodyKey: "advancedToolPaper",
+      },
+      {
+        view: "byod",
+        titleKey: "nav.byod",
+        bodyKey: "advancedToolByod",
+      },
+    ],
   },
   {
-    view: "data_releases",
-    titleKey: "nav.data_releases",
-    bodyKey: "advancedToolReleases",
+    titleKey: "advancedGroupLabs",
+    tools: [
+      {
+        view: "design",
+        titleKey: "nav.design",
+        bodyKey: "advancedToolDesign",
+      },
+      {
+        view: "sql",
+        titleKey: "nav.sql",
+        bodyKey: "advancedToolSql",
+      },
+    ],
   },
 ];
 
-/** Internal labs and transparency tools — not in the top “Más” list (R2). */
+/** Team-only tools hub: grouped links, no card grid. */
 export function AdvancedTools() {
   const { t } = useTranslation();
+  const { config } = useAnalysis();
   return (
-    <PageShell testId="advanced-tools" titleKey="nav.advanced_tools">
-      <p className="muted">{t("advancedToolsIntro")}</p>
-      <ul className="mt-4 grid list-none grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-3 p-0">
-        {TOOLS.map((tool) => (
-          <li
-            key={tool.view}
-            className="rounded-card border border-border bg-surface p-4"
+    <PageShell
+      testId="advanced-tools"
+      titleKey="nav.advanced_tools"
+      className="team-tools"
+    >
+      <p className="lead team-tools-lead" data-testid="advanced-tools-intro">
+        {t("advancedToolsIntro")}
+      </p>
+      <div className="team-tools-groups">
+        {GROUPS.map((group) => (
+          <section
+            key={group.titleKey}
+            className="team-tools-group"
+            aria-labelledby={`team-tools-${group.titleKey}`}
           >
-            <h2 className="m-0 text-base font-semibold text-ink">{t(tool.titleKey)}</h2>
-            <p className="m-0 mt-1 text-sm text-ink-2">{t(tool.bodyKey)}</p>
-            <PermalinkLink
-              view={tool.view}
-              className="btn btn-secondary mt-3 inline-flex"
-              data-testid={`advanced-tool-${tool.view}`}
-            >
-              {t("studyOpen")}
-            </PermalinkLink>
-          </li>
+            <h2 id={`team-tools-${group.titleKey}`} className="team-tools-group-title">
+              {t(group.titleKey)}
+            </h2>
+            <ul className="team-tools-list">
+              {group.tools.map((tool) => {
+                const current = config.view === tool.view;
+                return (
+                  <li key={`${tool.view}-${tool.hash ?? ""}`}>
+                    <PermalinkLink
+                      view={tool.view}
+                      {...(tool.hash ? { hash: tool.hash } : {})}
+                      className={
+                        current ? "team-tools-link is-current" : "team-tools-link"
+                      }
+                      data-testid={`advanced-tool-${tool.view}`}
+                      aria-current={current ? "page" : undefined}
+                    >
+                      <span className="team-tools-link-title">{t(tool.titleKey)}</span>
+                      <span className="team-tools-link-body muted">
+                        {t(tool.bodyKey)}
+                      </span>
+                    </PermalinkLink>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
         ))}
-      </ul>
+      </div>
     </PageShell>
   );
 }

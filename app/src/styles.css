@@ -933,15 +933,42 @@ main {
 
 .access-user-actions {
   list-style: none;
-  margin: 0.25rem 0 0;
-  padding: 0.35rem;
+  margin: 0.35rem 0 0;
+  padding: 0.4rem;
   border: 1px solid var(--border);
-  border-radius: 0.35rem;
+  border-radius: 0.45rem;
   background: var(--surface);
   position: absolute;
   right: 0;
-  z-index: 25;
-  min-width: 7rem;
+  top: 100%;
+  z-index: 80;
+  min-width: 12rem;
+  box-shadow: 0 0.4rem 1.1rem rgb(0 0 0 / 12%);
+}
+
+.access-user-actions a,
+.access-user-actions button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.4rem 0.55rem;
+  border: none;
+  border-radius: 0.3rem;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.88rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.access-user-actions a:hover,
+.access-user-actions button:hover {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.access-user-actions li + li {
+  margin-top: 0.15rem;
 }
 
 .access-toast {
@@ -3088,9 +3115,71 @@ ul.callout {
 .top {
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 50;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
+}
+
+/* Team tools hub: grouped link rows (no card grid). */
+.team-tools-lead {
+  max-width: 40rem;
+  margin: 0 0 1.5rem;
+}
+
+.team-tools-groups {
+  display: grid;
+  gap: 1.75rem;
+  max-width: 44rem;
+}
+
+.team-tools-group-title {
+  margin: 0 0 0.55rem;
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.team-tools-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.team-tools-list li + li {
+  border-top: 1px solid var(--border);
+}
+
+.team-tools-link {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.85rem 1rem;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.12s ease;
+}
+
+.team-tools-link:hover {
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.team-tools-link.is-current {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.team-tools-link-title {
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.team-tools-link-body {
+  font-size: 0.9rem;
+  line-height: 1.35;
 }
 
 .top .wrap {

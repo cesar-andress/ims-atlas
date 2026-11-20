@@ -72,7 +72,7 @@ export function AppFooter() {
     <footer className="site-footer" data-testid="site-footer">
       <div className="wrap">
         <p className="muted small" data-testid="footer-atlas-credit">
-          © IMS Atlas · atlas.aiserv.es · AISERV SYSTEMS SLU
+          © IMS Atlas, atlas.aiserv.es, AISERV SYSTEMS SLU
         </p>
         <nav aria-label={t("footerNav")} data-testid="footer-links">
           <PermalinkLink

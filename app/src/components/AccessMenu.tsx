@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   atlasHomeUrl,
   loadAccessConfig,
@@ -6,6 +6,7 @@ import {
 } from "../auth/accessConfig";
 import { useAccessSession } from "../auth/accessSession";
 import { useTranslation } from "../i18n";
+import { useAnalysis } from "../state/useAnalysis";
 import { PermalinkLink } from "./PermalinkLink";
 
 function loginUrl(portalUrl: string): string {
@@ -25,12 +26,24 @@ function logoutUrl(portalUrl: string): string {
 export function AccessMenu() {
   const { t } = useTranslation();
   const { status, profile, sessionExpired, dismissSessionExpired } = useAccessSession();
+  const { config: analysis } = useAnalysis();
   const [config, setConfig] = useState<AccessConfig | null>(null);
+  const detailsRef = useRef<HTMLDetailsElement>(null);
 
   useEffect(() => {
     void loadAccessConfig()
       .then(setConfig)
       .catch(() => setConfig(null));
+  }, []);
+
+  useEffect(() => {
+    function onDoc(e: MouseEvent) {
+      const el = detailsRef.current;
+      if (!el?.open) return;
+      if (!el.contains(e.target as Node)) el.open = false;
+    }
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
   }, []);
 
   const onLogin = useCallback(() => {
@@ -42,6 +55,12 @@ export function AccessMenu() {
     if (!config) return;
     window.location.assign(logoutUrl(config.auth.portal_url));
   }, [config]);
+
+  function closeMenu() {
+    if (detailsRef.current) detailsRef.current.open = false;
+  }
+
+  const onToolsPage = analysis.view === "advanced_tools";
 
   return (
     <div className="access-menu" data-testid="access-menu">
@@ -71,21 +90,19 @@ export function AccessMenu() {
           …
         </span>
       ) : status === "anonymous" ? (
-        <>
-          <button
-            type="button"
-            className="access-login-btn"
-            data-testid="access-login"
-            onClick={onLogin}
-            disabled={!config}
-          >
-            {t("access.login")}
-          </button>
-        </>
+        <button
+          type="button"
+          className="access-login-btn"
+          data-testid="access-login"
+          onClick={onLogin}
+          disabled={!config}
+        >
+          {t("access.login")}
+        </button>
       ) : status === "ungated" ? (
         <span className="access-menu-muted small" data-testid="access-ungated" />
       ) : (
-        <details className="access-user-menu">
+        <details className="access-user-menu" ref={detailsRef}>
           <summary className="access-user-summary">
             <span className="access-user-name">{profile?.name ?? profile?.user}</span>
             <span className="access-team-badge" data-testid="access-badge">
@@ -93,11 +110,17 @@ export function AccessMenu() {
             </span>
           </summary>
           <ul className="access-user-actions">
-            <li>
-              <PermalinkLink view="advanced_tools" data-testid="team-tools-link">
-                {t("nav.advanced_tools")}
-              </PermalinkLink>
-            </li>
+            {!onToolsPage ? (
+              <li>
+                <PermalinkLink
+                  view="advanced_tools"
+                  data-testid="team-tools-link"
+                  onClick={closeMenu}
+                >
+                  {t("nav.advanced_tools")}
+                </PermalinkLink>
+              </li>
+            ) : null}
             <li>
               <button type="button" onClick={onLogout} disabled={!config}>
                 {t("access.logout")}
