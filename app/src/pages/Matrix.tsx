@@ -6,6 +6,7 @@ import { ExportMenu } from "../components/ExportMenu";
 import { StrategicScatter } from "../components/StrategicScatter";
 import { countryLabel } from "../design/formatLocale";
 import { useTranslation } from "../i18n";
+import { eocToStrategicMatrix } from "../ranking/eocToStrategic";
 import { useImsfeEocMatrix } from "../ranking/useImsfeEocMatrix";
 import { useRankingModel } from "../ranking/useRankingModelApi";
 import { useStrategicMatrix } from "../ranking/useStrategicMatrix";
@@ -69,6 +70,32 @@ export function Matrix() {
                       .replace("{fit}", eocMatrix.cutEoc.toFixed(3))
                       .replace("{n}", String(eocMatrix.points.length))}
                   </p>
+                  <ChartFrame
+                    testIdPrefix="matrix-eoc-scatter"
+                    title={t("matrixModeImsfeEoc")}
+                    chartRef={scatterRef}
+                    {...(config.origin && config.hs
+                      ? {
+                          projectLine: `${config.origin} · HS ${config.hs}${
+                            config.year ? ` · ${config.year}` : ""
+                          }`,
+                        }
+                      : {})}
+                  >
+                    <StrategicScatter
+                      matrix={eocToStrategicMatrix(eocMatrix)}
+                      testId="matrix-eoc-scatter"
+                      xAxisName={
+                        lang.startsWith("es")
+                          ? "Apertura comercial (EOC)"
+                          : "Openness (EOC)"
+                      }
+                      yAxisName="IMSFE"
+                      onReady={(c) => {
+                        scatterRef.current = c;
+                      }}
+                    />
+                  </ChartFrame>
                   <div data-export-surface="table">
                     <ExportMenu
                       testIdPrefix="matrix-eoc"

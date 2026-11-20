@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   IMSFE_EOC_QUADRANTS,
   messageFor,
@@ -8,6 +8,7 @@ import {
 import { ChartFrame } from "../ChartFrame";
 import { ExportMenu } from "../ExportMenu";
 import { HelpButton } from "../HelpButton";
+import { StrategicScatter } from "../StrategicScatter";
 import {
   CRITERION_COLOR,
   CRITERION_LABEL,
@@ -25,12 +26,15 @@ import { rankingToCsv } from "../../cite/exportDownload";
 import { useTranslation } from "../../i18n";
 import { localizeWarning } from "../../ranking/localizeWarning";
 import { collectMethodWarnings } from "../../imsfe/collectMethodWarnings";
+import { eocToStrategicMatrix } from "../../ranking/eocToStrategic";
 import { useImsfeEocMatrix } from "../../ranking/useImsfeEocMatrix";
 import type { RankingViewModel } from "../../ranking/rankingEngine";
 import { useAnalysis } from "../../state/useAnalysis";
 import { useCompareSelection } from "../../state/useCompareSelection";
 
 const PREVIEW = 12;
+
+type ChartHandle = { getDataURL: (opts: object) => string };
 
 function quadrantCss(q: ImsfeEocQuadrant | null): {
   bg: string;
@@ -88,6 +92,12 @@ export function ResultsDashboard({ model }: Props) {
   const eoc = useImsfeEocMatrix(model);
   const methodWarnings = useMemo(() => collectMethodWarnings(config), [config]);
   const [showAll, setShowAll] = useState(false);
+  const eocScatterRef = useRef<ChartHandle | null>(null);
+  const eocStrategic = useMemo(() => (eoc ? eocToStrategicMatrix(eoc) : null), [eoc]);
+  const projectLine =
+    config.origin && config.hs
+      ? `${config.origin} · HS ${config.hs}${config.year ? ` · ${config.year}` : ""}`
+      : undefined;
 
   const criteria = useMemo(
     () => criterionList(model, config.orderByWeight === true),
@@ -315,13 +325,7 @@ export function ResultsDashboard({ model }: Props) {
           <ChartFrame
             testIdPrefix="ranking-bars"
             title={lang === "es" ? "Ranking IMSFE" : "IMSFE ranking"}
-            {...(config.origin && config.hs
-              ? {
-                  projectLine: `${config.origin} · HS ${config.hs}${
-                    config.year ? ` · ${config.year}` : ""
-                  }`,
-                }
-              : {})}
+            {...(projectLine ? { projectLine } : {})}
             showOnScreenCredit
           >
             <h2 className="visually-hidden">
@@ -530,88 +534,35 @@ export function ResultsDashboard({ model }: Props) {
 
       <div className="results-two">
         <section className="results-card" data-testid="results-matrix-card">
-          <h2>
-            {lang === "es"
-              ? "Matriz IMSFE × apertura comercial"
-              : "IMSFE × commercial openness matrix"}
-          </h2>
-          {eoc ? (
+          {eoc && eocStrategic ? (
             <>
-              <p className="muted small">
+              <p className="muted small" data-testid="results-eoc-cuts">
                 {lang === "es"
                   ? `Cortes en la mediana: IMSFE ${formatScoreLocale(eoc.cutImsfe, lang)} · EOC ${formatScoreLocale(eoc.cutEoc, lang)}`
                   : `Median cuts: IMSFE ${formatScoreLocale(eoc.cutImsfe, lang)} · EOC ${formatScoreLocale(eoc.cutEoc, lang)}`}
               </p>
-              <div className="eoc-plot" data-testid="results-eoc-plot">
-                {([4, 1, 3, 2] as const).map((q) => {
-                  const n = eoc.points.filter((p) => p.quadrant === q).length;
-                  const label =
-                    lang === "es"
-                      ? IMSFE_EOC_QUADRANTS[q].es.toUpperCase()
-                      : IMSFE_EOC_QUADRANTS[q].en;
-                  return (
-                    <div
-                      key={q}
-                      className={`eoc-quad q${q}`}
-                      data-testid={`eoc-quad-${q}`}
-                    >
-                      <span className="eoc-quad-label">
-                        {label} ({n})
-                      </span>
-                    </div>
-                  );
-                })}
-                <svg
-                  viewBox="0 0 100 100"
-                  className="eoc-dots"
-                  role="img"
-                  aria-label="IMSFE vs EOC"
-                >
-                  <line
-                    x1={eoc.cutEoc * 10}
-                    y1={0}
-                    x2={eoc.cutEoc * 10}
-                    y2={100}
-                    className="cut"
-                  />
-                  <line
-                    x1={0}
-                    y1={100 - eoc.cutImsfe * 10}
-                    x2={100}
-                    y2={100 - eoc.cutImsfe * 10}
-                    className="cut"
-                  />
-                  {eoc.points.map((p) => {
-                    const cx = Math.min(98, Math.max(2, p.eocNorm * 10));
-                    const cy = Math.min(98, Math.max(2, 100 - p.imsfe * 10));
-                    const sel = p.iso3 === selectedIso;
-                    return (
-                      <g key={p.iso3}>
-                        <circle
-                          cx={cx}
-                          cy={cy}
-                          r={sel ? 2.8 : 1.6}
-                          fill={quadrantCss(p.quadrant).dot}
-                          stroke={sel ? "var(--ink)" : "none"}
-                          strokeWidth={sel ? 0.6 : 0}
-                          className="eoc-dot"
-                          data-iso3={p.iso3}
-                          onClick={() => selectIso(p.iso3)}
-                          style={{ cursor: "pointer" }}
-                        />
-                        <text
-                          x={cx + 2}
-                          y={cy - 1.5}
-                          className="eoc-label"
-                          onClick={() => selectIso(p.iso3)}
-                        >
-                          {p.iso3}
-                        </text>
-                      </g>
-                    );
-                  })}
-                </svg>
-              </div>
+              <ChartFrame
+                testIdPrefix="results-eoc-matrix"
+                title={
+                  lang === "es"
+                    ? "Matriz IMSFE × apertura comercial"
+                    : "IMSFE × commercial openness matrix"
+                }
+                {...(projectLine ? { projectLine } : {})}
+                chartRef={eocScatterRef}
+              >
+                <StrategicScatter
+                  matrix={eocStrategic}
+                  testId="results-eoc-plot"
+                  xAxisName={
+                    lang === "es" ? "Apertura comercial (EOC)" : "Openness (EOC)"
+                  }
+                  yAxisName="IMSFE"
+                  onReady={(c) => {
+                    eocScatterRef.current = c;
+                  }}
+                />
+              </ChartFrame>
               {missingEoc.length > 0 ? (
                 <p className="muted small" data-testid="results-missing-eoc">
                   {lang === "es"
@@ -622,9 +573,16 @@ export function ResultsDashboard({ model }: Props) {
               ) : null}
             </>
           ) : (
-            <p className="muted" data-testid="results-eoc-pending">
-              {t("matrixEocPending")}
-            </p>
+            <>
+              <h2>
+                {lang === "es"
+                  ? "Matriz IMSFE × apertura comercial"
+                  : "IMSFE × commercial openness matrix"}
+              </h2>
+              <p className="muted" data-testid="results-eoc-pending">
+                {t("matrixEocPending")}
+              </p>
+            </>
           )}
         </section>
 

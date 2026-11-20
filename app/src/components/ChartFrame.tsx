@@ -51,7 +51,7 @@ export function ChartFrame({
             testIdPrefix={testIdPrefix}
             kind="chart"
             title={title}
-            {...(subtitle ? { subtitle } : {})}
+            {...(subtitle || projectLine ? { subtitle: subtitle ?? projectLine } : {})}
             {...(sourceLine ? { sourceLine } : {})}
             {...(extraCredit ? { extraCredit } : {})}
             chartRef={chartRef}

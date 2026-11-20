@@ -558,6 +558,7 @@ export const en = {
   chartCreditAtlas: "Source: IMS Atlas (atlas.aiserv.es)",
   mapResetView: "Reset view",
   chartDownload: "Download",
+  chartDownloadPng4x: "Download PNG 4×",
   fit: "Fit",
   quadrant: "Quadrant",
   presetImsfeBaenaCano: "IMSFE (Baena & Cano)",

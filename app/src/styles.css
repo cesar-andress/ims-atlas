@@ -1286,6 +1286,14 @@ main:has(.builder) {
   margin-right: 0.25rem;
 }
 
+.export-menu .export-png-primary {
+  font-weight: 600;
+}
+
+.chart-frame-head .export-menu {
+  margin-bottom: 0;
+}
+
 .analysis-title-row,
 .page-help-row {
   display: flex;

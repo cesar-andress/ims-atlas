@@ -565,6 +565,7 @@ const es = {
   chartCreditAtlas: "Fuente: IMS Atlas (atlas.aiserv.es)",
   mapResetView: "Restablecer vista",
   chartDownload: "Descargar",
+  chartDownloadPng4x: "Descargar PNG 4×",
   fit: "Encaje",
   quadrant: "Cuadrante",
   presetImsfeBaenaCano: "IMSFE (Baena & Cano)",

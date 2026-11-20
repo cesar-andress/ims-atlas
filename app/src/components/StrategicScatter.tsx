@@ -33,6 +33,10 @@ const QUAD_COLORS: Record<number, string> = {
 type Props = {
   matrix: StrategicMatrixResult;
   onReady?: (chart: echarts.ECharts) => void;
+  /** Override default axis names (e.g. IMSFE × EOC matrix). */
+  xAxisName?: string;
+  yAxisName?: string;
+  testId?: string;
 };
 
 /** Axis span from p1–p99 with margin so outliers (e.g. BHS) stay inside the plot. */
@@ -59,11 +63,19 @@ function axisExtent(values: number[]): { min: number; max: number } {
   };
 }
 
-export function StrategicScatter({ matrix, onReady }: Props) {
+export function StrategicScatter({
+  matrix,
+  onReady,
+  xAxisName,
+  yAxisName,
+  testId = "strategic-scatter",
+}: Props) {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
   const elRef = useRef<HTMLDivElement | null>(null);
   const { chart } = useEchartsHost(elRef, onReady, "svg");
+  const xName = xAxisName ?? t("fit");
+  const yName = yAxisName ?? t("attractiveness");
 
   useEffect(() => {
     if (!chart) return;
@@ -121,7 +133,7 @@ export function StrategicScatter({ matrix, onReady }: Props) {
           }) => {
             const v = p.value ?? [];
             const label = p.name ?? p.data?.iso3 ?? "";
-            return `${label}<br/>${t("fit")}=${v[0]?.toFixed(3)}<br/>${t("attractiveness")}=${v[1]?.toFixed(3)}<br/>${p.seriesName} · #${p.data?.rank ?? "?"}`;
+            return `${label}<br/>${xName}=${v[0]?.toFixed(3)}<br/>${yName}=${v[1]?.toFixed(3)}<br/>${p.seriesName} · #${p.data?.rank ?? "?"}`;
           },
         },
         legend: {
@@ -139,7 +151,7 @@ export function StrategicScatter({ matrix, onReady }: Props) {
           containLabel: true,
         },
         xAxis: {
-          name: t("fit"),
+          name: xName,
           nameLocation: "middle",
           nameGap: 30,
           type: "value",
@@ -149,7 +161,7 @@ export function StrategicScatter({ matrix, onReady }: Props) {
           splitLine: { show: true },
         },
         yAxis: {
-          name: t("attractiveness"),
+          name: yName,
           nameLocation: "middle",
           nameGap: 42,
           type: "value",
@@ -175,12 +187,12 @@ export function StrategicScatter({ matrix, onReady }: Props) {
       true,
     );
     chart.resize();
-  }, [matrix, chart, t, lang]);
+  }, [matrix, chart, t, lang, xName, yName]);
 
   return (
     <div
       className="strategic-scatter"
-      data-testid="strategic-scatter"
+      data-testid={testId}
       ref={elRef}
       role="img"
       aria-label={t("matrixScatterAria")}

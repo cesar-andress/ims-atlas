@@ -115,11 +115,20 @@ export function ExportMenu(props: ExportMenuProps) {
         <>
           <button
             type="button"
+            className="btn btn-secondary export-png-primary"
+            data-testid={`export-${props.testIdPrefix}-png-4x`}
+            disabled={busy}
+            onClick={() => void onPng(4)}
+          >
+            {t("chartDownloadPng4x")}
+          </button>
+          <button
+            type="button"
             data-testid={`export-${props.testIdPrefix}-png`}
             disabled={busy}
             onClick={() => void onPng(2)}
           >
-            PNG
+            PNG 2×
           </button>
           <button
             type="button"
@@ -127,15 +136,7 @@ export function ExportMenu(props: ExportMenuProps) {
             disabled={busy}
             onClick={() => void onPng(1)}
           >
-            1×
-          </button>
-          <button
-            type="button"
-            data-testid={`export-${props.testIdPrefix}-png-4x`}
-            disabled={busy}
-            onClick={() => void onPng(4)}
-          >
-            4×
+            PNG 1×
           </button>
           <button
             type="button"
