@@ -11,7 +11,6 @@ TypeScript `core` with ims-backtest goldens, ETL + licence gate. Live:
 [`https://atlas.aiserv.es`](https://atlas.aiserv.es).
 
 Release notes: [CHANGELOG.md](CHANGELOG.md). Zenodo steps: [docs/ZENODO_RELEASE.md](docs/ZENODO_RELEASE.md).
-Checklist: [docs/V1_CHECKLIST.md](docs/V1_CHECKLIST.md).
 
 ```bash
 make catalog-validate   # variables.yaml + sources.yaml
