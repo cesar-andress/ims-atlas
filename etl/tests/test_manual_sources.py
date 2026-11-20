@@ -50,6 +50,7 @@ GRAVITY_CSV = (
     "2020,COL,ESP,,1,0,dup_less_complete\n"
     "2020,ESP,COL,8000.5,1,,x\n"  # missing fta -> incomplete
     "1980,ESP,COL,8000.5,1,0,old\n"
+    "2020,COL,COL,0,1,1,self\n"  # origin=destination, distw=0 → dropped
 )
 
 
@@ -185,14 +186,36 @@ def test_gravity_live_extract_dedupes_and_counts(tmp_path: Path) -> None:
     assert (row["origin"], row["destination"], row["year"]) == ("COL", "ESP", 2020)
     assert row["distw"] == pytest.approx(8000.5)
     assert res["discards"] == {
-        "n_in": 4,
+        "n_in": 5,
         "n_out_of_years": 1,
+        "n_self_pairs": 1,
         "n_duplicate_keys": 1,
         "n_incomplete": 1,
     }
     meta = json.loads(Path(res["path"] + ".meta.json").read_text())
     assert meta["column_map"]["distw"] == "distw_harmonic"
     assert meta["source_csv"] == "Gravity_V1.csv"
+
+
+def test_gravity_self_pair_distw_zero_is_dropped(tmp_path: Path) -> None:
+    """Origin=destination rows with distw=0 must not fail the bilateral contract."""
+    csv = (
+        "year,iso3_o,iso3_d,distw,comlang_off,fta_wto\n"
+        "2020,ESP,ESP,0,1,0\n"
+        "2020,ESP,FRA,1050.0,0,1\n"
+    )
+    _zip(tmp_path / "data/manual/cepi_gravity/g.zip", {"g.csv": csv})
+    _pin(tmp_path, "cepi_gravity", version="V1", sha256=None, bytes=None, url=None)
+    res = gravity.extract_live("V1", root=tmp_path)
+    frame = gravity.load_raw_bilateral(Path(res["path"]))
+    bilateral_schema.validate(frame)
+    assert len(frame) == 1
+    assert tuple(frame.iloc[0][["origin", "destination", "distw"]]) == (
+        "ESP",
+        "FRA",
+        1050.0,
+    )
+    assert res["discards"]["n_self_pairs"] == 1
 
 
 def test_gravity_missing_columns_listed(tmp_path: Path) -> None:

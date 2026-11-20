@@ -372,10 +372,10 @@ def pending_public_demo_payload() -> dict[str, Any]:
         "year": 2023,
         "release_version": "1.1.0",
         "n_included_variables": 0,
-        "message": "Data release pending",
+        "message": "TEAM_RESULTS_PENDING",
         "reason": (
-            "Published release has zero verified redistributable variables "
-            "(n_included_variables=0); no COL/HS64 panel is shipped."
+            "Published release has zero verified variables; use the "
+            "illustrative public example or team login."
         ),
     }
 
@@ -514,11 +514,26 @@ def write_phase8_goldens(path: Path | None = None) -> Path:
         json.dumps(e2e_payload, separators=(",", ":"), sort_keys=True) + "\n",
         encoding="utf-8",
     )
-    # Public product data: pending stub only (never synthetic rankings).
-    public_path.write_text(
-        json.dumps(pending_public_demo_payload(), indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
+    # Public product data: never write synthetic rankings. Keep an existing
+    # illustrative ship_raw example; otherwise write the pending stub.
+    keep_illustrative = False
+    if public_path.is_file():
+        try:
+            existing = json.loads(public_path.read_text(encoding="utf-8"))
+            keep_illustrative = (
+                isinstance(existing, dict)
+                and existing.get("illustrative") is True
+                and existing.get("synthetic") is not True
+                and isinstance(existing.get("block"), dict)
+            )
+        except (json.JSONDecodeError, OSError):
+            keep_illustrative = False
+    if not keep_illustrative:
+        public_path.write_text(
+            json.dumps(pending_public_demo_payload(), indent=2, sort_keys=True)
+            + "\n",
+            encoding="utf-8",
+        )
     # Remove legacy synthetic public filename if still present.
     legacy = repo_root() / "app" / "public" / "meta" / "phase8_col_hs64.json"
     if legacy.is_file():

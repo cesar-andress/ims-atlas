@@ -1798,6 +1798,16 @@ button.pinned {
   border-color: var(--border);
 }
 
+.results-illustrative-banner {
+  margin: 0 0 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--border, #c9c4b8);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--accent, #1f6f5b) 12%, transparent);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
 .results-notice {
   margin: 0;
   padding: 0.65rem 0.9rem;

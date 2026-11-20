@@ -12,7 +12,7 @@ Companion engine: [ims-backtest](https://github.com/cesar-andress/ims-backtest).
 | `country_year.parquet` | Long country panel | 0 |
 | `bilateral_year.parquet` | Long bilateral | 0 |
 | `trade/hs2=*/part.parquet` | Trade by HS2 | 11368115 |
-| `country_product/hs2=*/year=*/variable_id=*/` | Product metrics (≤5 MB/file) | 0 |
+| `country_product/hs2=*/year=*/variable_id=*/` | Product metrics | 0 |
 | `provenance/variable_id=*/year=*/part.parquet` | One row per release cell | 0 |
 | `provenance.jsonl` | Same rows as JSON lines (tiny releases only) | |
 | `catalog.json` | Shipped variables + HS nomenclature | |

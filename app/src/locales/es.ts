@@ -12,10 +12,15 @@ const es = {
   dataRelease: "Versión de los datos",
   appVersion: "Versión de la app",
   dataReleasePending:
-    "Faltan datos de comercio (BACI) u otras series necesarias para este estudio. No se muestran rankings. Revisa Fuentes y datos → Estado de la actualización.",
+    "Los resultados completos son solo para el equipo mientras revisamos los datos. Entra con tu cuenta del equipo o mira el ejemplo.",
+  dataReleasePendingTradeOk:
+    "Hay datos de comercio, pero faltan indicadores país-año verificados para la versión pública ({n} pendientes de revisión). Entra con tu cuenta del equipo o mira el ejemplo.",
+  dataReleasePendingDetail: "Indicadores país-año sin revisar: {n}.",
   dataMissingBaci:
-    "Faltan datos de comercio de BACI para el año seleccionado. Revise Datos → Estado.",
-  dataMissingLink: "Datos → Estado",
+    "Faltan datos de comercio de BACI para el año seleccionado. Revise Fuentes y datos → Estado de la actualización.",
+  dataMissingLink: "Fuentes y datos → Estado",
+  seeExample: "Ver ejemplo",
+  illustrativeBanner: "Ejemplo ilustrativo — no son datos actualizados",
   demoSyntheticNote:
     "Panel sintético/E2E (no es dato de producto). No interpretar los rangos como resultados empíricos de calzado COL.",
   footerRepo: "Repositorio en GitHub",

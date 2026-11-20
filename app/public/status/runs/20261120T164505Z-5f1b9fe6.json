@@ -1,0 +1,217 @@
+{
+  "access_mode": "CERRADO",
+  "changes_path": "status/changes/20261120T164505Z-5f1b9fe6.json",
+  "ended_at": "2026-11-20T16:49:52Z",
+  "fixture_mode": false,
+  "force": true,
+  "is_fixture": false,
+  "missing_sources": [
+    {
+      "id": "hofstede",
+      "reason": "not in freshness.json"
+    },
+    {
+      "id": "wits_trains",
+      "reason": "not in freshness.json"
+    },
+    {
+      "id": "unctadstat",
+      "reason": "not in freshness.json; see docs/step3-manual-drops.md and data/manual/unctadstat/README.md"
+    },
+    {
+      "id": "imf_weo",
+      "reason": "not in freshness.json; see docs/step3-manual-drops.md and data/manual/imf_weo/README.md"
+    }
+  ],
+  "mode": "live",
+  "run_id": "20261120T164505Z-5f1b9fe6",
+  "sources": [
+    "cepi_gravity"
+  ],
+  "started_at": "2026-11-20T16:45:05Z",
+  "status": "ok",
+  "steps": {
+    "check": {
+      "duration_s": 0.0582,
+      "n_sources": 1,
+      "status": "ok"
+    },
+    "extract": {
+      "duration_s": 7.7262,
+      "results": [
+        {
+          "rows": 1592160,
+          "skipped": false,
+          "source": "cepi_gravity",
+          "version": "V202211"
+        }
+      ],
+      "status": "ok"
+    },
+    "lineage": {
+      "duration_s": 0.0974,
+      "status": "ok"
+    },
+    "qa": {
+      "duration_s": 1.1255,
+      "n_block": 0,
+      "n_warn": 3150,
+      "report_status": "pass",
+      "status": "ok"
+    },
+    "stores": {
+      "duration_s": 0.1011,
+      "status": "ok",
+      "stores": {
+        "abierta": {
+          "bilateral_year_rows": 0,
+          "bytes": 6457,
+          "country_year_rows": 0,
+          "n_sources": 16,
+          "n_variables": 31,
+          "path": "/home/cesar/papers_unir/imr/atlas/data/store/abierta"
+        },
+        "cerrada": {
+          "bilateral_year_rows": 0,
+          "bytes": 6457,
+          "country_year_rows": 0,
+          "n_sources": 33,
+          "n_variables": 19,
+          "path": "/home/cesar/papers_unir/imr/atlas/data/store/[redacted]"
+        }
+      }
+    },
+    "transform": {
+      "duration_s": 278.5056,
+      "missing_sources": [
+        {
+          "id": "hofstede",
+          "reason": "not in freshness.json"
+        },
+        {
+          "id": "wits_trains",
+          "reason": "not in freshness.json"
+        },
+        {
+          "id": "unctadstat",
+          "reason": "not in freshness.json; see docs/step3-manual-drops.md and data/manual/unctadstat/README.md"
+        },
+        {
+          "id": "imf_weo",
+          "reason": "not in freshness.json; see docs/step3-manual-drops.md and data/manual/imf_weo/README.md"
+        }
+      ],
+      "row_counts": {
+        "bilateral_year": 1592160,
+        "country_product": 87034482,
+        "country_year": 7812,
+        "trade_hs2": 11368115,
+        "trade_hs4": 58229096,
+        "trade_hs6": 142112452,
+        "variables_country_year": 7640
+      },
+      "source_coverage": {
+        "imf_weo": {
+          "reason": "not in freshness.json; see docs/step3-manual-drops.md and data/manual/imf_weo/README.md",
+          "status": "missing"
+        },
+        "inform_risk": {
+          "countries": 191,
+          "rows": 1910,
+          "status": "ok",
+          "table": "values.csv",
+          "version": "hdx-20260519",
+          "years": [
+            2016,
+            2017,
+            2018,
+            2019,
+            2020,
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        },
+        "transparency_cpi": {
+          "countries": 182,
+          "rows": 2491,
+          "status": "ok",
+          "table": "values.csv",
+          "version": "cpi2025-20260204",
+          "years": [
+            2012,
+            2013,
+            2014,
+            2015,
+            2016,
+            2017,
+            2018,
+            2019,
+            2020,
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        },
+        "unctadstat": {
+          "reason": "not in freshness.json; see docs/step3-manual-drops.md and data/manual/unctadstat/README.md",
+          "status": "missing"
+        },
+        "wipo_gii": {
+          "countries": 142,
+          "rows": 278,
+          "status": "ok",
+          "table": "values.csv",
+          "version": "gii2026-20260928",
+          "years": [
+            2025,
+            2026
+          ]
+        },
+        "worldbank_doing_business": {
+          "countries": 191,
+          "indicators": [
+            "IC.BUS.EASE.DFRN.DB1014",
+            "IC.BUS.EASE.DFRN.DB16",
+            "IC.BUS.EASE.DFRN.XQ.DB1719",
+            "IC.BUS.EASE.XQ"
+          ],
+          "rows": 2405,
+          "status": "ok",
+          "table": "indicators.csv",
+          "version": "db-20240215",
+          "years": [
+            2009,
+            2010,
+            2011,
+            2012,
+            2013,
+            2014,
+            2015,
+            2016,
+            2017,
+            2018,
+            2019
+          ]
+        }
+      },
+      "status": "ok"
+    },
+    "validate": {
+      "duration_s": 0.219,
+      "results": [
+        {
+          "ok": true,
+          "rows": 1592160,
+          "source": "cepi_gravity",
+          "version": "V202211"
+        }
+      ],
+      "status": "ok"
+    }
+  }
+}

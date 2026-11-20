@@ -7,7 +7,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
 VERSION="${ATLAS_RELEASE_VERSION:-1.1.0}"
-BY="${ATLAS_PROMOTE_BY:-ims-atlas-pipeline.timer}"
+BY="${ATLAS_PROMOTE_BY:-pipeline}"
 LOG_TAG="ims-atlas-pipeline"
 
 log() { printf '%s %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*"; }
@@ -49,7 +49,7 @@ docker run --rm \
   -v "$ROOT:/w" -w /w/etl \
   -e ATLAS_ROOT=/w \
   ghcr.io/astral-sh/uv:python3.11-bookworm-slim \
-  uv run python -c "from imsatlas_etl.export_col_hs64_panel import write_col_hs64_live_panel; print(write_col_hs64_live_panel(version='${VERSION}'))" \
+  uv run python -c "from imsatlas_etl.export_col_hs64_panel import write_col_hs64_live_panel, write_col_hs64_illustrative_public; print(write_col_hs64_live_panel(version='${VERSION}')); print(write_col_hs64_illustrative_public(version='${VERSION}'))" \
   || fail "col_hs64 panel export failed"
 
 ./deploy/sync-public-status.sh || fail "sync-public-status failed"

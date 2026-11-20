@@ -333,16 +333,10 @@ export async function computeRanking(req: RankingRequest): Promise<RankingViewMo
   const panelHs = hsDigits(panel.hs);
   // Exact HS only: HS 6401 must not reuse HS 64 panel numbers.
   if (reqHs && panelHs && reqHs !== panelHs) {
-    throw new DemoPanelPendingError(
-      reqHs.length > 2
-        ? `Faltan métricas de producto para HS ${req.hs} (el panel publicado es HS ${panel.hs}). Revise Datos → Estado.`
-        : `Faltan datos de comercio de BACI para HS ${req.hs}. Revise Datos → Estado.`,
-    );
+    throw new DemoPanelPendingError("TEAM_RESULTS_PENDING");
   }
   if (req.origin && req.origin !== panel.origin) {
-    warnings.push(
-      `Demo panel is COL-only until redistributable release data ships; using ${panel.origin}.`,
-    );
+    warnings.push(`Example panel is ${panel.origin}-only; using ${panel.origin}.`);
   }
   if (req.year && req.year !== panel.year) {
     warnings.push(`Demo panel year is ${panel.year}; requested ${req.year}.`);

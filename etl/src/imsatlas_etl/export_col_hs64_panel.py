@@ -179,3 +179,73 @@ def write_col_hs64_live_panel(
         "paths": written,
         "synthetic": False,
     }
+
+
+def build_col_hs64_illustrative_panel(*, root: Path | None = None) -> dict[str, Any]:
+    """Public visitor example: ship_raw/ship_derived cells only, labelled illustrative.
+
+    Not a verified public release. Visitors see a ranking while draft variables
+    wait for human `atlas-etl verify`. Team login still prefers the cerrada panel.
+    """
+    from imsatlas_etl.pipeline.release import SHIP_DECISIONS, _variable_gates
+
+    payload = build_col_hs64_live_panel(root=root)
+    ship_ids = {
+        row["id"]
+        for row in _variable_gates(audience="public")
+        if row["decision"] in SHIP_DECISIONS
+    }
+    # Panel-only gravity columns map to ship_raw sources (DIST/LANG/FTA).
+    ship_ids |= {"DIST", "LANG", "FTA", "CC", "GE", "RQ", "RL", "PV", "VA"}
+    block = payload["block"]
+    keep_vars = [v for v in block["variables"] if v["id"] in ship_ids]
+    keep_ids = {v["id"] for v in keep_vars}
+    raw = []
+    for row in block["raw"]:
+        slim = {"iso3": row["iso3"]}
+        for vid in keep_ids:
+            slim[vid] = row.get(vid)
+        raw.append(slim)
+    block = {
+        **block,
+        "preset": "col_hs64_2023_illustrative",
+        "variables": keep_vars,
+        "raw": raw,
+        "notes": [
+            "Illustrative public example from attested ship_raw/ship_derived sources.",
+            "Not a verified public data release; the UI shows an illustrative band.",
+            *list(block.get("notes") or []),
+        ],
+    }
+    return {
+        "synthetic": False,
+        "illustrative": True,
+        "block": block,
+    }
+
+
+def write_col_hs64_illustrative_public(
+    *,
+    root: Path | None = None,
+    version: str = "1.1.0",
+) -> dict[str, Any]:
+    payload = build_col_hs64_illustrative_panel(root=root)
+    base = root or repo_root()
+    pub_meta = base / "data" / "release" / "public" / f"v{version}" / "meta"
+    paths = [
+        base / "app" / "public" / "meta" / "col_hs64_demo.json",
+        pub_meta / "col_hs64_demo.json",
+    ]
+    written: list[str] = []
+    body = json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
+    for path in paths:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(body, encoding="utf-8")
+        written.append(str(path))
+    return {
+        "n_candidates": len(payload["block"]["candidates"]),
+        "n_variables": len(payload["block"]["variables"]),
+        "paths": written,
+        "illustrative": True,
+        "synthetic": False,
+    }

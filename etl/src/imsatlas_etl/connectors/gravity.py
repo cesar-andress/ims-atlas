@@ -104,6 +104,7 @@ def normalize_gravity(
     counts = {
         "n_in": len(raw),
         "n_out_of_years": 0,
+        "n_self_pairs": 0,
         "n_duplicate_keys": 0,
         "n_incomplete": 0,
     }
@@ -119,6 +120,10 @@ def normalize_gravity(
     values = ["distw", "comlang_off", "fta_wto"]
     raw["_nnz"] = raw[values].notna().sum(axis=1)
     key = ["origin", "destination", "year"]
+    # Self-pairs often carry distw=0; drop them before the bilateral contract.
+    self_mask = raw["origin"].astype(str) == raw["destination"].astype(str)
+    counts["n_self_pairs"] = int(self_mask.sum())
+    raw = raw.loc[~self_mask].copy()
     raw = raw.sort_values(key + ["_nnz"], ascending=[True, True, True, False])
     deduped = raw.drop_duplicates(key, keep="first")
     counts["n_duplicate_keys"] = len(raw) - len(deduped)

@@ -94,10 +94,13 @@ def test_public_tree_has_no_cerrada_store_payloads(subdir: str) -> None:
 
 
 def test_public_col_hs64_demo_has_no_byod_raw_block() -> None:
-    """Pending demo stub must not embed BYOD raw value keys."""
+    """Public demo (pending or illustrative) must not embed BYOD raw value keys."""
     path = repo_root() / "app/public/meta/col_hs64_demo.json"
     data = json.loads(path.read_text(encoding="utf-8"))
-    assert data.get("status") == "pending"
-    assert "block" not in data
+    if data.get("status") == "pending":
+        assert "block" not in data
+    else:
+        assert data.get("illustrative") is True
+        assert "block" in data
     text = path.read_text(encoding="utf-8")
     assert '"TARIF"' not in text and '"CULT"' not in text

@@ -216,7 +216,7 @@
         }
       ],
       "freshness": {
-        "checked_at": "2026-11-20T09:52:22Z",
+        "checked_at": "2026-11-20T16:45:05Z",
         "ingested_version": "V202211",
         "mode": "live",
         "stale": false,

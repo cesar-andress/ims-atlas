@@ -12,10 +12,15 @@ export const en = {
   dataRelease: "Data version",
   appVersion: "App version",
   dataReleasePending:
-    "Trade data (BACI) or other series needed for this study are missing. Rankings are not shown. See Sources and data → Update status.",
+    "Full results are team-only while we review the data. Sign in with your team account or view the example.",
+  dataReleasePendingTradeOk:
+    "Trade data are available, but country-year indicators are not yet verified for the public version ({n} awaiting review). Sign in with your team account or view the example.",
+  dataReleasePendingDetail: "Country-year indicators awaiting review: {n}.",
   dataMissingBaci:
-    "BACI trade data for the selected year are missing. See Data → Status.",
-  dataMissingLink: "Data → Status",
+    "BACI trade data for the selected year are missing. See Sources and data → Update status.",
+  dataMissingLink: "Sources and data → Update status",
+  seeExample: "View example",
+  illustrativeBanner: "Illustrative example — not up-to-date data",
   demoSyntheticNote:
     "E2E/synthetic panel (not product data). Do not treat ranks as empirical COL footwear results.",
   footerRepo: "GitHub repository",

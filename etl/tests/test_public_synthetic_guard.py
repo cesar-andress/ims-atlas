@@ -58,8 +58,13 @@ def _scan_tree(root: Path) -> list[str]:
                 continue
             block = data.get("block") if isinstance(data, dict) else None
             if isinstance(block, dict) and "ranking_expert" in block and "raw" in block:
-                if data.get("status") != "pending":
-                    hits.append(f"{rel}: ranking block in product tree")
+                if data.get("status") == "pending":
+                    continue
+                # Public illustrative example (ship_raw only) is allowed when labelled.
+                illustrative = data.get("illustrative") is True
+                if illustrative and data.get("synthetic") is not True:
+                    continue
+                hits.append(f"{rel}: ranking block in product tree")
     return hits
 
 
@@ -72,15 +77,24 @@ def test_public_tree_has_no_synthetic_demo_panel(subdir: str) -> None:
     assert hits == [], "Synthetic demo leaked into product tree:\n" + "\n".join(hits)
 
 
-def test_public_col_hs64_demo_is_pending() -> None:
+def test_public_col_hs64_demo_is_pending_or_illustrative() -> None:
     path = repo_root() / "app/public/meta/col_hs64_demo.json"
     assert path.is_file()
     data = json.loads(path.read_text(encoding="utf-8"))
-    assert data["status"] == "pending"
-    assert "block" not in data
-    assert data["origin"] == "COL"
-    assert data["hs"] == "64"
-    assert data["year"] == 2023
+    if data.get("status") == "pending":
+        assert "block" not in data
+        assert data["origin"] == "COL"
+        assert data["hs"] == "64"
+        assert data["year"] == 2023
+        return
+    assert data.get("illustrative") is True
+    assert data.get("synthetic") is not True
+    assert "block" in data
+    assert data["block"]["origin"] == "COL"
+    assert data["block"]["hs"] == "64"
+    assert len(data["block"]["candidates"]) >= 20
+    text = path.read_text(encoding="utf-8")
+    assert '"TARIF"' not in text and '"CULT"' not in text
 
 
 # --- Fixture-mode pipeline artefacts must not pose as a live public release ---

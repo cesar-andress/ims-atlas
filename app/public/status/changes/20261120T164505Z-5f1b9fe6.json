@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-11-20T16:49:52Z",
+  "is_fixture": false,
+  "mode": "live",
+  "run_id": "20261120T164505Z-5f1b9fe6",
+  "sources": {
+    "cepi_gravity": {
+      "n_rows_next": 1592160,
+      "status": "first_ingest",
+      "version": {
+        "changed": true,
+        "next": "V202211",
+        "previous": null
+      }
+    }
+  }
+}

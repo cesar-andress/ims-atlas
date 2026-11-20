@@ -25,7 +25,27 @@ const FORBIDDEN: readonly { name: string; pattern: RegExp }[] = [
   { name: "Expert mode", pattern: /expert mode|modo experto/i },
   { name: "redistributable panel", pattern: /panel redistribu/i },
   { name: "preset", pattern: /\bpresets?\b/i },
+  { name: "Data release pending", pattern: /data release pending/i },
 ];
+
+describe("Spanish Resultados copy has no English leftovers", () => {
+  it("es pending / illustrative strings stay Spanish", () => {
+    const keys = [
+      "dataReleasePending",
+      "dataReleasePendingTradeOk",
+      "dataReleasePendingDetail",
+      "illustrativeBanner",
+      "seeExample",
+      "dataMissingLink",
+    ] as const;
+    for (const key of keys) {
+      const value = (es as Dict)[key];
+      expect(typeof value).toBe("string");
+      expect(String(value)).not.toMatch(/data release pending|pending release/i);
+      expect(String(value)).not.toMatch(/\bBACI\b.*missing|missing.*\bBACI\b/i);
+    }
+  });
+});
 
 /**
  * Key prefixes that are not main UI copy: the SQL console is reachable only from

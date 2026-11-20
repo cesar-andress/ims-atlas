@@ -45,8 +45,12 @@ def test_default_output_paths_after_write() -> None:
     public = json.loads(public_path.read_text(encoding="utf-8"))
     assert core["synthetic"] is True
     assert e2e["synthetic"] is True
-    assert public["status"] == "pending"
-    assert "block" not in public
+    if public.get("illustrative") is True:
+        assert public.get("synthetic") is not True
+        assert "block" in public
+    else:
+        assert public["status"] == "pending"
+        assert "block" not in public
 
     e2e_ids = [v["id"] for v in e2e["block"]["variables"]]
     assert "TARIF" in e2e_ids and "CULT" in e2e_ids

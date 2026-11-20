@@ -13,18 +13,14 @@ BY=CA scripts/variables-confirm.sh
 The script:
 
 1. Skips variables already `verified`.
-2. Prints for each draft variable: id, upstream code, sources, gate decision,
-   coverage (when curated tables exist), three sample values, and a URL to check.
-3. Does **not** write `status: verified` until you run `atlas-etl verify`.
+2. Prints a table (ship_raw sources first): id, Spanish name, source, ESP/COL/DEU
+   samples when curated data exist, and a URL to check.
+3. Prints **one** batch `atlas-etl verify` loop for the ship-first group you approve.
+4. Does **not** write `status: verified` until you run that command.
 
-After reviewing the printed samples against the upstream URL:
-
-```bash
-uv run atlas-etl verify <ID> --by CA
-# or the batch loop printed at the end of variables-confirm.sh
-```
-
-Then commit `catalog/variables.yaml` (and regenerate transparency exports).
+After the ship-first group is verified, the next dual release will set
+`n_included_variables > 0` on the public audience and visitors will see real
+country-year cells (not only the illustrative example).
 
 ## Agents
 

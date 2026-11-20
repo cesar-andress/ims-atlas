@@ -134,6 +134,8 @@ export function ResultsDashboard({ model }: Props) {
     : null;
   const qCopy = selectedQ ? quadrantCopy(selectedQ, lang) : null;
 
+  const illustrative = model.panel.illustrative || model.panel.synthetic;
+
   const summary =
     lang === "es"
       ? `Para HS${config.hs ?? "—"} desde ${config.origin ?? "—"} (${config.year ?? "—"}), los tres mejores mercados son ${model.ranking
@@ -163,11 +165,10 @@ export function ResultsDashboard({ model }: Props) {
             : ""
         } Global leaders: ${leaders.length} of ${model.ranking.length}.`;
 
-  const notice =
-    model.panel.synthetic || model.warnings.length > 0
-      ? model.panel.synthetic
-        ? t("demoSyntheticNote")
-        : model.warnings[0]
+  const notice = illustrative
+    ? t("illustrativeBanner")
+    : model.warnings.length > 0
+      ? model.warnings[0]
       : missingEoc.length > 0 && eoc
         ? lang === "es"
           ? `${missingEoc[0]} sin coeficiente de apertura (EOC); no se dibuja en la matriz.`
@@ -178,6 +179,15 @@ export function ResultsDashboard({ model }: Props) {
 
   return (
     <div className="results-dash" data-testid="results-dashboard">
+      {illustrative ? (
+        <p
+          className="results-illustrative-banner"
+          data-testid="illustrative-banner"
+          role="status"
+        >
+          {t("illustrativeBanner")}
+        </p>
+      ) : null}
       <header className="results-dash-header" data-testid="results-header">
         <div className="results-header-actions">
           <HelpButton />
@@ -194,7 +204,7 @@ export function ResultsDashboard({ model }: Props) {
         </div>
       </header>
 
-      {notice ? (
+      {notice && !illustrative ? (
         <p className="results-notice" data-testid="results-notice" role="status">
           {notice}
         </p>

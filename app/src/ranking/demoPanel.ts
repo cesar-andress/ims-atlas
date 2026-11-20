@@ -26,6 +26,8 @@ export type DemoPanel = {
   excludedByod: { id: string; reason: string }[];
   notes: string[];
   synthetic: boolean;
+  /** Public visitor example while verified public release is empty. */
+  illustrative: boolean;
 };
 
 export class DemoPanelPendingError extends Error {
@@ -76,7 +78,11 @@ export function resetDemoPanelCache(): void {
   loadPromise = null;
 }
 
-function panelFromBlock(block: GoldenFile["block"], synthetic: boolean): DemoPanel {
+function panelFromBlock(
+  block: GoldenFile["block"],
+  synthetic: boolean,
+  illustrative = false,
+): DemoPanel {
   const variables: VariableSpec[] = block.variables.map((v) => ({
     id: v.id,
     factor: v.factor,
@@ -116,6 +122,7 @@ function panelFromBlock(block: GoldenFile["block"], synthetic: boolean): DemoPan
     excludedByod: block.excluded_byod ?? [],
     notes: block.notes ?? [],
     synthetic,
+    illustrative,
   };
 }
 
@@ -125,8 +132,12 @@ function parsePanelPayload(payload: unknown): DemoPanel | null {
     return null;
   }
   if (!("block" in payload) || !(payload as GoldenFile).block) return null;
-  const file = payload as GoldenFile;
-  return panelFromBlock(file.block, Boolean(file.synthetic));
+  const file = payload as GoldenFile & { illustrative?: boolean };
+  return panelFromBlock(
+    file.block,
+    Boolean(file.synthetic),
+    Boolean(file.illustrative),
+  );
 }
 
 async function tryFetchPanel(
@@ -171,13 +182,13 @@ export async function loadDemoPanel(): Promise<DemoPanel> {
       cache = parsed;
       return cache;
     }
-    const msg =
+    const pendingMsg =
       payload && typeof payload === "object" && "status" in payload
-        ? ((payload as PendingFile).message ??
-          (payload as PendingFile).reason ??
-          "Faltan datos de comercio de BACI para 2023. Revise Datos → Estado.")
-        : "Faltan datos de comercio de BACI para 2023. Revise Datos → Estado.";
-    throw new DemoPanelPendingError(msg);
+        ? ((payload as PendingFile).message ?? (payload as PendingFile).reason)
+        : undefined;
+    throw new DemoPanelPendingError(
+      pendingMsg && pendingMsg.trim() ? pendingMsg : "TEAM_RESULTS_PENDING",
+    );
   })();
   return loadPromise;
 }

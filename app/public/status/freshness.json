@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T09:52:22Z",
+  "generated_at": "2026-11-20T16:45:05Z",
   "is_fixture": false,
   "mode": "live",
   "sources": [
@@ -48,7 +48,7 @@
       "upstream_version": "HS12_V202601"
     },
     {
-      "checked_at": "2026-11-20T09:52:22Z",
+      "checked_at": "2026-11-20T16:45:05Z",
       "ingested_version": "V202211",
       "mode": "live",
       "note": "manual drop; version from pin or content hash",
