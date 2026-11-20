@@ -659,6 +659,11 @@ export const en = {
     "Spearman of ranks after dropping each variable on the current analysis panel. Not a walk-forward backtest.",
   timeIntro:
     "Bump chart of destination ranks over years when a multi-year panel is available for the chosen origin and product.",
+  bumpChartTitle: "Rank trajectories (bump)",
+  bumpTableTitle: "Ranks by year",
+  bumpTableHint:
+    "↑ improved (better rank) · ↓ worsened. The active column follows playback.",
+  bumpColMarket: "Market",
   appUpdateBanner:
     "A newer version of IMS Atlas is available. Reload to leave stale map or ranking state behind.",
   appUpdateReload: "Reload",

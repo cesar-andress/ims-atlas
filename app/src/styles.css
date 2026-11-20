@@ -318,8 +318,12 @@ textarea:focus-visible {
 .valuecharts,
 .hop-ranking,
 .year-play {
-  margin-top: 0.75rem;
-  padding: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 0.85rem;
+  margin-top: 0;
+  padding: 0.75rem 1rem;
   border: 1px solid var(--border);
   border-radius: 12px;
   background: var(--surface);
@@ -3217,4 +3221,122 @@ ul.callout {
 .site-footer .wrap {
   padding-left: 0;
   padding-right: 0;
+}
+
+/* Time explorer — bump table + playback */
+.time-explorer {
+  display: grid;
+  gap: 1.1rem;
+  min-width: 0;
+}
+
+.bump-chart {
+  width: 100%;
+  height: 420px;
+  min-height: 420px;
+}
+
+.bump-table-card .bump-table-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.65rem 1rem;
+  margin-bottom: 0.35rem;
+}
+
+.bump-table-card .bump-table-head h2 {
+  margin: 0;
+}
+
+.bump-table-hint {
+  margin: 0 0 0.75rem;
+}
+
+.bump-table-scroll {
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface);
+}
+
+.bump-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.bump-table th,
+.bump-table td {
+  padding: 0.55rem 0.7rem;
+  border-bottom: 1px solid var(--border);
+  text-align: right;
+  vertical-align: middle;
+}
+
+.bump-table thead th {
+  background: color-mix(in srgb, var(--bg) 70%, var(--surface));
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.bump-table th[scope="row"],
+.bump-table thead th:first-child {
+  text-align: left;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--surface);
+  box-shadow: 1px 0 0 var(--border);
+  min-width: 9.5rem;
+}
+
+.bump-table thead th:first-child {
+  z-index: 2;
+  background: color-mix(in srgb, var(--bg) 70%, var(--surface));
+}
+
+.bump-table tbody tr:last-child th,
+.bump-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.bump-table .iso-chip {
+  display: inline-block;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  margin-right: 0.45rem;
+}
+
+.bump-market-name {
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.bump-year-active {
+  background: color-mix(in srgb, var(--accent) 10%, transparent) !important;
+}
+
+.bump-rank {
+  font-weight: 650;
+}
+
+.bump-delta {
+  display: inline-block;
+  margin-left: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.bump-delta-up .bump-delta {
+  color: var(--accent);
+}
+
+.bump-delta-down .bump-delta {
+  color: #b45309;
+}
+
+.bump-delta-flat .bump-delta {
+  color: var(--muted);
 }

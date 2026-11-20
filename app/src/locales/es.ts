@@ -665,6 +665,11 @@ const es = {
     "Spearman de rangos tras quitar cada variable en el panel de análisis actual. No es un backtest walk-forward.",
   timeIntro:
     "Bump chart de rangos por año cuando hay un panel multi-año disponible para el origen y producto elegidos.",
+  bumpChartTitle: "Evolución de puestos (bump)",
+  bumpTableTitle: "Puestos por año",
+  bumpTableHint:
+    "↑ mejora (mejor puesto) · ↓ empeora. La columna activa sigue la reproducción.",
+  bumpColMarket: "Mercado",
   appUpdateBanner:
     "Hay una versión más reciente de IMS Atlas. Recarga para no quedarte con un mapa o ranking obsoleto.",
   appUpdateReload: "Recargar",
