@@ -1,13 +1,13 @@
 [Unit]
-Description=Daily IMS Atlas full pipeline (after freshness check)
+Description=Hourly IMS Atlas pipeline tick (R-0)
 After=ims-atlas-check.timer
 
 [Timer]
-# Daily 03:00 Europe/Madrid (EXTRA-5 / EXTRA-10).
-OnCalendar=*-*-* 03:00:00
+# Every hour, Europe/Madrid. flock in atlas-etl-pipeline.sh skips overlap.
+OnCalendar=hourly
 Timezone=Europe/Madrid
 Persistent=true
-RandomizedDelaySec=15m
+RandomizedDelaySec=3m
 Unit=ims-atlas-pipeline.service
 
 [Install]

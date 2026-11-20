@@ -68,6 +68,13 @@ LANDING_HOST_ALLOWLIST: dict[str, frozenset[str]] = {
     "comexstat_br": frozenset({"comexstat.mdic.gov.br"}),
     "dane_dian_comex": frozenset({"www.dane.gov.co"}),
     "datacomex_es": frozenset({"comercio.gob.es"}),
+    "ecb_fx": frozenset({"www.ecb.europa.eu"}),
+    "un_comtrade": frozenset({"comtradeplus.un.org"}),
+    "oecd_country_risk": frozenset({"www.oecd.org"}),
+    "wto_eping": frozenset({"epingalert.org"}),
+    "eu_access2markets": frozenset({"trade.ec.europa.eu"}),
+    "un_wpp": frozenset({"population.un.org"}),
+    "vat_rates": frozenset({"atlas.aiserv.es"}),
 }
 
 

@@ -6,7 +6,7 @@ import {
   compareProjects,
 } from "@ims-atlas/core";
 import { AnalysisPage } from "../components/AnalysisPage";
-import { ChartExportBar } from "../components/ChartExportBar";
+import { ChartFrame } from "../components/ChartFrame";
 import { MarketRadarCompare } from "../components/MarketRadarCompare";
 import { useTranslation } from "../i18n";
 import { useRankingModel } from "../ranking/useRankingModelApi";
@@ -18,9 +18,6 @@ const Top10Chart = lazy(() =>
 );
 
 type ChartHandle = { getDataURL: (opts: object) => string };
-
-type SeriesRow = { name: string; value: number };
-type ComboRow = { name: string; total: number; factor: number };
 
 function CombinedSplitTable({ model }: { model: RankingViewModel }) {
   const grid = useMemo(() => {
@@ -52,20 +49,6 @@ function CombinedSplitTable({ model }: { model: RankingViewModel }) {
       </ul>
     </div>
   );
-}
-
-function csvBody(rows: SeriesRow[] | ComboRow[], mode: "value" | "combo"): string {
-  if (mode === "combo") {
-    const combo = rows as ComboRow[];
-    return (
-      [
-        "iso3,total,factor",
-        ...combo.map((r) => `${r.name},${r.total},${r.factor}`),
-      ].join("\n") + "\n"
-    );
-  }
-  const simple = rows as SeriesRow[];
-  return ["iso3,value", ...simple.map((r) => `${r.name},${r.value}`)].join("\n") + "\n";
 }
 
 function CompareBody({ model }: { model: RankingViewModel }) {
@@ -208,67 +191,58 @@ function CompareBody({ model }: { model: RankingViewModel }) {
         </button>
       </section>
       <section data-testid="compare-total" data-export-surface="chart">
-        <h2>{t("parityTop10Total")}</h2>
-        <ChartExportBar
+        <ChartFrame
           testIdPrefix="total"
-          chartRef={totalRef}
-          pngName="top10-total.png"
-          svgName="top10-total.svg"
           title={t("parityTop10Total")}
-          csv={{ filename: "top10-total.csv", body: csvBody(topTotal, "value") }}
-        />
-        <Suspense fallback={<p className="muted">{t("loading")}</p>}>
-          <Top10Chart
-            title={t("parityTop10Total")}
-            series={topTotal}
-            onReady={(c) => {
-              totalRef.current = c;
-            }}
-          />
-        </Suspense>
+          chartRef={totalRef}
+        >
+          <Suspense fallback={<p className="muted">{t("loading")}</p>}>
+            <Top10Chart
+              title={t("parityTop10Total")}
+              series={topTotal}
+              onReady={(c) => {
+                totalRef.current = c;
+              }}
+            />
+          </Suspense>
+        </ChartFrame>
       </section>
 
       <section data-testid="compare-factor" data-export-surface="chart">
-        <h2>
-          {t("parityTop10Factor")}: {factorKey}
-        </h2>
-        <ChartExportBar
+        <ChartFrame
           testIdPrefix="factor"
+          title={`${t("parityTop10Factor")}: ${factorKey}`}
           chartRef={factorRef}
-          pngName="top10-factor.png"
-          svgName="top10-factor.svg"
-          csv={{ filename: "top10-factor.csv", body: csvBody(topFactor, "value") }}
-        />
-        <Suspense fallback={<p className="muted">{t("loading")}</p>}>
-          <Top10Chart
-            title={`${t("parityTop10Factor")} (${factorKey})`}
-            series={topFactor}
-            onReady={(c) => {
-              factorRef.current = c;
-            }}
-          />
-        </Suspense>
+        >
+          <Suspense fallback={<p className="muted">{t("loading")}</p>}>
+            <Top10Chart
+              title={`${t("parityTop10Factor")} (${factorKey})`}
+              series={topFactor}
+              onReady={(c) => {
+                factorRef.current = c;
+              }}
+            />
+          </Suspense>
+        </ChartFrame>
       </section>
 
       <section data-testid="compare-combo" data-export-surface="chart">
-        <h2>{t("parityTop10Combo")}</h2>
-        <ChartExportBar
+        <ChartFrame
           testIdPrefix="combo"
+          title={t("parityTop10Combo")}
           chartRef={comboRef}
-          pngName="top10-combo.png"
-          svgName="top10-combo.svg"
-          csv={{ filename: "top10-combo.csv", body: csvBody(topCombo, "combo") }}
-        />
-        <Suspense fallback={<p className="muted">{t("loading")}</p>}>
-          <Top10Chart
-            title={t("parityTop10Combo")}
-            series={topCombo.map((r) => ({ name: r.name, value: r.total }))}
-            secondary={topCombo.map((r) => ({ name: r.name, value: r.factor }))}
-            onReady={(c) => {
-              comboRef.current = c;
-            }}
-          />
-        </Suspense>
+        >
+          <Suspense fallback={<p className="muted">{t("loading")}</p>}>
+            <Top10Chart
+              title={t("parityTop10Combo")}
+              series={topCombo.map((r) => ({ name: r.name, value: r.total }))}
+              secondary={topCombo.map((r) => ({ name: r.name, value: r.factor }))}
+              onReady={(c) => {
+                comboRef.current = c;
+              }}
+            />
+          </Suspense>
+        </ChartFrame>
       </section>
     </div>
   );

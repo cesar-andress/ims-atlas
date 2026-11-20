@@ -104,14 +104,20 @@ def fetch_bytes(
     attempts: int = 4,
     sleep_base: float = 1.5,
     sleep: Sleeper = time.sleep,
+    extra_headers: dict[str, str] | None = None,
 ) -> tuple[bytes, dict[str, str]]:
     """GET url with retries; return (body, response headers as str map)."""
+    session: requests.Session | None = None
+    if extra_headers:
+        session = requests.Session()
+        session.headers.update(extra_headers)
     response = fetch_response(
         url,
         timeout=timeout,
         attempts=attempts,
         sleep_base=sleep_base,
         sleep=sleep,
+        session=session,
     )
     return response.body, response.headers
 

@@ -11,10 +11,15 @@ from imsatlas_etl.connectors import (
     country_index,
     cpi,
     doing_business,
+    ecb_fx,
+    fragile_states,
     gravity,
     hofstede,
+    imf_weo,
     inform,
+    kof_globalisation,
     manual_drop,
+    vat_rates,
     wipo_gii,
     wits,
 )
@@ -44,7 +49,10 @@ def _versions_from_freshness(
         row = by_id.get(source_id)
         if not row:
             raise KeyError(f"source {source_id} not in freshness.json")
-        out[source_id] = str(row["upstream_version"])
+        upstream = row.get("upstream_version")
+        if upstream is None or upstream == "":
+            continue
+        out[source_id] = str(upstream)
     return out
 
 
@@ -66,8 +74,20 @@ def _extract_live(
         return gravity.extract_live(version, root=root, force=force)
     if source_id == "wits_trains":
         return wits.extract_live(version, root=root, force=force)
+    if source_id == "hofstede":
+        return hofstede.extract_live(version, root=root, force=force)
+    if source_id == "ecb_fx":
+        return ecb_fx.extract_live(version, root=root, force=force)
+    if source_id == "vat_rates":
+        return vat_rates.extract_live(version, root=root, force=force)
+    if source_id == "imf_weo":
+        return imf_weo.extract_live(version, root=root, force=force)
+    if source_id == "kof_globalisation":
+        return kof_globalisation.extract_live(version, root=root, force=force)
+    if source_id == "fragile_states_index":
+        return fragile_states.extract_live(version, root=root, force=force)
     # Step 3: live file download unless a manual drop is in place; sources with
-    # no verified auto-fetch (unctadstat, imf_weo) fall through to manual_drop.
+    # no verified auto-fetch (unctadstat, yale_epi, …) fall through to manual_drop.
     step3 = {
         "inform_risk": inform.extract_live,
         "transparency_cpi": cpi.extract_live,

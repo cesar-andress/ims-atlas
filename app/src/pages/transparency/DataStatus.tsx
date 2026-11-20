@@ -6,8 +6,10 @@ import {
   loadIndex,
   loadLatestRun,
   loadQa,
+  loadSourcesState,
   loadSpotCheck,
   loadUpdates,
+  type SourcesStateRow,
 } from "../../data/transparency";
 import { displayCell } from "../../formatDisplay";
 import { useTranslation } from "../../i18n";
@@ -20,11 +22,33 @@ function runTone(status: string | null | undefined): "ok" | "warn" | "bad" {
   return "bad";
 }
 
+function sourceEmoji(
+  row: SourcesStateRow | undefined,
+  freshnessStatus?: string,
+): string {
+  const st = (row?.status || freshnessStatus || "").toLowerCase();
+  if (
+    st.startsWith("falta") ||
+    st.includes("file") ||
+    st === "pending_file" ||
+    st === "no_connector"
+  ) {
+    return "⚪";
+  }
+  if (st === "fail" || st === "error" || (row?.consecutive_failures ?? 0) >= 3) {
+    return "🔴";
+  }
+  if (st === "ok" || st === "al_dia" || st === "fresh") {
+    return "🟢";
+  }
+  return "🟡";
+}
+
 export function DataStatus() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
   const { data, error, loading } = useAsyncResource(async () => {
-    const [index, qa, freshness, run, spot, updates] = await Promise.all([
+    const [index, qa, freshness, run, spot, updates, sourcesState] = await Promise.all([
       loadIndex(),
       loadQa(),
       loadFreshness(),
@@ -34,10 +58,10 @@ export function DataStatus() {
         samples: [],
       })),
       loadUpdates().catch(() => ({ runs: [] as const, n_runs: 0 })),
+      loadSourcesState().catch(() => ({ sources: {} })),
     ]);
-    return { index, qa, freshness, run, spot, updates };
+    return { index, qa, freshness, run, spot, updates, sourcesState };
   }, []);
-
   return (
     <TransparencyShell
       testId="data-status-view"
@@ -214,34 +238,111 @@ export function DataStatus() {
             )}
           </section>
 
-          {Array.isArray((data.freshness as { sources?: unknown }).sources) ? (
-            <section data-testid="freshness-sources">
-              <h2>{t("freshnessSourcesTitle")}</h2>
-              <table className="data-table small">
-                <thead>
-                  <tr>
-                    <th>{t("transparencySource")}</th>
-                    <th>{t("freshnessStatus")}</th>
-                    <th>{t("freshnessVersion")}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {(
-                    (data.freshness as { sources: Record<string, unknown>[] })
-                      .sources ?? []
-                  ).map((s) => (
-                    <tr key={String(s.source)}>
-                      <td>{displayCell(s.source)}</td>
-                      <td>{displayCell(s.status ?? (s.stale ? "stale" : "ok"))}</td>
-                      <td className="font-tabular">
-                        {displayCell(s.upstream_version ?? s.ingested_version)}
-                      </td>
+          {(() => {
+            const stateRows = data.sourcesState.sources ?? {};
+            const freshRows = ((
+              data.freshness as { sources?: Record<string, unknown>[] }
+            ).sources ?? []) as Record<string, unknown>[];
+            const ids = Array.from(
+              new Set([
+                ...Object.keys(stateRows),
+                ...freshRows.map((s) => String(s.source ?? "")),
+              ]),
+            ).filter(Boolean);
+            const ok = ids.filter((id) => {
+              const row = stateRows[id];
+              const fr = freshRows.find((s) => String(s.source) === id);
+              const emoji = sourceEmoji(row, String(fr?.status ?? ""));
+              return emoji === "🟢";
+            }).length;
+            const byTier = (tier: string) => {
+              const list = ids.filter((id) => (stateRows[id]?.tier || "?") === tier);
+              const okT = list.filter(
+                (id) => sourceEmoji(stateRows[id]) === "🟢",
+              ).length;
+              return { total: list.length, ok: okT };
+            };
+            const a = byTier("A");
+            const b = byTier("B");
+            const c = byTier("C");
+            return (
+              <section data-testid="freshness-sources">
+                <h2>{t("sourcesWorkingTitle")}</h2>
+                <p
+                  className="sources-working-count"
+                  data-testid="sources-working-count"
+                >
+                  <strong className="font-tabular" style={{ fontSize: "1.75rem" }}>
+                    {t("sourcesWorkingCount")
+                      .replace("{ok}", String(ok))
+                      .replace("{total}", String(ids.length))}
+                  </strong>
+                </p>
+                <ul className="muted small" data-testid="sources-tier-summary">
+                  <li>
+                    {t("sourcesTierA")
+                      .replace("{ok}", String(a.ok))
+                      .replace("{total}", String(a.total))}
+                  </li>
+                  <li>
+                    {t("sourcesTierB")
+                      .replace("{ok}", String(b.ok))
+                      .replace("{total}", String(b.total))}
+                  </li>
+                  <li>{t("sourcesTierC").replace("{total}", String(c.total))}</li>
+                </ul>
+                <table className="data-table small">
+                  <thead>
+                    <tr>
+                      <th aria-label="estado" />
+                      <th>{t("transparencySource")}</th>
+                      <th>{t("sourcesColTier")}</th>
+                      <th>{t("freshnessStatus")}</th>
+                      <th>{t("freshnessVersion")}</th>
+                      <th>{t("sourcesColRows")}</th>
+                      <th>{t("sourcesColYear")}</th>
+                      <th>{t("sourcesColChecked")}</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </section>
-          ) : null}
+                  </thead>
+                  <tbody>
+                    {ids.map((id) => {
+                      const row = stateRows[id];
+                      const fr = freshRows.find((s) => String(s.source) === id);
+                      const emoji = sourceEmoji(row, String(fr?.status ?? ""));
+                      return (
+                        <tr key={id}>
+                          <td aria-label={emoji}>{emoji}</td>
+                          <td>{displayCell(id)}</td>
+                          <td>{displayCell(row?.tier ?? "—")}</td>
+                          <td>
+                            {displayCell(
+                              row?.status ?? fr?.status ?? (fr?.stale ? "stale" : "ok"),
+                            )}
+                          </td>
+                          <td className="font-tabular">
+                            {displayCell(
+                              row?.version ??
+                                fr?.ingested_version ??
+                                fr?.upstream_version,
+                            )}
+                          </td>
+                          <td className="font-tabular">
+                            {displayCell(row?.rows ?? "—")}
+                          </td>
+                          <td className="font-tabular">
+                            {displayCell(row?.last_year ?? "—")}
+                          </td>
+                          <td className="font-tabular small">
+                            {displayCell(row?.checked_at ?? fr?.checked_at ?? "—")}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </section>
+            );
+          })()}
         </>
       )}
     </TransparencyShell>

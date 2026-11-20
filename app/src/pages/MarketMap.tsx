@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { kMeans2d, silhouette2d, type MarketLayoutResult } from "@ims-atlas/core";
 import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
+import { ChartFrame } from "../components/ChartFrame";
 import { MarketMapCanvas } from "../components/MarketMapCanvas";
 import { WorldChoropleth } from "../components/WorldChoropleth";
 import { PermalinkLink } from "../components/PermalinkLink";
@@ -200,15 +201,27 @@ export function MarketMap() {
             </div>
           ) : null}
 
-          <WorldChoropleth
-            rows={choroplethRows}
-            selected={config.compareA}
-            origin={config.origin}
-            projection={projection}
-            extrude={extrude}
-            arcsTopN={6}
-            onSelect={(iso3) => setConfig({ compareA: iso3 })}
-          />
+          <ChartFrame
+            testIdPrefix="map-choropleth"
+            title={t("nav.map")}
+            {...(config.origin && config.hs
+              ? {
+                  projectLine: `${config.origin} · HS ${config.hs}${
+                    config.year ? ` · ${config.year}` : ""
+                  }`,
+                }
+              : {})}
+          >
+            <WorldChoropleth
+              rows={choroplethRows}
+              selected={config.compareA}
+              origin={config.origin}
+              projection={projection}
+              extrude={extrude}
+              arcsTopN={6}
+              onSelect={(iso3) => setConfig({ compareA: iso3 })}
+            />
+          </ChartFrame>
 
           <h2 className="mt-6">Similarity map (SMACOF)</h2>
           {layout ? (

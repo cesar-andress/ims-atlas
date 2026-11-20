@@ -315,10 +315,10 @@ def test_doing_business_rejects_unexpected_archive() -> None:
         doing_business.parse_zip(b"not a zip")
 
 
-# --- manual-only: unctadstat, imf_weo --------------------------------------
+# --- manual-only: unctadstat (imf_weo has live SDMX + optional manual drop) -
 
 
-@pytest.mark.parametrize("source_id", ["unctadstat", "imf_weo"])
+@pytest.mark.parametrize("source_id", ["unctadstat"])
 def test_manual_only_sources_roundtrip_and_missing_reason(
     tmp_path: Path,
     source_id: str,
@@ -339,6 +339,20 @@ def test_manual_only_sources_roundtrip_and_missing_reason(
     indicators_schema.validate(frame)
     assert Path(res["path"]).read_bytes() == drop.read_bytes()
     assert manual_drop.is_manual_source(source_id)
+
+
+def test_imf_weo_manual_drop_still_wins(tmp_path: Path) -> None:
+    drop = tmp_path / "data/manual/imf_weo/indicators.csv"
+    drop.parent.mkdir(parents=True)
+    drop.write_bytes((MINI / "imf_weo" / "indicators.csv").read_bytes())
+    probe = check_mod._live_probe("imf_weo", root=tmp_path)
+    res = extract_source(
+        "imf_weo",
+        probe["upstream_version"],
+        fixture_root=None,
+        root=tmp_path,
+    )
+    assert Path(res["path"]).read_bytes() == drop.read_bytes()
 
 
 # --- pipeline wiring -------------------------------------------------------

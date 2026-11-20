@@ -1,2322 +1,2559 @@
 sources:
-  - id: worldbank_wdi
-    publisher: World Bank
-    landing_url: https://databank.worldbank.org/source/world-development-indicators
-    terms_url: https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators
-    licence_url: https://datacatalog.worldbank.org/public-licenses?fragment=cc
-    endpoints:
-      - id: indicator_json
-        template: https://api.worldbank.org/v2/country/all/indicator/{code}?format=json&per_page=20000
-        method: GET
-    update_cadence: annual
-    version_detection: WDI release year / API meta lastupdated
-    citation: World Bank. World Development Indicators.
-    rights:
-      licence_id: CC-BY-4.0
-      use_research: "yes"
-      redistribute_raw: "yes"
-      redistribute_derived: "yes"
-      commercial_use: "yes"
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: "no"
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators
-        snapshot_sha256: 6dc3b39d94147b1b2bdc99c77bcc8815ecc9f06f779793d04cc65dfec62e5bba
-        note: "Data Catalog lists WDI under CC BY 4.0: copy, modify, distribute for
-          any purpose incl. commercial, with attribution and indication of changes.
-          [Researched 2026-11-20 by assistant from live terms pages; confidence high;
-          page fetched: yes.]"
-        basis: public_terms
-        scope: redistribute_raw
-    kind: official_api
-    cited_in_workbooks:
-      - url: https://data.worldbank.org/indicator/IC.IMP.CSBC.CD
-        variables:
-          - CIBC
-        workbooks:
-          - calzado
-      - url: https://data.worldbank.org/indicator/IS.SHP.GOOD.TU?view=chart
-        variables:
-          - CPTR
-        workbooks:
-          - calzado
-      - url: https://data.worldbank.org/indicator/NY.GDP.DEFL.KD.ZG?locations=XN
-        variables:
-          - INAN
-        workbooks:
-          - aceite
-          - calzado
-      - url: https://data.worldbank.org/indicator/NY.GDP.MKTP.CD?utm_source
-        variables:
-          - EOC
-        workbooks:
-          - aceite
-      - url: https://data.worldbank.org/indicator/SL.UEM.TOTL.ZS?locations=Z4
-        variables:
-          - UNRA
-        workbooks:
-          - calzado
-      - url: https://databank.worldbank.org/id/f469d1e1?utm_source
-        variables:
-          - CIBC
-        workbooks:
-          - aceite
-      - url: https://datacatalogfiles.worldbank.org/ddh-published/0038130/DR0046441/GDP.pdf?versionId=2024-07-01T12:42:23.8710032Z
-        variables:
-          - EOC
-        workbooks:
-          - calzado
-      - url: https://datos.bancomundial.org/indicador/EN.GHG.CO2.MT.CE.AR5
-        variables:
-          - CADE
-        workbooks:
-          - aceite
-      - url: https://datos.bancomundial.org/indicador/LP.LPI.OVRL.XQ
-        variables:
-          - LPIN
-        workbooks:
-          - aceite
-          - calzado
-      - url: https://datos.bancomundial.org/indicator/IC.IMP.CSDC.CD
-        variables:
-          - CIBC
-        workbooks:
-          - aceite
-          - calzado
-      - url: https://humancapital.worldbank.org/en/indicator/WB_HCP_UNE_2EAP_MF_A
-        variables:
-          - UNRA
-        workbooks:
-          - aceite
-  - id: worldbank_wgi
-    publisher: World Bank
-    landing_url: https://www.worldbank.org/en/publication/worldwide-governance-indicators
-    terms_url: https://www.worldbank.org/en/publication/worldwide-governance-indicators/usage-advisory
-    licence_url: https://datacatalog.worldbank.org/public-licenses?fragment=cc
-    endpoints:
-      - id: indicator_json
-        template: https://api.worldbank.org/v2/country/all/indicator/{code}?format=json&per_page=20000
-        method: GET
-    update_cadence: annual
-    version_detection: WGI release year
-    citation: World Bank. Worldwide Governance Indicators.
-    rights:
-      licence_id: CC-BY-4.0
-      use_research: "yes"
-      redistribute_raw: "yes"
-      redistribute_derived: "yes"
-      commercial_use: "yes"
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: "no"
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://www.worldbank.org/en/publication/worldwide-governance-indicators/usage-advisory
-        snapshot_sha256: 7d864cb73ac341285c2e7f4488a6f2ce2d6a8e59b4d3668ec07612d27469bbeb
-        note:
-          "Aggregate WGI CC BY 4.0 (catalog 0038026); usage advisory: rescaled third-party
-          source values only for own research, not republishable without provider authorisation.
-          [Researched 2026-11-20 by assistant from live terms pages; confidence medium;
-          page fetched: yes.]"
-        basis: public_terms
-        scope: redistribute_raw
-    kind: official_api
-  - id: worldbank_lpi
-    publisher: World Bank
-    landing_url: https://lpi.worldbank.org/
-    terms_url: https://datacatalog.worldbank.org/search/dataset/0038649/logistics-performance-index
-    licence_url: https://datacatalog.worldbank.org/public-licenses?fragment=cc
-    endpoints:
-      - id: indicator_json
-        template: https://api.worldbank.org/v2/country/all/indicator/{code}?format=json&per_page=20000
-        method: GET
-    update_cadence: biennial
-    version_detection: LPI survey wave year
-    citation: World Bank. Logistics Performance Index.
-    rights:
-      licence_id: CC-BY-4.0
-      use_research: "yes"
-      redistribute_raw: "yes"
-      redistribute_derived: "yes"
-      commercial_use: "yes"
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: "no"
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://datacatalog.worldbank.org/search/dataset/0038649/logistics-performance-index
-        snapshot_sha256: aa0a2d27b5d51d98ff0dbacb6c66b5f291c069bfde555c8aa8c7042f095dfd68
-        note:
-          "Data Catalog lists LPI under CC BY 4.0 with no further licensing conditions;
-          reuse for any purpose with attribution. [Researched 2026-11-20 by assistant
-          from live terms pages; confidence high; page fetched: yes.]"
-        basis: public_terms
-        scope: redistribute_raw
-    kind: official_api
-    cited_in_workbooks:
-      - url: https://lpi.worldbank.org/en/resources/lpi-publications
-        variables:
-          - LPIN
-        workbooks:
-          - aceite
-      - url: https://lpi.worldbank.org/international/scorecard
-        variables:
-          - LPIN
-        workbooks:
-          - aceite
-          - calzado
-  - id: baci
-    publisher: CEPII
-    landing_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37
-    terms_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37
-    licence_url: https://www.etalab.gouv.fr/wp-content/uploads/2018/11/open-licence.pdf
-    endpoints:
-      - id: zip_download
-        template: https://www.cepii.fr/DATA_DOWNLOADS/BACI/{version}/
-        method: GET
-        notes: Exact path depends on BACI release; do not invent download URLs.
-    update_cadence: annual
-    version_detection: BACI HS version + year in release filename
-    citation: "Gaulier, G. & Zignago, S. BACI: International Trade Database at the Product-Level."
-    rights:
-      licence_id: etalab-2.0
-      use_research: "yes"
-      redistribute_raw: "yes"
-      redistribute_derived: "yes"
-      commercial_use: "yes"
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: "no"
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37
-        snapshot_sha256: 0689cf69a963eb0ca6ef05731482b04898bcef215a90127edeb2a78ff4990c60
-        note: "BACI page states Licence: Etalab 2.0; Open Licence allows reproduce,
-          adapt, redistribute, commercial exploitation, citing source and last update
-          date. [Researched 2026-11-20 by assistant from live terms pages; confidence
-          high; page fetched: yes.]"
-        basis: public_terms
-        scope: redistribute_raw
-    kind: official_portal
-  - id: cepi_gravity
-    publisher: CEPII
-    landing_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=8
-    terms_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=8
-    licence_url: https://www.etalab.gouv.fr/wp-content/uploads/2018/11/open-licence.pdf
-    endpoints:
-      - id: zip_download
-        template: https://www.cepii.fr/DATA_DOWNLOADS/Gravity/{version}/
-        method: GET
-        notes: Exact path depends on Gravity release.
-    update_cadence: irregular
-    version_detection: Gravity dataset version string
-    citation: Conte, M., Cotterlaz, P. & Mayer, T. The CEPII Gravity database.
-    rights:
-      licence_id: etalab-2.0
-      use_research: "yes"
-      redistribute_raw: "yes"
-      redistribute_derived: "yes"
-      commercial_use: "yes"
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: "no"
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=8
-        snapshot_sha256: 7d9a401b1714f633fecc8bf35b66bb81f9bd1ade15ee3d5ea8d1747cf87da6e6
-        note: "Gravity page states Licence: Etalab 2.0 (CC-BY compatible); free reuse
-          incl. commercial, with source and update-date acknowledgement; cite Conte,
-          Cotterlaz & Mayer (2022). [Researched 2026-11-20 by assistant from live terms
-          pages; confidence high; page fetched: yes.]"
-        basis: public_terms
-        scope: redistribute_raw
-    kind: official_portal
-  - id: wits_trains
-    publisher: World Bank / UNCTAD (WITS)
-    landing_url: https://wits.worldbank.org/
-    terms_url: https://wits.worldbank.org/WITS/wits/registration/TermsAndCondtions.aspx
-    licence_url: https://wits.worldbank.org/data/public/UNCTAD_TermsofUseandDisclaimer.pdf
-    endpoints:
-      - id: api
-        template: https://wits.worldbank.org/API/V1/SDMX/V21/rest/
-        method: GET
-        notes: Registration may be required; do not scrape against ToS.
-    update_cadence: annual
-    version_detection: TRAINS / WITS release metadata
-    citation: World Bank / UNCTAD. World Integrated Trade Solution (WITS).
-    rights:
-      licence_id: custom
-      use_research: "yes"
-      redistribute_raw: "no"
-      redistribute_derived: unknown
-      commercial_use: "no"
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://wits.worldbank.org/WITS/wits/registration/TermsAndCondtions.aspx
-        snapshot_sha256: null
-        note: "TRAINS free for researchers and businesses if not sold or commercially
-          exploited, source acknowledged; no dissemination of data or parts without
-          UNCTAD written permission. [Researched 2026-11-20 by assistant from live terms
-          pages; confidence medium; page fetched: yes.]"
-    kind: official_portal
-  - id: hofstede
-    publisher: Geert Hofstede / related publishers
-    landing_url: https://geerthofstede.com/research-and-vsm/dimension-data-matrix/
-    terms_url: https://geerthofstede.com/research-and-vsm/dimension-data-matrix/
-    licence_url: https://geerthofstede.com/research-and-vsm/dimension-data-matrix/
-    endpoints:
-      - id: csv_matrix
-        template: https://geerthofstede.com/research-and-vsm/dimension-data-matrix/
-        method: GET
-        notes: Download link on page; verify licence before shipping.
-    update_cadence: static
-    version_detection: file version / publication date on page
-    citation: Hofstede, G. Dimension data matrix.
-    rights:
-      licence_id: custom
-      use_research: "yes"
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: "no"
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://geerthofstede.com/research-and-vsm/dimension-data-matrix/
-        snapshot_sha256: null
-        note:
-          "Researchers may use the data without asking permission; anyone considering
-          commercial use should contact the authors. Redistribution not addressed. [Researched
-          2026-11-20 by assistant from live terms pages; confidence medium; page fetched:
-          yes.]"
-    kind: official_portal
-    cited_in_workbooks:
-      - url: https://www.hofstede-insights.com/product/compare-countries/
-        variables:
-          - CUDI
-        workbooks:
-          - calzado
-  - id: itu_datahub
-    publisher: International Telecommunication Union
-    landing_url: https://datahub.itu.int/
-    terms_url: https://datahub.itu.int/about
-    licence_url: https://creativecommons.org/licenses/by-nc-sa/3.0/igo/
-    endpoints:
-      - id: indicator
-        template: https://datahub.itu.int/
-        method: GET
-        notes: Endpoint templates TBD after human ToS review.
-    update_cadence: annual
-    version_detection: ITU DataHub release year
-    citation: ITU. DataHub.
-    rights:
-      licence_id: CC-BY-NC-SA-3.0-IGO
-      use_research: "yes"
-      redistribute_raw: "yes"
-      redistribute_derived: "yes"
-      commercial_use: "no"
-      attribution_required: "yes"
-      share_alike: "yes"
-      no_derivatives: "no"
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://datahub.itu.int/about
-        snapshot_sha256: null
-        note: "DataHub data licensed CC BY-NC-SA 3.0 IGO; third-party indicators follow
-          their owners' terms; cite 'ITU DataHub' with access date. [Researched 2026-11-20
-          by assistant from live terms pages; confidence medium; page fetched: no.]"
-    kind: official_api
-  - id: ef_epi
-    publisher: EF Education First
-    landing_url: https://www.ef.com/wwen/epi/
-    terms_url: https://www.ef.com/wwen/epi/about-epi/faq/
-    licence_url: UNKNOWN
-    endpoints:
-      - id: landing
-        template: https://www.ef.com/wwen/epi/
-        method: GET
-        notes: Manual drop only; no scrape. Human downloads the EPI release file into
-          data/manual/ef_epi/.
-    update_cadence: annual
-    version_detection: EF EPI edition year (from release filename / landing)
-    citation: EF Education First. EF English Proficiency Index.
-    rights:
-      licence_id: proprietary
-      use_research: "yes"
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: "yes"
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://www.ef.com/wwen/epi/about-epi/faq/
-        snapshot_sha256: nofetch
-        note: "EPI FAQ silent on bulk download; CA confirms internal research use of
-          manual drop (EXTRA-11). Terms research (kept): No data licence; site 'All
-          rights reserved' (Signum International AG). FAQ gives citation naming only;
-          raw source data not shared. [Researched 2026-11-20 by assistant from live
-          terms pages; confidence low; page fetched: yes.]"
-        basis: public_terms
-    kind: official_portal
-  - id: odin
-    publisher: Open Data Watch
-    landing_url: https://odin.opendatawatch.com/
-    terms_url: https://odin.opendatawatch.com/Data/download
-    licence_url: https://creativecommons.org/licenses/by/4.0/
-    endpoints:
-      - id: scores
-        template: https://odin.opendatawatch.com/
-        method: GET
-        notes: Exact API/download after human rights check.
-    update_cadence: biennial
-    version_detection: ODIN edition year
-    citation: Open Data Watch. Open Data Inventory (ODIN).
-    rights:
-      licence_id: CC-BY-4.0
-      use_research: "yes"
-      redistribute_raw: "yes"
-      redistribute_derived: "yes"
-      commercial_use: "yes"
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: "no"
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://odin.opendatawatch.com/Data/download
-        snapshot_sha256: null
-        note: "ODIN site footer: licensed under CC BY 4.0, (c) Open Data Watch; cite
-          as 'Open Data Watch-Open Data Inventory'. [Researched 2026-11-20 by assistant
-          from live terms pages; confidence medium; page fetched: no.]"
-    kind: official_portal
-  - id: gedi
-    publisher: Global Entrepreneurship and Development Institute
-    landing_url: https://thegedi.org/
-    terms_url: https://thegedi.org/
-    licence_url: UNKNOWN
-    endpoints:
-      - id: index
-        template: https://thegedi.org/
-        method: GET
-    update_cadence: irregular
-    version_detection: GEDI / GEI release year
-    citation: GEDI. Global Entrepreneurship Index.
-    rights:
-      licence_id: UNKNOWN
-      use_research: "yes"
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://thegedi.org/
-        snapshot_sha256: nofetch
-        note: "Landing terms silent on bulk reuse; CA confirms internal research use
-          only (EXTRA-11). Terms research (kept): No licence found; site unreachable
-          (TLS cert mismatch / 403). Search snippets: data 'free' with registration,
-          some editions paid; includes GEM-sourced indicators. [Researched 2026-11-20
-          by assistant from live terms pages; confidence low; page fetched: no.]"
-        basis: public_terms
-    kind: official_portal
-  - id: wipo_gii
-    publisher: World Intellectual Property Organization
-    landing_url: https://www.wipo.int/global_innovation_index/
-    terms_url: https://www.wipo.int/web-publications/global-innovation-index-2025/en/copyright.html
-    licence_url: https://creativecommons.org/licenses/by/4.0/deed.en
-    endpoints:
-      - id: report_data
-        template: https://www.wipo.int/global_innovation_index/en/
-        method: GET
-    update_cadence: annual
-    version_detection: GII edition year
-    citation: WIPO. Global Innovation Index.
-    rights:
-      licence_id: CC-BY-4.0
-      use_research: "yes"
-      redistribute_raw: "yes"
-      redistribute_derived: "yes"
-      commercial_use: "yes"
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: "no"
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://www.wipo.int/web-publications/global-innovation-index-2025/en/copyright.html
-        snapshot_sha256: fd66431fcdb3a4f44a295c0e44759803bcfd236048b9d9a56721b28e546f05e8
-        note: "GII licensed CC BY 4.0: reproduce, distribute, adapt incl. commercially,
-          acknowledging WIPO and indicating changes; third-party content rights must
-          be cleared separately. [Researched 2026-11-20 by assistant from live terms
-          pages; confidence medium; page fetched: yes.]"
-        basis: public_terms
-        scope: redistribute_raw
-    kind: official_report_pdf
-  - id: startupblink
-    publisher: StartupBlink
-    landing_url: https://www.startupblink.com/
-    terms_url: https://www.startupblink.com/blog/terms-conditions/
-    licence_url: UNKNOWN
-    endpoints:
-      - id: ranking
-        template: https://www.startupblink.com/startup-ecosystem-ranking
-        method: GET
-    update_cadence: annual
-    version_detection: ranking year
-    citation: StartupBlink. Global Startup Ecosystem Index.
-    rights:
-      licence_id: proprietary
-      use_research: "yes"
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://www.startupblink.com/blog/terms-conditions/
-        snapshot_sha256: nofetch
-        note: "T&Cs proprietary; CA confirms internal research use of manual drop only
-          (EXTRA-11). Terms research (kept): Terms page returned HTTP 403. Search snippet
-          only: users may not circumvent features restricting copying of Content; raw
-          data sold via paid Pro tier. [Researched 2026-11-20 by assistant from live
-          terms pages; confidence low; page fetched: no.]"
-        basis: public_terms
-    kind: commercial_quote_tool
-  - id: yale_epi
-    publisher: Yale Center for Environmental Law & Policy
-    landing_url: https://epi.yale.edu/
-    terms_url: https://epi.yale.edu/2026/downloads
-    licence_url: https://creativecommons.org/licenses/by-nc-sa/4.0/
-    endpoints:
-      - id: scores
-        template: https://epi.yale.edu/
-        method: GET
-    update_cadence: biennial
-    version_detection: EPI edition year
-    citation: Yale Center for Environmental Law & Policy. Environmental Performance
-      Index.
-    rights:
-      licence_id: CC-BY-NC-SA-4.0
-      use_research: "yes"
-      redistribute_raw: "yes"
-      redistribute_derived: "yes"
-      commercial_use: "no"
-      attribution_required: "yes"
-      share_alike: "yes"
-      no_derivatives: "no"
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://epi.yale.edu/2026/downloads
-        snapshot_sha256: 6d19d1c205942dcf6298f454afcbbba6fc81255a26c74dfbad6c7cff142c4c0a
-        note: "Site and downloads page footer: this work is under CC BY-NC-SA 4.0; EPI
-          name is a Yale trademark. Not explicitly scoped to the data files. [Researched
-          2026-11-20 by assistant from live terms pages; confidence medium; page fetched:
-          yes.]"
-        basis: public_terms
-        scope: redistribute_raw
-    kind: official_portal
-  - id: heritage_ief
-    publisher: The Heritage Foundation
-    landing_url: https://www.heritage.org/index/
-    terms_url: https://www.heritage.org/article/copyright-notice
-    licence_url: UNKNOWN
-    endpoints:
-      - id: country_scores
-        template: https://www.heritage.org/index/pages/all-country-scores
-        method: GET
-        notes: IMSFE IOEF. Manual/BYOD until licence verified.
-    update_cadence: annual
-    version_detection: index year on page
-    citation: The Heritage Foundation. Index of Economic Freedom.
-    rights:
-      licence_id: proprietary
-      use_research: unknown
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://www.heritage.org/article/copyright-notice
-        snapshot_sha256: null
-        note:
-          "All heritage.org pages returned 403. Search snippets only: content protected
-          by US copyright, no implied licence; publications marked All rights reserved.
-          [Researched 2026-11-20 by assistant from live terms pages; confidence low;
-          page fetched: no.]"
-    kind: official_portal
-    cited_in_workbooks:
-      - url: https://www.heritage.org/index/heatmap
-        variables:
-          - IOEF
-        workbooks:
-          - aceite
-          - calzado
-      - url: https://www.heritage.org/index/pages/all-country-scores
-        variables:
-          - IOEF
-        workbooks:
-          - aceite
-          - calzado
-  - id: fragile_states_index
-    publisher: The Fund for Peace
-    landing_url: https://fragilestatesindex.org/
-    terms_url: https://fragilestatesindex.org/?p=81
-    licence_url: https://creativecommons.org/licenses/by-nc-sa/4.0/
-    endpoints:
-      - id: global_data
-        template: https://fragilestatesindex.org/global-data/
-        method: GET
-        notes: IMSFE FSIN. Manual/BYOD until licence verified.
-    update_cadence: annual
-    version_detection: release year
-    citation: Fund for Peace. Fragile States Index.
-    rights:
-      licence_id: CC-BY-NC-SA-4.0
-      use_research: "yes"
-      redistribute_raw: "yes"
-      redistribute_derived: "yes"
-      commercial_use: "no"
-      attribution_required: "yes"
-      share_alike: "yes"
-      no_derivatives: "no"
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://fragilestatesindex.org/?p=81
-        snapshot_sha256: a42074f779d4780064f9890f6ae65ca7a9e51914e1963e03574788ad9e8ad98f
-        note: "Request to Republish page: CC BY-NC-SA 4.0; credit The Fund for Peace;
-          researchers need no permission; for-profit republication requires contacting
-          FFP. [Researched 2026-11-20 by assistant from live terms pages; confidence
-          medium; page fetched: yes.]"
-        basis: public_terms
-        scope: redistribute_raw
-    kind: official_portal
-    cited_in_workbooks:
-      - url: https://fragilestatesindex.org/global-data/
-        variables:
-          - FSIN
-        workbooks:
-          - aceite
-          - calzado
-  - id: inform_risk
-    publisher: European Commission DRMKC
-    landing_url: https://drmkc.jrc.ec.europa.eu/inform-index
-    terms_url: https://commission.europa.eu/legal-notice_en
-    licence_url: https://creativecommons.org/licenses/by/4.0/
-    endpoints:
-      - id: index
-        template: https://drmkc.jrc.ec.europa.eu/inform-index
-        method: GET
-        notes: IMSFE INRI. Manual/BYOD until licence verified.
-    update_cadence: annual
-    version_detection: INFORM release
-    citation: European Commission. INFORM Risk Index.
-    rights:
-      licence_id: CC-BY-4.0
-      use_research: "yes"
-      redistribute_raw: "yes"
-      redistribute_derived: "yes"
-      commercial_use: "yes"
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: "no"
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://commission.europa.eu/legal-notice_en
-        snapshot_sha256: 5005b27c29ff12f0ad93c7a99b7ce97687a3285893485907325555ccafcb7ede
-        note: "EC legal notice: EU-owned content is CC BY 4.0 unless stated otherwise;
-          credit source and indicate changes. INFORM page itself names no licence. [Researched
-          2026-11-20 by assistant from live terms pages; confidence medium; page fetched:
-          yes.]"
-        basis: public_terms
-        scope: redistribute_raw
-    kind: official_portal
-    cited_in_workbooks:
-      - url: https://drmkc.jrc.ec.europa.eu/inform-index
-        variables:
-          - INRI
-        workbooks:
-          - aceite
-          - calzado
-  - id: eiu_democracy
-    publisher: Economist Intelligence Unit
-    landing_url: https://www.eiu.com/n/campaigns/democracy-index-2023/
-    terms_url: https://ourworldindata.org/grapher/democracy-index-eiu
-    licence_url: UNKNOWN
-    endpoints:
-      - id: report
-        template: https://www.eiu.com/n/campaigns/democracy-index-2023/
-        method: GET
-        notes: IMSFE DEIN. Proprietary; BYOD.
-    update_cadence: annual
-    version_detection: report year
-    citation: Economist Intelligence Unit. Democracy Index.
-    rights:
-      licence_id: proprietary
-      use_research: unknown
-      redistribute_raw: "no"
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://ourworldindata.org/grapher/democracy-index-eiu
-        snapshot_sha256: null
-        note: "eiu.com not fetchable. Secondary only (OWID): EIU licence does not allow
-          OWID to redistribute the data; full data sold on Snowflake. [Researched 2026-11-20
-          by assistant from live terms pages; confidence low; page fetched: no.]"
-    kind: official_report_pdf
-    cited_in_workbooks:
-      - url: https://d1qqtien6gys07.cloudfront.net/wp-content/uploads/2024/02/Democracy-Index-2023-Final-report-11-15.pdf
-        variables:
-          - DEIN
-        workbooks:
-          - aceite
-          - calzado
-      - url: https://www.eiu.com/n/campaigns/democracy-index-2023/
-        variables:
-          - DEIN
-        workbooks:
-          - calzado
-      - url: https://www.eiu.com/n/campaigns/democracy-index-2024-confirmation/
-        variables:
-          - DEIN
-        workbooks:
-          - aceite
-      - url: https://www.eiu.com/n/campaigns/democracy-index-2025
-        variables:
-          - DEIN
-        workbooks:
-          - aceite
-  - id: kof_globalisation
-    publisher: KOF Swiss Economic Institute
-    landing_url: https://kof.ethz.ch/en/forecasts-and-indicators/indicators/kof-globalisation-index.html
-    terms_url: https://kof.ethz.ch/en/footer/disclaimer-copyright.html
-    licence_url: https://kof.ethz.ch/en/footer/disclaimer-copyright.html
-    endpoints:
-      - id: index
-        template: https://kof.ethz.ch/en/forecasts-and-indicators/indicators/kof-globalisation-index.html
-        method: GET
-        notes: IMSFE GLIN. Manual/BYOD until licence verified.
-    update_cadence: annual
-    version_detection: KOF release
-    citation: KOF Swiss Economic Institute. Globalisation Index.
-    rights:
-      licence_id: custom
-      use_research: "yes"
-      redistribute_raw: "no"
-      redistribute_derived: unknown
-      commercial_use: "no"
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://kof.ethz.ch/en/footer/disclaimer-copyright.html
-        snapshot_sha256: null
-        note: "ETH copyright: copying only for private, scientific, non-commercial use;
-          storing on other servers needs written consent; citation with source required.
-          [Researched 2026-11-20 by assistant from live terms pages; confidence medium;
-          page fetched: yes.]"
-    kind: official_portal
-    cited_in_workbooks:
-      - url: https://kof.ethz.ch/en/forecasts-and-indicators/indicators/kof-globalisation-index.html
-        variables:
-          - GLIN
-        workbooks:
-          - aceite
-          - calzado
-  - id: transparency_cpi
-    publisher: Transparency International
-    landing_url: https://www.transparency.org/en/cpi
-    terms_url: https://www.transparency.org/en/copyright-enquiries
-    licence_url: https://creativecommons.org/licenses/by/4.0/
-    endpoints:
-      - id: cpi
-        template: https://www.transparency.org/en/cpi/2023
-        method: GET
-        notes: IMSFE CPIN. Manual/BYOD until licence verified.
-    update_cadence: annual
-    version_detection: CPI year
-    citation: Transparency International. Corruption Perceptions Index.
-    rights:
-      licence_id: CC-BY-4.0
-      use_research: "yes"
-      redistribute_raw: "yes"
-      redistribute_derived: "yes"
-      commercial_use: "yes"
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: "no"
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://www.transparency.org/en/copyright-enquiries
-        snapshot_sha256: nofetch
-        note:
-          "CPI and datasets are CC BY 4.0; credit Source: Transparency International;
-          changes must be indicated and not misrepresent data. Other site content CC
-          BY-ND 4.0. [Researched 2026-11-20 by assistant from live terms pages; confidence
-          medium; page fetched: yes.]"
-        basis: public_terms
-        scope: redistribute_raw
-    kind: official_portal
-    cited_in_workbooks:
-      - url: https://www.transparency.org/en/countries/albania?redirected=1
-        variables:
-          - CPIN
-        workbooks:
-          - aceite
-          - calzado
-      - url: https://www.transparency.org/en/cpi/2023
-        variables:
-          - CPIN
-        workbooks:
-          - calzado
-      - url: https://www.transparency.org/en/cpi/2024
-        variables:
-          - CPIN
-        workbooks:
-          - aceite
-      - url: https://www.transparency.org/en/cpi/2025
-        variables:
-          - CPIN
-        workbooks:
-          - aceite
-  - id: global_trade_alert
-    publisher: Global Trade Alert
-    landing_url: https://globaltradealert.org/
-    terms_url: https://globaltradealert.org/terms
-    licence_url: https://sgeptupload.s3.eu-west-1.amazonaws.com/terms/GTA+Licensed+Data+-+General+Terms.pdf
-    endpoints:
-      - id: interventions
-        template: https://globaltradealert.org/threads
-        method: GET
-        notes: IMSFE CCTI. Manual/BYOD until licence verified.
-    update_cadence: irregular
-    version_detection: site update
-    citation: Global Trade Alert.
-    rights:
-      licence_id: custom
-      use_research: "yes"
-      redistribute_raw: "no"
-      redistribute_derived: "no"
-      commercial_use: "no"
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: "no"
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://globaltradealert.org/terms
-        snapshot_sha256: 0c5433d0077b71b6136ae66bddd67053d28f95511106859bb766305e71ad3255
-        note: "Default class Internal Use; publishing derived scores to third parties
-          is Derived Use needing express grant (academic subscription allows academic
-          publication). Commercial use licensed separately. [Researched 2026-11-20 by
-          assistant from live terms pages; confidence medium; page fetched: yes.]"
-        basis: public_terms
-        scope: use
-    kind: official_portal
-    cited_in_workbooks:
-      - url: https://globaltradealert.org/threads/harmful-trade-interventions
-        variables:
-          - CUDI
-          - ITBI
-        workbooks:
-          - aceite
-          - calzado
-      - url: https://globaltradealert.org/threads?offset=0&limit=48
-        variables:
-          - CCTI
-        workbooks:
-          - calzado
-  - id: freight_manual
-    publisher: Multiple freight rate tools (workbook refs)
-    landing_url: https://www.icontainers.com/
-    terms_url: https://www.icontainers.com/resources/docs/us/Terms_and_conditions_iContainers_USA_inc_v20230221.pdf
-    licence_url: UNKNOWN
-    endpoints:
-      - id: manual
-        template: https://www.icontainers.com/
-        method: GET
-        notes: IMSFE INTC/ITTT. Manual BYOD; no scrape.
-    update_cadence: irregular
-    version_detection: user upload date
-    citation: Freight rate tools cited in IMSFE workbook (manual BYOD).
-    rights:
-      licence_id: UNKNOWN
-      use_research: "yes"
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://www.icontainers.com/resources/docs/us/Terms_and_conditions_iContainers_USA_inc_v20230221.pdf
-        snapshot_sha256: nofetch
-        note: "Workbook freight refs; CA confirms internal research use of already-held
-          figures (EXTRA-11). Terms research (kept): Only footer terms are freight trading
-          conditions (shipping contract); no website or rate-data licence found. Other
-          workbook freight tools not identified. [Researched 2026-11-20 by assistant
-          from live terms pages; confidence low; page fetched: yes.]"
-        basis: public_terms
-    kind: commercial_quote_tool
-    cited_in_workbooks:
-      - url: https://globy.com/freight-calculator/from-spain/from-algeciras/to-united-states/to-atlanta
-        variables:
-          - INTC
-        workbooks:
-          - aceite
-      - url: https://worldnetlogis.com/services/cost-calculators/ocean-freight-cost-calculator/
-        variables:
-          - CUDI
-          - INTC
-        workbooks:
-          - aceite
-          - calzado
-      - url: https://www.gocomet.com/freight-shipping-rates-index-calculator?pol=Port%20of%20Cartagena,%20Colombia,%20COCTG&pol_code=COCTG&pod=Miami,%20USA,%20USMIA&pod_code=USMIA&isGfiSearch=true
-        variables:
-          - GENERAL
-        workbooks:
-          - aceite
-          - calzado
-      - url: https://www.icontainers.com/es/transporte-maritimo/
-        variables:
-          - INTC
-        workbooks:
-          - aceite
-          - calzado
-      - url: https://www.twill.net/my/booking/prices
-        variables:
-          - GENERAL
-        workbooks:
-          - aceite
-          - calzado
-      - url: https://www.worldfreightrates.com/es/freight
-        variables:
-          - INTC
-        workbooks:
-          - aceite
-          - calzado
-  - id: worldbank_doing_business
-    publisher: World Bank (Doing Business archive)
-    landing_url: https://archive.doingbusiness.org/en/doingbusiness
-    terms_url: https://datacatalog.worldbank.org/search/dataset/0038564/doing-business
-    licence_url: https://datacatalog.worldbank.org/public-licenses
-    kind: official_portal
-    endpoints:
-      - id: archive
-        template: https://espanol.doingbusiness.org/es/reports/global-reports/doing-business-2020
-        method: GET
-        notes: Discontinued series; last year only.
-    update_cadence: static
-    version_detection: Doing Business 2020 final
-    citation: World Bank. Doing Business (discontinued).
-    rights:
-      licence_id: CC-BY-4.0
-      use_research: "yes"
-      redistribute_raw: "yes"
-      redistribute_derived: "yes"
-      commercial_use: "yes"
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: "no"
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://datacatalog.worldbank.org/search/dataset/0038564/doing-business
-        snapshot_sha256: 4c71325b56bda7cb490f07b9e15f2c3395bcf77c6ce0014a632dfafa9a3791b9
-        note:
-          "Data Catalog entry: Doing Business dataset licensed CC BY 4.0 (discontinued
-          2021); CC BY permits commercial use with attribution and change notice. [Researched
-          2026-11-20 by assistant from live terms pages; confidence high; page fetched:
-          yes.]"
-        basis: public_terms
-        scope: redistribute_raw
-    cited_in_workbooks:
-      - url: https://espanol.doingbusiness.org/es/reports/global-reports/doing-business-2020
-        variables:
-          - GLIN
-        workbooks:
-          - aceite
-          - calzado
-  - id: imf_weo
-    publisher: International Monetary Fund
-    landing_url: https://www.imf.org/en/Publications/WEO
-    terms_url: https://www.imf.org/en/about/copyright-and-terms
-    licence_url: https://www.imf.org/en/about/copyright-and-terms
-    kind: official_portal
-    endpoints:
-      - id: datamapper
-        template: https://www.imf.org/external/datamapper/PCPIPCH@WEO/OEMDC/ADVEC/WEOWORLD
-        method: GET
-    update_cadence: annual
-    version_detection: WEO vintage
-    citation: IMF. World Economic Outlook.
-    rights:
-      licence_id: custom
-      use_research: "yes"
-      redistribute_raw: "yes"
-      redistribute_derived: "yes"
-      commercial_use: "no"
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: "no"
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://www.imf.org/en/about/copyright-and-terms
-        snapshot_sha256: c1d932fb11f68f22c37e576486d5674e1a6edba729e8fae6f24355155dabf0b8
-        note: "Special Terms for Statistical Data: free to copy, derive, publish with
-          IMF credit and stated transformations; commercial reuse needs permission via
-          copyright@imf.org. [Researched 2026-11-20 by assistant from live terms pages;
-          confidence high; page fetched: yes.]"
-        basis: public_terms
-        scope: redistribute_raw
-    cited_in_workbooks:
-      - url: https://www.imf.org/external/datamapper/PCPIPCH@WEO/OEMDC/ADVEC/WEOWORLD
-        variables:
-          - INAN
-        workbooks:
-          - aceite
-  - id: wto_tariffs
-    publisher: World Trade Organization
-    landing_url: https://ttd.wto.org/en
-    terms_url: https://ttd.wto.org/docs/Terms_of_Use_WTO_Tariff_and_Trade_Data.pdf
-    licence_url: https://ttd.wto.org/docs/Terms_of_Use_WTO_Tariff_and_Trade_Data.pdf
-    kind: official_portal
-    endpoints:
-      - id: ttd
-        template: https://ttd.wto.org/en
-        method: GET
-    update_cadence: irregular
-    version_detection: WTO TTD update
-    citation: WTO. Tariff Download Facility / Tariff Analysis Online.
-    rights:
-      licence_id: custom
-      use_research: "yes"
-      redistribute_raw: "no"
-      redistribute_derived: "yes"
-      commercial_use: "no"
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: "no"
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://ttd.wto.org/docs/Terms_of_Use_WTO_Tariff_and_Trade_Data.pdf
-        snapshot_sha256: f7248134c5875df6d403a9682b593a4868edacc0fc3cdda46fa636b123affd9b
-        note: "Free non-commercial use (research, analysis). Re-dissemination needs
-          Secretariat permission and citation; analyses need a disclaimer; no mass downloads.
-          [Researched 2026-11-20 by assistant from live terms pages; confidence high;
-          page fetched: yes.]"
-        basis: public_terms
-        scope: redistribute_derived
-    cited_in_workbooks:
-      - url: http://tariffdata.wto.org/default.aspx?culture=en-US
-        variables:
-          - CUTA
-        workbooks:
-          - aceite
-          - calzado
-      - url: https://ttd.wto.org/en
-        variables:
-          - CUTA
-        workbooks:
-          - aceite
-          - calzado
-  - id: wto_itip
-    publisher: World Trade Organization
-    landing_url: http://i-tip.wto.org/
-    terms_url: https://www.wto.org/english/info_e/copyrights_permissions_e.htm
-    licence_url: https://www.wto.org/english/info_e/copyrights_permissions_e.htm
-    kind: official_portal
-    endpoints:
-      - id: itip
-        template: http://i-tip.wto.org/goods/Forms/MemberView.aspx?data=default
-        method: GET
-    update_cadence: irregular
-    version_detection: I-TIP update
-    citation: WTO. Integrated Trade Intelligence Portal (I-TIP).
-    rights:
-      licence_id: custom
-      use_research: "yes"
-      redistribute_raw: "yes"
-      redistribute_derived: unknown
-      commercial_use: "no"
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://www.wto.org/english/info_e/copyrights_permissions_e.htm
-        snapshot_sha256: null
-        note:
-          "No I-TIP-specific terms. General WTO site terms: non-commercial reproduction
-          allowed with attribution if WTO is informed; commercial use needs written
-          permission. [Researched 2026-11-20 by assistant from live terms pages; confidence
-          medium; page fetched: yes.]"
-    cited_in_workbooks:
-      - url: http://i-tip.wto.org/goods/Forms/MemberView.aspx?data=default
-        variables:
-          - CCTI
-          - ITBI
-        workbooks:
-          - aceite
-          - calzado
-  - id: numbeo
-    publisher: Numbeo
-    landing_url: https://www.numbeo.com/cost-of-living/
-    terms_url: https://www.numbeo.com/common/terms_of_use.jsp
-    licence_url: https://www.numbeo.com/common/terms_of_use.jsp
-    kind: secondary_aggregator
-    endpoints:
-      - id: col
-        template: https://www.numbeo.com/cost-of-living/rankings_by_country.jsp
-        method: GET
-        notes: Prefer official CPI/COL where available; BYOD.
-    update_cadence: irregular
-    version_detection: page scrape date (manual)
-    citation: Numbeo. Cost of Living Index.
-    rights:
-      licence_id: proprietary
-      use_research: "yes"
-      redistribute_raw: "no"
-      redistribute_derived: "no"
-      commercial_use: "no"
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: "yes"
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://www.numbeo.com/common/terms_of_use.jsp
-        snapshot_sha256: dd2f1ef12a56583cd392464b04ec1c173d5ebd8fc03ab37fb0b7fb4300fb693d
-        note: "Free for personal and academic use with citation. Commercial use needs
-          a paid licence; no derivative works, API republication or scraping without
-          consent. [Researched 2026-11-20 by assistant from live terms pages; confidence
-          high; page fetched: yes.]"
-        basis: public_terms
-        scope: use
-    cited_in_workbooks:
-      - url: https://www.numbeo.com/cost-of-living/
-        variables:
-          - PPAD
-        workbooks:
-          - aceite
-          - calzado
-      - url: https://www.numbeo.com/cost-of-living/rankings_by_country.jsp
-        variables:
-          - CLI
-        workbooks:
-          - aceite
-          - calzado
-  - id: preciosmundi
-    publisher: PreciosMundi
-    landing_url: https://preciosmundi.com/
-    terms_url: https://preciosmundi.com/
-    licence_url: UNKNOWN
-    kind: secondary_aggregator
-    endpoints:
-      - id: home
-        template: https://preciosmundi.com/
-        method: GET
-    update_cadence: irregular
-    version_detection: manual
-    citation: PreciosMundi.
-    rights:
-      licence_id: UNKNOWN
-      use_research: "yes"
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://preciosmundi.com/
-        snapshot_sha256: nofetch
-        note:
-          "Terms not clearly published; CA confirms internal research use only (EXTRA-11).
-          Terms research (kept): Site returned HTTP 403 to all automated fetches (homepage
-          and /aviso-legal); web search found no legal notice. Terms not verified. [Researched
-          2026-11-20 by assistant from live terms pages; confidence low; page fetched:
-          no.]"
-        basis: public_terms
-    cited_in_workbooks:
-      - url: https://preciosmundi.com/
-        variables:
-          - PPAD
-        workbooks:
-          - aceite
-          - calzado
-  - id: global_product_prices
-    publisher: GlobalProductPrices
-    landing_url: https://www.globalproductprices.com/
-    terms_url: https://www.globalproductprices.com/terms_gprpr.php
-    licence_url: UNKNOWN
-    kind: secondary_aggregator
-    endpoints:
-      - id: cooking_oil
-        template: https://www.globalproductprices.com/rankings/cooking_oil_prices/
-        method: GET
-    update_cadence: irregular
-    version_detection: manual
-    citation: Global Product Prices.
-    rights:
-      licence_id: UNKNOWN
-      use_research: "yes"
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://www.globalproductprices.com/terms_gprpr.php
-        snapshot_sha256: nofetch
-        note: "Terms page incomplete; CA confirms internal research use only (EXTRA-11).
-          Terms research (kept): Terms cover only disclaimers and links; silent on data
-          reuse. Footer shows copyright and data is sold separately. Treat as all rights
-          reserved. [Researched 2026-11-20 by assistant from live terms pages; confidence
-          medium; page fetched: yes.]"
-        basis: public_terms
-    cited_in_workbooks:
-      - url: https://www.globalproductprices.com/rankings/cooking_oil_prices/
-        variables:
-          - PPAD
-        workbooks:
-          - aceite
-  - id: sea_distances
-    publisher: Sea-Distances.org
-    landing_url: https://sea-distances.org/
-    terms_url: https://sea-distances.org/
-    licence_url: UNKNOWN
-    kind: commercial_quote_tool
-    endpoints:
-      - id: home
-        template: https://sea-distances.org/
-        method: GET
-    update_cadence: static
-    version_detection: manual
-    citation: Sea-Distances.org.
-    rights:
-      licence_id: UNKNOWN
-      use_research: "yes"
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://sea-distances.org/
-        snapshot_sha256: nofetch
-        note:
-          "Terms silent; CA confirms internal research use of distance tables (EXTRA-11).
-          Terms research (kept): HTTPS fetch failed with a TLS internal error and HTTP
-          redirects to HTTPS; web search found no terms page. Terms not verified. [Researched
-          2026-11-20 by assistant from live terms pages; confidence low; page fetched:
-          no.]"
-        basis: public_terms
-    cited_in_workbooks:
-      - url: https://sea-distances.org/
-        variables:
-          - ITTT
-        workbooks:
-          - aceite
-          - calzado
-  - id: searates
-    publisher: SeaRates
-    landing_url: https://www.searates.com/
-    terms_url: https://www.dpworld.com/en/terms-conditions
-    licence_url: https://www.dpworld.com/en/terms-conditions
-    kind: commercial_quote_tool
-    endpoints:
-      - id: distances
-        template: https://www.searates.com/es/services/distances-time/
-        method: GET
-    update_cadence: irregular
-    version_detection: manual
-    citation: SeaRates distances/time.
-    rights:
-      licence_id: proprietary
-      use_research: unknown
-      redistribute_raw: "no"
-      redistribute_derived: "no"
-      commercial_use: "no"
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: "yes"
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://www.dpworld.com/en/terms-conditions
-        snapshot_sha256: null
-        note:
-          "All searates.com URLs now redirect to dpworld.com. DP World terms: personal-use
-          extracts only, no modification, commercial use needs a licence, authorship
-          must be acknowledged. [Researched 2026-11-20 by assistant from live terms
-          pages; confidence medium; page fetched: yes.]"
-    cited_in_workbooks:
-      - url: https://www.searates.com/es/services/distances-time/
-        variables:
-          - ITTT
-        workbooks:
-          - calzado
-  - id: nauticalculator
-    publisher: NautiCalculator
-    landing_url: https://nauticalculator.com/
-    terms_url: https://nauticalculator.com/
-    licence_url: UNKNOWN
-    kind: commercial_quote_tool
-    endpoints:
-      - id: port_distance
-        template: https://nauticalculator.com/port-to-port-distance/
-        method: GET
-    update_cadence: static
-    version_detection: manual
-    citation: NautiCalculator port-to-port distance.
-    rights:
-      licence_id: UNKNOWN
-      use_research: "yes"
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://nauticalculator.com/
-        snapshot_sha256: nofetch
-        note: "Terms silent; CA confirms internal research use only (EXTRA-11). Terms
-          research (kept): No terms or licence page; only a © 2026 footer and privacy
-          page. Tools called '100% free', but data reuse not addressed. [Researched
-          2026-11-20 by assistant from live terms pages; confidence medium; page fetched:
-          yes.]"
-        basis: public_terms
-    cited_in_workbooks:
-      - url: https://nauticalculator.com/port-to-port-distance/
-        variables:
-          - ITTT
-        workbooks:
-          - aceite
-  - id: solability_gsci
-    publisher: SolAbility
-    landing_url: https://solability.com/the-global-sustainable-competitiveness-index
-    terms_url: https://solability.com/the-global-sustainable-competitiveness-index
-    licence_url: https://creativecommons.org/licenses/by-nc-sa/4.0/
-    kind: official_report_pdf
-    endpoints:
-      - id: gsci
-        template: https://solability.com/the-global-sustainable-competitiveness-index
-        method: GET
-    update_cadence: annual
-    version_detection: GSCI report year
-    citation: SolAbility. Global Sustainable Competitiveness Index.
-    rights:
-      licence_id: CC-BY-NC-SA-4.0
-      use_research: "yes"
-      redistribute_raw: "yes"
-      redistribute_derived: "yes"
-      commercial_use: "no"
-      attribution_required: "yes"
-      share_alike: "yes"
-      no_derivatives: "no"
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://solability.com/the-global-sustainable-competitiveness-index
-        snapshot_sha256: 72e7f032c17e8a84a7712641e0c6838d70f50fa012528113c299c7276c307165
-        note: "Site footer: all content published under CC BY-NC-SA 4.0. GSCI reports
-          and data files are free to download; a citation format is given. [Researched
-          2026-11-20 by assistant from live terms pages; confidence medium; page fetched:
-          yes.]"
-        basis: public_terms
-        scope: redistribute_raw
-    cited_in_workbooks:
-      - url: https://solability.com/pdfs/The%20Global%20Sustainable%20Competitiveness%20Index%20Report%202025.pdf
-        variables:
-          - GLSI
-        workbooks:
-          - aceite
-      - url: https://solability.com/the-global-sustainable-competitiveness-index
-        variables:
-          - GLSI
-        workbooks:
-          - aceite
-      - url: https://solability.com/the-global-sustainable-competitiveness-index#rankings
-        variables:
-          - GLSI
-        workbooks:
-          - aceite
-  - id: coface_country_risk
-    publisher: Coface
-    landing_url: https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-map
-    terms_url: https://www.coface.com/legal-notice
-    licence_url: https://www.coface.com/legal-notice
-    kind: official_portal
-    endpoints:
-      - id: map
-        template: https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-map
-        method: GET
-    update_cadence: irregular
-    version_detection: Coface update
-    citation: Coface. Country risk assessment.
-    rights:
-      licence_id: proprietary
-      use_research: "no"
-      redistribute_raw: "no"
-      redistribute_derived: "no"
-      commercial_use: "no"
-      attribution_required: unknown
-      share_alike: "no"
-      no_derivatives: "yes"
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://www.coface.com/legal-notice
-        snapshot_sha256: null
-        note: "Site content is for strictly personal use; any reproduction, distribution
-          or extraction, in whole or part, is forbidden without prior authorisation
-          from Coface. [Researched 2026-11-20 by assistant from live terms pages; confidence
-          high; page fetched: yes.]"
-    cited_in_workbooks:
-      - url: https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-map
-        variables:
-          - GLCR
-        workbooks:
-          - aceite
-  - id: global_carbon_atlas
-    publisher: Global Carbon Atlas
-    landing_url: https://globalcarbonatlas.org/emissions/carbon-emissions/
-    terms_url: https://globalcarbonatlas.org/project/data-use/
-    licence_url: https://globalcarbonatlas.org/project/data-use/
-    kind: official_portal
-    endpoints:
-      - id: emissions
-        template: https://globalcarbonatlas.org/emissions/carbon-emissions/
-        method: GET
-    update_cadence: annual
-    version_detection: atlas vintage
-    citation: Global Carbon Project. Global Carbon Atlas.
-    rights:
-      licence_id: custom
-      use_research: "yes"
-      redistribute_raw: "no"
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://globalcarbonatlas.org/project/data-use/
-        snapshot_sha256: null
-        note:
-          "Free access does not authorise publication. Cite the Atlas and its sources;
-          get contributor agreement unless data is already published. [Researched 2026-11-20
-          by assistant from live terms pages; confidence medium; page fetched: yes.]"
-    cited_in_workbooks:
-      - url: https://globalcarbonatlas.org/emissions/carbon-emissions/
-        variables:
-          - CADE
-        workbooks:
-          - aceite
-  - id: iea_ghg
-    publisher: International Energy Agency
-    landing_url: https://www.iea.org/data-and-statistics
-    terms_url: https://www.iea.org/data-and-statistics/data-product/greenhouse-gas-emissions-from-energy-highlights
-    licence_url: https://www.iea.org/terms/terms-of-use-for-non-cc-material
-    kind: official_portal
-    endpoints:
-      - id: ghg_explorer
-        template: https://www.iea.org/data-and-statistics/data-tools/greenhouse-gas-emissions-from-energy-data-explorer
-        method: GET
-    update_cadence: annual
-    version_detection: IEA release
-    citation: IEA. Greenhouse gas emissions from energy.
-    rights:
-      licence_id: proprietary
-      use_research: "yes"
-      redistribute_raw: "no"
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://www.iea.org/data-and-statistics/data-product/greenhouse-gas-emissions-from-energy-highlights
-        snapshot_sha256: null
-        note: "GHG Emissions from Energy, including free Highlights, is under Non-CC
-          Material terms, not CC BY 4.0. Republishing over five raw data points is restricted.
-          [Researched 2026-11-20 by assistant from live terms pages; confidence low;
-          page fetched: no.]"
-    cited_in_workbooks:
-      - url: https://www.iea.org/data-and-statistics/data-tools/greenhouse-gas-emissions-from-energy-data-explorer?utm
-        variables:
-          - CADE
-        workbooks:
-          - aceite
-  - id: trade_barrier_index
-    publisher: Trade Barrier Index
-    landing_url: https://www.tradebarrierindex.org/
-    terms_url: https://www.tradebarrierindex.org/terms
-    licence_url: https://www.tradebarrierindex.org/copyright
-    kind: secondary_aggregator
-    endpoints:
-      - id: home
-        template: https://www.tradebarrierindex.org/
-        method: GET
-    update_cadence: irregular
-    version_detection: manual
-    citation: Trade Barrier Index.
-    rights:
-      licence_id: proprietary
-      use_research: "yes"
-      redistribute_raw: "no"
-      redistribute_derived: "no"
-      commercial_use: "no"
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: "yes"
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://www.tradebarrierindex.org/terms
-        snapshot_sha256: 5675876c1a3c939a995ae482c0a4cc17a3e05b93868fa49c922a6613a3696e37
-        note: "PRA copyright: personal-use download only; derivatives and redistribution
-          need permission; unedited educational reuse with credit; commercial use forbidden.
-          [Researched 2026-11-20 by assistant from live terms pages; confidence high;
-          page fetched: yes.]"
-        basis: public_terms
-        scope: use
-    cited_in_workbooks:
-      - url: https://www.tradebarrierindex.org/
-        variables:
-          - ITBI
-        workbooks:
-          - aceite
-      - url: https://www.tradebarrierindex.org/#world-map
-        variables:
-          - ITBI
-        workbooks:
-          - aceite
-  - id: world_population_review
-    publisher: World Population Review
-    landing_url: https://worldpopulationreview.com/
-    terms_url: https://worldpopulationreview.com/terms
-    licence_url: https://worldpopulationreview.com/terms
-    kind: secondary_aggregator
-    endpoints:
-      - id: road_quality
-        template: https://worldpopulationreview.com/country-rankings/road-quality-by-country
-        method: GET
-        notes: Prefer official road-quality series when available.
-    update_cadence: irregular
-    version_detection: manual
-    citation: World Population Review. Road quality by country.
-    rights:
-      licence_id: proprietary
-      use_research: unknown
-      redistribute_raw: "no"
-      redistribute_derived: unknown
-      commercial_use: "no"
-      attribution_required: unknown
-      share_alike: "no"
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://worldpopulationreview.com/terms
-        snapshot_sha256: null
-        note: "All rights reserved; republishing material, commercialising it, and data
-          mining or extraction are prohibited; no licence grant or research exception.
-          [Researched 2026-11-20 by assistant from live terms pages; confidence high;
-          page fetched: yes.]"
-    cited_in_workbooks:
-      - url: https://worldpopulationreview.com/country-rankings/road-quality-by-country
-        variables:
-          - RQBC
-        workbooks:
-          - aceite
-  - id: itc_trade
-    publisher: International Trade Centre
-    landing_url: https://www.intracen.org/resources/data-and-analysis/trade-statistics
-    terms_url: https://mas-admintools.intracen.org/Accounts/TermsConditions.aspx
-    licence_url: https://mas-admintools.intracen.org/Accounts/TermsConditions.aspx
-    kind: official_portal
-    endpoints:
-      - id: stats
-        template: https://www.intracen.org/resources/data-and-analysis/trade-statistics
-        method: GET
-    update_cadence: annual
-    version_detection: ITC release
-    citation: International Trade Centre. Trade statistics.
-    rights:
-      licence_id: custom
-      use_research: "yes"
-      redistribute_raw: "no"
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://mas-admintools.intracen.org/Accounts/TermsConditions.aspx
-        snapshot_sha256: null
-        note: "ITC MAT terms (search snippets only): no resale or redistribution of
-          data without ITC's prior written authorisation; citation required. [Researched
-          2026-11-20 by assistant from live terms pages; confidence low; page fetched:
-          no.]"
-    cited_in_workbooks:
-      - url: https://www.intracen.org/resources/data-and-analysis/trade-statistics
-        variables:
-          - EOC
-        workbooks:
-          - aceite
-      - url: https://www.intracen.org/resources/data-and-analysis/trade-statistics#import-of-goods
-        variables:
-          - EOC
-        workbooks:
-          - aceite
-  - id: itc_trademap
-    publisher: International Trade Centre
-    landing_url: https://www.trademap.org/
-    terms_url: https://mas-admintools.intracen.org/Accounts/TermsConditions.aspx
-    licence_url: https://mas-admintools.intracen.org/Accounts/TermsConditions.aspx
-    kind: official_portal
-    endpoints:
-      - id: trademap
-        template: https://www.trademap.org/
-        method: GET
-    update_cadence: annual
-    version_detection: Trade Map vintage
-    citation: ITC. Trade Map.
-    rights:
-      licence_id: custom
-      use_research: "yes"
-      redistribute_raw: "no"
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://mas-admintools.intracen.org/Accounts/TermsConditions.aspx
-        snapshot_sha256: null
-        note:
-          "ITC MAT terms cover Trade Map: no resale or redistribution without written
-          authorisation; cite tool and ITC; developed-country full access needs subscription.
-          [Researched 2026-11-20 by assistant from live terms pages; confidence medium;
-          page fetched: no.]"
-    cited_in_workbooks:
-      - url: https://www.trademap.org/Country_SelProduct_TS.aspx?nvpm=1%7c%7c%7c%7c%7c1509%7c%7c%7c4%7c1%7c1%7c1%7c2%7c1%7c2%7c1%7c1%7c1
-        variables:
-          - "3."
-        workbooks:
-          - aceite
-  - id: unctadstat
-    publisher: UNCTAD
-    landing_url: https://unctadstat.unctad.org/
-    terms_url: https://unctadstat.unctad.org/EN/About.html
-    licence_url: https://unctadstat.unctad.org/UnctadStatMetadata/Documentation/UNCTAD_CreativeCommonsLicense3.0_IGO_EN.pdf
-    kind: official_portal
-    endpoints:
-      - id: dataviewer
-        template: https://unctadstat.unctad.org/datacentre/dataviewer/US.TradeMerchTotal
-        method: GET
-    update_cadence: annual
-    version_detection: UNCTADstat release
-    citation: UNCTAD. UNCTADstat.
-    rights:
-      licence_id: CC-BY-3.0-IGO
-      use_research: "yes"
-      redistribute_raw: "yes"
-      redistribute_derived: "yes"
-      commercial_use: "yes"
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: "no"
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://unctadstat.unctad.org/EN/About.html
-        snapshot_sha256: d40277005e1ebe4f6d944e2a0bdefdfba609573a9fc4d5de27b17bc6d5dec5ec
-        note: "Data and metadata may be freely copied and redistributed citing the UN
-          Trade and Development Data Hub; materials under CC BY 3.0 IGO. [Researched
-          2026-11-20 by assistant from live terms pages; confidence medium; page fetched:
-          yes.]"
-        basis: public_terms
-        scope: redistribute_raw
-    cited_in_workbooks:
-      - url: https://unctadstat.unctad.org/datacentre/dataviewer/US.TradeMerchTotal
-        variables:
-          - EOC
-        workbooks:
-          - calzado
-  - id: culture_factor
-    publisher: The Culture Factor Group (Hofstede Insights)
-    landing_url: https://www.theculturefactor.com/country-comparison-tool
-    terms_url: https://www.theculturefactor.com/
-    licence_url: https://geerthofstede.com/research-and-vsm/dimension-data-matrix/
-    kind: official_portal
-    endpoints:
-      - id: compare
-        template: https://www.theculturefactor.com/country-comparison-tool
-        method: GET
-    update_cadence: irregular
-    version_detection: manual
-    citation: The Culture Factor. Country comparison tool.
-    rights:
-      licence_id: proprietary
-      use_research: "yes"
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: "no"
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://www.theculturefactor.com/
-        snapshot_sha256: null
-        note:
-          "Culture Factor site: 'all rights reserved', no data terms. geerthofstede.com:
-          researchers may use base scores without permission; commercial use requires
-          contacting them. [Researched 2026-11-20 by assistant from live terms pages;
-          confidence medium; page fetched: yes.]"
-    cited_in_workbooks:
-      - url: https://www.theculturefactor.com/country-comparison-tool
-        variables:
-          - CUDI
-        workbooks:
-          - aceite
-          - calzado
-  - id: indexmundi
-    publisher: IndexMundi
-    landing_url: https://www.indexmundi.com/
-    terms_url: https://www.indexmundi.com/help/terms/
-    licence_url: https://www.indexmundi.com/help/terms/
-    kind: secondary_aggregator
-    endpoints:
-      - id: csbc
-        template: https://www.indexmundi.com/es/datos/indicadores/IC.IMP.CSBC.CD
-        method: GET
-        notes: Prefer World Bank official API for IC.IMP.CSBC.CD.
-    update_cadence: irregular
-    version_detection: manual
-    citation: IndexMundi (aggregator).
-    rights:
-      licence_id: proprietary
-      use_research: unknown
-      redistribute_raw: "no"
-      redistribute_derived: "no"
-      commercial_use: "no"
-      attribution_required: unknown
-      share_alike: "no"
-      no_derivatives: "yes"
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://www.indexmundi.com/help/terms/
-        snapshot_sha256: null
-        note:
-          "Personal use only; copying to redistribute or republish, building databases,
-          modifying, or commercial exploitation prohibited without written permission.
-          [Researched 2026-11-20 by assistant from live terms pages; confidence high;
-          page fetched: yes.]"
-    cited_in_workbooks:
-      - url: https://www.indexmundi.com/es/datos/indicadores/IC.IMP.CSBC.CD
-        variables:
-          - CIBC
-        workbooks:
-          - aceite
-  - id: knoema
-    publisher: Knoema
-    landing_url: https://knoema.es/atlas/topics/Ranking-Mundial
-    terms_url: https://knoema.com/terms
-    licence_url: https://knoema.com/terms
-    kind: secondary_aggregator
-    endpoints:
-      - id: atlas
-        template: https://knoema.es/atlas/topics/Ranking-Mundial
-        method: GET
-    update_cadence: irregular
-    version_detection: manual
-    citation: Knoema Atlas.
-    rights:
-      licence_id: UNKNOWN
-      use_research: "yes"
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://knoema.com/terms
-        snapshot_sha256: nofetch
-        note:
-          "Aggregator terms unclear; CA confirms internal research use only (EXTRA-11).
-          Terms research (kept): Terms unretrievable: knoema.com returns HTTP 530, knoema.es
-          does not resolve, knoema.ru redirects to its homepage. [Researched 2026-11-20
-          by assistant from live terms pages; confidence low; page fetched: no.]"
-        basis: public_terms
-    cited_in_workbooks:
-      - url: https://knoema.es/atlas/topics/Ranking-Mundial
-        variables:
-          - GENERAL
-        workbooks:
-          - aceite
-          - calzado
-  - id: theglobaleconomy
-    publisher: TheGlobalEconomy.com
-    landing_url: https://www.theglobaleconomy.com/
-    terms_url: https://www.theglobaleconomy.com/terms.php
-    licence_url: https://www.theglobaleconomy.com/terms.php
-    kind: secondary_aggregator
-    endpoints:
-      - id: unemployment
-        template: https://www.theglobaleconomy.com/rankings/Unemployment_rate/
-        method: GET
-        notes: Prefer World Bank / ILO official series.
-    update_cadence: irregular
-    version_detection: manual
-    citation: TheGlobalEconomy.com.
-    rights:
-      licence_id: UNKNOWN
-      use_research: "yes"
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://www.theglobaleconomy.com/terms.php
-        snapshot_sha256: nofetch
-        note: "Terms unclear; CA confirms internal research use only (EXTRA-11). Terms
-          research (kept): Terms page covers only disclaimer, interruptions and data
-          changes; silent on licensing, reuse, redistribution and attribution. [Researched
-          2026-11-20 by assistant from live terms pages; confidence medium; page fetched:
-          yes.]"
-        basis: public_terms
-    cited_in_workbooks:
-      - url: https://www.theglobaleconomy.com/rankings/Unemployment_rate/
-        variables:
-          - UNRA
-        workbooks:
-          - aceite
-  - id: geodatos
-    publisher: GeoDatos
-    landing_url: https://www.geodatos.net/
-    terms_url: https://www.geodatos.net/terminosycondiciones
-    licence_url: https://www.geodatos.net/terminosycondiciones
-    kind: secondary_aggregator
-    endpoints:
-      - id: distances
-        template: https://www.geodatos.net/distancias/ciudades
-        method: GET
-    update_cadence: static
-    version_detection: manual
-    citation: GeoDatos city distances.
-    rights:
-      licence_id: proprietary
-      use_research: unknown
-      redistribute_raw: "no"
-      redistribute_derived: unknown
-      commercial_use: "no"
-      attribution_required: unknown
-      share_alike: "no"
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://www.geodatos.net/terminosycondiciones
-        snapshot_sha256: null
-        note:
-          "Clause 4: site content may not be copied, distributed or used commercially
-          without the owner's express authorisation. [Researched 2026-11-20 by assistant
-          from live terms pages; confidence high; page fetched: yes.]"
-    cited_in_workbooks:
-      - url: https://www.geodatos.net/distancias/ciudades
-        variables:
-          - CUDI
-        workbooks:
-          - aceite
-          - calzado
-  - id: procolombia
-    publisher: ProColombia
-    landing_url: https://ruta-exportadora.procolombia.co/
-    terms_url: https://procolombia.co/transparencia/terminos-y-condiciones-de-uso
-    licence_url: https://procolombia.co/transparencia/terminos-y-condiciones-de-uso
-    kind: official_portal
-    endpoints:
-      - id: ruta
-        template: https://ruta-exportadora.procolombia.co/
-        method: GET
-    update_cadence: irregular
-    version_detection: manual
-    citation: ProColombia. Ruta exportadora / Colombia Trade tools.
-    rights:
-      licence_id: proprietary
-      use_research: unknown
-      redistribute_raw: "no"
-      redistribute_derived: unknown
-      commercial_use: "no"
-      attribution_required: unknown
-      share_alike: "no"
-      no_derivatives: "yes"
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://procolombia.co/transparencia/terminos-y-condiciones-de-uso
-        snapshot_sha256: null
-        note:
-          "No licence granted; reproducing, distributing, transforming or commercially
-          using Contents requires the rights holder's authorisation or legal permission.
-          [Researched 2026-11-20 by assistant from live terms pages; confidence high;
-          page fetched: yes.]"
-    cited_in_workbooks:
-      - url: https://ruta-exportadora.procolombia.co/
-        variables:
-          - GENERAL
-        workbooks:
-          - aceite
-          - calzado
-      - url: https://www.colombiatrade.com.co/herramientas-del-exportador/logistica/rutas-y-tarifas-de-transporte
-        variables:
-          - GENERAL
-        workbooks:
-          - aceite
-          - calzado
-      - url: https://www.colombiatrade.com.co/herramientas-del-exportador/logistica/rutas-y-tarifas-de-transporte/rutas-maritimas
-        variables:
-          - GENERAL
-        workbooks:
-          - aceite
-          - calzado
-  - id: iso_country_codes_ref
-    publisher: INAPI Chile (ISO country initials PDF)
-    landing_url: https://www.inapi.cl/
-    terms_url: https://www.inapi.cl/uso-de-los-contenidos-de-este-sitio
-    licence_url: https://www.inapi.cl/uso-de-los-contenidos-de-este-sitio
-    kind: literature
-    endpoints:
-      - id: iso_pdf
-        template: https://www.inapi.cl/docs/default-source/default-document-library/iniciales_paises_iso.pdf
-        method: GET
-    update_cadence: static
-    version_detection: PDF revision
-    citation: INAPI. Iniciales países ISO (reference PDF).
-    rights:
-      licence_id: custom
-      use_research: "yes"
-      redistribute_raw: "yes"
-      redistribute_derived: "yes"
-      commercial_use: unknown
-      attribution_required: "yes"
-      share_alike: "no"
-      no_derivatives: "no"
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://www.inapi.cl/uso-de-los-contenidos-de-este-sitio
-        snapshot_sha256: null
-        note:
-          "Content is INAPI property; use, publication, reproduction and distribution
-          are authorised if the source is cited and the main site is linked. [Researched
-          2026-11-20 by assistant from live terms pages; confidence medium; page fetched:
-          yes.]"
-    cited_in_workbooks:
-      - url: https://www.inapi.cl/docs/default-source/default-document-library/iniciales_paises_iso.pdf?sfvrsn=2184ea1d_2
-        variables:
-          - "3."
-        workbooks:
-          - aceite
-  - id: literature_dyo
-    publisher: Revista DyO (method literature)
-    landing_url: https://www.revistadyo.es/
-    terms_url: https://www.revistadyo.es/DyO/index.php/dyo/politicas
-    licence_url: https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es
-    kind: literature
-    endpoints:
-      - id: article
-        template: https://www.revistadyo.es/DyO/index.php/dyo/article/view/532/553
-        method: GET
-    update_cadence: static
-    version_detection: article id
-    citation: Revista DyO article cited in IMSFE workbook.
-    rights:
-      licence_id: CC-BY-NC-SA-4.0
-      use_research: "yes"
-      redistribute_raw: "yes"
-      redistribute_derived: "yes"
-      commercial_use: "no"
-      attribution_required: "yes"
-      share_alike: "yes"
-      no_derivatives: "no"
-      evidence:
-        checked_by: CA
-        checked_on: "2026-11-20"
-        terms_url: https://www.revistadyo.es/DyO/index.php/dyo/politicas
-        snapshot_sha256: df149085311256c100294f10777fbf6933ac410288215f5a17816bfef99da4e8
-        note: "Articles since 2022 are under CC BY-NC-SA 4.0: non-commercial reuse with
-          attribution; adaptations must keep the same licence. [Researched 2026-11-20
-          by assistant from live terms pages; confidence medium; page fetched: yes.]"
-        basis: public_terms
-        scope: redistribute_raw
-    cited_in_workbooks:
-      - url: https://www.revistadyo.es/DyO/index.php/dyo/article/view/532/553
-        variables:
-          - "3."
-        workbooks:
-          - aceite
-          - calzado
-  - id: auma_fairs
-    publisher: AUMA
-    landing_url: https://www.auma.de/
-    terms_url: https://www.auma.de/
-    licence_url: UNKNOWN
-    kind: official_portal
-    endpoints:
-      - id: landing
-        template: https://www.auma.de/
-        method: GET
-        notes:
-          No public reuse terms found (2026-11-20). Manual drop only into data/manual/auma_fairs/;
-          do not scrape.
-    update_cadence: annual
-    version_detection: AUMA fair year / catalogue edition
-    citation: AUMA. Trade fair database.
-    rights:
-      licence_id: UNKNOWN
-      use_research: unknown
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://www.auma.de/
-        snapshot_sha256: null
-        note: "No public reuse terms located on AUMA site (2026-11-20). Flags remain
-          unknown; manual file only. [Researched 2026-11-20; confidence low; page fetched:
-          landing only.]"
-  - id: ufi_stats
-    publisher: UFI — The Global Association of the Exhibition Industry
-    landing_url: https://www.ufi.org/
-    terms_url: https://www.ufi.org/
-    licence_url: UNKNOWN
-    kind: official_report_pdf
-    endpoints:
-      - id: landing
-        template: https://www.ufi.org/
-        method: GET
-        notes: Statistics and reports; check each PDF licence. Manual drop into data/manual/ufi_stats/.
-    update_cadence: annual
-    version_detection: UFI report year
-    citation: UFI. Global exhibition industry statistics.
-    rights:
-      licence_id: UNKNOWN
-      use_research: unknown
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://www.ufi.org/
-        snapshot_sha256: null
-        note: UFI reports; reuse terms not confirmed on landing (2026-11-20). Manual
-          only. [Researched 2026-11-20; confidence low.]
-  - id: icex_events
-    publisher: ICEX España Exportación e Inversiones
-    landing_url: https://datos.gob.es/es/catalogo/ea0038767-buscador-de-ferias-del-icex
-    terms_url: https://datos.gob.es/es/catalogo/ea0038767-buscador-de-ferias-del-icex
-    licence_url: UNKNOWN
-    kind: official_portal
-    endpoints:
-      - id: catalog
-        template: https://datos.gob.es/es/catalogo/ea0038767-buscador-de-ferias-del-icex
-        method: GET
-        notes: Open-data catalogue entry; confirm dataset licence on the ficha before
-          bulk download. Also sector PDF calendars (e.g. moda).
-    update_cadence: irregular
-    version_detection: datos.gob.es dataset modified date
-    citation: ICEX. Buscador de ferias / calendario de actividades (datos.gob.es).
-    rights:
-      licence_id: UNKNOWN
-      use_research: unknown
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://datos.gob.es/es/catalogo/ea0038767-buscador-de-ferias-del-icex
-        snapshot_sha256: null
-        note:
-          Licence on datos.gob.es ficha not yet attested (many are reuse-with- attribution).
-          Flags unknown until César confirms. [Researched 2026-11-20; confidence medium;
-          page to re-check live.]
-  - id: trade_gov_events
-    publisher: U.S. International Trade Administration (trade.gov)
-    landing_url: https://developer.trade.gov/
-    terms_url: https://www.trade.gov/privacy-and-security-notice
-    licence_url: https://www.trade.gov/privacy-and-security-notice
-    kind: official_api
-    endpoints:
-      - id: trade_events_api
-        template: https://api.trade.gov/v1/trade_events/search
-        method: GET
-        notes:
-          Free API key from developer.trade.gov. Hourly updates. Requires TRADE_GOV_API_KEY
-          env (never commit).
-    update_cadence: irregular
-    version_detection: API Last-Modified / feed timestamp
-    citation: U.S. Department of Commerce / ITA. Trade Events API.
-    rights:
-      licence_id: UNKNOWN
-      use_research: unknown
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://www.trade.gov/privacy-and-security-notice
-        snapshot_sha256: null
-        note:
-          Federal government data; confirm API terms / USGov works before bulk redistribute.
-          Flags unknown. [Researched 2026-11-20; confidence medium.]
-  - id: oecd_sdmx
-    publisher: Organisation for Economic Co-operation and Development
-    landing_url: https://data-explorer.oecd.org/
-    terms_url: https://www.oecd.org/en/about/terms-conditions.html
-    licence_url: https://www.oecd.org/en/about/terms-conditions.html
-    kind: official_api
-    endpoints:
-      - id: sdmx
-        template: https://sdmx.oecd.org/public/rest/data/{agency},{dataflow}/{key}
-        method: GET
-        notes:
-          SDMX REST. Series list in config/series/oecd_sdmx.yaml (TFI, STRI, Digital
-          STRI, FDI RRI, TiVA, PMR). Confirm licence per dataset; STRI reports cited CC
-          BY 4.0 with third-party exclusions.
-    update_cadence: annual
-    version_detection: SDMX dataflow version / observation period
-    citation: OECD. Data Explorer / SDMX (series as cited per variable).
-    rights:
-      licence_id: UNKNOWN
-      use_research: unknown
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: "yes"
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://www.oecd.org/en/about/terms-conditions.html
-        snapshot_sha256: null
-        note: OECD terms + per-dataset licence (STRI often CC BY 4.0 with exclusions).
-          Flags unknown until César attests each series. [Researched 2026-11-20; confidence
-          medium.]
-  - id: wto_timeseries
-    publisher: World Trade Organization
-    landing_url: https://apiportal.wto.org/
-    terms_url: https://www.wto.org/english/info_e/copyrights_permissions_e.htm
-    licence_url: https://www.wto.org/english/info_e/copyrights_permissions_e.htm
-    kind: official_api
-    endpoints:
-      - id: timeseries
-        template: https://api.wto.org/timeseries/v1/{resource}
-        method: GET
-        notes: Free API key (apiportal.wto.org). Also CSV/Excel without account for some
-          series. Series list in config/series/wto_timeseries.yaml.
-    update_cadence: annual
-    version_detection: API / dataset vintage
-    citation: WTO. Stats Timeseries API.
-    rights:
-      licence_id: UNKNOWN
-      use_research: unknown
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://www.wto.org/english/info_e/copyrights_permissions_e.htm
-        snapshot_sha256: null
-        note: WTO copyright/permissions page; TTD has a separate Dissemination Policy
-          (see wto_tariffs). Flags unknown. [Researched 2026-11-20; confidence medium.]
-  - id: comexstat_br
-    publisher: Ministério do Desenvolvimento / Comex Stat (Brazil)
-    landing_url: https://comexstat.mdic.gov.br/
-    terms_url: https://comexstat.mdic.gov.br/
-    licence_url: UNKNOWN
-    kind: official_api
-    endpoints:
-      - id: api
-        template: https://api-comexstat.mdic.gov.br/
-        method: GET
-        notes:
-          Open API with NCM, partner, UF, transport mode, URF; FOB and kg from 1997.
-          Confirm current base URL and licence on portal.
-    update_cadence: irregular
-    version_detection: API max period
-    citation: Brazil MDIC. Comex Stat.
-    rights:
-      licence_id: UNKNOWN
-      use_research: unknown
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://comexstat.mdic.gov.br/
-        snapshot_sha256: null
-        note: Brazilian government trade stats; licence statement on portal not yet
-          attested. [Researched 2026-11-20; confidence medium.]
-  - id: dane_dian_comex
-    publisher: DANE / DIAN (Colombia)
-    landing_url: https://www.dane.gov.co/
-    terms_url: https://www.dane.gov.co/
-    licence_url: UNKNOWN
-    kind: official_portal
-    endpoints:
-      - id: open_data
-        template: https://www.dane.gov.co/
-        method: GET
-        notes: Locate open dataset for exports by department and transport mode; prefer
-          datos.gov.co when listed. Manual README in data/manual/dane_dian_comex/.
-    update_cadence: irregular
-    version_detection: dataset modified date
-    citation: DANE / DIAN. Colombian foreign trade statistics.
-    rights:
-      licence_id: UNKNOWN
-      use_research: unknown
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://www.dane.gov.co/
-        snapshot_sha256: null
-        note:
-          Open-data licence for the specific Comex dataset not yet attested. Priority
-          for COL origin example. [Researched 2026-11-20; confidence low.]
-  - id: datacomex_es
-    publisher: Secretaría de Estado de Comercio (España) — DataComex
-    landing_url: https://comercio.gob.es/
-    terms_url: https://comercio.gob.es/
-    licence_url: UNKNOWN
-    kind: official_portal
-    endpoints:
-      - id: portal
-        template: https://comercio.gob.es/
-        method: GET
-        notes: Provincial / transport-mode trade. Confirm live download/API and legal
-          notice. Alternative SDMX/JSON-stat via ICANE for some series.
-    update_cadence: irregular
-    version_detection: portal vintage
-    citation: Spain Secretaría de Estado de Comercio. DataComex.
-    rights:
-      licence_id: UNKNOWN
-      use_research: unknown
-      redistribute_raw: unknown
-      redistribute_derived: unknown
-      commercial_use: unknown
-      attribution_required: unknown
-      share_alike: unknown
-      no_derivatives: unknown
-      evidence:
-        checked_by: null
-        checked_on: null
-        terms_url: https://comercio.gob.es/
-        snapshot_sha256: null
-        note: Legal notice / API availability to confirm on live portal. Flags unknown.
-          [Researched 2026-11-20; confidence low.]
+- id: worldbank_wdi
+  tier: A
+  publisher: World Bank
+  landing_url: https://databank.worldbank.org/source/world-development-indicators
+  terms_url: https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators
+  licence_url: https://datacatalog.worldbank.org/public-licenses?fragment=cc
+  endpoints:
+  - id: indicator_json
+    template: https://api.worldbank.org/v2/country/all/indicator/{code}?format=json&per_page=20000
+    method: GET
+  update_cadence: annual
+  version_detection: WDI release year / API meta lastupdated
+  citation: World Bank. World Development Indicators.
+  rights:
+    licence_id: CC-BY-4.0
+    use_research: 'yes'
+    redistribute_raw: 'yes'
+    redistribute_derived: 'yes'
+    commercial_use: 'yes'
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: 'no'
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators
+      snapshot_sha256: 6dc3b39d94147b1b2bdc99c77bcc8815ecc9f06f779793d04cc65dfec62e5bba
+      note: 'Data Catalog lists WDI under CC BY 4.0: copy, modify, distribute for
+        any purpose incl. commercial, with attribution and indication of changes.
+        [Researched 2026-11-20 by assistant from live terms pages; confidence high;
+        page fetched: yes.]'
+      basis: public_terms
+      scope: redistribute_raw
+  kind: official_api
+  cited_in_workbooks:
+  - url: https://data.worldbank.org/indicator/IC.IMP.CSBC.CD
+    variables:
+    - CIBC
+    workbooks:
+    - calzado
+  - url: https://data.worldbank.org/indicator/IS.SHP.GOOD.TU?view=chart
+    variables:
+    - CPTR
+    workbooks:
+    - calzado
+  - url: https://data.worldbank.org/indicator/NY.GDP.DEFL.KD.ZG?locations=XN
+    variables:
+    - INAN
+    workbooks:
+    - aceite
+    - calzado
+  - url: https://data.worldbank.org/indicator/NY.GDP.MKTP.CD?utm_source
+    variables:
+    - EOC
+    workbooks:
+    - aceite
+  - url: https://data.worldbank.org/indicator/SL.UEM.TOTL.ZS?locations=Z4
+    variables:
+    - UNRA
+    workbooks:
+    - calzado
+  - url: https://databank.worldbank.org/id/f469d1e1?utm_source
+    variables:
+    - CIBC
+    workbooks:
+    - aceite
+  - url: https://datacatalogfiles.worldbank.org/ddh-published/0038130/DR0046441/GDP.pdf?versionId=2024-07-01T12:42:23.8710032Z
+    variables:
+    - EOC
+    workbooks:
+    - calzado
+  - url: https://datos.bancomundial.org/indicador/EN.GHG.CO2.MT.CE.AR5
+    variables:
+    - CADE
+    workbooks:
+    - aceite
+  - url: https://datos.bancomundial.org/indicador/LP.LPI.OVRL.XQ
+    variables:
+    - LPIN
+    workbooks:
+    - aceite
+    - calzado
+  - url: https://datos.bancomundial.org/indicator/IC.IMP.CSDC.CD
+    variables:
+    - CIBC
+    workbooks:
+    - aceite
+    - calzado
+  - url: https://humancapital.worldbank.org/en/indicator/WB_HCP_UNE_2EAP_MF_A
+    variables:
+    - UNRA
+    workbooks:
+    - aceite
+- id: worldbank_wgi
+  tier: A
+  publisher: World Bank
+  landing_url: https://www.worldbank.org/en/publication/worldwide-governance-indicators
+  terms_url: https://www.worldbank.org/en/publication/worldwide-governance-indicators/usage-advisory
+  licence_url: https://datacatalog.worldbank.org/public-licenses?fragment=cc
+  endpoints:
+  - id: indicator_json
+    template: https://api.worldbank.org/v2/country/all/indicator/{code}?format=json&per_page=20000
+    method: GET
+  update_cadence: annual
+  version_detection: WGI release year
+  citation: World Bank. Worldwide Governance Indicators.
+  rights:
+    licence_id: CC-BY-4.0
+    use_research: 'yes'
+    redistribute_raw: 'yes'
+    redistribute_derived: 'yes'
+    commercial_use: 'yes'
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: 'no'
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://www.worldbank.org/en/publication/worldwide-governance-indicators/usage-advisory
+      snapshot_sha256: 7d864cb73ac341285c2e7f4488a6f2ce2d6a8e59b4d3668ec07612d27469bbeb
+      note: 'Aggregate WGI CC BY 4.0 (catalog 0038026); usage advisory: rescaled third-party
+        source values only for own research, not republishable without provider authorisation.
+        [Researched 2026-11-20 by assistant from live terms pages; confidence medium;
+        page fetched: yes.]'
+      basis: public_terms
+      scope: redistribute_raw
+  kind: official_api
+- id: worldbank_lpi
+  tier: A
+  publisher: World Bank
+  landing_url: https://lpi.worldbank.org/
+  terms_url: https://datacatalog.worldbank.org/search/dataset/0038649/logistics-performance-index
+  licence_url: https://datacatalog.worldbank.org/public-licenses?fragment=cc
+  endpoints:
+  - id: indicator_json
+    template: https://api.worldbank.org/v2/country/all/indicator/{code}?format=json&per_page=20000
+    method: GET
+  update_cadence: biennial
+  version_detection: LPI survey wave year
+  citation: World Bank. Logistics Performance Index.
+  rights:
+    licence_id: CC-BY-4.0
+    use_research: 'yes'
+    redistribute_raw: 'yes'
+    redistribute_derived: 'yes'
+    commercial_use: 'yes'
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: 'no'
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://datacatalog.worldbank.org/search/dataset/0038649/logistics-performance-index
+      snapshot_sha256: aa0a2d27b5d51d98ff0dbacb6c66b5f291c069bfde555c8aa8c7042f095dfd68
+      note: 'Data Catalog lists LPI under CC BY 4.0 with no further licensing conditions;
+        reuse for any purpose with attribution. [Researched 2026-11-20 by assistant
+        from live terms pages; confidence high; page fetched: yes.]'
+      basis: public_terms
+      scope: redistribute_raw
+  kind: official_api
+  cited_in_workbooks:
+  - url: https://lpi.worldbank.org/en/resources/lpi-publications
+    variables:
+    - LPIN
+    workbooks:
+    - aceite
+  - url: https://lpi.worldbank.org/international/scorecard
+    variables:
+    - LPIN
+    workbooks:
+    - aceite
+    - calzado
+- id: baci
+  tier: A
+  publisher: CEPII
+  landing_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37
+  terms_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37
+  licence_url: https://www.etalab.gouv.fr/wp-content/uploads/2018/11/open-licence.pdf
+  endpoints:
+  - id: zip_download
+    template: https://www.cepii.fr/DATA_DOWNLOADS/BACI/{version}/
+    method: GET
+    notes: Exact path depends on BACI release; do not invent download URLs.
+  update_cadence: annual
+  version_detection: BACI HS version + year in release filename
+  citation: 'Gaulier, G. & Zignago, S. BACI: International Trade Database at the Product-Level.'
+  rights:
+    licence_id: etalab-2.0
+    use_research: 'yes'
+    redistribute_raw: 'yes'
+    redistribute_derived: 'yes'
+    commercial_use: 'yes'
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: 'no'
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37
+      snapshot_sha256: 0689cf69a963eb0ca6ef05731482b04898bcef215a90127edeb2a78ff4990c60
+      note: 'BACI page states Licence: Etalab 2.0; Open Licence allows reproduce,
+        adapt, redistribute, commercial exploitation, citing source and last update
+        date. [Researched 2026-11-20 by assistant from live terms pages; confidence
+        high; page fetched: yes.]'
+      basis: public_terms
+      scope: redistribute_raw
+  kind: official_portal
+- id: cepi_gravity
+  tier: A
+  publisher: CEPII
+  landing_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=8
+  terms_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=8
+  licence_url: https://www.etalab.gouv.fr/wp-content/uploads/2018/11/open-licence.pdf
+  endpoints:
+  - id: zip_download
+    template: https://www.cepii.fr/DATA_DOWNLOADS/Gravity/{version}/
+    method: GET
+    notes: Exact path depends on Gravity release.
+  update_cadence: irregular
+  version_detection: Gravity dataset version string
+  citation: Conte, M., Cotterlaz, P. & Mayer, T. The CEPII Gravity database.
+  rights:
+    licence_id: etalab-2.0
+    use_research: 'yes'
+    redistribute_raw: 'yes'
+    redistribute_derived: 'yes'
+    commercial_use: 'yes'
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: 'no'
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=8
+      snapshot_sha256: 7d9a401b1714f633fecc8bf35b66bb81f9bd1ade15ee3d5ea8d1747cf87da6e6
+      note: 'Gravity page states Licence: Etalab 2.0 (CC-BY compatible); free reuse
+        incl. commercial, with source and update-date acknowledgement; cite Conte,
+        Cotterlaz & Mayer (2022). [Researched 2026-11-20 by assistant from live terms
+        pages; confidence high; page fetched: yes.]'
+      basis: public_terms
+      scope: redistribute_raw
+  kind: official_portal
+- id: wits_trains
+  tier: A
+  publisher: World Bank / UNCTAD (WITS)
+  landing_url: https://wits.worldbank.org/
+  terms_url: https://wits.worldbank.org/WITS/wits/registration/TermsAndCondtions.aspx
+  licence_url: https://wits.worldbank.org/data/public/UNCTAD_TermsofUseandDisclaimer.pdf
+  endpoints:
+  - id: api
+    template: https://wits.worldbank.org/API/V1/SDMX/V21/rest/
+    method: GET
+    notes: Registration may be required; do not scrape against ToS.
+  update_cadence: annual
+  version_detection: TRAINS / WITS release metadata
+  citation: World Bank / UNCTAD. World Integrated Trade Solution (WITS).
+  rights:
+    licence_id: custom
+    use_research: 'yes'
+    redistribute_raw: 'no'
+    redistribute_derived: unknown
+    commercial_use: 'no'
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://wits.worldbank.org/WITS/wits/registration/TermsAndCondtions.aspx
+      snapshot_sha256: null
+      note: 'TRAINS free for researchers and businesses if not sold or commercially
+        exploited, source acknowledged; no dissemination of data or parts without
+        UNCTAD written permission. [Researched 2026-11-20 by assistant from live terms
+        pages; confidence medium; page fetched: yes.]'
+  kind: official_portal
+- id: hofstede
+  tier: A
+  publisher: Geert Hofstede / related publishers
+  landing_url: https://geerthofstede.com/research-and-vsm/dimension-data-matrix/
+  terms_url: https://geerthofstede.com/research-and-vsm/dimension-data-matrix/
+  licence_url: https://geerthofstede.com/research-and-vsm/dimension-data-matrix/
+  endpoints:
+  - id: csv_matrix
+    template: https://geerthofstede.com/research-and-vsm/dimension-data-matrix/
+    method: GET
+    notes: Download link on page; verify licence before shipping.
+  update_cadence: static
+  version_detection: file version / publication date on page
+  citation: Hofstede, G. Dimension data matrix.
+  rights:
+    licence_id: custom
+    use_research: 'yes'
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: 'no'
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://geerthofstede.com/research-and-vsm/dimension-data-matrix/
+      snapshot_sha256: null
+      note: 'Researchers may use the data without asking permission; anyone considering
+        commercial use should contact the authors. Redistribution not addressed. [Researched
+        2026-11-20 by assistant from live terms pages; confidence medium; page fetched:
+        yes.]'
+  kind: official_portal
+  cited_in_workbooks:
+  - url: https://www.hofstede-insights.com/product/compare-countries/
+    variables:
+    - CUDI
+    workbooks:
+    - calzado
+- id: itu_datahub
+  tier: A
+  publisher: International Telecommunication Union
+  landing_url: https://datahub.itu.int/
+  terms_url: https://datahub.itu.int/about
+  licence_url: https://creativecommons.org/licenses/by-nc-sa/3.0/igo/
+  endpoints:
+  - id: indicator
+    template: https://datahub.itu.int/
+    method: GET
+    notes: Endpoint templates TBD after human ToS review.
+  update_cadence: annual
+  version_detection: ITU DataHub release year
+  citation: ITU. DataHub.
+  rights:
+    licence_id: CC-BY-NC-SA-3.0-IGO
+    use_research: 'yes'
+    redistribute_raw: 'yes'
+    redistribute_derived: 'yes'
+    commercial_use: 'no'
+    attribution_required: 'yes'
+    share_alike: 'yes'
+    no_derivatives: 'no'
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://datahub.itu.int/about
+      snapshot_sha256: null
+      note: 'DataHub data licensed CC BY-NC-SA 3.0 IGO; third-party indicators follow
+        their owners'' terms; cite ''ITU DataHub'' with access date. [Researched 2026-11-20
+        by assistant from live terms pages; confidence medium; page fetched: no.]'
+  kind: official_api
+- id: ef_epi
+  tier: B
+  publisher: EF Education First
+  landing_url: https://www.ef.com/wwen/epi/
+  terms_url: https://www.ef.com/wwen/epi/about-epi/faq/
+  licence_url: UNKNOWN
+  endpoints:
+  - id: landing
+    template: https://www.ef.com/wwen/epi/
+    method: GET
+    notes: Manual drop only; no scrape. Human downloads the EPI release file into
+      data/manual/ef_epi/.
+  update_cadence: annual
+  version_detection: EF EPI edition year (from release filename / landing)
+  citation: EF Education First. EF English Proficiency Index.
+  rights:
+    licence_id: proprietary
+    use_research: 'yes'
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: 'yes'
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://www.ef.com/wwen/epi/about-epi/faq/
+      snapshot_sha256: nofetch
+      note: 'EPI FAQ silent on bulk download; CA confirms internal research use of
+        manual drop (EXTRA-11). Terms research (kept): No data licence; site ''All
+        rights reserved'' (Signum International AG). FAQ gives citation naming only;
+        raw source data not shared. [Researched 2026-11-20 by assistant from live
+        terms pages; confidence low; page fetched: yes.]'
+      basis: public_terms
+  kind: official_portal
+- id: odin
+  tier: C
+  publisher: Open Data Watch
+  landing_url: https://odin.opendatawatch.com/
+  terms_url: https://odin.opendatawatch.com/Data/download
+  licence_url: https://creativecommons.org/licenses/by/4.0/
+  endpoints:
+  - id: scores
+    template: https://odin.opendatawatch.com/
+    method: GET
+    notes: Exact API/download after human rights check.
+  update_cadence: biennial
+  version_detection: ODIN edition year
+  citation: Open Data Watch. Open Data Inventory (ODIN).
+  rights:
+    licence_id: CC-BY-4.0
+    use_research: 'yes'
+    redistribute_raw: 'yes'
+    redistribute_derived: 'yes'
+    commercial_use: 'yes'
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: 'no'
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://odin.opendatawatch.com/Data/download
+      snapshot_sha256: null
+      note: 'ODIN site footer: licensed under CC BY 4.0, (c) Open Data Watch; cite
+        as ''Open Data Watch-Open Data Inventory''. [Researched 2026-11-20 by assistant
+        from live terms pages; confidence medium; page fetched: no.]'
+  kind: official_portal
+- id: gedi
+  tier: C
+  publisher: Global Entrepreneurship and Development Institute
+  landing_url: https://thegedi.org/
+  terms_url: https://thegedi.org/
+  licence_url: UNKNOWN
+  endpoints:
+  - id: index
+    template: https://thegedi.org/
+    method: GET
+  update_cadence: irregular
+  version_detection: GEDI / GEI release year
+  citation: GEDI. Global Entrepreneurship Index.
+  rights:
+    licence_id: UNKNOWN
+    use_research: 'yes'
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://thegedi.org/
+      snapshot_sha256: nofetch
+      note: 'Landing terms silent on bulk reuse; CA confirms internal research use
+        only (EXTRA-11). Terms research (kept): No licence found; site unreachable
+        (TLS cert mismatch / 403). Search snippets: data ''free'' with registration,
+        some editions paid; includes GEM-sourced indicators. [Researched 2026-11-20
+        by assistant from live terms pages; confidence low; page fetched: no.]'
+      basis: public_terms
+  kind: official_portal
+- id: wipo_gii
+  tier: B
+  publisher: World Intellectual Property Organization
+  landing_url: https://www.wipo.int/global_innovation_index/
+  terms_url: https://www.wipo.int/web-publications/global-innovation-index-2025/en/copyright.html
+  licence_url: https://creativecommons.org/licenses/by/4.0/deed.en
+  endpoints:
+  - id: report_data
+    template: https://www.wipo.int/global_innovation_index/en/
+    method: GET
+  update_cadence: annual
+  version_detection: GII edition year
+  citation: WIPO. Global Innovation Index.
+  rights:
+    licence_id: CC-BY-4.0
+    use_research: 'yes'
+    redistribute_raw: 'yes'
+    redistribute_derived: 'yes'
+    commercial_use: 'yes'
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: 'no'
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://www.wipo.int/web-publications/global-innovation-index-2025/en/copyright.html
+      snapshot_sha256: fd66431fcdb3a4f44a295c0e44759803bcfd236048b9d9a56721b28e546f05e8
+      note: 'GII licensed CC BY 4.0: reproduce, distribute, adapt incl. commercially,
+        acknowledging WIPO and indicating changes; third-party content rights must
+        be cleared separately. [Researched 2026-11-20 by assistant from live terms
+        pages; confidence medium; page fetched: yes.]'
+      basis: public_terms
+      scope: redistribute_raw
+  kind: official_report_pdf
+- id: startupblink
+  tier: C
+  publisher: StartupBlink
+  landing_url: https://www.startupblink.com/
+  terms_url: https://www.startupblink.com/blog/terms-conditions/
+  licence_url: UNKNOWN
+  endpoints:
+  - id: ranking
+    template: https://www.startupblink.com/startup-ecosystem-ranking
+    method: GET
+  update_cadence: annual
+  version_detection: ranking year
+  citation: StartupBlink. Global Startup Ecosystem Index.
+  rights:
+    licence_id: proprietary
+    use_research: 'yes'
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://www.startupblink.com/blog/terms-conditions/
+      snapshot_sha256: nofetch
+      note: 'T&Cs proprietary; CA confirms internal research use of manual drop only
+        (EXTRA-11). Terms research (kept): Terms page returned HTTP 403. Search snippet
+        only: users may not circumvent features restricting copying of Content; raw
+        data sold via paid Pro tier. [Researched 2026-11-20 by assistant from live
+        terms pages; confidence low; page fetched: no.]'
+      basis: public_terms
+  kind: commercial_quote_tool
+- id: yale_epi
+  tier: B
+  publisher: Yale Center for Environmental Law & Policy
+  landing_url: https://epi.yale.edu/
+  terms_url: https://epi.yale.edu/2026/downloads
+  licence_url: https://creativecommons.org/licenses/by-nc-sa/4.0/
+  endpoints:
+  - id: scores
+    template: https://epi.yale.edu/
+    method: GET
+  update_cadence: biennial
+  version_detection: EPI edition year
+  citation: Yale Center for Environmental Law & Policy. Environmental Performance
+    Index.
+  rights:
+    licence_id: CC-BY-NC-SA-4.0
+    use_research: 'yes'
+    redistribute_raw: 'yes'
+    redistribute_derived: 'yes'
+    commercial_use: 'no'
+    attribution_required: 'yes'
+    share_alike: 'yes'
+    no_derivatives: 'no'
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://epi.yale.edu/2026/downloads
+      snapshot_sha256: 6d19d1c205942dcf6298f454afcbbba6fc81255a26c74dfbad6c7cff142c4c0a
+      note: 'Site and downloads page footer: this work is under CC BY-NC-SA 4.0; EPI
+        name is a Yale trademark. Not explicitly scoped to the data files. [Researched
+        2026-11-20 by assistant from live terms pages; confidence medium; page fetched:
+        yes.]'
+      basis: public_terms
+      scope: redistribute_raw
+  kind: official_portal
+- id: heritage_ief
+  tier: C
+  publisher: The Heritage Foundation
+  landing_url: https://www.heritage.org/index/
+  terms_url: https://www.heritage.org/article/copyright-notice
+  licence_url: UNKNOWN
+  endpoints:
+  - id: country_scores
+    template: https://www.heritage.org/index/pages/all-country-scores
+    method: GET
+    notes: IMSFE IOEF. Manual/BYOD until licence verified.
+  update_cadence: annual
+  version_detection: index year on page
+  citation: The Heritage Foundation. Index of Economic Freedom.
+  rights:
+    licence_id: proprietary
+    use_research: unknown
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://www.heritage.org/article/copyright-notice
+      snapshot_sha256: null
+      note: 'All heritage.org pages returned 403. Search snippets only: content protected
+        by US copyright, no implied licence; publications marked All rights reserved.
+        [Researched 2026-11-20 by assistant from live terms pages; confidence low;
+        page fetched: no.]'
+  kind: official_portal
+  cited_in_workbooks:
+  - url: https://www.heritage.org/index/heatmap
+    variables:
+    - IOEF
+    workbooks:
+    - aceite
+    - calzado
+  - url: https://www.heritage.org/index/pages/all-country-scores
+    variables:
+    - IOEF
+    workbooks:
+    - aceite
+    - calzado
+- id: fragile_states_index
+  tier: B
+  publisher: The Fund for Peace
+  landing_url: https://fragilestatesindex.org/
+  terms_url: https://fragilestatesindex.org/?p=81
+  licence_url: https://creativecommons.org/licenses/by-nc-sa/4.0/
+  endpoints:
+  - id: global_data
+    template: https://fragilestatesindex.org/global-data/
+    method: GET
+    notes: IMSFE FSIN. Manual/BYOD until licence verified.
+  update_cadence: annual
+  version_detection: release year
+  citation: Fund for Peace. Fragile States Index.
+  rights:
+    licence_id: CC-BY-NC-SA-4.0
+    use_research: 'yes'
+    redistribute_raw: 'yes'
+    redistribute_derived: 'yes'
+    commercial_use: 'no'
+    attribution_required: 'yes'
+    share_alike: 'yes'
+    no_derivatives: 'no'
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://fragilestatesindex.org/?p=81
+      snapshot_sha256: a42074f779d4780064f9890f6ae65ca7a9e51914e1963e03574788ad9e8ad98f
+      note: 'Request to Republish page: CC BY-NC-SA 4.0; credit The Fund for Peace;
+        researchers need no permission; for-profit republication requires contacting
+        FFP. [Researched 2026-11-20 by assistant from live terms pages; confidence
+        medium; page fetched: yes.]'
+      basis: public_terms
+      scope: redistribute_raw
+  kind: official_portal
+  cited_in_workbooks:
+  - url: https://fragilestatesindex.org/global-data/
+    variables:
+    - FSIN
+    workbooks:
+    - aceite
+    - calzado
+- id: inform_risk
+  tier: A
+  publisher: European Commission DRMKC
+  landing_url: https://drmkc.jrc.ec.europa.eu/inform-index
+  terms_url: https://commission.europa.eu/legal-notice_en
+  licence_url: https://creativecommons.org/licenses/by/4.0/
+  endpoints:
+  - id: index
+    template: https://drmkc.jrc.ec.europa.eu/inform-index
+    method: GET
+    notes: IMSFE INRI. Manual/BYOD until licence verified.
+  update_cadence: annual
+  version_detection: INFORM release
+  citation: European Commission. INFORM Risk Index.
+  rights:
+    licence_id: CC-BY-4.0
+    use_research: 'yes'
+    redistribute_raw: 'yes'
+    redistribute_derived: 'yes'
+    commercial_use: 'yes'
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: 'no'
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://commission.europa.eu/legal-notice_en
+      snapshot_sha256: 5005b27c29ff12f0ad93c7a99b7ce97687a3285893485907325555ccafcb7ede
+      note: 'EC legal notice: EU-owned content is CC BY 4.0 unless stated otherwise;
+        credit source and indicate changes. INFORM page itself names no licence. [Researched
+        2026-11-20 by assistant from live terms pages; confidence medium; page fetched:
+        yes.]'
+      basis: public_terms
+      scope: redistribute_raw
+  kind: official_portal
+  cited_in_workbooks:
+  - url: https://drmkc.jrc.ec.europa.eu/inform-index
+    variables:
+    - INRI
+    workbooks:
+    - aceite
+    - calzado
+- id: eiu_democracy
+  tier: C
+  publisher: Economist Intelligence Unit
+  landing_url: https://www.eiu.com/n/campaigns/democracy-index-2023/
+  terms_url: https://ourworldindata.org/grapher/democracy-index-eiu
+  licence_url: UNKNOWN
+  endpoints:
+  - id: report
+    template: https://www.eiu.com/n/campaigns/democracy-index-2023/
+    method: GET
+    notes: IMSFE DEIN. Proprietary; BYOD.
+  update_cadence: annual
+  version_detection: report year
+  citation: Economist Intelligence Unit. Democracy Index.
+  rights:
+    licence_id: proprietary
+    use_research: unknown
+    redistribute_raw: 'no'
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://ourworldindata.org/grapher/democracy-index-eiu
+      snapshot_sha256: null
+      note: 'eiu.com not fetchable. Secondary only (OWID): EIU licence does not allow
+        OWID to redistribute the data; full data sold on Snowflake. [Researched 2026-11-20
+        by assistant from live terms pages; confidence low; page fetched: no.]'
+  kind: official_report_pdf
+  cited_in_workbooks:
+  - url: https://d1qqtien6gys07.cloudfront.net/wp-content/uploads/2024/02/Democracy-Index-2023-Final-report-11-15.pdf
+    variables:
+    - DEIN
+    workbooks:
+    - aceite
+    - calzado
+  - url: https://www.eiu.com/n/campaigns/democracy-index-2023/
+    variables:
+    - DEIN
+    workbooks:
+    - calzado
+  - url: https://www.eiu.com/n/campaigns/democracy-index-2024-confirmation/
+    variables:
+    - DEIN
+    workbooks:
+    - aceite
+  - url: https://www.eiu.com/n/campaigns/democracy-index-2025
+    variables:
+    - DEIN
+    workbooks:
+    - aceite
+- id: kof_globalisation
+  tier: B
+  publisher: KOF Swiss Economic Institute
+  landing_url: https://kof.ethz.ch/en/forecasts-and-indicators/indicators/kof-globalisation-index.html
+  terms_url: https://kof.ethz.ch/en/footer/disclaimer-copyright.html
+  licence_url: https://kof.ethz.ch/en/footer/disclaimer-copyright.html
+  endpoints:
+  - id: index
+    template: https://kof.ethz.ch/en/forecasts-and-indicators/indicators/kof-globalisation-index.html
+    method: GET
+    notes: IMSFE GLIN. Manual/BYOD until licence verified.
+  update_cadence: annual
+  version_detection: KOF release
+  citation: KOF Swiss Economic Institute. Globalisation Index.
+  rights:
+    licence_id: custom
+    use_research: 'yes'
+    redistribute_raw: 'no'
+    redistribute_derived: unknown
+    commercial_use: 'no'
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://kof.ethz.ch/en/footer/disclaimer-copyright.html
+      snapshot_sha256: null
+      note: 'ETH copyright: copying only for private, scientific, non-commercial use;
+        storing on other servers needs written consent; citation with source required.
+        [Researched 2026-11-20 by assistant from live terms pages; confidence medium;
+        page fetched: yes.]'
+  kind: official_portal
+  cited_in_workbooks:
+  - url: https://kof.ethz.ch/en/forecasts-and-indicators/indicators/kof-globalisation-index.html
+    variables:
+    - GLIN
+    workbooks:
+    - aceite
+    - calzado
+- id: transparency_cpi
+  tier: A
+  publisher: Transparency International
+  landing_url: https://www.transparency.org/en/cpi
+  terms_url: https://www.transparency.org/en/copyright-enquiries
+  licence_url: https://creativecommons.org/licenses/by/4.0/
+  endpoints:
+  - id: cpi
+    template: https://www.transparency.org/en/cpi/2023
+    method: GET
+    notes: IMSFE CPIN. Manual/BYOD until licence verified.
+  update_cadence: annual
+  version_detection: CPI year
+  citation: Transparency International. Corruption Perceptions Index.
+  rights:
+    licence_id: CC-BY-4.0
+    use_research: 'yes'
+    redistribute_raw: 'yes'
+    redistribute_derived: 'yes'
+    commercial_use: 'yes'
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: 'no'
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://www.transparency.org/en/copyright-enquiries
+      snapshot_sha256: nofetch
+      note: 'CPI and datasets are CC BY 4.0; credit Source: Transparency International;
+        changes must be indicated and not misrepresent data. Other site content CC
+        BY-ND 4.0. [Researched 2026-11-20 by assistant from live terms pages; confidence
+        medium; page fetched: yes.]'
+      basis: public_terms
+      scope: redistribute_raw
+  kind: official_portal
+  cited_in_workbooks:
+  - url: https://www.transparency.org/en/countries/albania?redirected=1
+    variables:
+    - CPIN
+    workbooks:
+    - aceite
+    - calzado
+  - url: https://www.transparency.org/en/cpi/2023
+    variables:
+    - CPIN
+    workbooks:
+    - calzado
+  - url: https://www.transparency.org/en/cpi/2024
+    variables:
+    - CPIN
+    workbooks:
+    - aceite
+  - url: https://www.transparency.org/en/cpi/2025
+    variables:
+    - CPIN
+    workbooks:
+    - aceite
+- id: global_trade_alert
+  tier: B
+  publisher: Global Trade Alert
+  landing_url: https://globaltradealert.org/
+  terms_url: https://globaltradealert.org/terms
+  licence_url: https://sgeptupload.s3.eu-west-1.amazonaws.com/terms/GTA+Licensed+Data+-+General+Terms.pdf
+  endpoints:
+  - id: interventions
+    template: https://globaltradealert.org/threads
+    method: GET
+    notes: IMSFE CCTI. Manual/BYOD until licence verified.
+  update_cadence: irregular
+  version_detection: site update
+  citation: Global Trade Alert.
+  rights:
+    licence_id: custom
+    use_research: 'yes'
+    redistribute_raw: 'no'
+    redistribute_derived: 'no'
+    commercial_use: 'no'
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: 'no'
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://globaltradealert.org/terms
+      snapshot_sha256: 0c5433d0077b71b6136ae66bddd67053d28f95511106859bb766305e71ad3255
+      note: 'Default class Internal Use; publishing derived scores to third parties
+        is Derived Use needing express grant (academic subscription allows academic
+        publication). Commercial use licensed separately. [Researched 2026-11-20 by
+        assistant from live terms pages; confidence medium; page fetched: yes.]'
+      basis: public_terms
+      scope: use
+  kind: official_portal
+  cited_in_workbooks:
+  - url: https://globaltradealert.org/threads/harmful-trade-interventions
+    variables:
+    - CUDI
+    - ITBI
+    workbooks:
+    - aceite
+    - calzado
+  - url: https://globaltradealert.org/threads?offset=0&limit=48
+    variables:
+    - CCTI
+    workbooks:
+    - calzado
+- id: freight_manual
+  tier: C
+  publisher: Multiple freight rate tools (workbook refs)
+  landing_url: https://www.icontainers.com/
+  terms_url: https://www.icontainers.com/resources/docs/us/Terms_and_conditions_iContainers_USA_inc_v20230221.pdf
+  licence_url: UNKNOWN
+  endpoints:
+  - id: manual
+    template: https://www.icontainers.com/
+    method: GET
+    notes: IMSFE INTC/ITTT. Manual BYOD; no scrape.
+  update_cadence: irregular
+  version_detection: user upload date
+  citation: Freight rate tools cited in IMSFE workbook (manual BYOD).
+  rights:
+    licence_id: UNKNOWN
+    use_research: 'yes'
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://www.icontainers.com/resources/docs/us/Terms_and_conditions_iContainers_USA_inc_v20230221.pdf
+      snapshot_sha256: nofetch
+      note: 'Workbook freight refs; CA confirms internal research use of already-held
+        figures (EXTRA-11). Terms research (kept): Only footer terms are freight trading
+        conditions (shipping contract); no website or rate-data licence found. Other
+        workbook freight tools not identified. [Researched 2026-11-20 by assistant
+        from live terms pages; confidence low; page fetched: yes.]'
+      basis: public_terms
+  kind: commercial_quote_tool
+  cited_in_workbooks:
+  - url: https://globy.com/freight-calculator/from-spain/from-algeciras/to-united-states/to-atlanta
+    variables:
+    - INTC
+    workbooks:
+    - aceite
+  - url: https://worldnetlogis.com/services/cost-calculators/ocean-freight-cost-calculator/
+    variables:
+    - CUDI
+    - INTC
+    workbooks:
+    - aceite
+    - calzado
+  - url: https://www.gocomet.com/freight-shipping-rates-index-calculator?pol=Port%20of%20Cartagena,%20Colombia,%20COCTG&pol_code=COCTG&pod=Miami,%20USA,%20USMIA&pod_code=USMIA&isGfiSearch=true
+    variables:
+    - GENERAL
+    workbooks:
+    - aceite
+    - calzado
+  - url: https://www.icontainers.com/es/transporte-maritimo/
+    variables:
+    - INTC
+    workbooks:
+    - aceite
+    - calzado
+  - url: https://www.twill.net/my/booking/prices
+    variables:
+    - GENERAL
+    workbooks:
+    - aceite
+    - calzado
+  - url: https://www.worldfreightrates.com/es/freight
+    variables:
+    - INTC
+    workbooks:
+    - aceite
+    - calzado
+- id: worldbank_doing_business
+  tier: C
+  publisher: World Bank (Doing Business archive)
+  landing_url: https://archive.doingbusiness.org/en/doingbusiness
+  terms_url: https://datacatalog.worldbank.org/search/dataset/0038564/doing-business
+  licence_url: https://datacatalog.worldbank.org/public-licenses
+  kind: official_portal
+  endpoints:
+  - id: archive
+    template: https://espanol.doingbusiness.org/es/reports/global-reports/doing-business-2020
+    method: GET
+    notes: Discontinued series; last year only.
+  update_cadence: static
+  version_detection: Doing Business 2020 final
+  citation: World Bank. Doing Business (discontinued).
+  rights:
+    licence_id: CC-BY-4.0
+    use_research: 'yes'
+    redistribute_raw: 'yes'
+    redistribute_derived: 'yes'
+    commercial_use: 'yes'
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: 'no'
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://datacatalog.worldbank.org/search/dataset/0038564/doing-business
+      snapshot_sha256: 4c71325b56bda7cb490f07b9e15f2c3395bcf77c6ce0014a632dfafa9a3791b9
+      note: 'Data Catalog entry: Doing Business dataset licensed CC BY 4.0 (discontinued
+        2021); CC BY permits commercial use with attribution and change notice. [Researched
+        2026-11-20 by assistant from live terms pages; confidence high; page fetched:
+        yes.]'
+      basis: public_terms
+      scope: redistribute_raw
+  cited_in_workbooks:
+  - url: https://espanol.doingbusiness.org/es/reports/global-reports/doing-business-2020
+    variables:
+    - GLIN
+    workbooks:
+    - aceite
+    - calzado
+- id: imf_weo
+  tier: A
+  publisher: International Monetary Fund
+  landing_url: https://www.imf.org/en/Publications/WEO
+  terms_url: https://www.imf.org/en/about/copyright-and-terms
+  licence_url: https://www.imf.org/en/about/copyright-and-terms
+  kind: official_portal
+  endpoints:
+  - id: datamapper
+    template: https://www.imf.org/external/datamapper/PCPIPCH@WEO/OEMDC/ADVEC/WEOWORLD
+    method: GET
+  update_cadence: annual
+  version_detection: WEO vintage
+  citation: IMF. World Economic Outlook.
+  rights:
+    licence_id: custom
+    use_research: 'yes'
+    redistribute_raw: 'yes'
+    redistribute_derived: 'yes'
+    commercial_use: 'no'
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: 'no'
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://www.imf.org/en/about/copyright-and-terms
+      snapshot_sha256: c1d932fb11f68f22c37e576486d5674e1a6edba729e8fae6f24355155dabf0b8
+      note: 'Special Terms for Statistical Data: free to copy, derive, publish with
+        IMF credit and stated transformations; commercial reuse needs permission via
+        copyright@imf.org. [Researched 2026-11-20 by assistant from live terms pages;
+        confidence high; page fetched: yes.]'
+      basis: public_terms
+      scope: redistribute_raw
+  cited_in_workbooks:
+  - url: https://www.imf.org/external/datamapper/PCPIPCH@WEO/OEMDC/ADVEC/WEOWORLD
+    variables:
+    - INAN
+    workbooks:
+    - aceite
+- id: wto_tariffs
+  tier: A
+  publisher: World Trade Organization
+  landing_url: https://ttd.wto.org/en
+  terms_url: https://ttd.wto.org/docs/Terms_of_Use_WTO_Tariff_and_Trade_Data.pdf
+  licence_url: https://ttd.wto.org/docs/Terms_of_Use_WTO_Tariff_and_Trade_Data.pdf
+  kind: official_portal
+  endpoints:
+  - id: ttd
+    template: https://ttd.wto.org/en
+    method: GET
+  update_cadence: irregular
+  version_detection: WTO TTD update
+  citation: WTO. Tariff Download Facility / Tariff Analysis Online.
+  rights:
+    licence_id: custom
+    use_research: 'yes'
+    redistribute_raw: 'no'
+    redistribute_derived: 'yes'
+    commercial_use: 'no'
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: 'no'
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://ttd.wto.org/docs/Terms_of_Use_WTO_Tariff_and_Trade_Data.pdf
+      snapshot_sha256: f7248134c5875df6d403a9682b593a4868edacc0fc3cdda46fa636b123affd9b
+      note: 'Free non-commercial use (research, analysis). Re-dissemination needs
+        Secretariat permission and citation; analyses need a disclaimer; no mass downloads.
+        [Researched 2026-11-20 by assistant from live terms pages; confidence high;
+        page fetched: yes.]'
+      basis: public_terms
+      scope: redistribute_derived
+  cited_in_workbooks:
+  - url: http://tariffdata.wto.org/default.aspx?culture=en-US
+    variables:
+    - CUTA
+    workbooks:
+    - aceite
+    - calzado
+  - url: https://ttd.wto.org/en
+    variables:
+    - CUTA
+    workbooks:
+    - aceite
+    - calzado
+- id: wto_itip
+  tier: B
+  publisher: World Trade Organization
+  landing_url: http://i-tip.wto.org/
+  terms_url: https://www.wto.org/english/info_e/copyrights_permissions_e.htm
+  licence_url: https://www.wto.org/english/info_e/copyrights_permissions_e.htm
+  kind: official_portal
+  endpoints:
+  - id: itip
+    template: http://i-tip.wto.org/goods/Forms/MemberView.aspx?data=default
+    method: GET
+  update_cadence: irregular
+  version_detection: I-TIP update
+  citation: WTO. Integrated Trade Intelligence Portal (I-TIP).
+  rights:
+    licence_id: custom
+    use_research: 'yes'
+    redistribute_raw: 'yes'
+    redistribute_derived: unknown
+    commercial_use: 'no'
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://www.wto.org/english/info_e/copyrights_permissions_e.htm
+      snapshot_sha256: null
+      note: 'No I-TIP-specific terms. General WTO site terms: non-commercial reproduction
+        allowed with attribution if WTO is informed; commercial use needs written
+        permission. [Researched 2026-11-20 by assistant from live terms pages; confidence
+        medium; page fetched: yes.]'
+  cited_in_workbooks:
+  - url: http://i-tip.wto.org/goods/Forms/MemberView.aspx?data=default
+    variables:
+    - CCTI
+    - ITBI
+    workbooks:
+    - aceite
+    - calzado
+- id: numbeo
+  tier: C
+  publisher: Numbeo
+  landing_url: https://www.numbeo.com/cost-of-living/
+  terms_url: https://www.numbeo.com/common/terms_of_use.jsp
+  licence_url: https://www.numbeo.com/common/terms_of_use.jsp
+  kind: secondary_aggregator
+  endpoints:
+  - id: col
+    template: https://www.numbeo.com/cost-of-living/rankings_by_country.jsp
+    method: GET
+    notes: Prefer official CPI/COL where available; BYOD.
+  update_cadence: irregular
+  version_detection: page scrape date (manual)
+  citation: Numbeo. Cost of Living Index.
+  rights:
+    licence_id: proprietary
+    use_research: 'yes'
+    redistribute_raw: 'no'
+    redistribute_derived: 'no'
+    commercial_use: 'no'
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: 'yes'
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://www.numbeo.com/common/terms_of_use.jsp
+      snapshot_sha256: dd2f1ef12a56583cd392464b04ec1c173d5ebd8fc03ab37fb0b7fb4300fb693d
+      note: 'Free for personal and academic use with citation. Commercial use needs
+        a paid licence; no derivative works, API republication or scraping without
+        consent. [Researched 2026-11-20 by assistant from live terms pages; confidence
+        high; page fetched: yes.]'
+      basis: public_terms
+      scope: use
+  cited_in_workbooks:
+  - url: https://www.numbeo.com/cost-of-living/
+    variables:
+    - PPAD
+    workbooks:
+    - aceite
+    - calzado
+  - url: https://www.numbeo.com/cost-of-living/rankings_by_country.jsp
+    variables:
+    - CLI
+    workbooks:
+    - aceite
+    - calzado
+- id: preciosmundi
+  tier: C
+  publisher: PreciosMundi
+  landing_url: https://preciosmundi.com/
+  terms_url: https://preciosmundi.com/
+  licence_url: UNKNOWN
+  kind: secondary_aggregator
+  endpoints:
+  - id: home
+    template: https://preciosmundi.com/
+    method: GET
+  update_cadence: irregular
+  version_detection: manual
+  citation: PreciosMundi.
+  rights:
+    licence_id: UNKNOWN
+    use_research: 'yes'
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://preciosmundi.com/
+      snapshot_sha256: nofetch
+      note: 'Terms not clearly published; CA confirms internal research use only (EXTRA-11).
+        Terms research (kept): Site returned HTTP 403 to all automated fetches (homepage
+        and /aviso-legal); web search found no legal notice. Terms not verified. [Researched
+        2026-11-20 by assistant from live terms pages; confidence low; page fetched:
+        no.]'
+      basis: public_terms
+  cited_in_workbooks:
+  - url: https://preciosmundi.com/
+    variables:
+    - PPAD
+    workbooks:
+    - aceite
+    - calzado
+- id: global_product_prices
+  tier: C
+  publisher: GlobalProductPrices
+  landing_url: https://www.globalproductprices.com/
+  terms_url: https://www.globalproductprices.com/terms_gprpr.php
+  licence_url: UNKNOWN
+  kind: secondary_aggregator
+  endpoints:
+  - id: cooking_oil
+    template: https://www.globalproductprices.com/rankings/cooking_oil_prices/
+    method: GET
+  update_cadence: irregular
+  version_detection: manual
+  citation: Global Product Prices.
+  rights:
+    licence_id: UNKNOWN
+    use_research: 'yes'
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://www.globalproductprices.com/terms_gprpr.php
+      snapshot_sha256: nofetch
+      note: 'Terms page incomplete; CA confirms internal research use only (EXTRA-11).
+        Terms research (kept): Terms cover only disclaimers and links; silent on data
+        reuse. Footer shows copyright and data is sold separately. Treat as all rights
+        reserved. [Researched 2026-11-20 by assistant from live terms pages; confidence
+        medium; page fetched: yes.]'
+      basis: public_terms
+  cited_in_workbooks:
+  - url: https://www.globalproductprices.com/rankings/cooking_oil_prices/
+    variables:
+    - PPAD
+    workbooks:
+    - aceite
+- id: sea_distances
+  tier: C
+  publisher: Sea-Distances.org
+  landing_url: https://sea-distances.org/
+  terms_url: https://sea-distances.org/
+  licence_url: UNKNOWN
+  kind: commercial_quote_tool
+  endpoints:
+  - id: home
+    template: https://sea-distances.org/
+    method: GET
+  update_cadence: static
+  version_detection: manual
+  citation: Sea-Distances.org.
+  rights:
+    licence_id: UNKNOWN
+    use_research: 'yes'
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://sea-distances.org/
+      snapshot_sha256: nofetch
+      note: 'Terms silent; CA confirms internal research use of distance tables (EXTRA-11).
+        Terms research (kept): HTTPS fetch failed with a TLS internal error and HTTP
+        redirects to HTTPS; web search found no terms page. Terms not verified. [Researched
+        2026-11-20 by assistant from live terms pages; confidence low; page fetched:
+        no.]'
+      basis: public_terms
+  cited_in_workbooks:
+  - url: https://sea-distances.org/
+    variables:
+    - ITTT
+    workbooks:
+    - aceite
+    - calzado
+- id: searates
+  tier: C
+  publisher: SeaRates
+  landing_url: https://www.searates.com/
+  terms_url: https://www.dpworld.com/en/terms-conditions
+  licence_url: https://www.dpworld.com/en/terms-conditions
+  kind: commercial_quote_tool
+  endpoints:
+  - id: distances
+    template: https://www.searates.com/es/services/distances-time/
+    method: GET
+  update_cadence: irregular
+  version_detection: manual
+  citation: SeaRates distances/time.
+  rights:
+    licence_id: proprietary
+    use_research: unknown
+    redistribute_raw: 'no'
+    redistribute_derived: 'no'
+    commercial_use: 'no'
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: 'yes'
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://www.dpworld.com/en/terms-conditions
+      snapshot_sha256: null
+      note: 'All searates.com URLs now redirect to dpworld.com. DP World terms: personal-use
+        extracts only, no modification, commercial use needs a licence, authorship
+        must be acknowledged. [Researched 2026-11-20 by assistant from live terms
+        pages; confidence medium; page fetched: yes.]'
+  cited_in_workbooks:
+  - url: https://www.searates.com/es/services/distances-time/
+    variables:
+    - ITTT
+    workbooks:
+    - calzado
+- id: nauticalculator
+  tier: C
+  publisher: NautiCalculator
+  landing_url: https://nauticalculator.com/
+  terms_url: https://nauticalculator.com/
+  licence_url: UNKNOWN
+  kind: commercial_quote_tool
+  endpoints:
+  - id: port_distance
+    template: https://nauticalculator.com/port-to-port-distance/
+    method: GET
+  update_cadence: static
+  version_detection: manual
+  citation: NautiCalculator port-to-port distance.
+  rights:
+    licence_id: UNKNOWN
+    use_research: 'yes'
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://nauticalculator.com/
+      snapshot_sha256: nofetch
+      note: 'Terms silent; CA confirms internal research use only (EXTRA-11). Terms
+        research (kept): No terms or licence page; only a © 2026 footer and privacy
+        page. Tools called ''100% free'', but data reuse not addressed. [Researched
+        2026-11-20 by assistant from live terms pages; confidence medium; page fetched:
+        yes.]'
+      basis: public_terms
+  cited_in_workbooks:
+  - url: https://nauticalculator.com/port-to-port-distance/
+    variables:
+    - ITTT
+    workbooks:
+    - aceite
+- id: solability_gsci
+  tier: C
+  publisher: SolAbility
+  landing_url: https://solability.com/the-global-sustainable-competitiveness-index
+  terms_url: https://solability.com/the-global-sustainable-competitiveness-index
+  licence_url: https://creativecommons.org/licenses/by-nc-sa/4.0/
+  kind: official_report_pdf
+  endpoints:
+  - id: gsci
+    template: https://solability.com/the-global-sustainable-competitiveness-index
+    method: GET
+  update_cadence: annual
+  version_detection: GSCI report year
+  citation: SolAbility. Global Sustainable Competitiveness Index.
+  rights:
+    licence_id: CC-BY-NC-SA-4.0
+    use_research: 'yes'
+    redistribute_raw: 'yes'
+    redistribute_derived: 'yes'
+    commercial_use: 'no'
+    attribution_required: 'yes'
+    share_alike: 'yes'
+    no_derivatives: 'no'
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://solability.com/the-global-sustainable-competitiveness-index
+      snapshot_sha256: 72e7f032c17e8a84a7712641e0c6838d70f50fa012528113c299c7276c307165
+      note: 'Site footer: all content published under CC BY-NC-SA 4.0. GSCI reports
+        and data files are free to download; a citation format is given. [Researched
+        2026-11-20 by assistant from live terms pages; confidence medium; page fetched:
+        yes.]'
+      basis: public_terms
+      scope: redistribute_raw
+  cited_in_workbooks:
+  - url: https://solability.com/pdfs/The%20Global%20Sustainable%20Competitiveness%20Index%20Report%202025.pdf
+    variables:
+    - GLSI
+    workbooks:
+    - aceite
+  - url: https://solability.com/the-global-sustainable-competitiveness-index
+    variables:
+    - GLSI
+    workbooks:
+    - aceite
+  - url: https://solability.com/the-global-sustainable-competitiveness-index#rankings
+    variables:
+    - GLSI
+    workbooks:
+    - aceite
+- id: coface_country_risk
+  tier: C
+  publisher: Coface
+  landing_url: https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-map
+  terms_url: https://www.coface.com/legal-notice
+  licence_url: https://www.coface.com/legal-notice
+  kind: official_portal
+  endpoints:
+  - id: map
+    template: https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-map
+    method: GET
+  update_cadence: irregular
+  version_detection: Coface update
+  citation: Coface. Country risk assessment.
+  rights:
+    licence_id: proprietary
+    use_research: 'no'
+    redistribute_raw: 'no'
+    redistribute_derived: 'no'
+    commercial_use: 'no'
+    attribution_required: unknown
+    share_alike: 'no'
+    no_derivatives: 'yes'
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://www.coface.com/legal-notice
+      snapshot_sha256: null
+      note: 'Site content is for strictly personal use; any reproduction, distribution
+        or extraction, in whole or part, is forbidden without prior authorisation
+        from Coface. [Researched 2026-11-20 by assistant from live terms pages; confidence
+        high; page fetched: yes.]'
+  cited_in_workbooks:
+  - url: https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-map
+    variables:
+    - GLCR
+    workbooks:
+    - aceite
+- id: global_carbon_atlas
+  tier: C
+  publisher: Global Carbon Atlas
+  landing_url: https://globalcarbonatlas.org/emissions/carbon-emissions/
+  terms_url: https://globalcarbonatlas.org/project/data-use/
+  licence_url: https://globalcarbonatlas.org/project/data-use/
+  kind: official_portal
+  endpoints:
+  - id: emissions
+    template: https://globalcarbonatlas.org/emissions/carbon-emissions/
+    method: GET
+  update_cadence: annual
+  version_detection: atlas vintage
+  citation: Global Carbon Project. Global Carbon Atlas.
+  rights:
+    licence_id: custom
+    use_research: 'yes'
+    redistribute_raw: 'no'
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://globalcarbonatlas.org/project/data-use/
+      snapshot_sha256: null
+      note: 'Free access does not authorise publication. Cite the Atlas and its sources;
+        get contributor agreement unless data is already published. [Researched 2026-11-20
+        by assistant from live terms pages; confidence medium; page fetched: yes.]'
+  cited_in_workbooks:
+  - url: https://globalcarbonatlas.org/emissions/carbon-emissions/
+    variables:
+    - CADE
+    workbooks:
+    - aceite
+- id: iea_ghg
+  tier: C
+  publisher: International Energy Agency
+  landing_url: https://www.iea.org/data-and-statistics
+  terms_url: https://www.iea.org/data-and-statistics/data-product/greenhouse-gas-emissions-from-energy-highlights
+  licence_url: https://www.iea.org/terms/terms-of-use-for-non-cc-material
+  kind: official_portal
+  endpoints:
+  - id: ghg_explorer
+    template: https://www.iea.org/data-and-statistics/data-tools/greenhouse-gas-emissions-from-energy-data-explorer
+    method: GET
+  update_cadence: annual
+  version_detection: IEA release
+  citation: IEA. Greenhouse gas emissions from energy.
+  rights:
+    licence_id: proprietary
+    use_research: 'yes'
+    redistribute_raw: 'no'
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://www.iea.org/data-and-statistics/data-product/greenhouse-gas-emissions-from-energy-highlights
+      snapshot_sha256: null
+      note: 'GHG Emissions from Energy, including free Highlights, is under Non-CC
+        Material terms, not CC BY 4.0. Republishing over five raw data points is restricted.
+        [Researched 2026-11-20 by assistant from live terms pages; confidence low;
+        page fetched: no.]'
+  cited_in_workbooks:
+  - url: https://www.iea.org/data-and-statistics/data-tools/greenhouse-gas-emissions-from-energy-data-explorer?utm
+    variables:
+    - CADE
+    workbooks:
+    - aceite
+- id: trade_barrier_index
+  tier: C
+  publisher: Trade Barrier Index
+  landing_url: https://www.tradebarrierindex.org/
+  terms_url: https://www.tradebarrierindex.org/terms
+  licence_url: https://www.tradebarrierindex.org/copyright
+  kind: secondary_aggregator
+  endpoints:
+  - id: home
+    template: https://www.tradebarrierindex.org/
+    method: GET
+  update_cadence: irregular
+  version_detection: manual
+  citation: Trade Barrier Index.
+  rights:
+    licence_id: proprietary
+    use_research: 'yes'
+    redistribute_raw: 'no'
+    redistribute_derived: 'no'
+    commercial_use: 'no'
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: 'yes'
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://www.tradebarrierindex.org/terms
+      snapshot_sha256: 5675876c1a3c939a995ae482c0a4cc17a3e05b93868fa49c922a6613a3696e37
+      note: 'PRA copyright: personal-use download only; derivatives and redistribution
+        need permission; unedited educational reuse with credit; commercial use forbidden.
+        [Researched 2026-11-20 by assistant from live terms pages; confidence high;
+        page fetched: yes.]'
+      basis: public_terms
+      scope: use
+  cited_in_workbooks:
+  - url: https://www.tradebarrierindex.org/
+    variables:
+    - ITBI
+    workbooks:
+    - aceite
+  - url: https://www.tradebarrierindex.org/#world-map
+    variables:
+    - ITBI
+    workbooks:
+    - aceite
+- id: world_population_review
+  tier: C
+  publisher: World Population Review
+  landing_url: https://worldpopulationreview.com/
+  terms_url: https://worldpopulationreview.com/terms
+  licence_url: https://worldpopulationreview.com/terms
+  kind: secondary_aggregator
+  endpoints:
+  - id: road_quality
+    template: https://worldpopulationreview.com/country-rankings/road-quality-by-country
+    method: GET
+    notes: Prefer official road-quality series when available.
+  update_cadence: irregular
+  version_detection: manual
+  citation: World Population Review. Road quality by country.
+  rights:
+    licence_id: proprietary
+    use_research: unknown
+    redistribute_raw: 'no'
+    redistribute_derived: unknown
+    commercial_use: 'no'
+    attribution_required: unknown
+    share_alike: 'no'
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://worldpopulationreview.com/terms
+      snapshot_sha256: null
+      note: 'All rights reserved; republishing material, commercialising it, and data
+        mining or extraction are prohibited; no licence grant or research exception.
+        [Researched 2026-11-20 by assistant from live terms pages; confidence high;
+        page fetched: yes.]'
+  cited_in_workbooks:
+  - url: https://worldpopulationreview.com/country-rankings/road-quality-by-country
+    variables:
+    - RQBC
+    workbooks:
+    - aceite
+- id: itc_trade
+  tier: C
+  publisher: International Trade Centre
+  landing_url: https://www.intracen.org/resources/data-and-analysis/trade-statistics
+  terms_url: https://mas-admintools.intracen.org/Accounts/TermsConditions.aspx
+  licence_url: https://mas-admintools.intracen.org/Accounts/TermsConditions.aspx
+  kind: official_portal
+  endpoints:
+  - id: stats
+    template: https://www.intracen.org/resources/data-and-analysis/trade-statistics
+    method: GET
+  update_cadence: annual
+  version_detection: ITC release
+  citation: International Trade Centre. Trade statistics.
+  rights:
+    licence_id: custom
+    use_research: 'yes'
+    redistribute_raw: 'no'
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://mas-admintools.intracen.org/Accounts/TermsConditions.aspx
+      snapshot_sha256: null
+      note: 'ITC MAT terms (search snippets only): no resale or redistribution of
+        data without ITC''s prior written authorisation; citation required. [Researched
+        2026-11-20 by assistant from live terms pages; confidence low; page fetched:
+        no.]'
+  cited_in_workbooks:
+  - url: https://www.intracen.org/resources/data-and-analysis/trade-statistics
+    variables:
+    - EOC
+    workbooks:
+    - aceite
+  - url: https://www.intracen.org/resources/data-and-analysis/trade-statistics#import-of-goods
+    variables:
+    - EOC
+    workbooks:
+    - aceite
+- id: itc_trademap
+  tier: C
+  publisher: International Trade Centre
+  landing_url: https://www.trademap.org/
+  terms_url: https://mas-admintools.intracen.org/Accounts/TermsConditions.aspx
+  licence_url: https://mas-admintools.intracen.org/Accounts/TermsConditions.aspx
+  kind: official_portal
+  endpoints:
+  - id: trademap
+    template: https://www.trademap.org/
+    method: GET
+  update_cadence: annual
+  version_detection: Trade Map vintage
+  citation: ITC. Trade Map.
+  rights:
+    licence_id: custom
+    use_research: 'yes'
+    redistribute_raw: 'no'
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://mas-admintools.intracen.org/Accounts/TermsConditions.aspx
+      snapshot_sha256: null
+      note: 'ITC MAT terms cover Trade Map: no resale or redistribution without written
+        authorisation; cite tool and ITC; developed-country full access needs subscription.
+        [Researched 2026-11-20 by assistant from live terms pages; confidence medium;
+        page fetched: no.]'
+  cited_in_workbooks:
+  - url: https://www.trademap.org/Country_SelProduct_TS.aspx?nvpm=1%7c%7c%7c%7c%7c1509%7c%7c%7c4%7c1%7c1%7c1%7c2%7c1%7c2%7c1%7c1%7c1
+    variables:
+    - '3.'
+    workbooks:
+    - aceite
+- id: unctadstat
+  tier: A
+  publisher: UNCTAD
+  landing_url: https://unctadstat.unctad.org/
+  terms_url: https://unctadstat.unctad.org/EN/About.html
+  licence_url: https://unctadstat.unctad.org/UnctadStatMetadata/Documentation/UNCTAD_CreativeCommonsLicense3.0_IGO_EN.pdf
+  kind: official_portal
+  endpoints:
+  - id: dataviewer
+    template: https://unctadstat.unctad.org/datacentre/dataviewer/US.TradeMerchTotal
+    method: GET
+  update_cadence: annual
+  version_detection: UNCTADstat release
+  citation: UNCTAD. UNCTADstat.
+  rights:
+    licence_id: CC-BY-3.0-IGO
+    use_research: 'yes'
+    redistribute_raw: 'yes'
+    redistribute_derived: 'yes'
+    commercial_use: 'yes'
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: 'no'
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://unctadstat.unctad.org/EN/About.html
+      snapshot_sha256: d40277005e1ebe4f6d944e2a0bdefdfba609573a9fc4d5de27b17bc6d5dec5ec
+      note: 'Data and metadata may be freely copied and redistributed citing the UN
+        Trade and Development Data Hub; materials under CC BY 3.0 IGO. [Researched
+        2026-11-20 by assistant from live terms pages; confidence medium; page fetched:
+        yes.]'
+      basis: public_terms
+      scope: redistribute_raw
+  cited_in_workbooks:
+  - url: https://unctadstat.unctad.org/datacentre/dataviewer/US.TradeMerchTotal
+    variables:
+    - EOC
+    workbooks:
+    - calzado
+- id: culture_factor
+  tier: A
+  publisher: The Culture Factor Group (Hofstede Insights)
+  landing_url: https://www.theculturefactor.com/country-comparison-tool
+  terms_url: https://www.theculturefactor.com/
+  licence_url: https://geerthofstede.com/research-and-vsm/dimension-data-matrix/
+  kind: official_portal
+  endpoints:
+  - id: compare
+    template: https://www.theculturefactor.com/country-comparison-tool
+    method: GET
+  update_cadence: irregular
+  version_detection: manual
+  citation: The Culture Factor. Country comparison tool.
+  rights:
+    licence_id: proprietary
+    use_research: 'yes'
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: 'no'
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://www.theculturefactor.com/
+      snapshot_sha256: null
+      note: 'Culture Factor site: ''all rights reserved'', no data terms. geerthofstede.com:
+        researchers may use base scores without permission; commercial use requires
+        contacting them. [Researched 2026-11-20 by assistant from live terms pages;
+        confidence medium; page fetched: yes.]'
+  cited_in_workbooks:
+  - url: https://www.theculturefactor.com/country-comparison-tool
+    variables:
+    - CUDI
+    workbooks:
+    - aceite
+    - calzado
+- id: indexmundi
+  tier: C
+  publisher: IndexMundi
+  landing_url: https://www.indexmundi.com/
+  terms_url: https://www.indexmundi.com/help/terms/
+  licence_url: https://www.indexmundi.com/help/terms/
+  kind: secondary_aggregator
+  endpoints:
+  - id: csbc
+    template: https://www.indexmundi.com/es/datos/indicadores/IC.IMP.CSBC.CD
+    method: GET
+    notes: Prefer World Bank official API for IC.IMP.CSBC.CD.
+  update_cadence: irregular
+  version_detection: manual
+  citation: IndexMundi (aggregator).
+  rights:
+    licence_id: proprietary
+    use_research: unknown
+    redistribute_raw: 'no'
+    redistribute_derived: 'no'
+    commercial_use: 'no'
+    attribution_required: unknown
+    share_alike: 'no'
+    no_derivatives: 'yes'
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://www.indexmundi.com/help/terms/
+      snapshot_sha256: null
+      note: 'Personal use only; copying to redistribute or republish, building databases,
+        modifying, or commercial exploitation prohibited without written permission.
+        [Researched 2026-11-20 by assistant from live terms pages; confidence high;
+        page fetched: yes.]'
+  cited_in_workbooks:
+  - url: https://www.indexmundi.com/es/datos/indicadores/IC.IMP.CSBC.CD
+    variables:
+    - CIBC
+    workbooks:
+    - aceite
+- id: knoema
+  tier: C
+  publisher: Knoema
+  landing_url: https://knoema.es/atlas/topics/Ranking-Mundial
+  terms_url: https://knoema.com/terms
+  licence_url: https://knoema.com/terms
+  kind: secondary_aggregator
+  endpoints:
+  - id: atlas
+    template: https://knoema.es/atlas/topics/Ranking-Mundial
+    method: GET
+  update_cadence: irregular
+  version_detection: manual
+  citation: Knoema Atlas.
+  rights:
+    licence_id: UNKNOWN
+    use_research: 'yes'
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://knoema.com/terms
+      snapshot_sha256: nofetch
+      note: 'Aggregator terms unclear; CA confirms internal research use only (EXTRA-11).
+        Terms research (kept): Terms unretrievable: knoema.com returns HTTP 530, knoema.es
+        does not resolve, knoema.ru redirects to its homepage. [Researched 2026-11-20
+        by assistant from live terms pages; confidence low; page fetched: no.]'
+      basis: public_terms
+  cited_in_workbooks:
+  - url: https://knoema.es/atlas/topics/Ranking-Mundial
+    variables:
+    - GENERAL
+    workbooks:
+    - aceite
+    - calzado
+- id: theglobaleconomy
+  tier: C
+  publisher: TheGlobalEconomy.com
+  landing_url: https://www.theglobaleconomy.com/
+  terms_url: https://www.theglobaleconomy.com/terms.php
+  licence_url: https://www.theglobaleconomy.com/terms.php
+  kind: secondary_aggregator
+  endpoints:
+  - id: unemployment
+    template: https://www.theglobaleconomy.com/rankings/Unemployment_rate/
+    method: GET
+    notes: Prefer World Bank / ILO official series.
+  update_cadence: irregular
+  version_detection: manual
+  citation: TheGlobalEconomy.com.
+  rights:
+    licence_id: UNKNOWN
+    use_research: 'yes'
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://www.theglobaleconomy.com/terms.php
+      snapshot_sha256: nofetch
+      note: 'Terms unclear; CA confirms internal research use only (EXTRA-11). Terms
+        research (kept): Terms page covers only disclaimer, interruptions and data
+        changes; silent on licensing, reuse, redistribution and attribution. [Researched
+        2026-11-20 by assistant from live terms pages; confidence medium; page fetched:
+        yes.]'
+      basis: public_terms
+  cited_in_workbooks:
+  - url: https://www.theglobaleconomy.com/rankings/Unemployment_rate/
+    variables:
+    - UNRA
+    workbooks:
+    - aceite
+- id: geodatos
+  tier: C
+  publisher: GeoDatos
+  landing_url: https://www.geodatos.net/
+  terms_url: https://www.geodatos.net/terminosycondiciones
+  licence_url: https://www.geodatos.net/terminosycondiciones
+  kind: secondary_aggregator
+  endpoints:
+  - id: distances
+    template: https://www.geodatos.net/distancias/ciudades
+    method: GET
+  update_cadence: static
+  version_detection: manual
+  citation: GeoDatos city distances.
+  rights:
+    licence_id: proprietary
+    use_research: unknown
+    redistribute_raw: 'no'
+    redistribute_derived: unknown
+    commercial_use: 'no'
+    attribution_required: unknown
+    share_alike: 'no'
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://www.geodatos.net/terminosycondiciones
+      snapshot_sha256: null
+      note: 'Clause 4: site content may not be copied, distributed or used commercially
+        without the owner''s express authorisation. [Researched 2026-11-20 by assistant
+        from live terms pages; confidence high; page fetched: yes.]'
+  cited_in_workbooks:
+  - url: https://www.geodatos.net/distancias/ciudades
+    variables:
+    - CUDI
+    workbooks:
+    - aceite
+    - calzado
+- id: procolombia
+  tier: C
+  publisher: ProColombia
+  landing_url: https://ruta-exportadora.procolombia.co/
+  terms_url: https://procolombia.co/transparencia/terminos-y-condiciones-de-uso
+  licence_url: https://procolombia.co/transparencia/terminos-y-condiciones-de-uso
+  kind: official_portal
+  endpoints:
+  - id: ruta
+    template: https://ruta-exportadora.procolombia.co/
+    method: GET
+  update_cadence: irregular
+  version_detection: manual
+  citation: ProColombia. Ruta exportadora / Colombia Trade tools.
+  rights:
+    licence_id: proprietary
+    use_research: unknown
+    redistribute_raw: 'no'
+    redistribute_derived: unknown
+    commercial_use: 'no'
+    attribution_required: unknown
+    share_alike: 'no'
+    no_derivatives: 'yes'
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://procolombia.co/transparencia/terminos-y-condiciones-de-uso
+      snapshot_sha256: null
+      note: 'No licence granted; reproducing, distributing, transforming or commercially
+        using Contents requires the rights holder''s authorisation or legal permission.
+        [Researched 2026-11-20 by assistant from live terms pages; confidence high;
+        page fetched: yes.]'
+  cited_in_workbooks:
+  - url: https://ruta-exportadora.procolombia.co/
+    variables:
+    - GENERAL
+    workbooks:
+    - aceite
+    - calzado
+  - url: https://www.colombiatrade.com.co/herramientas-del-exportador/logistica/rutas-y-tarifas-de-transporte
+    variables:
+    - GENERAL
+    workbooks:
+    - aceite
+    - calzado
+  - url: https://www.colombiatrade.com.co/herramientas-del-exportador/logistica/rutas-y-tarifas-de-transporte/rutas-maritimas
+    variables:
+    - GENERAL
+    workbooks:
+    - aceite
+    - calzado
+- id: iso_country_codes_ref
+  tier: C
+  publisher: INAPI Chile (ISO country initials PDF)
+  landing_url: https://www.inapi.cl/
+  terms_url: https://www.inapi.cl/uso-de-los-contenidos-de-este-sitio
+  licence_url: https://www.inapi.cl/uso-de-los-contenidos-de-este-sitio
+  kind: literature
+  endpoints:
+  - id: iso_pdf
+    template: https://www.inapi.cl/docs/default-source/default-document-library/iniciales_paises_iso.pdf
+    method: GET
+  update_cadence: static
+  version_detection: PDF revision
+  citation: INAPI. Iniciales países ISO (reference PDF).
+  rights:
+    licence_id: custom
+    use_research: 'yes'
+    redistribute_raw: 'yes'
+    redistribute_derived: 'yes'
+    commercial_use: unknown
+    attribution_required: 'yes'
+    share_alike: 'no'
+    no_derivatives: 'no'
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://www.inapi.cl/uso-de-los-contenidos-de-este-sitio
+      snapshot_sha256: null
+      note: 'Content is INAPI property; use, publication, reproduction and distribution
+        are authorised if the source is cited and the main site is linked. [Researched
+        2026-11-20 by assistant from live terms pages; confidence medium; page fetched:
+        yes.]'
+  cited_in_workbooks:
+  - url: https://www.inapi.cl/docs/default-source/default-document-library/iniciales_paises_iso.pdf?sfvrsn=2184ea1d_2
+    variables:
+    - '3.'
+    workbooks:
+    - aceite
+- id: literature_dyo
+  tier: C
+  publisher: Revista DyO (method literature)
+  landing_url: https://www.revistadyo.es/
+  terms_url: https://www.revistadyo.es/DyO/index.php/dyo/politicas
+  licence_url: https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es
+  kind: literature
+  endpoints:
+  - id: article
+    template: https://www.revistadyo.es/DyO/index.php/dyo/article/view/532/553
+    method: GET
+  update_cadence: static
+  version_detection: article id
+  citation: Revista DyO article cited in IMSFE workbook.
+  rights:
+    licence_id: CC-BY-NC-SA-4.0
+    use_research: 'yes'
+    redistribute_raw: 'yes'
+    redistribute_derived: 'yes'
+    commercial_use: 'no'
+    attribution_required: 'yes'
+    share_alike: 'yes'
+    no_derivatives: 'no'
+    evidence:
+      checked_by: CA
+      checked_on: '2026-11-20'
+      terms_url: https://www.revistadyo.es/DyO/index.php/dyo/politicas
+      snapshot_sha256: df149085311256c100294f10777fbf6933ac410288215f5a17816bfef99da4e8
+      note: 'Articles since 2022 are under CC BY-NC-SA 4.0: non-commercial reuse with
+        attribution; adaptations must keep the same licence. [Researched 2026-11-20
+        by assistant from live terms pages; confidence medium; page fetched: yes.]'
+      basis: public_terms
+      scope: redistribute_raw
+  cited_in_workbooks:
+  - url: https://www.revistadyo.es/DyO/index.php/dyo/article/view/532/553
+    variables:
+    - '3.'
+    workbooks:
+    - aceite
+    - calzado
+- id: auma_fairs
+  tier: B
+  publisher: AUMA
+  landing_url: https://www.auma.de/
+  terms_url: https://www.auma.de/
+  licence_url: UNKNOWN
+  kind: official_portal
+  endpoints:
+  - id: landing
+    template: https://www.auma.de/
+    method: GET
+    notes: No public reuse terms found (2026-11-20). Manual drop only into data/manual/auma_fairs/;
+      do not scrape.
+  update_cadence: annual
+  version_detection: AUMA fair year / catalogue edition
+  citation: AUMA. Trade fair database.
+  rights:
+    licence_id: UNKNOWN
+    use_research: unknown
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://www.auma.de/
+      snapshot_sha256: null
+      note: 'No public reuse terms located on AUMA site (2026-11-20). Flags remain
+        unknown; manual file only. [Researched 2026-11-20; confidence low; page fetched:
+        landing only.]'
+- id: ufi_stats
+  tier: B
+  publisher: UFI — The Global Association of the Exhibition Industry
+  landing_url: https://www.ufi.org/
+  terms_url: https://www.ufi.org/
+  licence_url: UNKNOWN
+  kind: official_report_pdf
+  endpoints:
+  - id: landing
+    template: https://www.ufi.org/
+    method: GET
+    notes: Statistics and reports; check each PDF licence. Manual drop into data/manual/ufi_stats/.
+  update_cadence: annual
+  version_detection: UFI report year
+  citation: UFI. Global exhibition industry statistics.
+  rights:
+    licence_id: UNKNOWN
+    use_research: unknown
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://www.ufi.org/
+      snapshot_sha256: null
+      note: UFI reports; reuse terms not confirmed on landing (2026-11-20). Manual
+        only. [Researched 2026-11-20; confidence low.]
+- id: icex_events
+  tier: B
+  publisher: ICEX España Exportación e Inversiones
+  landing_url: https://datos.gob.es/es/catalogo/ea0038767-buscador-de-ferias-del-icex
+  terms_url: https://datos.gob.es/es/catalogo/ea0038767-buscador-de-ferias-del-icex
+  licence_url: UNKNOWN
+  kind: official_portal
+  endpoints:
+  - id: catalog
+    template: https://datos.gob.es/es/catalogo/ea0038767-buscador-de-ferias-del-icex
+    method: GET
+    notes: Open-data catalogue entry; confirm dataset licence on the ficha before
+      bulk download. Also sector PDF calendars (e.g. moda).
+  update_cadence: irregular
+  version_detection: datos.gob.es dataset modified date
+  citation: ICEX. Buscador de ferias / calendario de actividades (datos.gob.es).
+  rights:
+    licence_id: UNKNOWN
+    use_research: unknown
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://datos.gob.es/es/catalogo/ea0038767-buscador-de-ferias-del-icex
+      snapshot_sha256: null
+      note: Licence on datos.gob.es ficha not yet attested (many are reuse-with- attribution).
+        Flags unknown until César confirms. [Researched 2026-11-20; confidence medium;
+        page to re-check live.]
+- id: trade_gov_events
+  tier: B
+  publisher: U.S. International Trade Administration (trade.gov)
+  landing_url: https://developer.trade.gov/
+  terms_url: https://www.trade.gov/privacy-and-security-notice
+  licence_url: https://www.trade.gov/privacy-and-security-notice
+  kind: official_api
+  endpoints:
+  - id: trade_events_api
+    template: https://api.trade.gov/v1/trade_events/search
+    method: GET
+    notes: Free API key from developer.trade.gov. Hourly updates. Requires TRADE_GOV_API_KEY
+      env (never commit).
+  update_cadence: irregular
+  version_detection: API Last-Modified / feed timestamp
+  citation: U.S. Department of Commerce / ITA. Trade Events API.
+  rights:
+    licence_id: UNKNOWN
+    use_research: unknown
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://www.trade.gov/privacy-and-security-notice
+      snapshot_sha256: null
+      note: Federal government data; confirm API terms / USGov works before bulk redistribute.
+        Flags unknown. [Researched 2026-11-20; confidence medium.]
+- id: oecd_sdmx
+  tier: B
+  publisher: Organisation for Economic Co-operation and Development
+  landing_url: https://data-explorer.oecd.org/
+  terms_url: https://www.oecd.org/en/about/terms-conditions.html
+  licence_url: https://www.oecd.org/en/about/terms-conditions.html
+  kind: official_api
+  endpoints:
+  - id: sdmx
+    template: https://sdmx.oecd.org/public/rest/data/{agency},{dataflow}/{key}
+    method: GET
+    notes: SDMX REST. Series list in config/series/oecd_sdmx.yaml (TFI, STRI, Digital
+      STRI, FDI RRI, TiVA, PMR). Confirm licence per dataset; STRI reports cited CC
+      BY 4.0 with third-party exclusions.
+  update_cadence: annual
+  version_detection: SDMX dataflow version / observation period
+  citation: OECD. Data Explorer / SDMX (series as cited per variable).
+  rights:
+    licence_id: UNKNOWN
+    use_research: unknown
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: 'yes'
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://www.oecd.org/en/about/terms-conditions.html
+      snapshot_sha256: null
+      note: OECD terms + per-dataset licence (STRI often CC BY 4.0 with exclusions).
+        Flags unknown until César attests each series. [Researched 2026-11-20; confidence
+        medium.]
+- id: wto_timeseries
+  tier: B
+  publisher: World Trade Organization
+  landing_url: https://apiportal.wto.org/
+  terms_url: https://www.wto.org/english/info_e/copyrights_permissions_e.htm
+  licence_url: https://www.wto.org/english/info_e/copyrights_permissions_e.htm
+  kind: official_api
+  endpoints:
+  - id: timeseries
+    template: https://api.wto.org/timeseries/v1/{resource}
+    method: GET
+    notes: Free API key (apiportal.wto.org). Also CSV/Excel without account for some
+      series. Series list in config/series/wto_timeseries.yaml.
+  update_cadence: annual
+  version_detection: API / dataset vintage
+  citation: WTO. Stats Timeseries API.
+  rights:
+    licence_id: UNKNOWN
+    use_research: unknown
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://www.wto.org/english/info_e/copyrights_permissions_e.htm
+      snapshot_sha256: null
+      note: WTO copyright/permissions page; TTD has a separate Dissemination Policy
+        (see wto_tariffs). Flags unknown. [Researched 2026-11-20; confidence medium.]
+- id: comexstat_br
+  tier: B
+  publisher: Ministério do Desenvolvimento / Comex Stat (Brazil)
+  landing_url: https://comexstat.mdic.gov.br/
+  terms_url: https://comexstat.mdic.gov.br/
+  licence_url: UNKNOWN
+  kind: official_api
+  endpoints:
+  - id: api
+    template: https://api-comexstat.mdic.gov.br/
+    method: GET
+    notes: Open API with NCM, partner, UF, transport mode, URF; FOB and kg from 1997.
+      Confirm current base URL and licence on portal.
+  update_cadence: irregular
+  version_detection: API max period
+  citation: Brazil MDIC. Comex Stat.
+  rights:
+    licence_id: UNKNOWN
+    use_research: unknown
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://comexstat.mdic.gov.br/
+      snapshot_sha256: null
+      note: Brazilian government trade stats; licence statement on portal not yet
+        attested. [Researched 2026-11-20; confidence medium.]
+- id: dane_dian_comex
+  tier: B
+  publisher: DANE / DIAN (Colombia)
+  landing_url: https://www.dane.gov.co/
+  terms_url: https://www.dane.gov.co/
+  licence_url: UNKNOWN
+  kind: official_portal
+  endpoints:
+  - id: open_data
+    template: https://www.dane.gov.co/
+    method: GET
+    notes: Locate open dataset for exports by department and transport mode; prefer
+      datos.gov.co when listed. Manual README in data/manual/dane_dian_comex/.
+  update_cadence: irregular
+  version_detection: dataset modified date
+  citation: DANE / DIAN. Colombian foreign trade statistics.
+  rights:
+    licence_id: UNKNOWN
+    use_research: unknown
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://www.dane.gov.co/
+      snapshot_sha256: null
+      note: Open-data licence for the specific Comex dataset not yet attested. Priority
+        for COL origin example. [Researched 2026-11-20; confidence low.]
+- id: datacomex_es
+  tier: B
+  publisher: Secretaría de Estado de Comercio (España) — DataComex
+  landing_url: https://comercio.gob.es/
+  terms_url: https://comercio.gob.es/
+  licence_url: UNKNOWN
+  kind: official_portal
+  endpoints:
+  - id: portal
+    template: https://comercio.gob.es/
+    method: GET
+    notes: Provincial / transport-mode trade. Confirm live download/API and legal
+      notice. Alternative SDMX/JSON-stat via ICANE for some series.
+  update_cadence: irregular
+  version_detection: portal vintage
+  citation: Spain Secretaría de Estado de Comercio. DataComex.
+  rights:
+    licence_id: UNKNOWN
+    use_research: unknown
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: unknown
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      checked_by: null
+      checked_on: null
+      terms_url: https://comercio.gob.es/
+      snapshot_sha256: null
+      note: Legal notice / API availability to confirm on live portal. Flags unknown.
+        [Researched 2026-11-20; confidence low.]
+- id: ecb_fx
+  tier: A
+  publisher: European Central Bank
+  landing_url: https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html
+  terms_url: https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html
+  licence_url: https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html
+  endpoints:
+  - id: eurofxref_daily
+    template: https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml
+    method: GET
+  update_cadence: irregular
+  version_detection: Cube/@time in eurofxref-daily.xml
+  citation: European Central Bank. Euro foreign exchange reference rates.
+  rights:
+    licence_id: ECB-website-terms
+    use_research: unknown
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: 'yes'
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      terms_url: https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html
+      note: '[Pending César rights-set] ECB disclaimer allows use of statistics with
+        attribution; commercial/redistribution not confirmed in this entry.'
+      basis: public_terms
+      scope: use
+  kind: official_api
+- id: un_comtrade
+  tier: A
+  publisher: United Nations Statistics Division
+  landing_url: https://comtradeplus.un.org/
+  terms_url: https://comtradeplus.un.org/About/Disclaimer
+  licence_url: https://comtradeplus.un.org/About/Disclaimer
+  endpoints:
+  - id: comtrade_api
+    template: https://comtradeapi.un.org/data/v1/get/{typeCode}/{freqCode}/{clCode}
+    method: GET
+  update_cadence: irregular
+  version_detection: API subscription key + release date
+  citation: UN Comtrade. International Trade Statistics Database.
+  rights:
+    licence_id: UN-Comtrade-terms
+    use_research: unknown
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: 'yes'
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      terms_url: https://comtradeplus.un.org/About/Disclaimer
+      note: '[Pending César rights-set] Free API key with daily limits; redistribution
+        terms unknown until rights-set.'
+      basis: public_terms
+      scope: use
+  kind: official_api
+- id: oecd_country_risk
+  tier: A
+  publisher: OECD
+  landing_url: https://www.oecd.org/en/topics/sub-issues/country-risk-classification.html
+  terms_url: https://www.oecd.org/en/about/terms-and-conditions.html
+  licence_url: https://www.oecd.org/en/about/terms-and-conditions.html
+  endpoints:
+  - id: cre_crc
+    template: https://www.oecd.org/content/dam/oecd/en/topics/policy-issue-focus/export-credits/cre-crc-current-english.pdf
+    method: GET
+  update_cadence: quarterly
+  version_detection: CRC publication date on OECD page
+  citation: OECD. Country Risk Classification.
+  rights:
+    licence_id: OECD-terms
+    use_research: unknown
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: 'yes'
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      terms_url: https://www.oecd.org/en/about/terms-and-conditions.html
+      note: '[Pending César rights-set] Intended Coface substitute; rights unknown
+        until rights-set.'
+      basis: public_terms
+      scope: use
+  kind: official_report_pdf
+- id: wto_eping
+  tier: A
+  publisher: World Trade Organization
+  landing_url: https://epingalert.org/
+  terms_url: https://www.wto.org/english/info_e/cont_e.htm
+  licence_url: https://www.wto.org/english/info_e/cont_e.htm
+  endpoints:
+  - id: eping_search
+    template: https://epingalert.org/en/Search
+    method: GET
+  update_cadence: irregular
+  version_detection: notification date in ePing
+  citation: WTO. ePing SPS&TBT notification alert system.
+  rights:
+    licence_id: WTO-terms
+    use_research: unknown
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: 'yes'
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      terms_url: https://www.wto.org/english/info_e/cont_e.htm
+      note: '[Pending César rights-set] OTC/MSF notifications; rights unknown until
+        rights-set.'
+      basis: public_terms
+      scope: use
+  kind: official_portal
+- id: eu_access2markets
+  tier: A
+  publisher: European Commission
+  landing_url: https://trade.ec.europa.eu/access-to-markets/en/home
+  terms_url: https://commission.europa.eu/legal-notice_en
+  licence_url: https://commission.europa.eu/legal-notice_en
+  endpoints:
+  - id: a2m
+    template: https://trade.ec.europa.eu/access-to-markets/en/home
+    method: GET
+  update_cadence: irregular
+  version_detection: Access2Markets dataset refresh
+  citation: European Commission. Access2Markets.
+  rights:
+    licence_id: EC-reuse
+    use_research: unknown
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: 'yes'
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      terms_url: https://commission.europa.eu/legal-notice_en
+      note: '[Pending César rights-set] Tariffs/rules of origin in Spanish UI; rights
+        unknown until rights-set.'
+      basis: public_terms
+      scope: use
+  kind: official_portal
+- id: un_wpp
+  tier: A
+  publisher: United Nations Population Division
+  landing_url: https://population.un.org/wpp/
+  terms_url: https://www.un.org/en/about-us/terms-of-use
+  licence_url: https://www.un.org/en/about-us/terms-of-use
+  endpoints:
+  - id: wpp_csv
+    template: https://population.un.org/wpp/downloads
+    method: GET
+  update_cadence: biennial
+  version_detection: WPP release year
+  citation: United Nations. World Population Prospects.
+  rights:
+    licence_id: UN-terms
+    use_research: unknown
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: 'yes'
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      terms_url: https://www.un.org/en/about-us/terms-of-use
+      note: '[Pending César rights-set] Population by age/urban; rights unknown until
+        rights-set.'
+      basis: public_terms
+      scope: use
+  kind: official_portal
+- id: vat_rates
+  tier: A
+  publisher: AISERV SYSTEMS SLU (compiled)
+  landing_url: https://atlas.aiserv.es/metodologia
+  terms_url: https://atlas.aiserv.es/aviso-legal
+  licence_url: https://atlas.aiserv.es/aviso-legal
+  endpoints:
+  - id: static_csv
+    template: file://data/static/vat_rates.csv
+    method: GET
+  update_cadence: annual
+  version_detection: reviewed_on column in vat_rates.csv
+  citation: IMS Atlas compiled VAT table citing national tax authorities (see CSV
+    notes).
+  rights:
+    licence_id: compiled-citations
+    use_research: unknown
+    redistribute_raw: unknown
+    redistribute_derived: unknown
+    commercial_use: unknown
+    attribution_required: 'yes'
+    share_alike: unknown
+    no_derivatives: unknown
+    evidence:
+      terms_url: https://atlas.aiserv.es/aviso-legal
+      note: '[Pending César rights-set] Compiled rates with per-row official citation;
+        confirm redistribution.'
+      basis: public_terms
+      scope: use
+  kind: literature

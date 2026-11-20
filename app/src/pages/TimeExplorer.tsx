@@ -9,7 +9,7 @@ import {
 } from "react";
 import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
-import { ChartExportBar } from "../components/ChartExportBar";
+import { ChartFrame } from "../components/ChartFrame";
 import { loadRankYearsFixture, type RankYearsFixture } from "../data/loadRankYears";
 import { analysisErrorMessage } from "../ranking/analysisError";
 import { isColHs64Preset } from "../ranking/demoPanel";
@@ -110,24 +110,7 @@ export function TimeExplorer() {
       allowWithoutModel
       chrome="results"
       controls={
-        fixture ? (
-          <div className="matrix-controls" data-testid="time-controls">
-            <div data-export-surface="chart">
-              <ChartExportBar
-                testIdPrefix="bump"
-                chartRef={chartRef}
-                pngName="ims-atlas-bump.png"
-                svgName="ims-atlas-bump.svg"
-                title="IMS Atlas bump chart"
-                csv={{
-                  filename: "ims-atlas-bump.csv",
-                  body: tableRows.map((r) => r.join(",")).join("\n") + "\n",
-                }}
-                className="export-row"
-              />
-            </div>
-          </div>
-        ) : null
+        fixture ? <div className="matrix-controls" data-testid="time-controls" /> : null
       }
     >
       {() =>
@@ -140,9 +123,18 @@ export function TimeExplorer() {
             <p className="muted small" data-testid="time-provenance">
               {fixture.source}
             </p>
-            <Suspense fallback={<p className="muted">{t("loading")}</p>}>
-              <BumpChart years={years} series={series} onReady={onReady} />
-            </Suspense>
+            <div data-export-surface="chart">
+              <ChartFrame
+                testIdPrefix="bump"
+                title="IMS Atlas bump chart"
+                chartRef={chartRef}
+                sourceLine={fixture.source}
+              >
+                <Suspense fallback={<p className="muted">{t("loading")}</p>}>
+                  <BumpChart years={years} series={series} onReady={onReady} />
+                </Suspense>
+              </ChartFrame>
+            </div>
             <div className="table-scroll">
               <table data-testid="bump-table">
                 <thead>

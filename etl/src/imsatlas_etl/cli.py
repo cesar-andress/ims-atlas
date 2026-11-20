@@ -394,6 +394,33 @@ def extract_cmd(
     typer.echo(f"atlas-etl {__version__}: extract ok ({len(results)} sources)")
 
 
+@app.command("hourly")
+def hourly_cmd(
+    source: Annotated[
+        str | None,
+        typer.Option("--source", help="Comma-separated source ids, or all hourly"),
+    ] = None,
+    force: Annotated[bool, typer.Option("--force")] = False,
+    check_only: Annotated[
+        bool,
+        typer.Option("--check-only", help="Probe versions without extracting"),
+    ] = False,
+) -> None:
+    """R-0 hourly tick: per-source check/extract with sources_state.json."""
+    from imsatlas_etl.pipeline.hourly import run_hourly
+
+    out = run_hourly(
+        sources=_parse_sources(source),
+        force=force,
+        extract=not check_only,
+    )
+    summary = out.get("summary") or {}
+    typer.echo(
+        f"atlas-etl {__version__}: hourly ok={out.get('n_ok')} "
+        f"fail={out.get('n_fail')} sources={summary.get('ok')}/{summary.get('total')}",
+    )
+
+
 @app.command("validate")
 def validate_cmd(
     source: Annotated[

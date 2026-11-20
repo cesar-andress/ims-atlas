@@ -5,6 +5,7 @@ import {
   orderKeysByWeight,
   type ImsfeEocQuadrant,
 } from "@ims-atlas/core";
+import { ChartFrame } from "../ChartFrame";
 import { ExportMenu } from "../ExportMenu";
 import { HelpButton } from "../HelpButton";
 import {
@@ -311,120 +312,135 @@ export function ResultsDashboard({ model }: Props) {
 
       <div className="results-two">
         <section className="results-card" data-testid="results-ranking-card">
-          <h2>{lang === "es" ? "Ranking IMSFE" : "IMSFE ranking"}</h2>
-          <ul className="crit-legend" data-testid="criterion-legend">
-            {criteria.map((c) => (
-              <li key={c}>
-                <span className="swatch" style={{ background: CRITERION_COLOR[c] }} />
-                {CRITERION_LABEL[c][lang]}{" "}
-                <span className="font-tabular">
-                  {formatPctLocale(model.weights.factors[c] ?? 0, lang)}
-                </span>
-              </li>
-            ))}
-          </ul>
-          <div className="results-rank-scroll">
-            <ul className="results-rank-list" data-testid="ranking-table" role="list">
-              {rows.map((r) => {
-                const parts = contributions(model, r.iso3, criteria);
-                const q = qByIso.get(r.iso3) ?? null;
-                const selected = r.iso3 === selectedIso;
-                return (
-                  <li key={r.iso3} data-iso3={r.iso3} data-rank={String(r.rank)}>
-                    <button
-                      type="button"
-                      className={`rank-row${selected ? " selected" : ""}`}
-                      data-testid={`rank-row-${r.iso3}`}
-                      data-iso3={r.iso3}
-                      data-rank={String(r.rank)}
-                      aria-pressed={selected}
-                      onClick={() => selectIso(r.iso3)}
-                    >
-                      <span className="rank-n font-tabular">{r.rank}</span>
-                      <span className="iso-chip">{r.iso3}</span>
-                      <span className="rank-name">{countryLabel(r.iso3, lang)}</span>
-                      <span
-                        className="stack-bar"
-                        aria-hidden
-                        title={formatScoreLocale(r.score, lang)}
-                      >
-                        <span
-                          className="stack-inner"
-                          style={{
-                            width: `${Math.min(100, (r.score / scaleMax) * 100)}%`,
-                          }}
-                        >
-                          {parts.map((p) => (
-                            <span
-                              key={p.id}
-                              style={{
-                                flex: Math.max(p.part, 0.0001),
-                                background: CRITERION_COLOR[p.id],
-                              }}
-                            />
-                          ))}
-                        </span>
-                      </span>
-                      <span
-                        className="rank-score font-tabular"
-                        data-testid={`score-${r.iso3}`}
-                        data-score={String(r.score)}
-                      >
-                        {formatScoreLocale(r.score, lang)}
-                      </span>
-                      {q ? (
-                        <span
-                          className="q-badge"
-                          style={{
-                            background: quadrantCss(q).bg,
-                            color: quadrantCss(q).fg,
-                          }}
-                        >
-                          {lang === "es"
-                            ? IMSFE_EOC_QUADRANTS[q].es
-                            : IMSFE_EOC_QUADRANTS[q].en}
-                        </span>
-                      ) : (
-                        <span
-                          className="q-badge"
-                          style={{
-                            background: quadrantCss(null).bg,
-                            color: quadrantCss(null).fg,
-                          }}
-                        >
-                          {lang === "es" ? "Sin EOC" : "No EOC"}
-                        </span>
-                      )}
-                    </button>
-                  </li>
-                );
-              })}
+          <ChartFrame
+            testIdPrefix="ranking-bars"
+            title={lang === "es" ? "Ranking IMSFE" : "IMSFE ranking"}
+            {...(config.origin && config.hs
+              ? {
+                  projectLine: `${config.origin} · HS ${config.hs}${
+                    config.year ? ` · ${config.year}` : ""
+                  }`,
+                }
+              : {})}
+            showOnScreenCredit
+          >
+            <h2 className="visually-hidden">
+              {lang === "es" ? "Ranking IMSFE" : "IMSFE ranking"}
+            </h2>
+            <ul className="crit-legend" data-testid="criterion-legend">
+              {criteria.map((c) => (
+                <li key={c}>
+                  <span className="swatch" style={{ background: CRITERION_COLOR[c] }} />
+                  {CRITERION_LABEL[c][lang]}{" "}
+                  <span className="font-tabular">
+                    {formatPctLocale(model.weights.factors[c] ?? 0, lang)}
+                  </span>
+                </li>
+              ))}
             </ul>
-          </div>
-          <p className="muted small results-footer-line">
-            {lang === "es"
-              ? `Mostrando ${rows.length} de ${model.ranking.length}`
-              : `Showing ${rows.length} of ${model.ranking.length}`}
-            {model.ranking.length > PREVIEW ? (
-              <>
-                {" · "}
-                <button
-                  type="button"
-                  className="linkish"
-                  data-testid="results-show-all"
-                  onClick={() => setShowAll((v) => !v)}
-                >
-                  {showAll
-                    ? lang === "es"
-                      ? "ver menos"
-                      : "show less"
-                    : lang === "es"
-                      ? "ver todos"
-                      : "show all"}
-                </button>
-              </>
-            ) : null}
-          </p>
+            <div className="results-rank-scroll">
+              <ul className="results-rank-list" data-testid="ranking-table" role="list">
+                {rows.map((r) => {
+                  const parts = contributions(model, r.iso3, criteria);
+                  const q = qByIso.get(r.iso3) ?? null;
+                  const selected = r.iso3 === selectedIso;
+                  return (
+                    <li key={r.iso3} data-iso3={r.iso3} data-rank={String(r.rank)}>
+                      <button
+                        type="button"
+                        className={`rank-row${selected ? " selected" : ""}`}
+                        data-testid={`rank-row-${r.iso3}`}
+                        data-iso3={r.iso3}
+                        data-rank={String(r.rank)}
+                        aria-pressed={selected}
+                        onClick={() => selectIso(r.iso3)}
+                      >
+                        <span className="rank-n font-tabular">{r.rank}</span>
+                        <span className="iso-chip">{r.iso3}</span>
+                        <span className="rank-name">{countryLabel(r.iso3, lang)}</span>
+                        <span
+                          className="stack-bar"
+                          aria-hidden
+                          title={formatScoreLocale(r.score, lang)}
+                        >
+                          <span
+                            className="stack-inner"
+                            style={{
+                              width: `${Math.min(100, (r.score / scaleMax) * 100)}%`,
+                            }}
+                          >
+                            {parts.map((p) => (
+                              <span
+                                key={p.id}
+                                style={{
+                                  flex: Math.max(p.part, 0.0001),
+                                  background: CRITERION_COLOR[p.id],
+                                }}
+                              />
+                            ))}
+                          </span>
+                        </span>
+                        <span
+                          className="rank-score font-tabular"
+                          data-testid={`score-${r.iso3}`}
+                          data-score={String(r.score)}
+                        >
+                          {formatScoreLocale(r.score, lang)}
+                        </span>
+                        {q ? (
+                          <span
+                            className="q-badge"
+                            style={{
+                              background: quadrantCss(q).bg,
+                              color: quadrantCss(q).fg,
+                            }}
+                          >
+                            {lang === "es"
+                              ? IMSFE_EOC_QUADRANTS[q].es
+                              : IMSFE_EOC_QUADRANTS[q].en}
+                          </span>
+                        ) : (
+                          <span
+                            className="q-badge"
+                            style={{
+                              background: quadrantCss(null).bg,
+                              color: quadrantCss(null).fg,
+                            }}
+                          >
+                            {lang === "es" ? "Sin EOC" : "No EOC"}
+                          </span>
+                        )}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+            <p className="muted small results-footer-line">
+              {lang === "es"
+                ? `Mostrando ${rows.length} de ${model.ranking.length}`
+                : `Showing ${rows.length} of ${model.ranking.length}`}
+              {model.ranking.length > PREVIEW ? (
+                <>
+                  {" · "}
+                  <button
+                    type="button"
+                    className="linkish"
+                    data-testid="results-show-all"
+                    onClick={() => setShowAll((v) => !v)}
+                  >
+                    {showAll
+                      ? lang === "es"
+                        ? "ver menos"
+                        : "show less"
+                      : lang === "es"
+                        ? "ver todos"
+                        : "show all"}
+                  </button>
+                </>
+              ) : null}
+            </p>
+          </ChartFrame>
         </section>
 
         <aside className="results-card" data-testid="results-why-card">

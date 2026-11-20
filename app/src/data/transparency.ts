@@ -115,6 +115,28 @@ export function loadFreshness(): Promise<Record<string, unknown>> {
   return fetchJson("/status/freshness.json");
 }
 
+export type SourcesStateRow = {
+  checked_at?: string | null;
+  last_ok_at?: string | null;
+  version?: string | null;
+  rows?: number | null;
+  last_year?: number | null;
+  error?: string | null;
+  status?: string | null;
+  tier?: string | null;
+  consecutive_failures?: number | null;
+  check_count?: number | null;
+};
+
+export type SourcesStatePayload = {
+  generated_at?: string | null;
+  sources?: Record<string, SourcesStateRow>;
+};
+
+export function loadSourcesState(): Promise<SourcesStatePayload> {
+  return fetchJson("/status/sources_state.json");
+}
+
 export function loadQa(): Promise<Record<string, unknown>> {
   return fetchJson("/status/qa.json");
 }

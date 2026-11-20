@@ -1,0 +1,22 @@
+iso3,year,indicator,value,source_note,reviewed_on
+DEU,2025,VAT_STD,19.0,"Bundesministerium der Finanzen — standard VAT 19%",2026-11-20
+FRA,2025,VAT_STD,20.0,"Service-Public.fr — TVA normale 20%",2026-11-20
+ESP,2025,VAT_STD,21.0,"Agencia Tributaria — IVA general 21%",2026-11-20
+ITA,2025,VAT_STD,22.0,"Agenzia delle Entrate — IVA ordinaria 22%",2026-11-20
+NLD,2025,VAT_STD,21.0,"Belastingdienst — algemeen tarief 21%",2026-11-20
+BEL,2025,VAT_STD,21.0,"FPS Finance — standard VAT 21%",2026-11-20
+PRT,2025,VAT_STD,23.0,"Autoridade Tributária — taxa normal 23%",2026-11-20
+IRL,2025,VAT_STD,23.0,"Revenue Irish Tax — standard VAT 23%",2026-11-20
+AUT,2025,VAT_STD,20.0,"BMF Austria — Normalsteuersatz 20%",2026-11-20
+CHE,2025,VAT_STD,8.1,"ESTV — MWST Normalsatz 8.1%",2026-11-20
+GBR,2025,VAT_STD,20.0,"GOV.UK — standard VAT 20%",2026-11-20
+USA,2025,VAT_STD,0.0,"No federal VAT; state sales tax varies (placeholder 0)",2026-11-20
+COL,2025,VAT_STD,19.0,"DIAN — IVA general 19%",2026-11-20
+MEX,2025,VAT_STD,16.0,"SAT — IVA 16%",2026-11-20
+BRA,2025,VAT_STD,0.0,"No single federal VAT rate (ICMS/ISS); placeholder 0",2026-11-20
+CHN,2025,VAT_STD,13.0,"State Taxation Administration — standard VAT 13%",2026-11-20
+JPN,2025,VAT_STD,10.0,"National Tax Agency — consumption tax 10%",2026-11-20
+KOR,2025,VAT_STD,10.0,"NTS Korea — VAT 10%",2026-11-20
+IND,2025,VAT_STD,18.0,"GST Council — typical standard slab 18% (simplified)",2026-11-20
+AUS,2025,VAT_STD,10.0,"ATO — GST 10%",2026-11-20
+CAN,2025,VAT_STD,5.0,"CRA — GST 5% (provincial extras not included)",2026-11-20

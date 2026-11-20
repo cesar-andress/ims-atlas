@@ -1,10 +1,19 @@
 #!/usr/bin/env bash
-# Weekly full pipeline on vpn-aplicaciones: live extract → release-dual → promote
-# → transparency → panel → reload nginx volume trees.
-# Alerts: non-zero exit (systemd OnFailure) + optional GitHub issue via check.env.
+# Hourly IMS Atlas pipeline tick (R-0): flock + per-source hourly check/extract.
+# Full dual-release remains available via ATLAS_FULL_RELEASE=1.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
+
+LOCK_DIR="${ATLAS_LOCK_DIR:-/var/lock}"
+LOCK_FILE="${LOCK_DIR}/ims-atlas-pipeline.lock"
+mkdir -p "$LOCK_DIR"
+
+exec 9>"$LOCK_FILE"
+if ! flock -n 9; then
+  printf '%s %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "skip: previous pipeline still running (flock)"
+  exit 0
+fi
 
 VERSION="${ATLAS_RELEASE_VERSION:-1.1.0}"
 BY="${ATLAS_PROMOTE_BY:-pipeline}"
@@ -14,47 +23,38 @@ log() { printf '%s %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*"; }
 
 fail() {
   log "ERROR: $*"
-  if [[ "${ATLAS_OPEN_GITHUB_ISSUE:-0}" == "1" ]]; then
-    # Best-effort; never hide the original failure.
-    docker run --rm \
-      -v "$ROOT:/w" -w /w/etl \
-      -e ATLAS_ROOT=/w \
-      -e GH_TOKEN="${GH_TOKEN:-}" \
-      -e GITHUB_TOKEN="${GITHUB_TOKEN:-}" \
-      --network host \
-      ghcr.io/astral-sh/uv:python3.11-bookworm-slim \
-      uv run atlas-etl check-alert --open-issue || true
-  fi
   exit 1
 }
 
 run_etl() {
   local args=("$@")
+  local env_args=()
+  if [[ -f /etc/ims-atlas/check.env ]]; then
+    env_args+=(--env-file /etc/ims-atlas/check.env)
+  fi
   docker run --rm \
     -v "$ROOT:/w" -w /w/etl \
     -e ATLAS_ROOT=/w \
+    "${env_args[@]}" \
     --network host \
     ghcr.io/astral-sh/uv:python3.11-bookworm-slim \
     uv run atlas-etl "${args[@]}"
 }
 
-log "start pipeline version=${VERSION}"
-run_etl run --live --force || fail "atlas-etl run --live failed"
-run_etl release-dual --version "$VERSION" --force || fail "release-dual failed"
-run_etl promote "$VERSION" --by "$BY" --audience public --force || fail "promote public failed"
-run_etl promote "$VERSION" --by "$BY" --audience internal --force || fail "promote internal failed"
-run_etl export-transparency || fail "export-transparency failed"
+log "start hourly tick (${LOG_TAG})"
+run_etl hourly || fail "atlas-etl hourly failed"
 
-docker run --rm \
-  -v "$ROOT:/w" -w /w/etl \
-  -e ATLAS_ROOT=/w \
-  ghcr.io/astral-sh/uv:python3.11-bookworm-slim \
-  uv run python -c "from imsatlas_etl.export_col_hs64_panel import write_col_hs64_live_panel, write_col_hs64_illustrative_public; print(write_col_hs64_live_panel(version='${VERSION}')); print(write_col_hs64_illustrative_public(version='${VERSION}'))" \
-  || fail "col_hs64 panel export failed"
+if [[ "${ATLAS_FULL_RELEASE:-0}" == "1" ]]; then
+  log "full release requested"
+  run_etl run --live --force || fail "atlas-etl run --live failed"
+  run_etl release-dual --version "$VERSION" --force || fail "release-dual failed"
+  run_etl promote "$VERSION" --by "$BY" --audience public --force || fail "promote public failed"
+  run_etl promote "$VERSION" --by "$BY" --audience internal --force || fail "promote internal failed"
+  run_etl export-transparency || fail "export-transparency failed"
+fi
 
 ./deploy/sync-public-status.sh || fail "sync-public-status failed"
 
-# Reload nginx so newly written status/data are picked up (volume mounts).
 if command -v docker >/dev/null 2>&1; then
   docker compose -f deploy/docker-compose.yml up -d || fail "compose up failed"
 fi

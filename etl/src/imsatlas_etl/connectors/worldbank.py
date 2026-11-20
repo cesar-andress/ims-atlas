@@ -301,6 +301,7 @@ def extract_live(
     frames: list[pd.DataFrame] = []
     per_code: dict[str, dict[str, Any]] = {}
     skipped_codes: dict[str, str] = {}
+    pages_dir = dest_dir / "pages"
     for code in selected:
 
         def _save(
@@ -320,6 +321,43 @@ def extract_live(
 
         api_code = api_indicator_code(code)
         label = f"{code}→{api_code}" if api_code != code else code
+        # Resume: reuse already-downloaded page JSON when present (R-0 checkpoint).
+        cached_pages = (
+            sorted(pages_dir.glob(f"{code}_p*.json")) if pages_dir.is_dir() else []
+        )
+        if cached_pages and not force:
+            try:
+                rows: list[Any] = []
+                meta: dict[str, Any] = {
+                    "pages": len(cached_pages),
+                    "lastupdated": None,
+                }
+                for path in cached_pages:
+                    payload = json.loads(path.read_text(encoding="utf-8"))
+                    if isinstance(payload, list) and len(payload) >= 2:
+                        head = payload[0]
+                        if isinstance(head, dict) and meta.get("lastupdated") is None:
+                            meta["lastupdated"] = head.get("lastupdated")
+                        if isinstance(payload[1], list):
+                            rows.extend(payload[1])
+                frame, counts = tidy_indicator_rows(
+                    code,
+                    rows,
+                    countries=countries,
+                    aggregates=aggregates,
+                )
+                frames.append(frame)
+                per_code[code] = {
+                    "catalog_code": code,
+                    "api_code": api_code,
+                    "lastupdated": meta.get("lastupdated"),
+                    "pages": int(meta.get("pages") or 1),
+                    "status": "ok_resumed",
+                    **counts,
+                }
+                continue
+            except (OSError, json.JSONDecodeError, ValueError, TypeError):
+                pass
         try:
             meta, rows = _fetch_all_pages(
                 lambda page, _api=api_code: indicator_page_url(_api, page),

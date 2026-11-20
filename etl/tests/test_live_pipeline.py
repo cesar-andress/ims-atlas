@@ -183,10 +183,11 @@ def test_cli_check_live_without_manual_files_soft_ok(
 ) -> None:
     """EXTRA-4: missing manual drop is reported, not a hard failure."""
     monkeypatch.setenv("ATLAS_ROOT", str(tmp_path))
-    result = runner.invoke(app, ["check", "--source", "hofstede"])
+    # yale_epi remains manual-drop (no stable auto URL yet); hofstede is live.
+    result = runner.invoke(app, ["check", "--source", "yale_epi"])
     assert result.exit_code == 0, result.stdout + result.stderr
     freshness = json.loads((tmp_path / "status/freshness.json").read_text())
-    row = next(r for r in freshness["sources"] if r["source"] == "hofstede")
+    row = next(r for r in freshness["sources"] if r["source"] == "yale_epi")
     assert row["status"] == "falta fichero (manual)"
 
 

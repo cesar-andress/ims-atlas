@@ -81,6 +81,11 @@
       "additionalProperties": false,
       "properties": {
         "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$" },
+        "tier": {
+          "type": "string",
+          "enum": ["A", "B", "C"],
+          "description": "R-1 reliability tier (A must stay green; C frozen)"
+        },
         "publisher": { "type": "string", "minLength": 1 },
         "landing_url": { "type": "string", "minLength": 1 },
         "terms_url": { "type": "string", "minLength": 1 },

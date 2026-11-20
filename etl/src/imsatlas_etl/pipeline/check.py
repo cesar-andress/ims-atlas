@@ -94,9 +94,15 @@ def _live_probe(source_id: str, *, root: Path | None) -> dict[str, Any]:
         baci,
         cpi,
         doing_business,
+        ecb_fx,
+        fragile_states,
         gravity,
+        hofstede,
+        imf_weo,
         inform,
+        kof_globalisation,
         manual_drop,
+        vat_rates,
         wipo_gii,
         wits,
     )
@@ -115,6 +121,33 @@ def _live_probe(source_id: str, *, root: Path | None) -> dict[str, Any]:
             "upstream_version": wits.live_version(root=root),
             "note": "version label from config/wits_trains.json; local_only",
         }
+    if source_id == "hofstede":
+        return hofstede.probe_version()
+    if source_id == "ecb_fx":
+        return ecb_fx.probe_version()
+    if source_id == "vat_rates":
+        return vat_rates.probe_version(root=root)
+    if source_id == "imf_weo":
+        if has_manual_drop(source_id, root=root):
+            return {
+                "upstream_version": manual_drop.live_version(source_id, root=root),
+                "note": note,
+            }
+        return imf_weo.probe_version()
+    if source_id == "kof_globalisation":
+        if has_manual_drop(source_id, root=root):
+            return {
+                "upstream_version": manual_drop.live_version(source_id, root=root),
+                "note": note,
+            }
+        return kof_globalisation.probe_version()
+    if source_id == "fragile_states_index":
+        if has_manual_drop(source_id, root=root):
+            return {
+                "upstream_version": manual_drop.live_version(source_id, root=root),
+                "note": note,
+            }
+        return fragile_states.probe_version()
     step3 = {
         "inform_risk": inform,
         "transparency_cpi": cpi,

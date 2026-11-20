@@ -32,6 +32,14 @@ PIPELINE_SOURCES = (
     "imf_weo",
 )
 
+# Live-only connectors (no mini_world fixture yet). Hourly + freshness only.
+HOURLY_LIVE_SOURCES = (
+    "ecb_fx",
+    "vat_rates",
+    "kof_globalisation",
+    "fragile_states_index",
+)
+
 # EXTRA-4: also report these in freshness.json as ok / falta fichero / no conectada.
 # Not part of the core extract set until a connector + fixture exists.
 EXTRA_FRESHNESS_SOURCES = (
@@ -41,9 +49,8 @@ EXTRA_FRESHNESS_SOURCES = (
     "dane_dian_comex",
     "wto_tariffs",
     "wto_itip",
-    "fragile_states_index",
-    "kof_globalisation",
     "global_trade_alert",
+    *HOURLY_LIVE_SOURCES,
 )
 
 PHASE3_INDEX_SOURCES = (

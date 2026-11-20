@@ -1,6 +1,7 @@
 import { lazy, Suspense, useMemo, useRef } from "react";
 import { useTranslation } from "../i18n";
 import { AnalysisPage } from "../components/AnalysisPage";
+import { ChartFrame } from "../components/ChartFrame";
 import { ExportMenu } from "../components/ExportMenu";
 import { HopRanking } from "../components/uncertainty/HopRanking";
 import { hopSamplesFromRanks } from "../components/uncertainty/hopSamples";
@@ -132,21 +133,21 @@ export function Uncertainty() {
                   <summary>{t("smaaAcceptAdvanced")}</summary>
                   <p className="muted small">{t("smaaAcceptAdvancedHint")}</p>
                   <div data-export-surface="chart">
-                    <ExportMenu
+                    <ChartFrame
                       testIdPrefix="smaa-accept"
-                      kind="chart"
                       title="SMAA rank acceptability"
                       chartRef={acceptRef}
-                    />
-                    <Suspense fallback={<p className="muted">{t("loading")}</p>}>
-                      <RankAcceptabilityChart
-                        alternatives={smaaModel.smaa.alternatives}
-                        acceptability={smaaModel.smaa.acceptability}
-                        onReady={(c) => {
-                          acceptRef.current = c;
-                        }}
-                      />
-                    </Suspense>
+                    >
+                      <Suspense fallback={<p className="muted">{t("loading")}</p>}>
+                        <RankAcceptabilityChart
+                          alternatives={smaaModel.smaa.alternatives}
+                          acceptability={smaaModel.smaa.acceptability}
+                          onReady={(c) => {
+                            acceptRef.current = c;
+                          }}
+                        />
+                      </Suspense>
+                    </ChartFrame>
                   </div>
                 </details>
 
@@ -211,20 +212,20 @@ export function Uncertainty() {
                 <h2>{t("tornadoTitle")}</h2>
                 <p className="muted small">{t("tornadoHint")}</p>
                 <div data-export-surface="chart">
-                  <ExportMenu
+                  <ChartFrame
                     testIdPrefix="tornado-chart"
-                    kind="chart"
                     title="Tornado chart"
                     chartRef={tornadoRef}
-                  />
-                  <Suspense fallback={<p className="muted">{t("loading")}</p>}>
-                    <TornadoChart
-                      bars={smaaModel.tornado}
-                      onReady={(c) => {
-                        tornadoRef.current = c;
-                      }}
-                    />
-                  </Suspense>
+                  >
+                    <Suspense fallback={<p className="muted">{t("loading")}</p>}>
+                      <TornadoChart
+                        bars={smaaModel.tornado}
+                        onReady={(c) => {
+                          tornadoRef.current = c;
+                        }}
+                      />
+                    </Suspense>
+                  </ChartFrame>
                 </div>
                 <div data-export-surface="table">
                   <ExportMenu
