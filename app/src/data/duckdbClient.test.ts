@@ -1,5 +1,10 @@
-import { describe, expect, it } from "vitest";
-import { createMemoryDataClient } from "./duckdbClient";
+import { afterEach, describe, expect, it } from "vitest";
+import {
+  createDuckDbClient,
+  createMemoryDataClient,
+  getAtlasDataClient,
+  resetAtlasDataClientForTests,
+} from "./duckdbClient";
 
 describe("memory data client", () => {
   it("filters country-year rows", async () => {
@@ -35,5 +40,25 @@ describe("memory data client", () => {
     await client.init();
     await expect(client.loadTradeChapter("64")).resolves.toBe(false);
     await expect(client.loadCountryProductChapter("15")).resolves.toBe(false);
+    expect(client.tradeChapterUrl("64")).toBeUndefined();
+  });
+});
+
+describe("getAtlasDataClient", () => {
+  afterEach(() => {
+    resetAtlasDataClientForTests();
+  });
+
+  it("returns a stable singleton", () => {
+    const a = getAtlasDataClient();
+    const b = getAtlasDataClient();
+    expect(a).toBe(b);
+  });
+
+  it("createDuckDbClient still yields isolated instances", () => {
+    const a = createDuckDbClient();
+    const b = createDuckDbClient();
+    expect(a).not.toBe(b);
+    expect(a).not.toBe(getAtlasDataClient());
   });
 });

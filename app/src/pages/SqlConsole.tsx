@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { PageShell } from "../components/PageShell";
 import { ExportMenu } from "../components/ExportMenu";
-import { createDuckDbClient } from "../data/duckdbClient";
+import { getAtlasDataClient } from "../data/duckdbClient";
 import { useTranslation } from "../i18n";
 import { useAnalysis } from "../state/useAnalysis";
 
@@ -10,7 +10,7 @@ const EXAMPLES = [
   "SELECT variable_id, count(*) AS n FROM country_year GROUP BY 1 ORDER BY n DESC LIMIT 20",
   "SELECT iso3, year, value FROM country_year WHERE variable_id = 'GDPPC' LIMIT 50",
   "SELECT year, count(*) AS cells FROM country_year GROUP BY 1 ORDER BY 1",
-  "SELECT * FROM bilateral_year LIMIT 10",
+  "SELECT * FROM bilateral_year WHERE year = 2022 LIMIT 10",
 ] as const;
 
 const FORBIDDEN =
@@ -26,7 +26,7 @@ export function SqlConsole() {
   const [error, setError] = useState<string | null>(null);
   const [running, setRunning] = useState(false);
 
-  const client = useMemo(() => createDuckDbClient(), []);
+  const client = useMemo(() => getAtlasDataClient(), []);
 
   async function run() {
     setError(null);
@@ -39,6 +39,7 @@ export function SqlConsole() {
     try {
       await client.init();
       try {
+        // country_year as TABLE; bilateral_year as VIEW (no 4.8M-row materialise).
         await client.loadRelease();
       } catch (err) {
         setError(
