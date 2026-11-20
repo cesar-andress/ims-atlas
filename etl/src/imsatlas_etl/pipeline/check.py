@@ -125,12 +125,18 @@ def run_check(
     out = freshness_path(root=root)
     out.parent.mkdir(parents=True, exist_ok=True)
     by_id: dict[str, dict[str, Any]] = {}
+    live_partial = fixture_root is None and set(selected) != set(PIPELINE_SOURCES)
     if out.is_file() and set(selected) != set(PIPELINE_SOURCES):
         try:
             previous = json.loads(out.read_text(encoding="utf-8"))
             for old in previous.get("sources") or []:
-                if isinstance(old, dict) and "source" in old:
-                    by_id[str(old["source"])] = old
+                if not isinstance(old, dict) or "source" not in old:
+                    continue
+                # Live partial checks must not keep mini-/fixture leftovers that
+                # would paint the whole freshness file as a fixture publish.
+                if live_partial and old.get("mode") == "fixture":
+                    continue
+                by_id[str(old["source"])] = old
         except (json.JSONDecodeError, OSError):
             by_id = {}
     for row in rows:

@@ -1,137 +1,40 @@
 {
-  "fixture_banner": "Fixture pipeline artefact (mini_world test data). Not a live ingest and not a production data release.",
-  "generated_at": "2026-11-19T20:52:34Z",
-  "is_fixture": true,
+  "generated_at": "2026-11-20T06:29:11Z",
+  "is_fixture": false,
   "mode": "live",
   "sources": [
     {
-      "checked_at": "2026-11-19T20:52:34Z",
+      "checked_at": "2026-11-20T06:29:11Z",
       "ingested_version": "2026-11-11",
       "mode": "live",
       "note": null,
       "source": "worldbank_wdi",
       "stale": false,
+      "terms_changed": null,
       "upstream_changed_at": "2026-11-11",
       "upstream_version": "2026-11-11"
     },
     {
-      "checked_at": "2026-11-19T20:52:34Z",
+      "checked_at": "2026-11-20T06:29:11Z",
       "ingested_version": "2026-09-25",
       "mode": "live",
       "note": null,
       "source": "worldbank_wgi",
       "stale": false,
+      "terms_changed": null,
       "upstream_changed_at": "2026-09-25",
       "upstream_version": "2026-09-25"
     },
     {
-      "checked_at": "2026-11-19T20:52:34Z",
+      "checked_at": "2026-11-20T06:29:11Z",
       "ingested_version": "2026-11-11",
       "mode": "live",
       "note": null,
       "source": "worldbank_lpi",
       "stale": false,
+      "terms_changed": null,
       "upstream_changed_at": "2026-11-11",
       "upstream_version": "2026-11-11"
-    },
-    {
-      "checked_at": "2026-11-19T20:52:34Z",
-      "ingested_version": "mini-2022",
-      "mode": "fixture",
-      "source": "baci",
-      "stale": false,
-      "upstream_changed_at": "2022-12-31",
-      "upstream_version": "mini-2022"
-    },
-    {
-      "checked_at": "2026-11-19T20:52:34Z",
-      "ingested_version": "mini-2022",
-      "mode": "fixture",
-      "source": "cepi_gravity",
-      "stale": false,
-      "upstream_changed_at": "2022-12-31",
-      "upstream_version": "mini-2022"
-    },
-    {
-      "checked_at": "2026-11-19T20:52:34Z",
-      "ingested_version": "mini-2022",
-      "mode": "fixture",
-      "source": "wits_trains",
-      "stale": false,
-      "upstream_changed_at": "2022-12-31",
-      "upstream_version": "mini-2022"
-    },
-    {
-      "checked_at": "2026-11-19T20:52:34Z",
-      "ingested_version": "mini-2022",
-      "mode": "fixture",
-      "source": "hofstede",
-      "stale": false,
-      "upstream_changed_at": "2022-12-31",
-      "upstream_version": "mini-2022"
-    },
-    {
-      "checked_at": "2026-11-19T20:52:34Z",
-      "ingested_version": "mini-2022",
-      "mode": "fixture",
-      "source": "itu_datahub",
-      "stale": false,
-      "upstream_changed_at": "2022-12-31",
-      "upstream_version": "mini-2022"
-    },
-    {
-      "checked_at": "2026-11-19T20:52:34Z",
-      "ingested_version": "mini-2022",
-      "mode": "fixture",
-      "source": "ef_epi",
-      "stale": false,
-      "upstream_changed_at": "2022-12-31",
-      "upstream_version": "mini-2022"
-    },
-    {
-      "checked_at": "2026-11-19T20:52:34Z",
-      "ingested_version": "mini-2022",
-      "mode": "fixture",
-      "source": "odin",
-      "stale": false,
-      "upstream_changed_at": "2022-12-31",
-      "upstream_version": "mini-2022"
-    },
-    {
-      "checked_at": "2026-11-19T20:52:34Z",
-      "ingested_version": "mini-2022",
-      "mode": "fixture",
-      "source": "gedi",
-      "stale": false,
-      "upstream_changed_at": "2022-12-31",
-      "upstream_version": "mini-2022"
-    },
-    {
-      "checked_at": "2026-11-19T20:52:34Z",
-      "ingested_version": "mini-2022",
-      "mode": "fixture",
-      "source": "wipo_gii",
-      "stale": false,
-      "upstream_changed_at": "2022-12-31",
-      "upstream_version": "mini-2022"
-    },
-    {
-      "checked_at": "2026-11-19T20:52:34Z",
-      "ingested_version": "mini-2022",
-      "mode": "fixture",
-      "source": "startupblink",
-      "stale": false,
-      "upstream_changed_at": "2022-12-31",
-      "upstream_version": "mini-2022"
-    },
-    {
-      "checked_at": "2026-11-19T20:52:34Z",
-      "ingested_version": "mini-2022",
-      "mode": "fixture",
-      "source": "yale_epi",
-      "stale": false,
-      "upstream_changed_at": "2022-12-31",
-      "upstream_version": "mini-2022"
     }
   ]
 }

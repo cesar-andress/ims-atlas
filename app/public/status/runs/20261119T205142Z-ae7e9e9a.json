@@ -1,0 +1,101 @@
+{
+  "changes_path": "status/changes/20261119T205142Z-ae7e9e9a.json",
+  "ended_at": "2026-11-19T20:51:52Z",
+  "fixture_mode": false,
+  "force": true,
+  "is_fixture": false,
+  "mode": "live",
+  "run_id": "20261119T205142Z-ae7e9e9a",
+  "sources": [
+    "worldbank_wdi",
+    "worldbank_wgi",
+    "worldbank_lpi"
+  ],
+  "started_at": "2026-11-19T20:51:42Z",
+  "status": "ok",
+  "steps": {
+    "check": {
+      "duration_s": 0.2386,
+      "n_sources": 3,
+      "status": "ok"
+    },
+    "extract": {
+      "duration_s": 9.1147,
+      "results": [
+        {
+          "countries": 217,
+          "rows": 47081,
+          "skipped": false,
+          "source": "worldbank_wdi",
+          "upstream_version": "2026-11-11",
+          "version": "2026-11-11",
+          "years": [
+            1990,
+            2025
+          ]
+        },
+        {
+          "countries": 207,
+          "rows": 25937,
+          "skipped": false,
+          "source": "worldbank_wgi",
+          "upstream_version": "2026-09-25",
+          "version": "2026-09-25",
+          "years": [
+            1996,
+            2025
+          ]
+        },
+        {
+          "countries": 169,
+          "rows": 1071,
+          "skipped": false,
+          "source": "worldbank_lpi",
+          "upstream_version": "2026-11-11",
+          "version": "2026-11-11",
+          "years": [
+            2007,
+            2022
+          ]
+        }
+      ],
+      "status": "ok"
+    },
+    "lineage": {
+      "reason": "skipped because transform did not run on a source subset",
+      "status": "skipped"
+    },
+    "qa": {
+      "reason": "skipped because transform did not run on a source subset",
+      "status": "skipped"
+    },
+    "transform": {
+      "reason": "selected sources are a subset of PIPELINE_SOURCES; curated merge needs the full set",
+      "status": "skipped"
+    },
+    "validate": {
+      "duration_s": 0.0492,
+      "results": [
+        {
+          "ok": true,
+          "rows": 47081,
+          "source": "worldbank_wdi",
+          "version": "2026-11-11"
+        },
+        {
+          "ok": true,
+          "rows": 25937,
+          "source": "worldbank_wgi",
+          "version": "2026-09-25"
+        },
+        {
+          "ok": true,
+          "rows": 1071,
+          "source": "worldbank_lpi",
+          "version": "2026-11-11"
+        }
+      ],
+      "status": "ok"
+    }
+  }
+}

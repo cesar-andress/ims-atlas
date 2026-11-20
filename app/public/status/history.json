@@ -1,6 +1,5 @@
 {
-  "fixture_banner": "Fixture pipeline artefact (mini_world test data). Not a live ingest and not a production data release.",
-  "is_fixture": true,
+  "is_fixture": false,
   "n_runs": 2,
   "runs": [
     {

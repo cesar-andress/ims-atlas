@@ -1,7 +1,6 @@
 {
-  "fixture_banner": "Fixture pipeline artefact (mini_world test data). Not a live ingest and not a production data release.",
   "generated_from": "catalog/sources.yaml + status/freshness.json + release manifest",
-  "is_fixture": true,
+  "is_fixture": false,
   "n_sources": 49,
   "schema": "transparency-sources/v1",
   "sources": [
@@ -16,7 +15,7 @@
         }
       ],
       "freshness": {
-        "checked_at": "2026-11-19T20:52:34Z",
+        "checked_at": "2026-11-20T06:29:11Z",
         "ingested_version": "2026-11-11",
         "mode": "live",
         "stale": false,
@@ -63,7 +62,7 @@
         }
       ],
       "freshness": {
-        "checked_at": "2026-11-19T20:52:34Z",
+        "checked_at": "2026-11-20T06:29:11Z",
         "ingested_version": "2026-09-25",
         "mode": "live",
         "stale": false,
@@ -110,7 +109,7 @@
         }
       ],
       "freshness": {
-        "checked_at": "2026-11-19T20:52:34Z",
+        "checked_at": "2026-11-20T06:29:11Z",
         "ingested_version": "2026-11-11",
         "mode": "live",
         "stale": false,
@@ -157,13 +156,13 @@
         }
       ],
       "freshness": {
-        "checked_at": "2026-11-19T20:52:34Z",
-        "ingested_version": "mini-2022",
-        "mode": "fixture",
-        "stale": false,
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
         "terms_changed": null,
-        "upstream_changed_at": "2022-12-31",
-        "upstream_version": "mini-2022"
+        "upstream_changed_at": null,
+        "upstream_version": null
       },
       "id": "baci",
       "landing_url": "https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37",
@@ -204,13 +203,13 @@
         }
       ],
       "freshness": {
-        "checked_at": "2026-11-19T20:52:34Z",
-        "ingested_version": "mini-2022",
-        "mode": "fixture",
-        "stale": false,
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
         "terms_changed": null,
-        "upstream_changed_at": "2022-12-31",
-        "upstream_version": "mini-2022"
+        "upstream_changed_at": null,
+        "upstream_version": null
       },
       "id": "cepi_gravity",
       "landing_url": "https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=8",
@@ -251,13 +250,13 @@
         }
       ],
       "freshness": {
-        "checked_at": "2026-11-19T20:52:34Z",
-        "ingested_version": "mini-2022",
-        "mode": "fixture",
-        "stale": false,
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
         "terms_changed": null,
-        "upstream_changed_at": "2022-12-31",
-        "upstream_version": "mini-2022"
+        "upstream_changed_at": null,
+        "upstream_version": null
       },
       "id": "wits_trains",
       "landing_url": "https://wits.worldbank.org/",
@@ -298,13 +297,13 @@
         }
       ],
       "freshness": {
-        "checked_at": "2026-11-19T20:52:34Z",
-        "ingested_version": "mini-2022",
-        "mode": "fixture",
-        "stale": false,
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
         "terms_changed": null,
-        "upstream_changed_at": "2022-12-31",
-        "upstream_version": "mini-2022"
+        "upstream_changed_at": null,
+        "upstream_version": null
       },
       "id": "hofstede",
       "landing_url": "https://geerthofstede.com/research-and-vsm/dimension-data-matrix/",
@@ -345,13 +344,13 @@
         }
       ],
       "freshness": {
-        "checked_at": "2026-11-19T20:52:34Z",
-        "ingested_version": "mini-2022",
-        "mode": "fixture",
-        "stale": false,
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
         "terms_changed": null,
-        "upstream_changed_at": "2022-12-31",
-        "upstream_version": "mini-2022"
+        "upstream_changed_at": null,
+        "upstream_version": null
       },
       "id": "itu_datahub",
       "landing_url": "https://datahub.itu.int/",
@@ -392,13 +391,13 @@
         }
       ],
       "freshness": {
-        "checked_at": "2026-11-19T20:52:34Z",
-        "ingested_version": "mini-2022",
-        "mode": "fixture",
-        "stale": false,
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
         "terms_changed": null,
-        "upstream_changed_at": "2022-12-31",
-        "upstream_version": "mini-2022"
+        "upstream_changed_at": null,
+        "upstream_version": null
       },
       "id": "ef_epi",
       "landing_url": "https://www.ef.com/wwen/epi/",
@@ -439,13 +438,13 @@
         }
       ],
       "freshness": {
-        "checked_at": "2026-11-19T20:52:34Z",
-        "ingested_version": "mini-2022",
-        "mode": "fixture",
-        "stale": false,
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
         "terms_changed": null,
-        "upstream_changed_at": "2022-12-31",
-        "upstream_version": "mini-2022"
+        "upstream_changed_at": null,
+        "upstream_version": null
       },
       "id": "odin",
       "landing_url": "https://odin.opendatawatch.com/",
@@ -486,13 +485,13 @@
         }
       ],
       "freshness": {
-        "checked_at": "2026-11-19T20:52:34Z",
-        "ingested_version": "mini-2022",
-        "mode": "fixture",
-        "stale": false,
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
         "terms_changed": null,
-        "upstream_changed_at": "2022-12-31",
-        "upstream_version": "mini-2022"
+        "upstream_changed_at": null,
+        "upstream_version": null
       },
       "id": "gedi",
       "landing_url": "https://thegedi.org/",
@@ -533,13 +532,13 @@
         }
       ],
       "freshness": {
-        "checked_at": "2026-11-19T20:52:34Z",
-        "ingested_version": "mini-2022",
-        "mode": "fixture",
-        "stale": false,
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
         "terms_changed": null,
-        "upstream_changed_at": "2022-12-31",
-        "upstream_version": "mini-2022"
+        "upstream_changed_at": null,
+        "upstream_version": null
       },
       "id": "wipo_gii",
       "landing_url": "https://www.wipo.int/global_innovation_index/",
@@ -580,13 +579,13 @@
         }
       ],
       "freshness": {
-        "checked_at": "2026-11-19T20:52:34Z",
-        "ingested_version": "mini-2022",
-        "mode": "fixture",
-        "stale": false,
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
         "terms_changed": null,
-        "upstream_changed_at": "2022-12-31",
-        "upstream_version": "mini-2022"
+        "upstream_changed_at": null,
+        "upstream_version": null
       },
       "id": "startupblink",
       "landing_url": "https://www.startupblink.com/",
@@ -627,13 +626,13 @@
         }
       ],
       "freshness": {
-        "checked_at": "2026-11-19T20:52:34Z",
-        "ingested_version": "mini-2022",
-        "mode": "fixture",
-        "stale": false,
+        "checked_at": null,
+        "ingested_version": null,
+        "mode": null,
+        "stale": null,
         "terms_changed": null,
-        "upstream_changed_at": "2022-12-31",
-        "upstream_version": "mini-2022"
+        "upstream_changed_at": null,
+        "upstream_version": null
       },
       "id": "yale_epi",
       "landing_url": "https://epi.yale.edu/",

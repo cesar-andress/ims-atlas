@@ -56,10 +56,29 @@ def _write_json(path: Path, payload: object) -> None:
 
 
 def _latest_run(runs_dir: Path) -> Path | None:
+    """Newest timestamped run file. Never pick the ``latest.json`` pointer itself."""
     if not runs_dir.is_dir():
         return None
-    files = sorted(runs_dir.glob("*.json"))
+    files = sorted(p for p in runs_dir.glob("*.json") if p.name != "latest.json")
     return files[-1] if files else None
+
+
+def top_level_is_fixture(payload: dict[str, Any] | None) -> bool:
+    """Fixture honesty from top-level run/freshness fields only.
+
+    Nested per-source ``mode: fixture`` leftovers must not flag a live run
+    as a fixture publish (Phase L red banner = fixture *run*, not mixed catalog).
+    """
+    if not isinstance(payload, dict):
+        return False
+    if payload.get("fixture_mode") is True:
+        return True
+    mode = payload.get("mode")
+    if mode == "fixture":
+        return True
+    if mode == "live":
+        return False
+    return payload.get("is_fixture") is True
 
 
 def _coverage_matrices(coverage_dir: Path) -> dict[str, dict[str, dict[str, int]]]:
@@ -233,11 +252,9 @@ def write_transparency_bundle(
     if latest is not None:
         run_payload = _read_json(latest)
 
-    # Fixture honesty: anything derived from a fixture-mode run or freshness is
-    # flagged is_fixture:true in every public payload (SPEC: no fake "live").
-    fixture = payload_is_fixture(freshness) or (
-        run_payload is not None and payload_is_fixture(run_payload)
-    )
+    # Fixture honesty: top-level run/freshness mode only (Phase L).
+    # Nested leftover fixture source rows must not paint a live run as fixture.
+    fixture = top_level_is_fixture(freshness) or top_level_is_fixture(run_payload)
     freshness = with_fixture_flag(freshness, fixture)
     for name, payload in (
         ("freshness.json", freshness),
@@ -250,7 +267,7 @@ def write_transparency_bundle(
     if latest is not None and run_payload is not None:
         runs_out = public_status / "runs"
         runs_out.mkdir(parents=True, exist_ok=True)
-        flagged_run = with_fixture_flag(run_payload, payload_is_fixture(run_payload))
+        flagged_run = with_fixture_flag(run_payload, top_level_is_fixture(run_payload))
         _write_json(runs_out / latest.name, flagged_run)
         _write_json(runs_out / "latest.json", flagged_run)
         _write_json(status_src / "runs" / "latest.json", flagged_run)
@@ -260,7 +277,8 @@ def write_transparency_bundle(
             continue
         old_payload = _read_json(old)
         _write_json(
-            old, with_fixture_flag(old_payload, payload_is_fixture(old_payload))
+            old,
+            with_fixture_flag(old_payload, top_level_is_fixture(old_payload)),
         )
 
     current_ptr = (
@@ -280,9 +298,12 @@ def write_transparency_bundle(
         manifest = _read_json(manifest_path)
         dest_rel = root / "app" / "public" / "data" / f"v{version}"
         dest_rel.mkdir(parents=True, exist_ok=True)
+        manifest_fixture = top_level_is_fixture(manifest) or payload_is_fixture(
+            manifest
+        )
         _write_json(
             dest_rel / "manifest.json",
-            with_fixture_flag(manifest, payload_is_fixture(manifest)),
+            with_fixture_flag(manifest, manifest_fixture),
         )
         # Also mirror CHANGELOG/README/integrity when present (text, not invented).
         for name in ("CHANGELOG.md", "README.md", "LICENSES.md", "SHA256SUMS"):
@@ -308,7 +329,9 @@ def write_transparency_bundle(
         )
 
     coverage = _coverage_matrices(status_src / "coverage")
-    bundle_fixture = fixture or (manifest is not None and payload_is_fixture(manifest))
+    # Status red banner = fixture *run* only. An empty placeholder release that
+    # still lists mini- versions must not paint a live status publish as fixture.
+    bundle_fixture = fixture
     sources = with_fixture_flag(_sources_payload(freshness, manifest), bundle_fixture)
     variables = with_fixture_flag(
         _variables_payload(manifest, coverage, freshness, root=root),
@@ -347,7 +370,7 @@ def write_transparency_bundle(
                 changes_out / f"{run_id}.json",
                 with_fixture_flag(
                     change_payload,
-                    payload_is_fixture(change_payload) or bundle_fixture,
+                    top_level_is_fixture(change_payload),
                 ),
             )
         summaries: list[str] = []

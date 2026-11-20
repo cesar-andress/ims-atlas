@@ -91,15 +91,25 @@ FIXTURE_ROOT = Path(__file__).parent / "fixtures" / "mini_world"
 
 
 def unflagged_fixture_artefacts(base: Path, *, patterns: tuple[str, ...]) -> list[str]:
-    """JSON files under ``base`` with fixture markers but no is_fixture:true."""
+    """JSON files under ``base`` that are fixture *runs* but lack is_fixture:true.
+
+    Top-level ``mode: live`` files are not treated as fixture publishes even if a
+    nested source row still mentions fixture (Phase L honesty = run mode).
+    """
     hits: list[str] = []
     for pattern in patterns:
         for path in sorted(base.glob(pattern)):
             data = json.loads(path.read_text(encoding="utf-8"))
+            if not isinstance(data, dict):
+                continue
+            # Explicit live publish (or mode:live) is honest even if a nested
+            # field still mentions a historical mini- / fixture probe.
+            if data.get("is_fixture") is False:
+                continue
+            if data.get("mode") == "live" and data.get("fixture_mode") is not True:
+                continue
             text = json.dumps(data, sort_keys=True)
-            if RAW_FIXTURE_MARKERS.search(text) and not (
-                isinstance(data, dict) and data.get("is_fixture") is True
-            ):
+            if RAW_FIXTURE_MARKERS.search(text) and data.get("is_fixture") is not True:
                 hits.append(str(path.relative_to(base)))
     return hits
 
@@ -129,6 +139,32 @@ def test_payload_is_fixture_detects_mini_world_and_mode() -> None:
     assert payload_is_fixture({"upstream_version": "mini-2022"})
     assert payload_is_fixture({"fixture_mode": True})
     assert not payload_is_fixture({"sources": [{"mode": "live", "v": "2024-01-15"}]})
+
+
+def test_top_level_is_fixture_ignores_nested_source_modes() -> None:
+    from imsatlas_etl.export_transparency import top_level_is_fixture
+
+    nested = {"mode": "live", "sources": [{"mode": "fixture"}]}
+    assert top_level_is_fixture(nested) is False
+    assert top_level_is_fixture({"mode": "fixture"}) is True
+    assert top_level_is_fixture({"fixture_mode": True, "mode": "live"}) is True
+    assert top_level_is_fixture({"mode": "live", "is_fixture": True}) is False
+
+
+def test_latest_run_skips_latest_pointer(tmp_path: Path) -> None:
+    from imsatlas_etl.export_transparency import _latest_run
+
+    runs = tmp_path / "runs"
+    runs.mkdir()
+    older = runs / "20260101T000000Z-aaaa.json"
+    newer = runs / "20260102T000000Z-bbbb.json"
+    pointer = runs / "latest.json"
+    older.write_text('{"mode":"fixture"}\n', encoding="utf-8")
+    newer.write_text('{"mode":"live"}\n', encoding="utf-8")
+    pointer.write_text('{"mode":"fixture","stale":true}\n', encoding="utf-8")
+    latest = _latest_run(runs)
+    assert latest is not None
+    assert latest.name == "20260102T000000Z-bbbb.json"
 
 
 def _export_root(

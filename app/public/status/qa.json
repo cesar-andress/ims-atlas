@@ -6,9 +6,8 @@
     "yoy_jump_warn_pct": 50.0
   },
   "findings": [],
-  "fixture_banner": "Fixture pipeline artefact (mini_world test data). Not a live ingest and not a production data release.",
   "generated_at": "2026-11-19T11:47:28Z",
-  "is_fixture": true,
+  "is_fixture": false,
   "n_block": 0,
   "n_warn": 0,
   "status": "pass"

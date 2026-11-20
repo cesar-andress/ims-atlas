@@ -1,208 +1,98 @@
 {
-  "ended_at": "2026-11-19T11:47:27Z",
-  "fixture_banner": "Fixture pipeline artefact (mini_world test data). Not a live ingest and not a production data release.",
-  "fixture_mode": true,
+  "changes_path": "status/changes/20261119T205142Z-ae7e9e9a.json",
+  "ended_at": "2026-11-19T20:51:52Z",
+  "fixture_mode": false,
   "force": true,
-  "is_fixture": true,
-  "run_id": "20261119T114726Z-2385aff6",
+  "is_fixture": false,
+  "mode": "live",
+  "run_id": "20261119T205142Z-ae7e9e9a",
   "sources": [
     "worldbank_wdi",
     "worldbank_wgi",
-    "worldbank_lpi",
-    "baci",
-    "cepi_gravity",
-    "wits_trains",
-    "hofstede",
-    "itu_datahub",
-    "ef_epi",
-    "odin",
-    "gedi",
-    "wipo_gii",
-    "startupblink",
-    "yale_epi"
+    "worldbank_lpi"
   ],
-  "started_at": "2026-11-19T11:47:26Z",
+  "started_at": "2026-11-19T20:51:42Z",
   "status": "ok",
   "steps": {
     "check": {
-      "duration_s": 0.0009,
-      "n_sources": 14,
+      "duration_s": 0.2386,
+      "n_sources": 3,
       "status": "ok"
     },
     "extract": {
-      "duration_s": 0.0061,
+      "duration_s": 9.1147,
       "results": [
         {
+          "countries": 217,
+          "rows": 47081,
           "skipped": false,
           "source": "worldbank_wdi",
-          "version": "mini-2022"
+          "upstream_version": "2026-11-11",
+          "version": "2026-11-11",
+          "years": [
+            1990,
+            2025
+          ]
         },
         {
+          "countries": 207,
+          "rows": 25937,
           "skipped": false,
           "source": "worldbank_wgi",
-          "version": "mini-2022"
+          "upstream_version": "2026-09-25",
+          "version": "2026-09-25",
+          "years": [
+            1996,
+            2025
+          ]
         },
         {
+          "countries": 169,
+          "rows": 1071,
           "skipped": false,
           "source": "worldbank_lpi",
-          "version": "mini-2022"
-        },
-        {
-          "skipped": false,
-          "source": "baci",
-          "version": "mini-2022"
-        },
-        {
-          "skipped": false,
-          "source": "cepi_gravity",
-          "version": "mini-2022"
-        },
-        {
-          "skipped": false,
-          "source": "wits_trains",
-          "version": "mini-2022"
-        },
-        {
-          "skipped": false,
-          "source": "hofstede",
-          "version": "mini-2022"
-        },
-        {
-          "skipped": false,
-          "source": "itu_datahub",
-          "version": "mini-2022"
-        },
-        {
-          "skipped": false,
-          "source": "ef_epi",
-          "version": "mini-2022"
-        },
-        {
-          "skipped": false,
-          "source": "odin",
-          "version": "mini-2022"
-        },
-        {
-          "skipped": false,
-          "source": "gedi",
-          "version": "mini-2022"
-        },
-        {
-          "skipped": false,
-          "source": "wipo_gii",
-          "version": "mini-2022"
-        },
-        {
-          "skipped": false,
-          "source": "startupblink",
-          "version": "mini-2022"
-        },
-        {
-          "skipped": false,
-          "source": "yale_epi",
-          "version": "mini-2022"
+          "upstream_version": "2026-11-11",
+          "version": "2026-11-11",
+          "years": [
+            2007,
+            2022
+          ]
         }
       ],
       "status": "ok"
     },
+    "lineage": {
+      "reason": "skipped because transform did not run on a source subset",
+      "status": "skipped"
+    },
+    "qa": {
+      "reason": "skipped because transform did not run on a source subset",
+      "status": "skipped"
+    },
     "transform": {
-      "duration_s": 0.0444,
-      "row_counts": {
-        "bilateral_year": 18,
-        "country_year": 9,
-        "trade_hs2": 36,
-        "trade_hs4": 36,
-        "trade_hs6": 36,
-        "variables_country_year": 9
-      },
-      "status": "ok"
+      "reason": "selected sources are a subset of PIPELINE_SOURCES; curated merge needs the full set",
+      "status": "skipped"
     },
     "validate": {
-      "duration_s": 0.0773,
+      "duration_s": 0.0492,
       "results": [
         {
           "ok": true,
-          "rows": 36,
+          "rows": 47081,
           "source": "worldbank_wdi",
-          "version": "mini-2022"
+          "version": "2026-11-11"
         },
         {
           "ok": true,
-          "rows": 27,
+          "rows": 25937,
           "source": "worldbank_wgi",
-          "version": "mini-2022"
+          "version": "2026-09-25"
         },
         {
           "ok": true,
-          "rows": 9,
+          "rows": 1071,
           "source": "worldbank_lpi",
-          "version": "mini-2022"
-        },
-        {
-          "ok": true,
-          "rows": 36,
-          "source": "baci",
-          "version": "mini-2022"
-        },
-        {
-          "ok": true,
-          "rows": 18,
-          "source": "cepi_gravity",
-          "version": "mini-2022"
-        },
-        {
-          "ok": true,
-          "rows": 36,
-          "source": "wits_trains",
-          "version": "mini-2022"
-        },
-        {
-          "ok": true,
-          "rows": 3,
-          "source": "hofstede",
-          "version": "mini-2022"
-        },
-        {
-          "ok": true,
-          "rows": 9,
-          "source": "itu_datahub",
-          "version": "mini-2022"
-        },
-        {
-          "ok": true,
-          "rows": 9,
-          "source": "ef_epi",
-          "version": "mini-2022"
-        },
-        {
-          "ok": true,
-          "rows": 9,
-          "source": "odin",
-          "version": "mini-2022"
-        },
-        {
-          "ok": true,
-          "rows": 9,
-          "source": "gedi",
-          "version": "mini-2022"
-        },
-        {
-          "ok": true,
-          "rows": 9,
-          "source": "wipo_gii",
-          "version": "mini-2022"
-        },
-        {
-          "ok": true,
-          "rows": 9,
-          "source": "startupblink",
-          "version": "mini-2022"
-        },
-        {
-          "ok": true,
-          "rows": 9,
-          "source": "yale_epi",
-          "version": "mini-2022"
+          "version": "2026-11-11"
         }
       ],
       "status": "ok"

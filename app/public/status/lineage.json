@@ -617,9 +617,8 @@
       "to": "release:v1.1.0"
     }
   ],
-  "fixture_banner": "Fixture pipeline artefact (mini_world test data). Not a live ingest and not a production data release.",
   "generated_at": "2026-11-19T21:31:12Z",
-  "is_fixture": true,
+  "is_fixture": false,
   "nodes": [
     {
       "id": "source:worldbank_wdi",

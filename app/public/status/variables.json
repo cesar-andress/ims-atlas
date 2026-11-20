@@ -1,8 +1,7 @@
 {
-  "fixture_banner": "Fixture pipeline artefact (mini_world test data). Not a live ingest and not a production data release.",
   "generated_from": "catalog/variables.yaml + release manifest + status/coverage",
-  "is_fixture": true,
-  "n_variables": 45,
+  "is_fixture": false,
+  "n_variables": 50,
   "schema": "transparency-variables/v1",
   "variables": [
     {
@@ -29,9 +28,9 @@
         ]
       },
       "id": "IMPV",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "HS chapter imports (USD)",
         "es": "Importaciones del cap\u00edtulo HS (USD)"
@@ -74,7 +73,7 @@
         ]
       },
       "id": "IMPC",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": "2026-11-20T06:29:11Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -117,9 +116,9 @@
         ]
       },
       "id": "GRW",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "HS chapter import growth (3-year CAGR)",
         "es": "Crecimiento de importaciones del cap\u00edtulo HS (CAGR 3 a\u00f1os)"
@@ -159,7 +158,7 @@
         ]
       },
       "id": "GDPPC",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": "2026-11-20T06:29:11Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -201,9 +200,9 @@
         ]
       },
       "id": "DIST",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "Population-weighted distance",
         "es": "Distancia ponderada por poblaci\u00f3n"
@@ -243,9 +242,9 @@
         ]
       },
       "id": "TARIF",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "Applied preferential tariff (AHS), origin to destination",
         "es": "Arancel preferencial aplicado (AHS), origen a destino"
@@ -285,9 +284,9 @@
         ]
       },
       "id": "FTA",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "Preferential trade agreement in force",
         "es": "Acuerdo comercial preferencial en vigor"
@@ -327,7 +326,7 @@
         ]
       },
       "id": "LPI",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": "2026-11-20T06:29:11Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -369,9 +368,9 @@
         ]
       },
       "id": "ASIASH",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "China+Vietnam share of destination HS imports",
         "es": "Cuota China+Vietnam en importaciones HS del destino"
@@ -411,9 +410,9 @@
         ]
       },
       "id": "HHI",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "Supplier concentration (HHI) in destination HS imports",
         "es": "Concentraci\u00f3n de proveedores (HHI) en importaciones HS"
@@ -453,9 +452,9 @@
         ]
       },
       "id": "UVGAP",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "Absolute log unit-value gap (destination imports vs origin exports)",
         "es": "Brecha absoluta de valor unitario en log"
@@ -495,9 +494,9 @@
         ]
       },
       "id": "CULT",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "Cultural distance (Kogut-Singh, Hofstede 6 dimensions)",
         "es": "Distancia cultural (Kogut-Singh, Hofstede 6 dimensiones)"
@@ -537,9 +536,9 @@
         ]
       },
       "id": "LANG",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "Common official language",
         "es": "Idioma oficial com\u00fan"
@@ -579,7 +578,7 @@
         ]
       },
       "id": "INFL",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": "2026-11-20T06:29:11Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -621,7 +620,7 @@
         ]
       },
       "id": "UNEMP",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": "2026-11-20T06:29:11Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -663,7 +662,7 @@
         ]
       },
       "id": "GOV",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": "2026-11-20T06:29:11Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-09-25",
       "name": {
@@ -705,7 +704,7 @@
         ]
       },
       "id": "EOC",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": "2026-11-20T06:29:11Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -747,9 +746,9 @@
         ]
       },
       "id": "REEXP",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "Re-export intensity (chapter X_j / M_j)",
         "es": "Intensidad de reexportaci\u00f3n (cap\u00edtulo X_j / M_j)"
@@ -805,9 +804,9 @@
         ]
       },
       "id": "ITU_IDI",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "ICT Development Index",
         "es": "\u00cdndice de desarrollo de las TIC"
@@ -863,9 +862,9 @@
         ]
       },
       "id": "EF_EPI",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "EF English Proficiency Index",
         "es": "\u00cdndice de dominio del ingl\u00e9s EF"
@@ -921,9 +920,9 @@
         ]
       },
       "id": "ODIN",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "Open Data Inventory overall score",
         "es": "Puntuaci\u00f3n global Open Data Inventory"
@@ -979,9 +978,9 @@
         ]
       },
       "id": "GEDI",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "Global Entrepreneurship Index",
         "es": "\u00cdndice global de emprendimiento (GEDI)"
@@ -1037,9 +1036,9 @@
         ]
       },
       "id": "GII",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "Global Innovation Index",
         "es": "\u00cdndice global de innovaci\u00f3n"
@@ -1095,9 +1094,9 @@
         ]
       },
       "id": "STARTUPBLINK",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "Global Startup Ecosystem Index",
         "es": "\u00cdndice global de ecosistemas startup"
@@ -1153,9 +1152,9 @@
         ]
       },
       "id": "EPI",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "Environmental Performance Index",
         "es": "\u00cdndice de desempe\u00f1o ambiental"
@@ -1211,7 +1210,7 @@
         ]
       },
       "id": "CO2PC",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": "2026-11-20T06:29:11Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -1269,7 +1268,7 @@
         ]
       },
       "id": "PLI",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": "2026-11-20T06:29:11Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -1298,9 +1297,9 @@
       "formula": null,
       "gate": null,
       "id": "PPAD",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "Product Price at Destination (PPAD)",
         "es": "Precio del producto en destino (PPAD)"
@@ -1356,7 +1355,7 @@
       "formula": null,
       "gate": null,
       "id": "CIBC",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": "2026-11-20T06:29:11Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -1385,7 +1384,7 @@
       "formula": null,
       "gate": null,
       "id": "LPIN",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": "2026-11-20T06:29:11Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -1414,7 +1413,7 @@
       "formula": null,
       "gate": null,
       "id": "CPTR",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": "2026-11-20T06:29:11Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -1472,9 +1471,9 @@
       "formula": null,
       "gate": null,
       "id": "CUTA",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "Customs Tariffs (CUTA)",
         "es": "Aranceles aduaneros (CUTA)"
@@ -1559,7 +1558,7 @@
       "formula": null,
       "gate": null,
       "id": "CLI",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": "2026-11-20T06:29:11Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -1588,7 +1587,7 @@
       "formula": null,
       "gate": null,
       "id": "INAN",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": "2026-11-20T06:29:11Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -1617,7 +1616,7 @@
       "formula": null,
       "gate": null,
       "id": "UNRA",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": "2026-11-20T06:29:11Z",
       "last_ingested": "2026-11-19T20:51:52Z",
       "last_upstream_change": "2026-11-11",
       "name": {
@@ -1791,9 +1790,9 @@
       "formula": null,
       "gate": null,
       "id": "CUDI",
-      "last_checked": "2026-11-19T20:52:34Z",
+      "last_checked": null,
       "last_ingested": null,
-      "last_upstream_change": "2022-12-31",
+      "last_upstream_change": null,
       "name": {
         "en": "Cultural Difference (CUDI)",
         "es": "Diferencia cultural (CUDI)"
@@ -1802,6 +1801,153 @@
       "redistributable": false,
       "source_ids": [
         "hofstede"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase A2 IMSFEM 2025 draft. Workbook cites World Population Review road-quality ranking; prefer an official series when available. Licence UNKNOWN.",
+      "coverage": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "logistics",
+      "formula": null,
+      "gate": null,
+      "id": "RQBC",
+      "last_checked": null,
+      "last_ingested": null,
+      "last_upstream_change": null,
+      "name": {
+        "en": "Road Quality by Country (RQBC)",
+        "es": "Calidad de carreteras por pa\u00eds (RQBC)"
+      },
+      "new_cells_since_previous": null,
+      "redistributable": false,
+      "source_ids": [
+        "world_population_review"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase A2 IMSFEM 2025 draft. Workbook cites tradebarrierindex.org. Licence UNKNOWN.",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "competition",
+      "formula": null,
+      "gate": null,
+      "id": "ITBI",
+      "last_checked": null,
+      "last_ingested": null,
+      "last_upstream_change": null,
+      "name": {
+        "en": "International Trade Barrier Index (ITBI)",
+        "es": "\u00cdndice internacional de barreras al comercio (ITBI)"
+      },
+      "new_cells_since_previous": null,
+      "redistributable": false,
+      "source_ids": [
+        "trade_barrier_index"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase A2 IMSFEM 2025 draft. Official candidate World Bank EN.GHG.CO2.MT.CE.AR5 (current WDI series, 1970\u20132024). Workbook also cites Global Carbon Atlas / IEA. Licence not human-verified for Atlas ship gate.",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "sustainability",
+      "formula": null,
+      "gate": null,
+      "id": "CADE",
+      "last_checked": "2026-11-20T06:29:11Z",
+      "last_ingested": "2026-11-19T20:51:52Z",
+      "last_upstream_change": "2026-11-11",
+      "name": {
+        "en": "Carbon Dioxide (CO2) Emissions (CADE)",
+        "es": "Emisiones de di\u00f3xido de carbono (CADE)"
+      },
+      "new_cells_since_previous": 0,
+      "redistributable": false,
+      "source_ids": [
+        "worldbank_wdi",
+        "global_carbon_atlas",
+        "iea_ghg"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase A2 IMSFEM 2025 draft. Workbook cites Coface country risk map. Proprietary; BYOD; licence UNKNOWN.",
+      "coverage": null,
+      "definition": null,
+      "direction": "cost",
+      "download_allowed": false,
+      "factor": "sustainability",
+      "formula": null,
+      "gate": null,
+      "id": "GLCR",
+      "last_checked": null,
+      "last_ingested": null,
+      "last_upstream_change": null,
+      "name": {
+        "en": "Global Country Risk (GLCR)",
+        "es": "Riesgo pa\u00eds global (GLCR)"
+      },
+      "new_cells_since_previous": null,
+      "redistributable": false,
+      "source_ids": [
+        "coface_country_risk"
+      ],
+      "status": "draft",
+      "years": [
+        2012,
+        2023
+      ]
+    },
+    {
+      "byod_only": true,
+      "citation": "Phase A2 IMSFEM 2025 draft. Workbook cites SolAbility GSCI. Licence UNKNOWN.",
+      "coverage": null,
+      "definition": null,
+      "direction": "benefit",
+      "download_allowed": false,
+      "factor": "sustainability",
+      "formula": null,
+      "gate": null,
+      "id": "GLSI",
+      "last_checked": null,
+      "last_ingested": null,
+      "last_upstream_change": null,
+      "name": {
+        "en": "Global Sustainable Competitiveness Index (GLSI)",
+        "es": "\u00cdndice global de competitividad sostenible (GLSI)"
+      },
+      "new_cells_since_previous": null,
+      "redistributable": false,
+      "source_ids": [
+        "solability_gsci"
       ],
       "status": "draft",
       "years": [
