@@ -351,10 +351,22 @@ const es = {
   releasesInternalVars: "Variables internas (equipo)",
   releasesInternalManifest: "manifiesto interno",
   transparencyUpdatesIntro:
-    "Línea temporal de ejecuciones ETL y diferencias legibles frente a la ingestión live anterior de cada fuente.",
+    "Cambios de la app y de los datos, ligados a la versión que estás usando, con un resumen claro de cada ingestión.",
   transparencyUpdatesEmpty:
     "Aún no hay historial de ejecuciones publicado. Tras la primera corrida live, los diffs aparecerán aquí.",
   transparencyUpdatesNoDiff: "Esta ejecución no tiene texto de diff por fuente.",
+  updatesAppVersionHint: "Código y pantallas de IMS Atlas en este despliegue.",
+  updatesDataVersionHint: "Paquete de datos publicado que alimenta análisis y tablas.",
+  updatesOpenAppChangelog: "Historial de la app",
+  updatesOpenDataChangelog: "Historial de los datos",
+  updatesAppChangesTitle: "Qué cambió en la app",
+  updatesAppChangesLead:
+    "Fragmento del historial de la app para la versión {version} (y pendientes sin publicar).",
+  updatesAppChangesEmpty: "No hay bullets en este bloque del historial.",
+  updatesIngestTitle: "Ingestiones de datos",
+  updatesIngestLead:
+    "Corridas live que actualizan fuentes hacia la versión de datos {version}. Fechas y resúmenes en lenguaje claro.",
+  updatesNewCells: "{n} celdas nuevas",
   fixtureStatusBanner:
     "Esta página de estado muestra una corrida de fixture (datos de prueba mini_world), no una ingestión live. No trate versiones ni conteos como producción.",
   copy: "Copiar",

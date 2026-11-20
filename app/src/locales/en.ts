@@ -347,10 +347,22 @@ export const en = {
   releasesInternalVars: "Internal variables (team)",
   releasesInternalManifest: "internal manifest",
   transparencyUpdatesIntro:
-    "Timeline of ETL runs and readable diffs versus the previous live ingest of each source.",
+    "App and data changes tied to the version you are running, with a clear summary of each ingest.",
   transparencyUpdatesEmpty:
     "No ETL run history has been published yet. After the first live run, diffs appear here.",
   transparencyUpdatesNoDiff: "No per-source diff text for this run.",
+  updatesAppVersionHint: "IMS Atlas code and screens in this deployment.",
+  updatesDataVersionHint: "Published data package that feeds analysis and tables.",
+  updatesOpenAppChangelog: "App history",
+  updatesOpenDataChangelog: "Data history",
+  updatesAppChangesTitle: "What changed in the app",
+  updatesAppChangesLead:
+    "App history excerpt for version {version} (plus unpublished pending items).",
+  updatesAppChangesEmpty: "No bullets in this history block.",
+  updatesIngestTitle: "Data ingests",
+  updatesIngestLead:
+    "Live runs that update sources toward data version {version}. Dates and summaries in plain language.",
+  updatesNewCells: "{n} new cells",
   fixtureStatusBanner:
     "This status page shows a fixture pipeline run (mini_world test data), not a live ingest. Do not treat versions or row counts as production.",
   copy: "Copy",

@@ -201,8 +201,135 @@ textarea:focus-visible {
   align-items: center;
 }
 
+.updates-page {
+  display: grid;
+  gap: 1rem;
+}
+
+.updates-version-bar {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  padding: 1rem 1.15rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .updates-version-bar {
+    grid-template-columns: 1fr;
+  }
+}
+
+.updates-version-label {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.updates-version-value {
+  margin: 0.2rem 0 0.35rem;
+  font-size: 1.45rem;
+  font-weight: 700;
+}
+
+.updates-version-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  justify-content: center;
+}
+
+.updates-section-head {
+  margin-bottom: 0.75rem;
+}
+
+.updates-section-head h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.05rem;
+}
+
+.updates-app-block,
+.updates-ingest-block {
+  padding: 1rem 1.15rem 1.2rem;
+}
+
+.updates-changelog-slice {
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--border, #e4e4e7);
+}
+
+.updates-changelog-slice h4 {
+  margin: 0 0 0.4rem;
+  font-size: 0.95rem;
+}
+
+.updates-changelog-slice ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
 .updates-timeline {
-  padding-left: 1.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.updates-run {
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: 0.55rem;
+  background: color-mix(in srgb, var(--surface, #fff) 92%, #e8eef5);
+}
+
+.updates-run-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin-bottom: 0.45rem;
+}
+
+.updates-run-when {
+  margin: 0;
+  font-weight: 650;
+}
+
+.updates-run-meta {
+  margin: 0.2rem 0 0;
+}
+
+.updates-run-id {
+  font-size: 0.72rem;
+  max-width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.updates-status {
+  font-weight: 650;
+}
+
+.updates-status-ok {
+  color: #15803d;
+}
+
+.updates-status-fail {
+  color: #b91c1c;
+}
+
+.updates-status-warn {
+  color: #b45309;
+}
+
+.updates-summary-list {
+  margin: 0.35rem 0 0;
+  padding-left: 1.1rem;
 }
 
 .updates-timeline h3 {
