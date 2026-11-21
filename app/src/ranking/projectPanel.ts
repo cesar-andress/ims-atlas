@@ -29,8 +29,8 @@ const PRODUCT_VAR_IDS = [
   "PPAD",
 ] as const;
 const BILATERAL_VAR_IDS = ["DIST", "LANG", "FTA"] as const;
-/** Sources César has not confirmed yet — never show their series in the panel. */
-const BLOCKED_SOURCE_IDS = new Set(["ecb_fx", "vat_rates"]);
+/** Hard block list (empty: César confirmed use_research for ecb_fx / vat_rates). */
+const BLOCKED_SOURCE_IDS = new Set<string>();
 
 export type ProjectPanelRequest = {
   origin?: string | undefined;

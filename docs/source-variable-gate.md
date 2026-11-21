@@ -21,49 +21,43 @@ Medición panel ESP · café (HS 0901) · 2024 contra `data/release/internal/CUR
 
 - **Raw:** `data/raw/hofstede/hofstede-2015-08-16/dimensions.csv` (62 países × 6
   dimensiones).
-- **Variables de catálogo:** CULT, CUDI (`byod_only`; derechos incompletos:
-  `redistribute_*` unknown / evidence incompleta).
-- **Por qué no salen:** el gate interno exige `ship_*` **o**
-  `use_research=yes` + evidencia completa; Hofstede cae en `byod_only` →
-  **excluido de la release**. Además CULT/CUDI son bilaterales (origen–destino)
-  y hoy `bilateral_year` solo tiene DIST/LANG/FTA.
-- **Qué falta (César):** completar derechos en `sources.yaml` / RIGHTS, o usar
-  BYOD en el navegador. No inventamos la licencia.
+- **Variables de catálogo:** CULT, CUDI (`byod_only`; `use_research=yes`).
+- **Gate interno (2026-11-21):** `use_research=yes` basta para incluirlas en la
+  release interna. **Siguen fuera del panel** porque CULT/CUDI son bilaterales
+  (origen–destino) y `bilateral_year` solo construye DIST/LANG/FTA (no hay
+  build Kogut–Singh en ETL todavía).
+- **Público:** sigue `byod_only` (no ship).
 
 ### `kof_globalisation` (GLIN)
 
-- **Raw:** `data/raw/kof_globalisation/kofgi2025-20251219/values.csv` (6 974
-  filas, años hasta 2023) — **sí** está en curated wide como columna GLIN.
-- **Por qué no está en `country_year` de la release:** gate `byod_only`
-  (redistribute_derived unknown / evidence incompleta) → `included: false`.
-- **Qué falta (César):** cerrar derechos KOF. Los datos ya están; el bloqueo es
-  legal, no técnico.
+- **Raw:** `data/raw/kof_globalisation/kofgi2025-20251219/values.csv` (años hasta
+  2023) — entra en curated wide como GLIN.
+- **Gate interno:** con `use_research=yes` debe entrar en `country_year` de la
+  release interna tras rebuild. Público: sigue `byod_only`.
 
 ### `wits_trains` (TARIF / CUTA)
 
 - **Raw:** muestras `col-hs64-*` (XML TRN Colombia HS64), no un
   `tariffs.csv` global origen×destino×HS.
-- **Por qué no salen:** (1) gate `byod_only`; (2) el transform espera
-  `tariffs.csv` agregado; (3) el pull actual es **COL·HS64**, inútil para
-  ESP·café·0901 como arancel bilateral completo.
-- **Qué falta:** derechos WITS + extract global (o BYOD). No inventamos aranceles.
+- **Gate interno:** `use_research=yes` permite incluir TARIF si hubiera datos.
+- **Por qué no salen en ESP·café·0901:** el transform espera `tariffs.csv`
+  agregado y el pull actual es **COL·HS64**, no arancel bilateral global.
 
 ### `ecb_fx`
 
 - **Raw:** `data/raw/ecb_fx/ecb-2026-11-20/indicators.csv` (tipos EUR diarios).
-- **Por qué no salen:** `BLOCKED_SOURCE_IDS` en app y ETL hasta que César
-  confirme `use_research` / redistribución (Prompt 4a). Además es FX por
-  **divisa**, no una serie país ISO3 lista para el ranking.
-- **Uso previsto:** liquidación Incoterms / precios, no ranking MCDM, cuando se
-  desbloquee.
+- **use_research:** yes (CA 2026-11-21). Hard block list cleared.
+- **Por qué no salen en el panel MCDM:** no hay `variable_id` de catálogo
+  país-año; es FX por **divisa** para liquidación Incoterms / precios.
+- **Uso:** Incoterms autofill (no ranking).
 
 ### `vat_rates`
 
 - **Raw:** `data/raw/vat_rates/…` + `data/static/vat_rates.csv` (IVA estándar
   por ISO3, citas nacionales).
-- **Por qué no salen:** mismo bloqueo explícito `BLOCKED_SOURCE_IDS` + derechos
-  compiled-citations con campos unknown.
-- **Uso previsto:** cascada de precio 4P / DDP+IVA, no ranking, tras confirmación.
+- **use_research:** yes (CA 2026-11-21). Hard block list cleared.
+- **Por qué no salen en el panel MCDM:** sin variable de ranking en catálogo;
+  tabla de soporte para DDP+IVA / Incoterms.
 
 ## EPI / GII / CC (pedir permiso antes de volver a descargar)
 

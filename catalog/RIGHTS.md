@@ -140,6 +140,11 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 | FAIRS_INTL | auma_fairs | byod_only | unknown rights: redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives |
 | PROMO_OFFICE | icex_events | byod_only | unknown rights: redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives |
 | PROMO_EVENTS | icex_events,trade_gov_events | byod_only | source[0]: unknown rights: redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; source[1]: unknown rights: redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives |
+| WEO_GROWTH | imf_weo | byod_only | commercial_use=no under commercial_context=true |
+| WEO_INFL | imf_weo | byod_only | commercial_use=no under commercial_context=true |
+| WEO_GDPPC | imf_weo | byod_only | commercial_use=no under commercial_context=true |
+| WEO_CA | imf_weo | byod_only | commercial_use=no under commercial_context=true |
+| WEO_UNEMP | imf_weo | byod_only | commercial_use=no under commercial_context=true |
 
 ## Needs human rights check
 

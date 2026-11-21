@@ -182,8 +182,9 @@ WEO_CODE_TO_VAR: dict[str, str] = {
     "LUR": "WEO_UNEMP",
 }
 
-# Never surface these until César confirms use_research (Prompt 4a gate).
-BLOCKED_SOURCE_IDS = frozenset({"ecb_fx", "vat_rates"})
+# Empty: César confirmed use_research=yes for ecb_fx / vat_rates (2026-11-21).
+# Keep the symbol so callers and tests can still consult it.
+BLOCKED_SOURCE_IDS: frozenset[str] = frozenset()
 
 WGI_PARTS = ("CC", "GE", "RQ", "RL", "PV", "VA")
 

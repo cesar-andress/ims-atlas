@@ -21,7 +21,10 @@ from imsatlas_etl.pipeline.io_paths import raw_source_dir
 from imsatlas_etl.wb_indicators import world_bank_codes_for_source
 
 API_ROOT = "https://api.worldbank.org/v2"
-PER_PAGE = 20000
+# World Bank v2: per_page=20000 returns a truncated/wrong payload for some
+# GOV_WGI_* series (observed 2026-11-21: GOV_WGI_CC.EST → 216 rows / 2 years
+# instead of 5832 / 27 years). Cap at 5000; pagination still covers the series.
+PER_PAGE = 5000
 DEFAULT_RATE_LIMIT_S = 0.5
 MAX_PAGES = 200  # hard stop against a malformed `pages` field
 

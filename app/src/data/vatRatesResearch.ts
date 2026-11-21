@@ -1,7 +1,7 @@
 /**
  * Statutory standard VAT rates for Incoterms autofill only.
  * Rows mirror `data/static/vat_rates.csv` (cited national authorities).
- * Not a ranking-panel variable (see projectPanel BLOCKED_SOURCE_IDS).
+ * Not a ranking-panel variable (no catalog variable_id; used for Incoterms/VAT).
  * Skip placeholder rows (no federal / multi-tax systems).
  */
 

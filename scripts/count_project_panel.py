@@ -12,7 +12,7 @@ import pandas as pd
 
 PRODUCT = ["IMPV", "IMPC", "GRW", "HHI", "ASIASH", "REEXP", "UVGAP", "PPAD"]
 BILATERAL = ["DIST", "LANG", "FTA"]
-BLOCKED = {"ecb_fx", "vat_rates"}
+BLOCKED: set[str] = set()
 LOCF = 5
 
 

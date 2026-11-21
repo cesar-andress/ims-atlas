@@ -77,8 +77,13 @@ def _source_versions(*, root: Path | None) -> dict[str, str]:
     }
 
 
-def _use_research_ok(variable: dict[str, Any], registry: dict[str, Any]) -> bool:
-    """True when every source has use_research=yes and complete evidence."""
+def _use_research_ok(
+    variable: dict[str, Any],
+    registry: dict[str, Any],
+    *,
+    require_evidence: bool = True,
+) -> bool:
+    """True when every source has use_research=yes (optionally + evidence)."""
     sids = list(variable.get("source_ids") or [])
     if not sids:
         return False
@@ -86,7 +91,7 @@ def _use_research_ok(variable: dict[str, Any], registry: dict[str, Any]) -> bool
         rights = (registry.get(str(sid)) or {}).get("rights") or {}
         if rights.get("use_research") != "yes":
             return False
-        if not evidence_present(rights):
+        if require_evidence and not evidence_present(rights):
             return False
     return True
 
@@ -108,10 +113,16 @@ def _variable_gates(*, audience: Audience = "public") -> list[dict[str, Any]]:
             # SPEC §4: public release needs verified + a ship gate.
             included = decision in SHIP_DECISIONS and status == "verified"
         else:
-            # Internal (CERRADO): ship_* or research-use with evidence (SPEC §13).
-            # Draft variables remain available so the team can work before verify.
+            # Internal (CERRADO): ship_* OR use_research=yes (César 2026-11-21:
+            # use_research alone is enough for the team panel; evidence still
+            # required for public redistribute gates). Draft vars stay available.
             included = decision in SHIP_DECISIONS or (
-                decision != "local_only" and _use_research_ok(variable, registry)
+                decision != "local_only"
+                and _use_research_ok(
+                    variable,
+                    registry,
+                    require_evidence=False,
+                )
             )
         rows.append(
             {

@@ -68,7 +68,7 @@ def test_single_page_extract_writes_pages_csv_and_summary(tmp_path: Path) -> Non
     assert page.is_file()
     meta = json.loads((page.parent / (page.name + ".meta.json")).read_text())
     assert meta["mode"] == "live"
-    assert meta["url"].endswith("per_page=20000&page=1")
+    assert meta["url"].endswith(f"per_page={wb.PER_PAGE}&page=1")
     assert len(meta["sha256"]) == 64
 
     frame = wb.load_raw_indicators(base / "indicators.csv")
@@ -175,8 +175,13 @@ def test_wgi_codes_are_aggregate_estimates_only() -> None:
 def test_indicator_url_matches_catalog_template() -> None:
     assert wb.indicator_page_url("CC.EST", 3) == (
         "https://api.worldbank.org/v2/country/all/indicator/CC.EST"
-        "?format=json&per_page=20000&page=3"
+        f"?format=json&per_page={wb.PER_PAGE}&page=3"
     )
+
+
+def test_per_page_avoids_wb_truncation_bug() -> None:
+    """GOV_WGI_CC.EST with per_page=20000 returned only 2 years (2026-11-21)."""
+    assert wb.PER_PAGE <= 5000
 
 
 # --- retry / backoff -------------------------------------------------------

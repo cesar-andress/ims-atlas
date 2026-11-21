@@ -7,7 +7,7 @@ sources:
   licence_url: https://datacatalog.worldbank.org/public-licenses?fragment=cc
   endpoints:
   - id: indicator_json
-    template: https://api.worldbank.org/v2/country/all/indicator/{code}?format=json&per_page=20000
+    template: https://api.worldbank.org/v2/country/all/indicator/{code}?format=json&per_page=5000
     method: GET
   update_cadence: annual
   version_detection: WDI release year / API meta lastupdated
@@ -100,7 +100,7 @@ sources:
   licence_url: https://datacatalog.worldbank.org/public-licenses?fragment=cc
   endpoints:
   - id: indicator_json
-    template: https://api.worldbank.org/v2/country/all/indicator/{code}?format=json&per_page=20000
+    template: https://api.worldbank.org/v2/country/all/indicator/{code}?format=json&per_page=5000
     method: GET
   update_cadence: annual
   version_detection: WGI release year
@@ -134,7 +134,7 @@ sources:
   licence_url: https://datacatalog.worldbank.org/public-licenses?fragment=cc
   endpoints:
   - id: indicator_json
-    template: https://api.worldbank.org/v2/country/all/indicator/{code}?format=json&per_page=20000
+    template: https://api.worldbank.org/v2/country/all/indicator/{code}?format=json&per_page=5000
     method: GET
   update_cadence: biennial
   version_detection: LPI survey wave year

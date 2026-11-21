@@ -14,7 +14,7 @@ ORIGIN, HS, YEAR = "ESP", "0901", 2024
 LOCF = 5
 PRODUCT = ["IMPV", "IMPC", "GRW", "HHI", "ASIASH", "REEXP", "UVGAP", "PPAD"]
 BILAT = ["DIST", "LANG", "FTA"]
-BLOCKED = {"ecb_fx", "vat_rates"}
+BLOCKED: set[str] = set()
 
 
 def main() -> None:
