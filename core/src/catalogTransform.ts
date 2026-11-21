@@ -21,7 +21,7 @@ export function applyCatalogTransformValue(
 export function applyCatalogTransforms(
   matrix: readonly (readonly (number | null)[])[],
   variables: readonly VariableSpec[],
-): number[][] {
+): (number | null)[][] {
   return matrix.map((row) =>
     variables.map((v, j) =>
       applyCatalogTransformValue(row[j] ?? null, v.transform ?? "none"),
