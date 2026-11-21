@@ -1075,6 +1075,18 @@ export const en = {
   scopeDialogCancel: "Cancel",
   scopeDialogIncomplete:
     "Choose origin, product and year before continuing. Incomplete fields are highlighted.",
+  scopeOriginPlaceholder: "Search country (ISO or name)",
+  scopeClearOrigin: "Clear origin",
+  scopeNoCountryHits: "No matching countries",
+  scopeProductHint:
+    "Search by HS code (2, 4 or 6 digits) or name. The full tree stays collapsed below.",
+  scopeProductSearch: "Search product",
+  scopeProductPlaceholder: "64, footwear, 6403…",
+  scopeClearProduct: "Clear product",
+  scopeNoHsHits: "No matching products",
+  scopeTreeMore: "… and {n} more (use search)",
+  scopeYearLabel: "Analysis year",
+  scopeYearPlaceholder: "Choose a year",
   projectCopySuffix: "copy",
   stepWarnNone: "no warnings",
   stepWarnOne: "1 warning",

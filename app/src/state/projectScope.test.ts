@@ -26,9 +26,7 @@ describe("projectScope", () => {
   it("lists missing scope fields and gates completeness", () => {
     expect(missingScopeFields({})).toEqual(["origin", "hs", "year"]);
     expect(missingScopeFields({ origin: "COL", hs: "02" })).toEqual(["year"]);
-    expect(
-      isScopeComplete({ origin: "COL", hs: "02", year: 2023 }),
-    ).toBe(true);
+    expect(isScopeComplete({ origin: "COL", hs: "02", year: 2023 })).toBe(true);
     expect(isScopeComplete({ origin: "col", hs: "02", year: 2023 })).toBe(false);
   });
 

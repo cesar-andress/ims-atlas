@@ -11,10 +11,7 @@ import {
   safeFilename,
 } from "../state/projectExport";
 import { duplicateProject } from "../state/projectLibrary";
-import {
-  isScopeComplete,
-  OPEN_SCOPE_EVENT,
-} from "../state/projectScope";
+import { isScopeComplete, OPEN_SCOPE_EVENT } from "../state/projectScope";
 import { persistActiveProject, projectFromConfig } from "../state/projectStore";
 import { useToast } from "../state/toastContext";
 import { useAnalysis } from "../state/useAnalysis";
@@ -35,10 +32,17 @@ const WEIGHT_STATUS_KEY: Record<string, string> = {
 };
 
 function ScopeDialog({ onClose }: { onClose: () => void }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language.startsWith("es") ? "es" : "en";
+  const { config } = useAnalysis();
   const doneRef = useRef<HTMLButtonElement>(null);
   const fieldsRef = useRef<ProjectScopeFieldsHandle>(null);
   const [incomplete, setIncomplete] = useState(false);
+  const [draft, setDraft] = useState({
+    origin: config.origin ?? "",
+    hs: config.hs ?? "",
+    year: config.year as number | undefined,
+  });
 
   useEffect(() => {
     doneRef.current?.focus();
@@ -59,6 +63,12 @@ function ScopeDialog({ onClose }: { onClose: () => void }) {
     onClose();
   }
 
+  const summaryOrigin = draft.origin
+    ? countryLabel(draft.origin, lang)
+    : t("chipChoose");
+  const summaryHs = draft.hs ? hsLabel(draft.hs, lang) : t("chipChoose");
+  const summaryYear = draft.year !== undefined ? String(draft.year) : t("chipChoose");
+
   return (
     <div className="onboarding-overlay" data-testid="project-scope-dialog">
       <div
@@ -67,17 +77,44 @@ function ScopeDialog({ onClose }: { onClose: () => void }) {
         aria-modal="true"
         aria-labelledby="scope-dialog-title"
       >
-        <h2 id="scope-dialog-title" className="m-0 text-lg font-semibold">
-          {t("scopeDialogTitle")}
-        </h2>
-        <p className="muted small">{t("scopeDialogBody")}</p>
-        {incomplete ? (
-          <p className="error small" role="alert" data-testid="scope-dialog-incomplete">
-            {t("scopeDialogIncomplete")}
+        <header className="scope-dialog-header">
+          <h2 id="scope-dialog-title" className="scope-dialog-title">
+            {t("scopeDialogTitle")}
+          </h2>
+          <p className="muted small scope-dialog-lead">{t("scopeDialogBody")}</p>
+          <p
+            className="scope-summary-chips"
+            data-testid="scope-summary-chips"
+            aria-live="polite"
+          >
+            <span>
+              {t("chipOrigin")} <b>{summaryOrigin}</b>
+            </span>
+            <span>
+              {t("chipProduct")} <b>{summaryHs}</b>
+            </span>
+            <span>
+              {t("chipYear")} <b>{summaryYear}</b>
+            </span>
           </p>
-        ) : null}
-        <ProjectScopeFields ref={fieldsRef} highlightMissing={incomplete} />
-        <div className="mt-4 flex justify-end gap-2">
+          {incomplete ? (
+            <p
+              className="error small"
+              role="alert"
+              data-testid="scope-dialog-incomplete"
+            >
+              {t("scopeDialogIncomplete")}
+            </p>
+          ) : null}
+        </header>
+        <div className="scope-dialog-body-scroll">
+          <ProjectScopeFields
+            ref={fieldsRef}
+            highlightMissing={incomplete}
+            onDraftChange={setDraft}
+          />
+        </div>
+        <footer className="scope-dialog-footer">
           <button
             type="button"
             className="btn"
@@ -95,7 +132,7 @@ function ScopeDialog({ onClose }: { onClose: () => void }) {
           >
             {t("scopeDialogDone")}
           </button>
-        </div>
+        </footer>
       </div>
     </div>
   );

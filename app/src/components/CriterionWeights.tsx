@@ -5,10 +5,7 @@ import { useTranslation } from "../i18n";
 import { localizeWarning } from "../ranking/localizeWarning";
 import { useRankingModel } from "../ranking/useRankingModelApi";
 import { FACTOR_LABELS, setOneWeight } from "../state/criterionWeights";
-import {
-  equalFactorWeights,
-  requestOpenScope,
-} from "../state/projectScope";
+import { equalFactorWeights, requestOpenScope } from "../state/projectScope";
 import { useAnalysis } from "../state/useAnalysis";
 import { isAnalysisReady } from "../state/views";
 
@@ -93,11 +90,7 @@ export function CriterionWeights() {
     () =>
       ready
         ? null
-        : previewFactors(
-            config.methodFamily,
-            config.factorWeights,
-            config.variableIds,
-          ),
+        : previewFactors(config.methodFamily, config.factorWeights, config.variableIds),
     [ready, config.methodFamily, config.factorWeights, config.variableIds],
   );
 

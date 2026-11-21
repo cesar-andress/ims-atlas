@@ -35,12 +35,8 @@ function familyPatch(
       value === "smi_2018" ? "ratio_legacy" : (current.normalization ?? "ratio_legacy"),
   };
   if (value === "panel_all") {
-    const ids = source?.ids.length
-      ? source.ids
-      : current.variableIds;
-    const factors = source?.factors.length
-      ? source.factors
-      : [];
+    const ids = source?.ids.length ? source.ids : current.variableIds;
+    const factors = source?.factors.length ? source.factors : [];
     return {
       ...base,
       weightScheme: "equal",
@@ -99,7 +95,6 @@ export function MethodFamilyBar() {
     return () => {
       cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- scope fields only
   }, [config.origin, config.hs, config.year, ready]);
 
   // Catalogue fallback so “all panel variables” is visible before scope is complete.
@@ -109,11 +104,7 @@ export function MethodFamilyBar() {
       .then((c) => {
         if (cancelled || c.variables.length === 0) return;
         const factors = [
-          ...new Set(
-            c.factors.length
-              ? c.factors
-              : c.variables.map((v) => v.factor),
-          ),
+          ...new Set(c.factors.length ? c.factors : c.variables.map((v) => v.factor)),
         ];
         setCatalog({ ids: c.variables.map((v) => v.id), factors });
       })

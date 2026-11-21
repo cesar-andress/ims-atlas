@@ -1,11 +1,4 @@
-import {
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-  type KeyboardEvent,
-} from "react";
+import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { searchCountries } from "../data/countryYearGaps";
 import { ISO3_EXPORTERS } from "../data/iso3Exporters";
 import { countryLabel } from "../design/formatLocale";
@@ -41,9 +34,7 @@ export function CountryPicker({
   const [q, setQ] = useState("");
   const [active, setActive] = useState(0);
 
-  const selectedLabel = value
-    ? `${value} · ${countryLabel(value, lang)}`
-    : "";
+  const selectedLabel = value ? `${value} · ${countryLabel(value, lang)}` : "";
 
   const hits = useMemo(() => {
     if (!open) return [];
@@ -73,7 +64,7 @@ export function CountryPicker({
     setQ("");
     setOpen(true);
     setActive(0);
-    queuePromise.resolve().then(() => inputRef.current?.focus());
+    void Promise.resolve().then(() => inputRef.current?.focus());
   }
 
   function onKeyDown(e: KeyboardEvent<HTMLInputElement>) {
@@ -103,14 +94,12 @@ export function CountryPicker({
 
   return (
     <div className="m2o country-m2o" data-testid={testId}>
-      <label className="scope-field-label" htmlFor={`${testId}-input`}>
-        {t("origin")}
-      </label>
       <div className="m2o-control">
         <input
           id={`${testId}-input`}
           ref={inputRef}
           role="combobox"
+          aria-label={t("origin")}
           aria-expanded={open}
           aria-controls={listId}
           aria-autocomplete="list"
@@ -152,12 +141,7 @@ export function CountryPicker({
         ) : null}
       </div>
       {open ? (
-        <ul
-          id={listId}
-          className="m2o-list"
-          role="listbox"
-          data-testid={hitsTestId}
-        >
+        <ul id={listId} className="m2o-list" role="listbox" data-testid={hitsTestId}>
           {hits.length === 0 ? (
             <li className="m2o-empty muted small">{t("scopeNoCountryHits")}</li>
           ) : (
@@ -168,9 +152,7 @@ export function CountryPicker({
                   id={`${listId}-${hit.iso3}`}
                   role="option"
                   aria-selected={value === hit.iso3}
-                  className={
-                    i === active || value === hit.iso3 ? "active" : undefined
-                  }
+                  className={i === active || value === hit.iso3 ? "active" : undefined}
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={() => pick(hit.iso3)}
                   onMouseEnter={() => setActive(i)}

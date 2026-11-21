@@ -1084,6 +1084,18 @@ const es = {
   scopeDialogCancel: "Cancelar",
   scopeDialogIncomplete:
     "Elige origen, producto y año antes de continuar. Los campos incompletos están resaltados.",
+  scopeOriginPlaceholder: "Buscar país (ISO o nombre)",
+  scopeClearOrigin: "Quitar origen",
+  scopeNoCountryHits: "Ningún país coincide",
+  scopeProductHint:
+    "Busca por código HS (2, 4 o 6 dígitos) o por nombre. El árbol completo está plegado abajo.",
+  scopeProductSearch: "Buscar producto",
+  scopeProductPlaceholder: "64, calzado, 6403…",
+  scopeClearProduct: "Quitar producto",
+  scopeNoHsHits: "Ningún producto coincide",
+  scopeTreeMore: "… y {n} más (usa la búsqueda)",
+  scopeYearLabel: "Año del análisis",
+  scopeYearPlaceholder: "Elige un año",
   projectCopySuffix: "copia",
   stepWarnNone: "sin avisos",
   stepWarnOne: "1 aviso",
