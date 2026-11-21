@@ -129,6 +129,7 @@ export {
   recommendImputationMethod,
   warnFewImportersAtHs6,
   normalizeEocRatio,
+  winsorizeFinite,
   oneAtATimeWinnerThresholds,
   orderKeysByWeight,
   preselectMarkets,
@@ -353,3 +354,12 @@ export {
   type LiquidationInput,
   type LiquidationRow,
 } from "./incotermsLiquidation.js";
+
+export {
+  checkRankingSanity,
+  COL_HS64_SANITY,
+  ESP_0901_SANITY,
+  type RankingSanityOpts,
+  type RankingSanityResult,
+  type SanityRankRow,
+} from "./rankingSanity.js";

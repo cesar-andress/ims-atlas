@@ -538,7 +538,7 @@ export async function computeRanking(req: RankingRequest): Promise<RankingViewMo
     );
   }
 
-  const normalization = req.normalization ?? "minmax";
+  const normalization = req.normalization ?? "log_minmax";
   const mcdm = req.mcdm ?? "wsm";
   let weightScheme = req.weightScheme ?? "expert_mean";
   const missingThreshold = req.missingThreshold ?? 0.2;

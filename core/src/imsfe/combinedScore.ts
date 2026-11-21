@@ -2,6 +2,8 @@
  * Phase A6 — combined IMSFE + EOC score and sensitivity grid.
  */
 
+import { winsorizeFinite } from "./eocMatrix.js";
+
 export type EocNormKind = "ratio_to_max" | "times_5";
 
 export function normalizeImsfe(scores: Record<string, number>): Record<string, number> {
@@ -32,7 +34,18 @@ export function normalizeEoc(
     }
     return { values, warnings };
   }
-  return { values: normalizeImsfe(eoc), warnings };
+  // Cap microstate / re-export hubs before ratio-to-max (same p=0.95 as EOC matrix).
+  const keys = Object.keys(eoc);
+  const capped = winsorizeFinite(
+    keys.map((k) => eoc[k] ?? null),
+    0.95,
+  );
+  const cappedMap: Record<string, number> = {};
+  for (let i = 0; i < keys.length; i++) {
+    const v = capped[i];
+    if (typeof v === "number" && Number.isFinite(v)) cappedMap[keys[i]!] = v;
+  }
+  return { values: normalizeImsfe(cappedMap), warnings };
 }
 
 /** combined = a * EOC_norm + b * IMSFE_norm with a+b=1. */

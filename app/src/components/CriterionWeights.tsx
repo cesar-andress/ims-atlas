@@ -4,7 +4,11 @@ import { CRITERION_COLOR, CRITERION_LABEL, isCriterionId } from "../design/crite
 import { useTranslation } from "../i18n";
 import { localizeWarning } from "../ranking/localizeWarning";
 import { useRankingModel } from "../ranking/useRankingModelApi";
-import { FACTOR_LABELS, setOneWeight } from "../state/criterionWeights";
+import {
+  displayWeightPercents,
+  FACTOR_LABELS,
+  setOneWeight,
+} from "../state/criterionWeights";
 import { equalFactorWeights, requestOpenScope } from "../state/projectScope";
 import { useAnalysis } from "../state/useAnalysis";
 import { isAnalysisReady } from "../state/views";
@@ -210,7 +214,8 @@ function WeightCards({
   preview = false,
 }: CardsProps) {
   const shown = draft ?? base;
-  const ids = Object.keys(base);
+  const ids = Object.keys(base).filter((id) => (varCount[id] ?? 0) > 0);
+  const pctMap = displayWeightPercents(shown, varCount);
 
   function commit() {
     const next = draftRef.current;
@@ -228,7 +233,7 @@ function WeightCards({
       ) : null}
       <div className="crit-grid">
         {ids.map((id) => {
-          const pct = Math.round((shown[id] ?? 0) * 100);
+          const pct = pctMap[id] ?? 0;
           const nVars = varCount[id] ?? 0;
           return (
             <article

@@ -194,6 +194,18 @@ export const DEFAULT_CONFIG: AnalysisConfig = {
 /** Latest complete trade year from BACI pin (status/freshness.latest_complete_year). */
 export const LATEST_COMPLETE_YEAR = 2024;
 
+/** Empty new-project shell: Datos view, nothing preselected (B2). */
+export const EMPTY_PROJECT_CONFIG: AnalysisConfig = {
+  v: 1,
+  view: "datos",
+  region: "world",
+  normalization: "log_minmax",
+  mcdm: "wsm",
+  weightScheme: "expert_mean",
+  missingThreshold: 0.2,
+  lang: "es",
+};
+
 export const COL_HS64_PRESET: AnalysisConfig = {
   v: 1,
   view: "ranking",
@@ -201,11 +213,11 @@ export const COL_HS64_PRESET: AnalysisConfig = {
   year: LATEST_COMPLETE_YEAR,
   hs: "64",
   region: "world",
-  normalization: "minmax",
+  normalization: "log_minmax",
   mcdm: "wsm",
   weightScheme: "expert_mean",
   missingThreshold: 0.2,
-  lang: "en",
+  lang: "es",
 };
 
 /** IMSFE (Baena & Cano) faithful preset — ratio 0–10, expert means, EOC matrix. */
@@ -227,6 +239,9 @@ export const IMSFE_BAENA_CANO_PRESET: AnalysisConfig = {
   preselectTopN: 30,
   lang: "es",
 };
+
+/** @deprecated use EMPTY_PROJECT_CONFIG — kept for grep clarity. */
+export const NEW_PROJECT_DEFAULT = EMPTY_PROJECT_CONFIG;
 
 function isObject(v: unknown): v is Record<string, unknown> {
   return typeof v === "object" && v !== null && !Array.isArray(v);

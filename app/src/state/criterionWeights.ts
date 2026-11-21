@@ -41,3 +41,63 @@ export function setOneWeight(
   }
   return Object.fromEntries(keys.map((k) => [k, out[k]!] as const));
 }
+
+/**
+ * Integer percents for UI that sum exactly to 100 (largest-remainder method).
+ * Criteria with zero used variables are forced to 0% and excluded from the pot.
+ */
+export function displayWeightPercents(
+  weights: Record<string, number>,
+  varCount: Record<string, number>,
+): Record<string, number> {
+  const keys = Object.keys(weights);
+  const out: Record<string, number> = {};
+  const active = keys.filter((k) => (varCount[k] ?? 0) > 0);
+  for (const k of keys) out[k] = 0;
+  if (active.length === 0) return out;
+
+  const mass = active.reduce((a, k) => a + Math.max(0, weights[k] ?? 0), 0);
+  if (mass <= 0) {
+    const eq = Math.floor(100 / active.length);
+    let rem = 100 - eq * active.length;
+    for (const k of active) {
+      out[k] = eq + (rem > 0 ? 1 : 0);
+      if (rem > 0) rem -= 1;
+    }
+    return out;
+  }
+
+  const exact = active.map((k) => ({
+    k,
+    x: (Math.max(0, weights[k] ?? 0) / mass) * 100,
+  }));
+  const floors = exact.map(({ k, x }) => ({
+    k,
+    f: Math.floor(x),
+    frac: x - Math.floor(x),
+  }));
+  const used = floors.reduce((a, r) => a + r.f, 0);
+  let rem = 100 - used;
+  floors.sort((a, b) => b.frac - a.frac || a.k.localeCompare(b.k));
+  for (const row of floors) out[row.k] = row.f;
+  for (let i = 0; i < floors.length && rem > 0; i++) {
+    out[floors[i]!.k]! += 1;
+    rem -= 1;
+  }
+  return out;
+}
+
+/** True when every shown criterion with vars>0 has weight>0 and percents sum to 100. */
+export function weightsDisplayOk(
+  weights: Record<string, number>,
+  varCount: Record<string, number>,
+  tol = 0.1,
+): boolean {
+  const pct = displayWeightPercents(weights, varCount);
+  const sum = Object.values(pct).reduce((a, b) => a + b, 0);
+  if (Math.abs(sum - 100) > tol) return false;
+  for (const k of Object.keys(weights)) {
+    if ((varCount[k] ?? 0) > 0 && (pct[k] ?? 0) <= 0) return false;
+  }
+  return true;
+}

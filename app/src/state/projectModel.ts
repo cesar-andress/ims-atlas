@@ -77,7 +77,7 @@ export function createEmptyProject(
     schemaVersion: 2,
     kind: "ims-atlas-project",
     id: partial?.id ?? newId(),
-    name: partial?.name ?? "Untitled project",
+    name: partial?.name ?? "Proyecto nuevo",
     createdAt: partial?.createdAt ?? now,
     updatedAt: partial?.updatedAt ?? now,
     config: parseAnalysisConfig(config),
@@ -216,13 +216,21 @@ export function parseAtlasProject(raw: unknown): AtlasProject {
 }
 
 export function defaultNameFromConfig(config: AnalysisConfig): string {
-  const product = config.hs ? hsLabel(config.hs, "es") : "???";
+  if (!config.hs && !config.origin && config.year === undefined) {
+    return "Proyecto nuevo";
+  }
+  const product = config.hs ? hsLabel(config.hs, "es") : null;
   // Shorten long HS labels: take first clause before comma / parenthesis.
-  const shortProduct = product.split(/[,;(]/)[0]!.trim().slice(0, 40) || product;
-  const origin = config.origin ? countryLabel(config.origin, "es") : "???";
-  const y0 = config.year ?? "????";
-  // Plain scope label (Prompt 4e): «Café · España · 2024», not «Project HS09 ESP…».
-  return `${shortProduct} · ${origin} · ${y0}`;
+  const shortProduct = product
+    ? product.split(/[,;(]/)[0]!.trim().slice(0, 40) || product
+    : null;
+  const origin = config.origin ? countryLabel(config.origin, "es") : null;
+  const y0 = config.year;
+  const parts = [shortProduct, origin, y0 !== undefined ? String(y0) : null].filter(
+    (p): p is string => Boolean(p && p !== "???"),
+  );
+  // Plain scope label (Prompt 4e / B2): never «Project», «???» or «Untitled».
+  return parts.length > 0 ? parts.join(" · ") : "Proyecto nuevo";
 }
 
 export function toListItem(p: AtlasProject): ProjectListItem {

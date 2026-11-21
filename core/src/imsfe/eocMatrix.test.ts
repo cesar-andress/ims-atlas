@@ -6,8 +6,12 @@ import {
 } from "./eocMatrix.js";
 
 describe("eocMatrix", () => {
-  it("normalises EOC by max * 10", () => {
-    expect(normalizeEocRatio([1, 2, 4])).toEqual([2.5, 5, 10]);
+  it("normalises EOC by winsorised max * 10 (microstate cap)", () => {
+    // Without winsor, 100 would set the ceiling; p=0.95 caps the outlier.
+    const out = normalizeEocRatio([1, 2, 4, 100], 10, 0.75);
+    expect(out[2]).toBeCloseTo(10, 8);
+    expect(out[3]).toBeCloseTo(10, 8);
+    expect(out[0]).toBeCloseTo(2.5, 8);
   });
 
   it("assigns Jose quadrant names", () => {

@@ -52,19 +52,44 @@ function median(xs: number[]): number {
   return s[mid]!;
 }
 
-/** EOC raw = (exports + imports) / GDP; normalised 0–10 vs max in the set. */
+/**
+ * Cap extreme openness (microstates / re-export hubs) at the p-quantile before
+ * scaling. Default p=0.95 so Luxembourg/HK do not set the 10-point ceiling.
+ */
+export function winsorizeFinite(
+  raw: readonly (number | null)[],
+  p = 0.95,
+): (number | null)[] {
+  const finite = raw.filter(
+    (v): v is number => typeof v === "number" && Number.isFinite(v) && v >= 0,
+  );
+  if (finite.length === 0) return raw.map((v) => v);
+  const sorted = [...finite].sort((a, b) => a - b);
+  const idx = Math.min(
+    sorted.length - 1,
+    Math.max(0, Math.ceil(p * sorted.length) - 1),
+  );
+  const cap = sorted[idx]!;
+  return raw.map((v) =>
+    typeof v === "number" && Number.isFinite(v) ? Math.min(v, cap) : v,
+  );
+}
+
+/** EOC raw = (exports + imports) / GDP; normalised 0–10 vs winsorised max. */
 export function normalizeEocRatio(
   raw: readonly (number | null)[],
   scaleMax = 10,
+  winsorP = 0.95,
 ): number[] {
-  const finite = raw.filter(
+  const capped = winsorizeFinite(raw, winsorP);
+  const finite = capped.filter(
     (v): v is number => typeof v === "number" && Number.isFinite(v),
   );
   const vmax = finite.length ? Math.max(...finite) : Number.NaN;
   if (!Number.isFinite(vmax) || vmax === 0) {
     return raw.map(() => Number.NaN);
   }
-  return raw.map((v) =>
+  return capped.map((v) =>
     typeof v === "number" && Number.isFinite(v) ? (v / vmax) * scaleMax : Number.NaN,
   );
 }

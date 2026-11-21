@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { setOneWeight } from "./criterionWeights";
+import {
+  displayWeightPercents,
+  setOneWeight,
+  weightsDisplayOk,
+} from "./criterionWeights";
 
 const sum = (w: Record<string, number>) => Object.values(w).reduce((a, b) => a + b, 0);
 
@@ -25,5 +29,20 @@ describe("setOneWeight", () => {
     const w = { a: 0.5, b: 0.5 };
     expect(setOneWeight(w, "zzz", 0.3)).toBe(w);
     expect(setOneWeight(w, "a", 3).a).toBe(1);
+  });
+});
+
+describe("displayWeightPercents", () => {
+  it("sums to exactly 100 for active criteria", () => {
+    const w = { a: 1 / 3, b: 1 / 3, c: 1 / 3 };
+    const pct = displayWeightPercents(w, { a: 2, b: 1, c: 3 });
+    expect(sum(pct)).toBe(100);
+    expect(weightsDisplayOk(w, { a: 2, b: 1, c: 3 })).toBe(true);
+  });
+
+  it("zeros criteria with no used variables", () => {
+    const pct = displayWeightPercents({ a: 0.5, b: 0.5, c: 0.2 }, { a: 2, b: 0, c: 1 });
+    expect(pct.b).toBe(0);
+    expect(pct.a! + pct.c!).toBe(100);
   });
 });

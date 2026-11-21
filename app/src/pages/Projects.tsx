@@ -6,7 +6,6 @@ import { useToast } from "../state/toastContext";
 import { useTranslation } from "../i18n";
 import {
   createEmptyProject,
-  defaultNameFromConfig,
   plainErrorMessage,
   type ProjectListItem,
 } from "../state/projectModel";
@@ -25,7 +24,8 @@ import {
 } from "../state/projectExport";
 import { importAtlasProjectJson, prepareImportedProject } from "../state/projectStore";
 import { useAnalysis } from "../state/useAnalysis";
-import { COL_HS64_PRESET } from "../state/schema";
+import { EMPTY_PROJECT_CONFIG } from "../state/schema";
+import { requestOpenScope } from "../state/projectScope";
 import { preferredProjectView } from "../state/views";
 import { countryLabel } from "../design/formatLocale";
 
@@ -220,21 +220,22 @@ export function Projects() {
 
   async function createNew() {
     const base = {
-      ...COL_HS64_PRESET,
-      view: "analisis" as const,
+      ...EMPTY_PROJECT_CONFIG,
+      view: "datos" as const,
       lang: lang as "en" | "es",
     };
     const partial = {
-      name: defaultNameFromConfig(base),
+      name: lang === "es" ? "Proyecto nuevo" : "New project",
       config: base,
-      ...(base.year !== undefined ? { yearFrom: base.year, yearTo: base.year } : {}),
     };
     const project = createEmptyProject(partial);
     const { upsertProject } = await import("../state/projectLibrary");
     try {
       const saved = await upsertProject(project);
       await refresh();
-      openProject(saved, preferredProjectView(saved.config));
+      openProject(saved, "datos");
+      // Three-question scope wizard (origin · product · year); nothing preselected.
+      requestOpenScope();
       toast.push(t("projectCreated"));
     } catch (err) {
       toast.push(plainErrorMessage(err));

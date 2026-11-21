@@ -4,11 +4,13 @@
  */
 
 import type { Direction, VariableSpec } from "@ims-atlas/core";
+import { winsorizeFinite } from "@ims-atlas/core";
 import { loadAccessConfig } from "../auth/accessConfig";
 import { loadCatalogPreview } from "../data/catalogLoader";
 import { dataConfig, resolvePublicReleaseBase } from "../dataConfig";
 import { getAtlasDataClient } from "../data/duckdbClient";
 import { clampTradeYear, PANEL_LOCF_MAX_LAG } from "../data/hsProducts";
+import { loadOriginPresence } from "../data/originPresence";
 import { escapeSqlLiteral, locfSelectSql, locfYears } from "../data/panelQueryHelpers";
 import type { CatalogVariable } from "../data/types";
 import {
@@ -16,6 +18,10 @@ import {
   type DemoPanel,
   resetDemoPanelCache,
 } from "./demoPanel";
+
+/** Synthetic panel ids (not in catalog YAML; computed from BACI trade). */
+const ORIG_SHARE_ID = "ORIGSH";
+const PRIOR_EXP_ID = "PRIEXP";
 
 /** Keep in sync with {@link PANEL_LOCF_MAX_LAG} (analysis-year cap). */
 const LOCF_MAX_LAG = PANEL_LOCF_MAX_LAG;
@@ -341,17 +347,71 @@ export async function loadProjectPanel(req: ProjectPanelRequest): Promise<DemoPa
   for (const k of countryBest.keys()) usedIds.add(k.split("|")[1]!);
   for (const k of bilateralBest.keys()) usedIds.add(k.split("|")[1]!);
 
+  // Origin presence / prior experience from the HS2 trade chapter (optional).
+  const presence = await loadOriginPresence(
+    {
+      hs,
+      year: Number(year),
+      origin,
+      importers: candidateListSorted,
+      lookbackYears: LOCF_MAX_LAG,
+    },
+    client,
+  );
+  const presenceBest = new Map<string, { year: number; value: number }>();
+  if (presence.source === "baci_release") {
+    for (const iso of candidateListSorted) {
+      const row = presence.byIso[iso];
+      if (!row) continue;
+      if (row.originShare != null && Number.isFinite(row.originShare)) {
+        presenceBest.set(`${iso}|${ORIG_SHARE_ID}`, {
+          year: Number(year),
+          value: row.originShare,
+        });
+        usedIds.add(ORIG_SHARE_ID);
+      }
+      if (row.priorYears > 0) {
+        presenceBest.set(`${iso}|${PRIOR_EXP_ID}`, {
+          year: Number(year),
+          value: row.priorYears,
+        });
+        usedIds.add(PRIOR_EXP_ID);
+      }
+    }
+  }
+
+  const syntheticSpecs: Record<string, VariableSpec> = {
+    [ORIG_SHARE_ID]: {
+      id: ORIG_SHARE_ID,
+      factor: "product_fit",
+      direction: "benefit",
+      transform: "none",
+    },
+    [PRIOR_EXP_ID]: {
+      id: PRIOR_EXP_ID,
+      factor: "product_fit",
+      direction: "benefit",
+      transform: "none",
+    },
+  };
+
   const variables: VariableSpec[] = [];
   const dataYears: Record<string, number> = {};
-  for (const id of [...PRODUCT_VAR_IDS, ...countryWanted, ...BILATERAL_VAR_IDS]) {
+  for (const id of [
+    ...PRODUCT_VAR_IDS,
+    ...countryWanted,
+    ...BILATERAL_VAR_IDS,
+    ORIG_SHARE_ID,
+    PRIOR_EXP_ID,
+  ]) {
     if (!usedIds.has(id)) continue;
-    const spec = metaFor(catalog, id);
+    const spec = metaFor(catalog, id) ?? syntheticSpecs[id] ?? null;
     if (!spec) continue;
     if (variables.some((v) => v.id === id)) continue;
     variables.push(spec);
     // Representative data year (mode across markets).
     const years: number[] = [];
-    for (const map of [productBest, countryBest, bilateralBest]) {
+    for (const map of [productBest, countryBest, bilateralBest, presenceBest]) {
       for (const [k, cell] of map) {
         if (k.endsWith(`|${id}`)) years.push(cell.year);
       }
@@ -377,7 +437,11 @@ export async function loadProjectPanel(req: ProjectPanelRequest): Promise<DemoPa
     for (const v of variables) {
       const k = `${iso}|${v.id}`;
       const cell =
-        productBest.get(k) ?? countryBest.get(k) ?? bilateralBest.get(k) ?? null;
+        productBest.get(k) ??
+        countryBest.get(k) ??
+        bilateralBest.get(k) ??
+        presenceBest.get(k) ??
+        null;
       row.push(cell ? cell.value : null);
       if (cell) coveragePct[v.id] = (coveragePct[v.id] ?? 0) + 1;
       if (v.id === "IMPV" && cell) importVolume[iso] = cell.value;
@@ -389,9 +453,27 @@ export async function loadProjectPanel(req: ProjectPanelRequest): Promise<DemoPa
       (100 * (coveragePct[v.id] ?? 0)) / Math.max(1, candidateList.length);
   }
 
+  // Cap extreme EOC (microstates / re-export hubs) before normalisation.
+  const eocIdx = variables.findIndex((v) => v.id === "EOC");
+  if (eocIdx >= 0) {
+    const col = values.map((row) => row[eocIdx] ?? null);
+    const capped = winsorizeFinite(col, 0.95);
+    for (let i = 0; i < values.length; i++) {
+      values[i]![eocIdx] = capped[i] ?? null;
+    }
+  }
+
   const notes: string[] = [
     `Project panel ${origin} · HS ${hs} · ${year} (${variables.length} variables).`,
   ];
+  if (presence.source === "baci_release" && usedIds.has(ORIG_SHARE_ID)) {
+    notes.push(
+      `Origin presence (${ORIG_SHARE_ID}) and prior experience (${PRIOR_EXP_ID}) from BACI HS${hs2}.`,
+    );
+  }
+  if (eocIdx >= 0) {
+    notes.push("EOC openness capped at the 95th percentile (microstate / hub guard).");
+  }
   if (productBaseUsed !== base) {
     notes.push(
       `Product chapter loaded from ${productBaseUsed} (session release ${base}).`,

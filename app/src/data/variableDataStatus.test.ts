@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { CatalogVariable } from "./types";
 import {
+  aliasCollisionIds,
   aliasCollisionsFromCatalog,
   variableDataStatus,
 } from "./variableDataStatus";
@@ -64,12 +65,16 @@ describe("variableDataStatus (EXTRA-5)", () => {
 });
 
 describe("alias collisions (EXTRA-10)", () => {
-  it("flags CLI+PLI and alias_of pairs", () => {
+  it("flags CLI+PLI, INAN+INFL, UNRA+UNEMP and alias_of pairs", () => {
     const cat = [
       v({ id: "CLI", alias_of: "PLI" }),
       v({ id: "PLI" }),
       v({ id: "LPIN", alias_of: "LPI" }),
       v({ id: "LPI" }),
+      v({ id: "INAN", alias_of: "INFL" }),
+      v({ id: "INFL" }),
+      v({ id: "UNRA", alias_of: "UNEMP" }),
+      v({ id: "UNEMP" }),
     ];
     expect(
       aliasCollisionsFromCatalog(new Set(["CLI", "PLI", "LPIN"]), cat),
@@ -77,5 +82,7 @@ describe("alias collisions (EXTRA-10)", () => {
     expect(
       aliasCollisionsFromCatalog(new Set(["LPIN", "LPI"]), cat),
     ).toContain("LPIN+LPI");
+    expect(aliasCollisionIds(new Set(["INAN", "INFL"]))).toContain("INAN+INFL");
+    expect(aliasCollisionIds(new Set(["UNRA", "UNEMP"]))).toContain("UNRA+UNEMP");
   });
 });

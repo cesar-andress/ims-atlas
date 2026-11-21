@@ -64,10 +64,12 @@ export function variableDataStatus(
   };
 }
 
-/** Alias pairs that must not both carry weight (EXTRA-10). */
+/** Alias pairs that must not both carry weight (EXTRA-10 / B1). */
 export const ALIAS_PAIRS: ReadonlyArray<readonly [string, string]> = [
   ["CLI", "PLI"],
   ["LPIN", "LPI"],
+  ["INAN", "INFL"],
+  ["UNRA", "UNEMP"],
 ];
 
 export function aliasCollisionIds(chosen: ReadonlySet<string>): string[] {

@@ -4,6 +4,18 @@ All notable changes to IMS Atlas are documented in this file.
 
 ## [Unreleased]
 
+### Ranking credibility (B1) + empty project (B2)
+
+- EOC openness winsorised at p95 (matrix, combined score, project panel) so
+  microstates / re-export hubs do not set the 10-point ceiling.
+- Origin presence (`ORIGSH`) and prior experience (`PRIEXP`) from BACI trade
+  chapters injected into the project panel when the HS2 chapter loads.
+- Criterion weight UI shows integer percents that sum to 100; criteria with
+  zero used variables are hidden. Alias pairs include INAN/INFL and UNRA/UNEMP.
+- Default normalisation `log_minmax`; COL·HS64 example stays Spanish.
+- `+ Nuevo proyecto` opens Datos empty and the scope wizard (nothing preselected).
+- Pure `checkRankingSanity` helpers for COL·64 / ESP·0901 CI predicates.
+
 ### Security / release policy (P0, 2026-11-21)
 
 - Releases are **immutable**: `release` / `release-dual` / `promote` refuse to

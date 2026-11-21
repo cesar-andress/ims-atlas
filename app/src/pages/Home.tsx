@@ -19,7 +19,8 @@ import {
   upsertProject,
 } from "../state/projectLibrary";
 import { importAtlasProjectJson, prepareImportedProject } from "../state/projectStore";
-import { COL_HS64_PRESET } from "../state/schema";
+import { COL_HS64_PRESET, EMPTY_PROJECT_CONFIG } from "../state/schema";
+import { requestOpenScope } from "../state/projectScope";
 import { useAnalysis } from "../state/useAnalysis";
 import { preferredProjectView } from "../state/views";
 
@@ -161,11 +162,12 @@ export function Home() {
   async function onNew() {
     const project = createEmptyProject({
       name: t("projectNewName"),
-      config: { v: 1, view: "datos", lang },
+      config: { ...EMPTY_PROJECT_CONFIG, view: "datos", lang },
     });
     const saved = await upsertProject(project);
     await refresh();
-    openProject(saved, preferredProjectView(saved.config));
+    openProject(saved, "datos");
+    requestOpenScope();
   }
 
   function onImport(file: File) {

@@ -11,6 +11,7 @@ export {
   buildImsfeEocMatrix,
   eocQuadrantOf,
   normalizeEocRatio,
+  winsorizeFinite,
   type ImsfeEocMatrixResult,
   type ImsfeEocPoint,
   type ImsfeEocQuadrant,
