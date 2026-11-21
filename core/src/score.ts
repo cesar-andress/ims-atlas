@@ -2,6 +2,7 @@
  * High-level origin-year scoring pipeline: prepare → weights → normalise → MCDM.
  */
 
+import { applyCatalogTransforms, dropCoWeightedAliases } from "./catalogTransform.js";
 import { factorContributions, score as scoreMcdm } from "./mcdm.js";
 import { compareScoreDescending } from "./math.js";
 import { prepareBlock, type PrepareBlockInput } from "./missing.js";
@@ -44,18 +45,30 @@ export type ScoreBlockResult = {
 };
 
 export function scoreBlock(input: ScoreBlockInput): ScoreBlockResult {
-  const columns = input.variables.map((v) => v.id);
+  const { kept: varsNoAlias, dropped: droppedAliases } = dropCoWeightedAliases(
+    input.variables,
+  );
+  const aliasNotes =
+    droppedAliases.length > 0
+      ? [`Dropped co-weighted aliases (keep canonical): ${droppedAliases.join(", ")}`]
+      : [];
+
+  // Catalog transforms (e.g. log) before missing-data prep / normalisation.
+  const transformed = applyCatalogTransforms(input.values, varsNoAlias);
+
+  const columns = varsNoAlias.map((v) => v.id);
   const directions: Record<string, Direction> = {};
-  for (const v of input.variables) directions[v.id] = v.direction;
+  for (const v of varsNoAlias) directions[v.id] = v.direction;
 
   const prepInput: PrepareBlockInput = {
     candidates: input.candidates,
     columns,
-    values: input.values,
+    values: transformed,
   };
   if (input.policy !== undefined) prepInput.policy = input.policy;
   const prepared = prepareBlock(prepInput);
-  const usedVars = input.variables.filter((v) => prepared.usedVariables.includes(v.id));
+  prepared.notes.push(...aliasNotes);
+  const usedVars = varsNoAlias.filter((v) => prepared.usedVariables.includes(v.id));
   const usedDirs: Record<string, Direction> = {};
   for (const v of usedVars) usedDirs[v.id] = v.direction;
 

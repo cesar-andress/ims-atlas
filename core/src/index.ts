@@ -29,6 +29,11 @@ export type {
 } from "./types.js";
 
 export {
+  applyCatalogTransformValue,
+  applyCatalogTransforms,
+  dropCoWeightedAliases,
+} from "./catalogTransform.js";
+export {
   normalizeColumn,
   normalizeDmp,
   normalizeImp,

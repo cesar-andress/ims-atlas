@@ -11,10 +11,17 @@ export type McdmId = "wsm" | "topsis" | "vikor" | "promethee_ii";
 
 export type FactorId = string;
 
+/** Catalog pre-normalisation transform (applied before minmax/z/…). */
+export type CatalogTransformId = "none" | "log";
+
 export type VariableSpec = {
   id: string;
   factor: FactorId;
   direction: Direction;
+  /** From catalog `transform:` (e.g. log on IMPV/IMPC/GDPPC/DIST). */
+  transform?: CatalogTransformId;
+  /** From catalog `alias_of:` — do not co-weight with the canonical id. */
+  aliasOf?: string;
 };
 
 export type HierarchicalWeights = {

@@ -21,6 +21,8 @@ export type CatalogVariable = {
   name: { en: string; es: string } | string;
   factor: string;
   direction?: string | undefined;
+  /** Catalog pre-normalisation: none | log */
+  transform?: string | undefined;
   status?: string | undefined;
   redistributable?: boolean | undefined;
   source_ids: string[];

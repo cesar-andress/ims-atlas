@@ -164,7 +164,15 @@ function metaFor(
   const sources = v.source_ids ?? [];
   if (sources.some((s) => BLOCKED_SOURCE_IDS.has(s))) return null;
   const direction = (v.direction === "cost" ? "cost" : "benefit") as Direction;
-  return { id, factor: v.factor || "macro_risk", direction };
+  const transform = v.transform === "log" ? ("log" as const) : ("none" as const);
+  const out: VariableSpec = {
+    id,
+    factor: v.factor || "macro_risk",
+    direction,
+    transform,
+  };
+  if (v.alias_of) out.aliasOf = v.alias_of;
+  return out;
 }
 
 /**

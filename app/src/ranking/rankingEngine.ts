@@ -134,6 +134,8 @@ function applyTreeDirections(
       id: v.id,
       factor,
       direction: d ?? v.direction,
+      ...(v.transform !== undefined ? { transform: v.transform } : {}),
+      ...(v.aliasOf !== undefined ? { aliasOf: v.aliasOf } : {}),
     };
   });
 }
@@ -484,7 +486,13 @@ export async function computeRanking(req: RankingRequest): Promise<RankingViewMo
     variables = variables.map((v) => {
       const m = resolvedMeta!.get(v.id);
       if (!m) return v;
-      return { id: v.id, factor: m.criterion, direction: m.direction };
+      return {
+        id: v.id,
+        factor: m.criterion,
+        direction: m.direction,
+        ...(v.transform !== undefined ? { transform: v.transform } : {}),
+        ...(v.aliasOf !== undefined ? { aliasOf: v.aliasOf } : {}),
+      };
     });
   } else {
     variables = applyTreeDirections(variables, tree);

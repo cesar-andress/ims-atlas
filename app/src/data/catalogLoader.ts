@@ -146,6 +146,7 @@ function normalizeFromStatus(
         audience_public: gate.included === true,
       };
       if (row.direction) out.direction = String(row.direction);
+      if (row.transform) out.transform = String(row.transform);
       if (Array.isArray(row.years)) out.years = row.years.map(Number);
       if (row.citation) out.citation = String(row.citation);
       if (row.alias_of) out.alias_of = String(row.alias_of);

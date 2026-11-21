@@ -501,6 +501,7 @@ def _variables_payload(
             "name": var.get("name"),
             "factor": var.get("factor"),
             "direction": var.get("direction"),
+            "transform": var.get("transform"),
             "status": var.get("status"),
             "redistributable": var.get("redistributable"),
             "byod_only": var.get("byod_only"),
