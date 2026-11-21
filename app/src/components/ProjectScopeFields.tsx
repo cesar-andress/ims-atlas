@@ -9,6 +9,7 @@ import {
   type KeyboardEvent,
 } from "react";
 import {
+  ensureFullHsNomenclature,
   hsCategoryTree,
   hsLabel,
   searchHs,
@@ -63,6 +64,8 @@ export const ProjectScopeFields = forwardRef<ProjectScopeFieldsHandle, Props>(
     const [hsActive, setHsActive] = useState(0);
     const [treeOpen, setTreeOpen] = useState(false);
     const [treeChapter, setTreeChapter] = useState<string | null>(null);
+    /** Bumps when full HS4/HS6 nomenclature finishes loading. */
+    const [hsCatalogGen, setHsCatalogGen] = useState(0);
 
     useEffect(() => {
       setOrigin(config.origin ?? "");
@@ -71,8 +74,22 @@ export const ProjectScopeFields = forwardRef<ProjectScopeFieldsHandle, Props>(
     }, [config.origin, config.hs, config.year]);
 
     useEffect(() => {
-      if (!hsOpen) setHsQuery("");
-    }, [hsOpen]);
+      if (!hsOpen && !treeOpen) {
+        setHsQuery("");
+        return;
+      }
+      let cancelled = false;
+      void ensureFullHsNomenclature()
+        .then(() => {
+          if (!cancelled) setHsCatalogGen((n) => n + 1);
+        })
+        .catch(() => {
+          /* HS2-only fallback still works */
+        });
+      return () => {
+        cancelled = true;
+      };
+    }, [hsOpen, treeOpen]);
 
     useImperativeHandle(ref, () => ({
       flush: () => {
@@ -106,9 +123,14 @@ export const ProjectScopeFields = forwardRef<ProjectScopeFieldsHandle, Props>(
         limit: 12,
         emptyMeans: hsQuery.trim() ? "all" : "hs2",
       }).slice(0, 12);
-    }, [hsOpen, hsQuery, lang]);
+      // hsCatalogGen: re-search when HS4/HS6 arrive
+      // eslint-disable-next-line react-hooks/exhaustive-deps -- gen is intentional
+    }, [hsOpen, hsQuery, lang, hsCatalogGen]);
 
-    const hsTree = useMemo(() => hsCategoryTree(), []);
+    const hsTree = useMemo(() => {
+      void hsCatalogGen;
+      return hsCategoryTree();
+    }, [hsCatalogGen]);
     const years = useMemo(() => tradeYearOptions(), []);
 
     function pickHs(code: string) {

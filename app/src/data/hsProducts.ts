@@ -1,6 +1,10 @@
-/** HS2/HS4/HS6 catalogue for search + category tree (BACI nomenclature). */
+/**
+ * HS catalogue: HS2 chapters ship in the SPA (~12 KiB). Full HS4/HS6
+ * nomenclature (~1.5 MiB) loads on demand from /meta/hs_nomenclature.json
+ * so the main bundle stays small.
+ */
 
-import nomenclature from "./hsNomenclature.json";
+import hs2Chapters from "./hs2Chapters.json";
 
 export type HsProduct = {
   code: string;
@@ -12,41 +16,110 @@ export type HsProduct = {
 type NomenclatureFile = {
   revision: string;
   hs2: HsProduct[];
-  hs4: HsProduct[];
-  hs6: HsProduct[];
+  hs4?: HsProduct[];
+  hs6?: HsProduct[];
   counts: { hs2: number; hs4: number; hs6: number };
 };
 
-const DATA = nomenclature as NomenclatureFile;
+const HS2_FILE = hs2Chapters as NomenclatureFile;
 
 /** All HS2 chapters from BACI product_codes (96 chapters; HS 77 absent). */
-export const HS2_PRODUCTS: HsProduct[] = DATA.hs2;
+export const HS2_PRODUCTS: HsProduct[] = HS2_FILE.hs2;
 
-/** HS4 headings derived from BACI HS6 codes. */
-export const HS4_PRODUCTS: HsProduct[] = DATA.hs4;
+export const HS_NOMENCLATURE_REVISION = HS2_FILE.revision;
+export const HS_NOMENCLATURE_COUNTS = HS2_FILE.counts;
 
-/** HS6 leaves from BACI product_codes (English labels; ES falls back to EN). */
-export const HS6_PRODUCTS: HsProduct[] = DATA.hs6;
+type FullCatalog = {
+  hs2: HsProduct[];
+  hs4: HsProduct[];
+  hs6: HsProduct[];
+  all: HsProduct[];
+  byCode: Map<string, HsProduct>;
+};
 
-export const ALL_HS_PRODUCTS: HsProduct[] = [
-  ...HS2_PRODUCTS,
-  ...HS4_PRODUCTS,
-  ...HS6_PRODUCTS,
-];
+let full: FullCatalog | null = null;
+let loadPromise: Promise<FullCatalog> | null = null;
 
-export const HS_NOMENCLATURE_REVISION = DATA.revision;
-export const HS_NOMENCLATURE_COUNTS = DATA.counts;
+function buildCatalog(data: NomenclatureFile): FullCatalog {
+  const hs2 = data.hs2?.length ? data.hs2 : HS2_PRODUCTS;
+  const hs4 = data.hs4 ?? [];
+  const hs6 = data.hs6 ?? [];
+  const all = [...hs2, ...hs4, ...hs6];
+  const byCode = new Map<string, HsProduct>();
+  for (const p of all) byCode.set(p.code, p);
+  return { hs2, hs4, hs6, all, byCode };
+}
 
-const BY_CODE = new Map<string, HsProduct>();
-for (const p of ALL_HS_PRODUCTS) BY_CODE.set(p.code, p);
+/** Seed full catalogue (tests). */
+export function hydrateHsNomenclature(data: NomenclatureFile): void {
+  full = buildCatalog(data);
+  loadPromise = Promise.resolve(full);
+}
+
+export function resetHsNomenclatureForTests(): void {
+  full = null;
+  loadPromise = null;
+}
+
+function nomenclatureUrl(): string {
+  const base =
+    typeof import.meta !== "undefined" && import.meta.env?.BASE_URL
+      ? String(import.meta.env.BASE_URL)
+      : "/";
+  const root = base.endsWith("/") ? base : `${base}/`;
+  return `${root}meta/hs_nomenclature.json`;
+}
+
+/**
+ * Fetch full HS4/HS6 nomenclature once. Safe to call from UI open handlers.
+ * Idempotent; concurrent callers share one promise.
+ */
+export async function ensureFullHsNomenclature(): Promise<void> {
+  if (full) return;
+  if (!loadPromise) {
+    loadPromise = (async () => {
+      const res = await fetch(nomenclatureUrl(), {
+        credentials: "same-origin",
+        cache: "force-cache",
+      });
+      if (!res.ok) {
+        throw new Error(`HS nomenclature HTTP ${res.status}`);
+      }
+      const data = (await res.json()) as NomenclatureFile;
+      full = buildCatalog(data);
+      return full;
+    })().catch((err) => {
+      loadPromise = null;
+      throw err;
+    });
+  }
+  await loadPromise;
+}
+
+export function isFullHsNomenclatureReady(): boolean {
+  return full != null;
+}
+
+export function getHs4Products(): HsProduct[] {
+  return full?.hs4 ?? [];
+}
+
+export function getHs6Products(): HsProduct[] {
+  return full?.hs6 ?? [];
+}
+
+export function getAllHsProducts(): HsProduct[] {
+  return full?.all ?? HS2_PRODUCTS;
+}
 
 export type HsTreeNode = HsProduct & { children: HsProduct[] };
 
 /** HS2 → HS4 tree (HS6 via search only — keeps the tree compact). */
 export function hsCategoryTree(): HsTreeNode[] {
+  const hs4 = full?.hs4 ?? [];
   return HS2_PRODUCTS.map((ch) => ({
     ...ch,
-    children: HS4_PRODUCTS.filter((p) => p.parent === ch.code),
+    children: hs4.filter((p) => p.parent === ch.code),
   }));
 }
 
@@ -112,6 +185,7 @@ const REGION_ISO: Record<string, string[]> = {
 /**
  * Search HS2/HS4/HS6 by code or name.
  * Empty query returns HS2 chapters only (compact browse), never the full dump.
+ * HS4/HS6 hits require {@link ensureFullHsNomenclature} first.
  */
 export function searchHs(
   query: string,
@@ -121,13 +195,14 @@ export function searchHs(
   const limit = opts?.limit ?? 40;
   const emptyMeans = opts?.emptyMeans ?? "hs2";
   const q = query.trim().toLowerCase();
+  const pool = full?.all ?? HS2_PRODUCTS;
   if (!q) {
     if (emptyMeans === "none") return [];
-    if (emptyMeans === "all") return ALL_HS_PRODUCTS.slice(0, limit);
+    if (emptyMeans === "all") return pool.slice(0, limit);
     return HS2_PRODUCTS.slice(0, limit);
   }
   const out: HsProduct[] = [];
-  for (const p of ALL_HS_PRODUCTS) {
+  for (const p of pool) {
     if (
       p.code.includes(q) ||
       p.name.en.toLowerCase().includes(q) ||
@@ -142,11 +217,14 @@ export function searchHs(
 }
 
 export function hsLabel(code: string, lang: "en" | "es"): string {
-  const exact = BY_CODE.get(code);
+  const byCode = full?.byCode;
+  const exact = byCode?.get(code) ?? HS2_PRODUCTS.find((p) => p.code === code);
   if (exact) return `${exact.code}: ${exact.name[lang]}`;
   const digits = code.replace(/\D/g, "");
   if (digits.length >= 2) {
-    const hit = BY_CODE.get(digits.slice(0, 2));
+    const hit =
+      byCode?.get(digits.slice(0, 2)) ??
+      HS2_PRODUCTS.find((p) => p.code === digits.slice(0, 2));
     if (hit) return `${code} (${hit.name[lang]})`;
   }
   return code;
@@ -165,10 +243,6 @@ export function hs2Of(code: string): string {
   return digits.slice(0, 2);
 }
 
-/**
- * Illustrative top importer ISO3 hints for search UX (not live aggregates).
- * Keyed by HS2 chapter until release ships trade roll-ups.
- */
 const TOP_IMPORTER_HINTS: Record<string, string[]> = {
   "15": ["USA", "DEU", "ITA", "FRA", "GBR"],
   "64": ["USA", "DEU", "FRA", "GBR", "ITA", "ESP", "CHN"],
@@ -181,7 +255,6 @@ export function topImporterHints(hsCode: string): string[] {
   return TOP_IMPORTER_HINTS[hs2] ?? [];
 }
 
-/** Years available for project scope (BACI pin year_min..year_max). */
 export const HS_TRADE_YEAR_MIN = 2012;
 export const HS_TRADE_YEAR_MAX = 2024;
 
