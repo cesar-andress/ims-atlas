@@ -36,6 +36,8 @@ export type IncotermRule = {
   /** Whether import duty (and VAT in corrected mode) applies. */
   duty: boolean;
   plainEs: string;
+  /** Indicative calendar days to destination (Jose route; corrected mode). */
+  days?: number;
 };
 
 export type LiquidationInput = {
@@ -61,6 +63,7 @@ export type LiquidationRow = {
   plainEs: string;
   dutyEur: number;
   vatEur: number;
+  days: number | null;
 };
 
 /** Default line items from Jose's workbook (€ per FEU). */
@@ -161,73 +164,84 @@ export const EXCEL_RULES: readonly IncotermRule[] = [
   },
 ];
 
-/** Corrected Incoterms® 2020 split (11 rules). */
+/** Corrected Incoterms® 2020 split (11 rules). Days = Jose Tarragona–Miami route. */
 export const CORRECTED_RULES: readonly IncotermRule[] = [
   {
     key: "EXW",
     includeIds: [],
     duty: false,
     plainEs: "Solo la mercancía en tu fábrica",
+    days: 0,
   },
   {
     key: "FCA",
     includeIds: ["cargue", "segcarg", "agorig"],
     duty: false,
     plainEs: "Cargada y despachada para exportar",
+    days: 0,
   },
   {
     key: "FAS",
     includeIds: range("cargue", "agorig"),
     duty: false,
     plainEs: "Junto al barco",
+    days: 2,
   },
   {
     key: "FOB",
     includeIds: range("cargue", "cargtin"),
     duty: false,
     plainEs: "A bordo del barco",
+    days: 4,
   },
   {
     key: "CFR",
     includeIds: range("cargue", "tin"),
     duty: false,
     plainEs: "Más flete (riesgo al subir al barco)",
+    days: 18,
   },
   {
     key: "CPT",
     includeIds: range("cargue", "tin"),
     duty: false,
     plainEs: "Como CFR, cualquier transporte",
+    days: 18,
   },
   {
     key: "CIF",
     includeIds: range("cargue", "segtin"),
     duty: false,
     plainEs: "Más seguro mínimo del viaje",
+    days: 18,
   },
   {
     key: "CIP",
     includeIds: [...range("cargue", "segtin"), "cipextra"],
     duty: false,
     plainEs: "Más seguro amplio (CIP)",
+    days: 18,
   },
   {
     key: "DAP",
     includeIds: range("cargue", "segtid"),
     duty: false,
     plainEs: "Hasta el cliente, sin descargar ni aduana",
+    days: 22,
   },
   {
     key: "DPU",
     includeIds: [...range("cargue", "segtid"), "descfinal"],
     duty: false,
     plainEs: "Hasta el cliente y descargada",
+    days: 22,
   },
   {
     key: "DDP",
     includeIds: [...range("cargue", "segtid"), "agdest"],
     duty: true,
     plainEs: "Todo pagado: entregada y con aranceles",
+    days: 23,
   },
 ];
 
@@ -296,6 +310,7 @@ export function liquidateIncoterms(input: LiquidationInput): LiquidationRow[] {
       plainEs: rule.plainEs,
       dutyEur,
       vatEur,
+      days: rule.days ?? null,
     };
   });
 }
