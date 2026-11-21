@@ -16,7 +16,8 @@ import { displayCell } from "../../formatDisplay";
 import { useTranslation } from "../../i18n";
 import { useAsyncResource } from "../../state/useAsyncResource";
 
-type FilterId = "all" | "open" | "closed" | "stale" | "ok";
+type FilterId =
+  "all" | "open" | "closed" | "stale" | "ok" | "pending_file" | "untracked";
 
 function formatWhen(value: unknown, lang: "es" | "en"): string {
   if (typeof value !== "string" || !value.trim()) return "-";
@@ -73,11 +74,13 @@ export function DataSources() {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return rows.filter(({ source, store, stale, liveOk }) => {
+    return rows.filter(({ source, store, stale, liveOk, state }) => {
       if (filter === "open" && store !== "abierta") return false;
       if (filter === "closed" && store !== "cerrada") return false;
       if (filter === "stale" && !stale) return false;
       if (filter === "ok" && !liveOk) return false;
+      if (filter === "pending_file" && state?.status !== "pending_file") return false;
+      if (filter === "untracked" && state) return false;
       if (q && !sourceHaystack(source).includes(q)) return false;
       return true;
     });
@@ -88,7 +91,9 @@ export function DataSources() {
     const closed = rows.length - open;
     const stale = rows.filter((r) => r.stale).length;
     const ok = rows.filter((r) => r.liveOk).length;
-    return { total: rows.length, open, closed, stale, ok };
+    const pendingFile = rows.filter((r) => r.state?.status === "pending_file").length;
+    const untracked = rows.filter((r) => !r.state).length;
+    return { total: rows.length, open, closed, stale, ok, pendingFile, untracked };
   }, [rows]);
 
   return (
@@ -106,6 +111,43 @@ export function DataSources() {
             isFixture={Boolean(data.is_fixture)}
             message={data.fixture_banner ?? null}
           />
+
+          <p className="sources-summary" data-testid="sources-summary">
+            <button
+              type="button"
+              className={`sources-summary-part${filter === "ok" ? " is-active" : ""}`}
+              data-testid="sources-summary-ok"
+              onClick={() => setFilter("ok")}
+            >
+              {t("sourcesSummaryOk").replace("{n}", String(stats.ok))}
+            </button>
+            <span className="muted" aria-hidden>
+              ·
+            </span>
+            <button
+              type="button"
+              className={`sources-summary-part${filter === "pending_file" ? " is-active" : ""}`}
+              data-testid="sources-summary-pending"
+              onClick={() => setFilter("pending_file")}
+            >
+              {t("sourcesSummaryPending").replace("{n}", String(stats.pendingFile))}
+            </button>
+            <span className="muted" aria-hidden>
+              ·
+            </span>
+            <button
+              type="button"
+              className={`sources-summary-part${filter === "untracked" ? " is-active" : ""}`}
+              data-testid="sources-summary-untracked"
+              onClick={() => setFilter("untracked")}
+            >
+              {t("sourcesSummaryUntracked").replace("{n}", String(stats.untracked))}
+            </button>
+            <span className="muted small">
+              {" "}
+              ({t("sourcesStatTotal")}: {stats.total})
+            </span>
+          </p>
 
           <div className="sources-kpi-grid">
             <article className="sources-kpi">
@@ -155,6 +197,8 @@ export function DataSources() {
                   ["open", t("sourcesFilterOpen")],
                   ["closed", t("sourcesFilterClosed")],
                   ["ok", t("sourcesFilterOk")],
+                  ["pending_file", t("sourcesFilterPending")],
+                  ["untracked", t("sourcesFilterUntracked")],
                   ["stale", t("sourcesFilterStale")],
                 ] as const
               ).map(([id, label]) => (
