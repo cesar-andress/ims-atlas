@@ -71,7 +71,7 @@ body {
 .controls button,
 .config-panel button,
 .config-panel select,
-.config-panel input,
+.config-panel input:not([type="checkbox"]):not([type="radio"]),
 .catalog-list button {
   appearance: none;
   border: 1px solid var(--border);
@@ -4760,4 +4760,12 @@ ul.callout {
   .releases-dl {
     grid-template-columns: 1fr;
   }
+}
+
+/* Variable picker: real, visible checkboxes (appearance must stay native). */
+.config-panel .var-check input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--accent);
+  cursor: pointer;
 }
