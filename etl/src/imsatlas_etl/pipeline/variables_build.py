@@ -332,7 +332,13 @@ def build_variables_country_year(
             "catalog_status": (catalog_vars.get("GOV") or {}).get("status"),
         }
 
-    out = out.sort_values(["iso3", "year"]).reset_index(drop=True)
+    # Outer merges can leave a rare duplicate (iso3, year) when a source
+    # ships two rows for the same key; release provenance requires 1:1 cells.
+    out = (
+        out.sort_values(["iso3", "year"])
+        .drop_duplicates(subset=["iso3", "year"], keep="last")
+        .reset_index(drop=True)
+    )
     return out, meta
 
 
