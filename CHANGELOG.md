@@ -4,6 +4,20 @@ All notable changes to IMS Atlas are documented in this file.
 
 ## [Unreleased]
 
+### Security / release policy (P0, 2026-11-21)
+
+- Releases are **immutable**: `release` / `release-dual` / `promote` refuse to
+  overwrite an existing `vX.Y.Z` tree even with `--force` (delete by hand or bump).
+- Public gate also requires `redistributable: true` on the **variable** (not only
+  the source ship decision). Dropped from public: PPAD, CIBC, LPIN, CPTR, CLI,
+  INAN, UNRA, INRI, CPIN (duplicates or unclear redistrib).
+- Daily pipeline (`ATLAS_FULL_RELEASE=1`) creates the next **internal** patch only
+  when source versions change; **never** auto-promotes public
+  (`ATLAS_PROMOTE_PUBLIC=1` is César-only). `ATLAS_DRY_RUN=1` prints the plan.
+- Public **v1.3.1** = carve of v1.3.0 without the nine non-redistributable vars.
+  Internal stays on v1.3.0 (full set). Timer `ims-atlas-daily` stays **disabled**
+  until César reviews.
+
 ### Added
 
 - Phase F polish: footer Atlas credit (no R&D project placeholder), Matrix/Factors

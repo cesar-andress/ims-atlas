@@ -6,6 +6,7 @@ import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv, type Plugin } from "vite";
 
 const appRoot = dirname(fileURLToPath(import.meta.url));
+const repoRoot = resolve(appRoot, "..");
 
 const LANDING_PATHS = new Set(["/", "/metodologia", "/privacidad", "/aviso-legal"]);
 
@@ -49,9 +50,32 @@ function emitVersionJson(): Plugin {
       const pkg = JSON.parse(readFileSync(join(appRoot, "package.json"), "utf8")) as {
         version: string;
       };
+      // Data release version = served CURRENT (fallback config/data.json).
+      let dataVersion = "";
+      const currentCandidates = [
+        join(repoRoot, "app/public/data/CURRENT"),
+        join(repoRoot, "data/release/public/CURRENT"),
+        join(repoRoot, "config/data.json"),
+      ];
+      for (const cand of currentCandidates) {
+        try {
+          const raw = readFileSync(cand, "utf8").trim();
+          if (cand.endsWith("data.json")) {
+            const j = JSON.parse(raw) as { release_version?: string };
+            if (j.release_version) dataVersion = j.release_version.replace(/^v/, "");
+          } else {
+            const v = raw.replace(/^v/, "");
+            if (/^\d+\.\d+\.\d+$/.test(v)) dataVersion = v;
+          }
+          if (dataVersion) break;
+        } catch {
+          /* try next */
+        }
+      }
       const payload = {
         buildId,
         version: pkg.version,
+        dataVersion: dataVersion || pkg.version,
         builtAt: new Date().toISOString(),
       };
       writeFileSync(

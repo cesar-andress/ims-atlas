@@ -110,8 +110,22 @@ def _variable_gates(*, audience: Audience = "public") -> list[dict[str, Any]]:
         decision = result["decision"]
         status = str(variable.get("status") or "draft")
         if audience == "public":
-            # SPEC §4: public release needs verified + a ship gate.
-            included = decision in SHIP_DECISIONS and status == "verified"
+            # SPEC §4: public release needs verified + a ship gate +
+            # variable-level redistributable (source ship alone is not enough).
+            redistributable = variable.get("redistributable") is True
+            included = (
+                decision in SHIP_DECISIONS and status == "verified" and redistributable
+            )
+            if (
+                decision in SHIP_DECISIONS
+                and status == "verified"
+                and not redistributable
+            ):
+                result = {
+                    **result,
+                    "reasons": list(result.get("reasons") or [])
+                    + ["variable redistributable=false blocks public ship"],
+                }
         else:
             # Internal (CERRADO): ship_* OR use_research=yes (César 2026-11-21:
             # use_research alone is enough for the team panel; evidence still
@@ -485,10 +499,14 @@ def _run_release_unlocked(
             staging_release_dir(root=root) if staging else public_release_dir(root=root)
         )
         dest = dest_parent / f"v{version}"
-    if dest.exists() and not force:
-        raise FileExistsError(f"release exists: {dest} (use --force)")
+    # Immutable releases: never overwrite an existing version tree, even with
+    # --force. Delete the folder by hand (or bump the version) to rebuild.
+    _ = force  # CLI flag kept for compat; does not authorize overwrite
     if dest.exists():
-        shutil.rmtree(dest)
+        raise FileExistsError(
+            f"release exists: {dest} (refusing overwrite; delete the folder "
+            "manually or use a new patch version)",
+        )
     dest.mkdir(parents=True, exist_ok=True)
 
     gates = _variable_gates(audience=audience)
@@ -654,6 +672,8 @@ def rebuild_release_bytes(
     """Rebuild twice; data file digests must match (manifest timestamps may differ)."""
     first = run_release(version, root=root, staging=staging, force=True)
     sha1 = _sha256_file(Path(first["path"]) / "manifest.json")
+    # Immutable releases: wipe by hand between rebuilds (force no longer rmtree).
+    shutil.rmtree(Path(first["path"]))
     second = run_release(version, root=root, staging=staging, force=True)
     sha2 = _sha256_file(Path(second["path"]) / "manifest.json")
     files1 = {f["path"]: f["sha256"] for f in first["manifest"]["files"]}

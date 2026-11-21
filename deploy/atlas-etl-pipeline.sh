@@ -3,11 +3,15 @@
 #
 # Hourly (default): flock non-blocking — skip if another tick holds the lock.
 # Full release (ATLAS_FULL_RELEASE=1): blocking flock, then hourly extract →
-# live run → release-dual → promote public+internal → export-transparency.
+# live run → optional NEW internal patch version (never overwrite) →
+# promote internal only. Public promote requires ATLAS_PROMOTE_PUBLIC=1
+# (never set on the daily timer; César only).
 #
-# Version: ATLAS_RELEASE_VERSION if set, else data/release/internal/CURRENT
-# (never invent a version). Zenodo/GitHub tags are NOT uploaded/created here;
-# release-dual only writes local .zenodo.dataset.json.
+# Version: ATLAS_RELEASE_VERSION if set, else next patch from
+# data/release/internal/CURRENT when sources changed. Never invent a major/minor.
+# Never rewrite an existing vX.Y.Z tree (--force no longer overwrites).
+#
+# ATLAS_DRY_RUN=1: print the plan and exit 0 (no docker ETL / promote).
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
@@ -21,6 +25,11 @@ if [[ "${ATLAS_FULL_RELEASE:-0}" == "1" ]]; then
   FULL_RELEASE=1
 fi
 
+DRY_RUN=0
+if [[ "${ATLAS_DRY_RUN:-0}" == "1" ]]; then
+  DRY_RUN=1
+fi
+
 LOG_TAG="ims-atlas-pipeline"
 if [[ "$FULL_RELEASE" -eq 1 ]]; then
   LOG_TAG="ims-atlas-daily"
@@ -30,11 +39,9 @@ LOG_FILE="${ATLAS_LOG_FILE:-$LOG_DIR/${LOG_TAG}.log}"
 mkdir -p "$LOG_DIR"
 
 # Resolved host data path (repo may use data -> /data/ims-atlas symlink).
-# Docker bind of ROOT alone leaves a broken symlink inside the container.
 DATA_HOST="$(readlink -f "$ROOT/data")"
 
 BY="${ATLAS_PROMOTE_BY:-pipeline}"
-# Full BACI transforms / dual-release need headroom (host previously OOM'd).
 ETL_MEMORY="${ATLAS_ETL_MEMORY:-24g}"
 MIGRATE_WAIT_SEC="${ATLAS_MIGRATE_WAIT_SEC:-7200}"
 MIGRATE_POLL_SEC="${ATLAS_MIGRATE_POLL_SEC:-30}"
@@ -46,7 +53,6 @@ fail() {
   exit 1
 }
 
-# Wait if a sibling migration / dual-release is still moving data.
 wait_if_data_busy() {
   local deadline=$((SECONDS + MIGRATE_WAIT_SEC))
   while true; do
@@ -71,25 +77,75 @@ wait_if_data_busy() {
   done
 }
 
-resolve_version() {
-  local env_v cur raw
-  env_v="${ATLAS_RELEASE_VERSION:-}"
-  env_v="${env_v#"${env_v%%[![:space:]]*}"}"
-  env_v="${env_v%"${env_v##*[![:space:]]}"}"
-  if [[ -n "$env_v" ]]; then
-    printf '%s\n' "${env_v#v}"
+strip_v() {
+  local raw="$1"
+  raw="${raw#"${raw%%[![:space:]]*}"}"
+  raw="${raw%"${raw##*[![:space:]]}"}"
+  raw="${raw#v}"
+  printf '%s\n' "$raw"
+}
+
+read_current_version() {
+  local audience="$1"
+  local cur="$DATA_HOST/release/${audience}/CURRENT"
+  if [[ -f "$cur" ]]; then
+    strip_v "$(tr -d '[:space:]' <"$cur")"
     return 0
   fi
-  cur="$DATA_HOST/release/internal/CURRENT"
-  if [[ -f "$cur" ]]; then
-    raw="$(tr -d '[:space:]' <"$cur")"
-    raw="${raw#v}"
-    if [[ -n "$raw" ]]; then
-      printf '%s\n' "$raw"
-      return 0
-    fi
+  return 1
+}
+
+bump_patch() {
+  local ver="$1"
+  local a b c
+  IFS=. read -r a b c <<<"$ver"
+  if [[ -z "${a:-}" || -z "${b:-}" || -z "${c:-}" ]]; then
+    fail "cannot bump non-semver version: $ver"
   fi
-  fail "ATLAS_RELEASE_VERSION unset and $cur missing/empty (refusing to invent a version)"
+  printf '%s.%s.%s\n' "$a" "$b" "$((c + 1))"
+}
+
+# Compare manifest source_versions (internal CURRENT) to status/freshness.json.
+# Exit 0 if changed (need new release), 1 if unchanged.
+sources_changed_vs_current() {
+  local cur_ver="$1"
+  local man="$DATA_HOST/release/internal/v${cur_ver}/manifest.json"
+  local fresh="$DATA_HOST/../status/freshness.json"
+  # status lives under ATLAS_ROOT/status, not under data/
+  fresh="$ROOT/status/freshness.json"
+  if [[ ! -f "$man" ]]; then
+    log "sources_changed: no internal manifest for v${cur_ver} → treat as changed"
+    return 0
+  fi
+  if [[ ! -f "$fresh" ]]; then
+    log "sources_changed: no status/freshness.json → treat as changed"
+    return 0
+  fi
+  python3 - "$man" "$fresh" <<'PY'
+import json, sys
+man_path, fresh_path = sys.argv[1], sys.argv[2]
+man = json.loads(open(man_path, encoding="utf-8").read())
+fresh = json.loads(open(fresh_path, encoding="utf-8").read())
+old = {str(k): str(v) for k, v in (man.get("source_versions") or {}).items()}
+new = {}
+for row in fresh.get("sources") or []:
+    sid = str(row.get("source") or "")
+    if not sid:
+        continue
+    new[sid] = str(row.get("ingested_version") or row.get("upstream_version") or "")
+# Only compare keys present in either side with a non-empty new value or old value.
+keys = set(old) | set(new)
+changed = False
+for k in sorted(keys):
+    ov, nv = old.get(k, ""), new.get(k, "")
+    if ov != nv:
+        changed = True
+        print(f"CHANGED {k}: {ov!r} -> {nv!r}")
+if not changed:
+    print("UNCHANGED source_versions vs freshness")
+    sys.exit(1)
+sys.exit(0)
+PY
 }
 
 run_etl() {
@@ -110,20 +166,65 @@ run_etl() {
     uv run atlas-etl "${args[@]}"
 }
 
+plan_full_release() {
+  local cur_internal cur_public next_ver
+  cur_internal="$(read_current_version internal || true)"
+  cur_public="$(read_current_version public || true)"
+  if [[ -z "$cur_internal" ]]; then
+    fail "internal CURRENT missing; cannot plan daily release"
+  fi
+
+  if [[ -n "${ATLAS_RELEASE_VERSION:-}" ]]; then
+    next_ver="$(strip_v "$ATLAS_RELEASE_VERSION")"
+    log "plan: ATLAS_RELEASE_VERSION override → ${next_ver}"
+  else
+    next_ver="$(bump_patch "$cur_internal")"
+  fi
+
+  log "plan: internal CURRENT=v${cur_internal} public CURRENT=v${cur_public:-none}"
+  log "plan: candidate next internal patch=v${next_ver}"
+
+  if [[ -d "$DATA_HOST/release/internal/v${next_ver}" ]]; then
+    log "plan: REFUSE — internal v${next_ver} already exists (immutable; no overwrite)"
+    return 2
+  fi
+  if [[ -d "$DATA_HOST/release/staging/internal/v${next_ver}" ]]; then
+    log "plan: REFUSE — staging/internal/v${next_ver} already exists"
+    return 2
+  fi
+
+  if sources_changed_vs_current "$cur_internal"; then
+    log "plan: sources CHANGED vs internal v${cur_internal} → would create internal v${next_ver}"
+  else
+    log "plan: sources UNCHANGED → would SKIP creating a new version"
+    return 3
+  fi
+
+  log "plan: would run: atlas-etl run --live --force"
+  log "plan: would run: atlas-etl release --version ${next_ver} --audience internal (NO --force overwrite)"
+  log "plan: would run: atlas-etl promote ${next_ver} --audience internal --by ${BY}"
+  if [[ "${ATLAS_PROMOTE_PUBLIC:-0}" == "1" ]]; then
+    log "plan: ATLAS_PROMOTE_PUBLIC=1 → would ALSO release+promote PUBLIC v${next_ver} (manual César only)"
+  else
+    log "plan: would NOT promote public (ATLAS_PROMOTE_PUBLIC unset; timer must never set it)"
+  fi
+  log "plan: would NOT touch existing v${cur_internal} or public v${cur_public:-none} trees"
+  return 0
+}
+
 exec 9>"$LOCK_FILE"
 if [[ "$FULL_RELEASE" -eq 1 ]] || [[ "${ATLAS_PIPELINE_WAIT_LOCK:-0}" == "1" ]]; then
-  # Daily (or explicit wait): block until hourly releases the lock.
   flock 9
 else
-  # Hourly: skip quietly if daily/full or another hourly holds the lock.
   if ! flock -n 9; then
     log "skip: previous pipeline still running (flock)"
     exit 0
   fi
 fi
 
-# Mirror stdout/stderr to log file while keeping journald capture.
-exec > >(tee -a "$LOG_FILE") 2>&1
+if [[ "$DRY_RUN" -eq 0 ]]; then
+  exec > >(tee -a "$LOG_FILE") 2>&1
+fi
 
 wait_if_data_busy
 
@@ -132,30 +233,62 @@ if [[ ! -d "$DATA_HOST" ]]; then
 fi
 
 if [[ "$FULL_RELEASE" -eq 1 ]]; then
-  VERSION="$(resolve_version)"
-  log "start full daily pipeline (${LOG_TAG}) version=${VERSION} data=${DATA_HOST}"
+  log "start full daily pipeline (${LOG_TAG}) data=${DATA_HOST} dry_run=${DRY_RUN}"
+  set +e
+  plan_full_release
+  plan_rc=$?
+  set -e
+  if [[ "$DRY_RUN" -eq 1 ]]; then
+    log "DRY_RUN=1 → stop after plan (rc=${plan_rc}; 0=would release, 2=refuse exists, 3=skip unchanged)"
+    exit 0
+  fi
+  if [[ "$plan_rc" -eq 3 ]]; then
+    log "no source changes → skip release/promote; sync status only"
+    run_etl hourly || fail "atlas-etl hourly failed"
+    ./deploy/sync-public-status.sh || fail "sync-public-status failed"
+    run_etl check-current --audience both || fail "CURRENT pointer unhealthy"
+    log "pipeline OK (${LOG_TAG}) — no new version"
+    exit 0
+  fi
+  if [[ "$plan_rc" -eq 2 ]]; then
+    fail "planned next version already exists; refusing overwrite"
+  fi
+  if [[ "$plan_rc" -ne 0 ]]; then
+    fail "plan_full_release failed rc=${plan_rc}"
+  fi
 else
-  VERSION=""
   log "start hourly tick (${LOG_TAG}) data=${DATA_HOST}"
 fi
 
 run_etl hourly || fail "atlas-etl hourly failed"
 
 if [[ "$FULL_RELEASE" -eq 1 ]]; then
-  log "full release: live run → release-dual → promote (v${VERSION})"
+  cur_internal="$(read_current_version internal)"
+  if [[ -n "${ATLAS_RELEASE_VERSION:-}" ]]; then
+    VERSION="$(strip_v "$ATLAS_RELEASE_VERSION")"
+  else
+    VERSION="$(bump_patch "$cur_internal")"
+  fi
+  log "full release: live run → internal release+promote v${VERSION} (immutable)"
   run_etl run --live --force || fail "atlas-etl run --live failed"
-  run_etl release-dual --version "$VERSION" --force || fail "release-dual failed"
-  run_etl promote "$VERSION" --by "$BY" --audience public --force || fail "promote public failed"
-  run_etl promote "$VERSION" --by "$BY" --audience internal --force || fail "promote internal failed"
+  # Never pass a force that overwrites an existing tree — ETL refuses anyway.
+  run_etl release --version "$VERSION" --audience internal || fail "release internal failed"
+  run_etl promote "$VERSION" --by "$BY" --audience internal || fail "promote internal failed"
+
+  if [[ "${ATLAS_PROMOTE_PUBLIC:-0}" == "1" ]]; then
+    log "ATLAS_PROMOTE_PUBLIC=1: public release+promote v${VERSION}"
+    run_etl release --version "$VERSION" --audience public || fail "release public failed"
+    run_etl promote "$VERSION" --by "$BY" --audience public || fail "promote public failed"
+  else
+    log "skip public promote (set ATLAS_PROMOTE_PUBLIC=1 manually; never on timer)"
+  fi
   run_etl export-transparency || fail "export-transparency failed"
 fi
 
 ./deploy/sync-public-status.sh || fail "sync-public-status failed"
-
-# Fail loudly if CURRENT lags behind a fuller/newer release (empty or stale).
 run_etl check-current --audience both || fail "CURRENT pointer unhealthy"
 
-if command -v docker >/dev/null 2>&1; then
+if [[ "$DRY_RUN" -eq 0 ]] && command -v docker >/dev/null 2>&1; then
   docker compose -f deploy/docker-compose.yml up -d || fail "compose up failed"
 fi
 

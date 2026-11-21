@@ -129,6 +129,10 @@ def test_verify_detects_tamper_missing_and_extra(world_root: Path) -> None:
     assert "SHA256SUMS: file not listed: extra.txt" in verify_release(rel)["problems"]
     (rel / "extra.txt").unlink()
 
+    # Immutable releases: wipe by hand before rebuilding the same version.
+    import shutil
+
+    shutil.rmtree(rel)
     run_release("0.1.0", root=world_root, force=True)
     parts = list((rel / "provenance").rglob("part.parquet"))
     assert parts

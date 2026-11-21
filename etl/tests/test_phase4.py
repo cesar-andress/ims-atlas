@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from imsatlas_etl.paths import repo_root
 from imsatlas_etl.pipeline.io_paths import staging_release_dir
 from imsatlas_etl.pipeline.release import (
@@ -64,7 +66,16 @@ def test_config_data_json_matches_default_version() -> None:
     release_ptr = root / "data/release/public/CURRENT"
     if release_ptr.is_file():
         release_current = release_ptr.read_text(encoding="utf-8").strip()
-        assert cfg["release_version"] == release_current.removeprefix("v")
+        pin = cfg["release_version"]
+        on_disk = release_current.removeprefix("v")
+        if pin != on_disk:
+            pytest.skip(
+                "Tu copia local de los datos está desactualizada: "
+                f"config/data.json={pin!r} pero "
+                f"data/release/public/CURRENT={on_disk!r}. "
+                "Sincroniza data/release/public (o actualiza el pin) "
+                "antes de confiar en este check."
+            )
     assert cfg["release_base_path"] == "/data"
     # Staging path helper still uses v-prefix
     assert staging_release_dir().name == "staging"

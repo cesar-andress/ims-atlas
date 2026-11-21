@@ -96,9 +96,9 @@ def test_reproduce_missing_reference_raises(tmp_path: Path) -> None:
 
 def test_manifest_semantic_diff_flags_changed_gate(world_root: Path) -> None:
     ref = _public(world_root)
-    cand = Path(
-        run_release("0.1.0", root=world_root, staging=True, force=True)["path"],
-    )
+    # Staging tree left by _public (immutable: cannot re-release same version).
+    cand = world_root / "data" / "release" / "staging" / "v0.1.0"
+    assert cand.is_dir()
     assert reproduce_is_ok(diff_release_trees(ref, cand), allow_extra=False)
     import json
 

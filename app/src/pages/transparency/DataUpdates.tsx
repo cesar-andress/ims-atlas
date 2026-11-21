@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { version as APP_VERSION } from "@ims-atlas/core";
 import { FixtureStatusBanner } from "../../components/FixtureStatusBanner";
 import { PermalinkLink } from "../../components/PermalinkLink";
@@ -92,11 +92,35 @@ export function DataUpdates() {
     return map;
   }, [data?.sources]);
 
+  const [liveCurrent, setLiveCurrent] = useState<string>("");
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const res = await fetch(`${dataConfig.release_base_path}/CURRENT`, {
+          credentials: "include",
+          cache: "no-store",
+        });
+        if (!res.ok) return;
+        const text = (await res.text()).trim().replace(/^v/, "");
+        if (!cancelled && /^\d+\.\d+\.\d+$/.test(text)) setLiveCurrent(text);
+      } catch {
+        /* ignore */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const dataVersion = useMemo(() => {
+    if (liveCurrent) return liveCurrent;
     const current =
-      typeof data?.releases?.current === "string" ? data.releases.current.trim() : "";
+      typeof data?.releases?.current === "string"
+        ? data.releases.current.trim().replace(/^v/, "")
+        : "";
     return current || dataConfig.release_version;
-  }, [data?.releases]);
+  }, [data?.releases, liveCurrent]);
 
   const appBlocks = useMemo(() => {
     const all = parseChangelog(rawChangelog);

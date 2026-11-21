@@ -242,10 +242,15 @@ def _promote_release_unlocked(
 
     dest_parent.mkdir(parents=True, exist_ok=True)
     dest = dest_parent / f"v{version}"
-    if dest.exists() and not force:
-        raise FileExistsError(f"{audience} release exists: {dest} (use --force)")
+    # Immutable: never overwrite a promoted tree, even with --force.
+    _ = force  # CLI compat only
+    if dest.exists():
+        raise FileExistsError(
+            f"{audience} release exists: {dest} (refusing overwrite; delete "
+            "manually or promote a new patch version)",
+        )
 
-    # Guard before destroying an existing tree / rewriting CURRENT.
+    # Guard before rewriting CURRENT.
     assert_current_update_allowed(
         dest_parent,
         version,
@@ -253,8 +258,6 @@ def _promote_release_unlocked(
         allow_pointer_demote=allow_pointer_demote,
     )
 
-    if dest.exists():
-        shutil.rmtree(dest)
     shutil.copytree(staging, dest)
 
     manifest_path = dest / "manifest.json"
