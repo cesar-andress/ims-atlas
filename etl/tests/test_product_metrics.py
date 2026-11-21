@@ -143,8 +143,7 @@ def test_write_parquet_retry_remakes_vanished_parent(tmp_path, monkeypatch) -> N
         calls["n"] += 1
         if calls["n"] == 1:
             raise OSError(
-                "Cannot save file into a non-existent directory: "
-                f"'{path_arg}'",
+                f"Cannot save file into a non-existent directory: '{path_arg}'",
             )
         return real_to_parquet(self, path_arg, *args, **kwargs)
 
