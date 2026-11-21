@@ -44,9 +44,9 @@ path = root / "catalog" / "variables.yaml"
 text = path.read_text(encoding="utf-8")
 
 for vid in ids:
-    # Find the variable block starting at "- id: VID"
+    # Catalog uses quoted YAML: - 'id': 'PPAD' … 'redistributable': false
     pat = re.compile(
-        rf"(^  - id: {re.escape(vid)}\n(?:    .*\n)*?    redistributable: )(false|true)",
+        rf"(^- 'id': '{re.escape(vid)}'\n(?:  .*\n)*?  'redistributable': )(false|true)",
         re.MULTILINE,
     )
     m = pat.search(text)
