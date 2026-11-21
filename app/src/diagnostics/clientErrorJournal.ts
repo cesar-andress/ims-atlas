@@ -219,18 +219,20 @@ export function buildClientErrorExport(
   events?: readonly ClientErrorEvent[],
 ): ClientErrorExport {
   const list = events ? [...events] : listClientErrors();
-  return {
+  const out: ClientErrorExport = {
     schemaVersion: CLIENT_ERROR_SCHEMA,
     kind: "ims-atlas-client-errors",
     exportedAt: nowIso(),
     appVersion: APP_VERSION,
-    userAgent: typeof navigator !== "undefined" ? navigator.userAgent : undefined,
-    href:
-      typeof window !== "undefined"
-        ? redactSensitiveText(window.location.href)
-        : undefined,
     events: list,
   };
+  if (typeof navigator !== "undefined" && navigator.userAgent) {
+    out.userAgent = navigator.userAgent;
+  }
+  if (typeof window !== "undefined") {
+    out.href = redactSensitiveText(window.location.href);
+  }
+  return out;
 }
 
 export function downloadClientErrorExport(filename?: string): ClientErrorExport {
@@ -332,7 +334,7 @@ export function installClientErrorCapture(opts?: {
       recordClientError({
         source: "console.error",
         message: message || "console.error",
-        stack: stack || undefined,
+        ...(stack ? { stack } : {}),
       });
     } catch {
       /* never break console */
@@ -360,10 +362,11 @@ export function installClientErrorCapture(opts?: {
       ev.message ||
       (ev.error instanceof Error ? ev.error.message : "") ||
       "window.onerror";
+    const stack = ev.error instanceof Error ? ev.error.stack : undefined;
     recordClientError({
       source: "window.onerror",
       message,
-      stack: ev.error instanceof Error ? ev.error.stack : undefined,
+      ...(stack ? { stack } : {}),
     });
   });
 
@@ -375,10 +378,11 @@ export function installClientErrorCapture(opts?: {
         : typeof reason === "string"
           ? reason
           : argToMessage([reason]) || "unhandledrejection";
+    const stack = reason instanceof Error ? reason.stack : undefined;
     recordClientError({
       source: "unhandledrejection",
       message,
-      stack: reason instanceof Error ? reason.stack : undefined,
+      ...(stack ? { stack } : {}),
     });
   });
 }
