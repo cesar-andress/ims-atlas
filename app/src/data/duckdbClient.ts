@@ -12,6 +12,7 @@
 
 import type { AsyncDuckDB, AsyncDuckDBConnection } from "@duckdb/duckdb-wasm";
 import { releaseUrl } from "../dataConfig";
+import { filterCountryProductParts } from "./panelQueryHelpers";
 import type { CountryYearRow, DataStatus } from "./types";
 
 export type AtlasDataClient = {
@@ -30,14 +31,17 @@ export type AtlasDataClient = {
   /** Ensure trade chapter URL is reachable (no full-table materialisation). */
   loadTradeChapter(hs2: string, opts?: { basePath?: string }): Promise<boolean>;
   /**
-   * Country–product panel for one HS2 chapter. Prefer `year` / `variableIds`
-   * so only matching hive parts are opened (chapters have dozens of parts).
+   * Country–product panel for one HS2 chapter. Prefer `year` / `years` /
+   * `variableIds` so only matching hive parts are opened.
    */
   loadCountryProductChapter(
     hs2: string,
     opts?: {
       basePath?: string;
+      /** Single year (legacy). Prefer `years` for LOCF windows. */
       year?: number;
+      /** Inclusive year list (e.g. LOCF window). Overrides `year` when set. */
+      years?: number[];
       variableIds?: string[];
     },
   ): Promise<boolean>;
@@ -87,7 +91,10 @@ export function absoluteDataUrl(path: string): string {
 async function resolveBilateralParquetSource(base: string): Promise<string> {
   const indexUrl = `${base}/bilateral_year/index.json`;
   try {
-    const indexRes = await fetch(indexUrl, { cache: "no-store" });
+    const indexRes = await fetch(indexUrl, {
+      cache: "no-store",
+      ...CREDENTIALED,
+    });
     if (indexRes.ok) {
       const index = (await indexRes.json()) as { parts?: string[] };
       const parts = index.parts ?? [];
@@ -112,15 +119,19 @@ function hs2Key(hs2: string): string {
   return hs2.padStart(2, "0").slice(0, 2);
 }
 
+/** Same-origin Authelia session cookies (DuckDB httpfs alone often omits them). */
+const CREDENTIALED: RequestInit = { credentials: "include" };
+
 /** Probe that a release parquet is reachable without downloading the body. */
 async function parquetExists(url: string): Promise<boolean> {
   try {
-    const head = await fetch(url, { method: "HEAD" });
+    const head = await fetch(url, { method: "HEAD", ...CREDENTIALED });
     if (head.ok) return true;
     // Some static hosts omit HEAD; fall back to a 1-byte range GET.
     const ranged = await fetch(url, {
       method: "GET",
       headers: { Range: "bytes=0-0" },
+      ...CREDENTIALED,
     });
     return ranged.ok || ranged.status === 206;
   } catch {
@@ -166,7 +177,8 @@ export function createDuckDbClient(): AtlasDataClient {
             }),
           );
           const worker = new Worker(workerUrl);
-          const logger = new duckdb.ConsoleLogger();
+          // VoidLogger: ConsoleLogger dumps every SQL as a red Object and stalls the UI.
+          const logger = new duckdb.VoidLogger();
           db = new duckdb.AsyncDuckDB(logger, worker);
           await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
           conn = await db.connect();
@@ -259,29 +271,26 @@ export function createDuckDbClient(): AtlasDataClient {
     async loadCountryProductChapter(hs2, opts) {
       const connection = await ensureConn();
       const key = hs2Key(hs2);
-      const year = opts?.year;
+      const years =
+        opts?.years?.length
+          ? [...opts.years].sort((a, b) => a - b)
+          : opts?.year !== undefined
+            ? [opts.year]
+            : undefined;
       const variableIds = opts?.variableIds;
-      const sliceKey = `${key}|y=${year ?? "*"}|v=${(variableIds ?? []).slice().sort().join(",") || "*"}`;
+      const sliceKey = `${key}|y=${years?.join("-") ?? "*"}|v=${(variableIds ?? []).slice().sort().join(",") || "*"}`;
       if (countryProductKeys.has(sliceKey)) return true;
       const base = absoluteDataUrl(opts?.basePath ?? releaseUrl());
       const chapter = `${base}/country_product/hs2=${key}`;
       const table = `country_product_hs2_${key}`;
       try {
-        const indexRes = await fetch(`${chapter}/index.json`);
+        const indexRes = await fetch(`${chapter}/index.json`, CREDENTIALED);
         if (indexRes.ok) {
           const index = (await indexRes.json()) as { parts?: string[] };
-          let parts = index.parts ?? [];
-          if (year !== undefined) {
-            const prefix = `year=${year}/`;
-            parts = parts.filter((rel) => rel.startsWith(prefix));
-          }
-          if (variableIds?.length) {
-            const wanted = new Set(variableIds);
-            parts = parts.filter((rel) => {
-              const m = /variable_id=([^/]+)/.exec(rel);
-              return m ? wanted.has(m[1]!) : false;
-            });
-          }
+          const parts = filterCountryProductParts(index.parts ?? [], {
+            years,
+            variableIds,
+          });
           if (!parts.length) return false;
           const list = parts
             .map((rel) => `'${escapeSqlString(`${chapter}/${rel}`)}'`)
