@@ -44,7 +44,7 @@ tables; variable columns stay excluded until the gate allows `ship_*`).
 | `core/` | Pure TypeScript MCDM / SMAA / backtest library |
 | `etl/` | Python 3.11 (`uv`) data build + `atlas-etl` CLI |
 | `catalog/` | Variable catalog (Phase 1+) |
-| `docs/` | Methods and tutorials (rendered in the app later) |
+| `docs/` | Methods: [why-normalize](docs/why-normalize.md), [run-etl](docs/run-etl.md), [design](docs/design.md), [source-variable-gate](docs/source-variable-gate.md), Zenodo |
 | `deploy/` | nginx + Compose for vpn-aplicaciones |
 | `config/site.json` | Single config value for the public domain |
 
