@@ -54,7 +54,7 @@ def test_offline_pipeline_exact_curated(work_root: Path) -> None:
     assert counts["trade_hs2"] == 36
     assert counts["trade_hs4"] == 36
     assert counts["trade_hs6"] == 36
-    assert counts["variables_country_year"] == 9
+    assert counts["variables_country_year"] == 15
     assert {"CO2PC", "PLI", "ITU_IDI", "GII"}.issubset(set(variables.columns))
     assert len(country) == 9
     assert set(country["iso3"]) == {"ESP", "MEX", "CHL"}
