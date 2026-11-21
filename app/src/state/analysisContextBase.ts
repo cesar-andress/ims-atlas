@@ -19,6 +19,8 @@ export type AnalysisContextValue = {
   /** Active library project (null = untitled / not opened from library). */
   activeProject: AtlasProject | null;
   dirty: boolean;
+  /** Live save indicator for the project bar (autosave + explicit Guardar). */
+  saveStatus: "idle" | "saving" | "saved" | "saved_team" | "error";
   saveProject: (label?: string) => Promise<void>;
   exportProject: () => string;
   importProject: (json: string) => void;

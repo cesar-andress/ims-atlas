@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { hsLabel } from "../data/hsProducts";
 import { countryLabel } from "../design/formatLocale";
 import { methodFamilyLabel, methodPlainLabel } from "../design/plainLabels";
@@ -11,13 +11,20 @@ import {
   safeFilename,
 } from "../state/projectExport";
 import { duplicateProject } from "../state/projectLibrary";
+import {
+  isScopeComplete,
+  OPEN_SCOPE_EVENT,
+} from "../state/projectScope";
 import { persistActiveProject, projectFromConfig } from "../state/projectStore";
 import { useToast } from "../state/toastContext";
 import { useAnalysis } from "../state/useAnalysis";
 import { useProjectData } from "../state/useProjectData";
 import { isAnalysisReady, projectStepOf, type ProjectStep } from "../state/views";
 import { PermalinkLink } from "./PermalinkLink";
-import { ProjectScopeFields } from "./ProjectScopeFields";
+import {
+  ProjectScopeFields,
+  type ProjectScopeFieldsHandle,
+} from "./ProjectScopeFields";
 
 const WEIGHT_STATUS_KEY: Record<string, string> = {
   expert_mean: "stepWeightsExpert",
@@ -30,6 +37,8 @@ const WEIGHT_STATUS_KEY: Record<string, string> = {
 function ScopeDialog({ onClose }: { onClose: () => void }) {
   const { t } = useTranslation();
   const doneRef = useRef<HTMLButtonElement>(null);
+  const fieldsRef = useRef<ProjectScopeFieldsHandle>(null);
+  const [incomplete, setIncomplete] = useState(false);
 
   useEffect(() => {
     doneRef.current?.focus();
@@ -39,6 +48,16 @@ function ScopeDialog({ onClose }: { onClose: () => void }) {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
+
+  function onDone() {
+    const snap = fieldsRef.current?.flush();
+    if (!snap || !isScopeComplete(snap)) {
+      setIncomplete(true);
+      return;
+    }
+    setIncomplete(false);
+    onClose();
+  }
 
   return (
     <div className="onboarding-overlay" data-testid="project-scope-dialog">
@@ -52,14 +71,27 @@ function ScopeDialog({ onClose }: { onClose: () => void }) {
           {t("scopeDialogTitle")}
         </h2>
         <p className="muted small">{t("scopeDialogBody")}</p>
-        <ProjectScopeFields />
-        <div className="mt-4 flex justify-end">
+        {incomplete ? (
+          <p className="error small" role="alert" data-testid="scope-dialog-incomplete">
+            {t("scopeDialogIncomplete")}
+          </p>
+        ) : null}
+        <ProjectScopeFields ref={fieldsRef} highlightMissing={incomplete} />
+        <div className="mt-4 flex justify-end gap-2">
+          <button
+            type="button"
+            className="btn"
+            data-testid="project-scope-cancel"
+            onClick={onClose}
+          >
+            {t("scopeDialogCancel")}
+          </button>
           <button
             ref={doneRef}
             type="button"
             className="btn btn-primary"
             data-testid="project-scope-done"
-            onClick={onClose}
+            onClick={onDone}
           >
             {t("scopeDialogDone")}
           </button>
@@ -74,7 +106,8 @@ export function ProjectBar() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
   const toast = useToast();
-  const { config, activeProject, dirty, saveProject, openProject } = useAnalysis();
+  const { config, activeProject, dirty, saveStatus, saveProject, openProject } =
+    useAnalysis();
   const { model } = useRankingModel();
   const data = useProjectData();
   const [editing, setEditing] = useState(false);
@@ -82,6 +115,9 @@ export function ProjectBar() {
   const [scopeOpen, setScopeOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const renameRef = useRef<HTMLInputElement>(null);
+  const autoOpenedForResults = useRef(false);
+
+  const openScope = useCallback(() => setScopeOpen(true), []);
 
   useEffect(() => {
     if (editing) renameRef.current?.select();
@@ -89,8 +125,38 @@ export function ProjectBar() {
 
   const ready = isAnalysisReady(config);
   const step: ProjectStep | null = projectStepOf(config.view);
+
+  // Results with incomplete scope: open the modal instead of a blank ranking pane.
+  useEffect(() => {
+    if (step === 3 && !ready) {
+      setScopeOpen(true);
+      autoOpenedForResults.current = true;
+      return;
+    }
+    if (ready && autoOpenedForResults.current) {
+      setScopeOpen(false);
+      autoOpenedForResults.current = false;
+    }
+  }, [step, ready]);
+
+  useEffect(() => {
+    const onOpen = () => openScope();
+    window.addEventListener(OPEN_SCOPE_EVENT, onOpen);
+    return () => window.removeEventListener(OPEN_SCOPE_EVENT, onOpen);
+  }, [openScope]);
   const name = activeProject?.name ?? t("projectUntitled");
-  const saved = activeProject !== null && !dirty;
+  const statusLabel =
+    saveStatus === "saving"
+      ? t("projectSaving")
+      : saveStatus === "error"
+        ? t("projectSaveFailed")
+        : saveStatus === "saved_team"
+          ? t("projectSavedTeamAgo")
+          : saveStatus === "saved" || (activeProject !== null && !dirty)
+            ? t("projectSavedAgo")
+            : dirty
+              ? t("projectUnsaved")
+              : null;
 
   const nMarkets = model?.prepared.candidates.length;
   const nCriteria = model ? Object.keys(model.weights.factors).length : undefined;
@@ -197,22 +263,44 @@ export function ProjectBar() {
               {t("projectExample")}
             </span>
           ) : null}
-          {saved ? (
-            <span className="saved" data-testid="project-saved">
-              {t("projectSaved")}
-            </span>
-          ) : (
-            <button
-              type="button"
-              className="saved dirty"
-              data-testid="project-save"
-              onClick={() => void saveProject()}
-            >
-              <span className="unsaved-dot" data-testid="unsaved-dot" aria-hidden />
-              {t("projectSaveNow")}
-            </button>
-          )}
+          {statusLabel ? (
+            saveStatus === "error" ? (
+              <button
+                type="button"
+                className="saved dirty save-status-error"
+                data-testid="project-save-status"
+                onClick={() => void saveProject()}
+              >
+                {statusLabel}
+              </button>
+            ) : (
+              <span
+                className={`saved${dirty || saveStatus === "saving" ? " dirty" : ""}`}
+                data-testid={
+                  saveStatus === "saving"
+                    ? "project-saving"
+                    : dirty
+                      ? "project-unsaved"
+                      : "project-saved"
+                }
+              >
+                {dirty && saveStatus !== "saving" ? (
+                  <span className="unsaved-dot" data-testid="unsaved-dot" aria-hidden />
+                ) : null}
+                {statusLabel}
+              </span>
+            )
+          ) : null}
           <span className="spacer" />
+          <button
+            type="button"
+            className="btn"
+            data-testid="project-save"
+            disabled={busy || saveStatus === "saving"}
+            onClick={() => void saveProject()}
+          >
+            {t("saveProject")}
+          </button>
           <button
             type="button"
             className="btn"
@@ -253,7 +341,7 @@ export function ProjectBar() {
         >
           <button
             type="button"
-            className="chip"
+            className={`chip${!config.origin ? " chip-missing" : ""}`}
             data-testid="chip-origin"
             onClick={() => setScopeOpen(true)}
           >
@@ -262,7 +350,7 @@ export function ProjectBar() {
           </button>
           <button
             type="button"
-            className="chip"
+            className={`chip${!config.hs ? " chip-missing" : ""}`}
             data-testid="chip-product"
             onClick={() => setScopeOpen(true)}
           >
@@ -270,7 +358,7 @@ export function ProjectBar() {
           </button>
           <button
             type="button"
-            className="chip"
+            className={`chip${config.year == null ? " chip-missing" : ""}`}
             data-testid="chip-year"
             onClick={() => setScopeOpen(true)}
           >

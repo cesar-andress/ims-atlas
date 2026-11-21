@@ -398,19 +398,19 @@ textarea:focus-visible {
   border-right: none;
   border: 1px solid var(--border);
   border-radius: var(--radius-card, 14px);
-  max-width: 52rem;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   width: 100%;
 }
 
 .variables-hub-header {
-  max-width: 52rem;
-  margin: 0 auto 1rem;
+  max-width: 100%;
+  margin: 0 0 1rem;
 }
 
 .method-family-bar {
-  max-width: 52rem;
-  margin: 0 auto 1.25rem;
+  max-width: 100%;
+  margin: 0 0 1.25rem;
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
@@ -1417,7 +1417,7 @@ main {
 
 main:has(.analysis-page),
 main:has(.builder) {
-  max-width: 96rem;
+  max-width: 100%;
 }
 
 .matrix-controls {
@@ -3530,6 +3530,12 @@ ul.callout {
 .saved.dirty {
   color: var(--notice-fg);
   background: var(--notice-bg);
+  cursor: pointer;
+}
+
+.saved.save-status-error {
+  color: #fff;
+  background: #b91c1c;
   cursor: pointer;
 }
 

@@ -6,7 +6,6 @@ import type { DemoPanel } from "../ranking/demoPanel";
 import { loadProjectPanel } from "../ranking/projectPanel";
 import { prefetchRanking } from "../ranking/rankingCache";
 import { rankingRequestFromConfig } from "../ranking/rankingRequest";
-import { COL_HS64_PRESET, IMSFE_BAENA_CANO_PRESET } from "../state/schema";
 import { useAnalysis } from "../state/useAnalysis";
 import { isAnalysisReady } from "../state/views";
 import { ExpertSurveyPanel } from "./ExpertSurveyPanel";
@@ -63,14 +62,8 @@ export function ConfigPanel({
   guidedStep = "all",
 }: ConfigPanelProps) {
   const { t, i18n } = useTranslation();
-  const {
-    config,
-    setConfig,
-    replaceConfig,
-    saveProject,
-    exportProject,
-    importProject,
-  } = useAnalysis();
+  const { config, setConfig, saveProject, exportProject, importProject } =
+    useAnalysis();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
   const [panel, setPanel] = useState<DemoPanel | null>(null);
   const [panelStatus, setPanelStatus] = useState<
@@ -186,80 +179,60 @@ export function ConfigPanel({
           <div className="page-help-row">
             <HelpButton section="getting_started" />
           </div>
-          <GuidedBlock step={0} current={guidedStep}>
-            <button
-              type="button"
-              data-testid="apply-col-hs64"
-              onClick={() =>
-                replaceConfig({ ...COL_HS64_PRESET, view: config.view, lang })
-              }
-            >
-              {t("presetColHs64")}
-            </button>
-            <button
-              type="button"
-              data-testid="apply-imsfe-baena-cano"
-              onClick={() =>
-                replaceConfig({
-                  ...IMSFE_BAENA_CANO_PRESET,
-                  view: config.view,
-                  lang,
-                })
-              }
-            >
-              {t("presetImsfeBaenaCano")}
-            </button>
-          </GuidedBlock>
+          {/* Prompt 4b: COL·HS64 / IMSFE presets live only under Tus proyectos. */}
 
           <GuidedBlock step={4} current={guidedStep}>
-            <RadixSelectField
-              id="method-family"
-              label={t("methodFamily")}
-              testId="method-family"
-              value={config.methodFamily ?? "imsfe_2025"}
-              options={[
-                {
-                  value: "imsfe_2025",
-                  label: t("methodFamilyImsfe"),
-                },
-                {
-                  value: "imsfem_2025_olive",
-                  label: t("methodFamilyImsfem"),
-                },
-                { value: "smi_2018", label: t("methodFamilySmi2018") },
-                { value: "smi_2020", label: t("methodFamilySmi2020") },
-                { value: "panel_all", label: t("methodFamilyPanelAll") },
-              ]}
-              onChange={(value) => {
-                const family = value as NonNullable<typeof config.methodFamily>;
-                if (family === "panel_all") {
+            {/* Method family is shown once in MethodFamilyBar on the Variables hub. */}
+            {layout !== "page" ? (
+              <RadixSelectField
+                id="method-family"
+                label={t("methodFamily")}
+                testId="method-family"
+                value={config.methodFamily ?? "imsfe_2025"}
+                options={[
+                  {
+                    value: "imsfe_2025",
+                    label: t("methodFamilyImsfe"),
+                  },
+                  {
+                    value: "imsfem_2025_olive",
+                    label: t("methodFamilyImsfem"),
+                  },
+                  { value: "smi_2018", label: t("methodFamilySmi2018") },
+                  { value: "smi_2020", label: t("methodFamilySmi2020") },
+                  { value: "panel_all", label: t("methodFamilyPanelAll") },
+                ]}
+                onChange={(value) => {
+                  const family = value as NonNullable<typeof config.methodFamily>;
+                  if (family === "panel_all") {
+                    setConfig({
+                      methodFamily: family,
+                      normalization: config.normalization ?? "ratio_legacy",
+                      weightScheme: "equal",
+                      factorWeights: undefined,
+                      variableIds: panel
+                        ? panel.variables.map((v) => v.id)
+                        : config.variableIds,
+                    });
+                    return;
+                  }
                   setConfig({
                     methodFamily: family,
-                    normalization: config.normalization ?? "ratio_legacy",
-                    weightScheme: "equal",
-                    factorWeights: undefined,
-                    variableIds: panel
-                      ? panel.variables.map((v) => v.id)
-                      : config.variableIds,
+                    normalization:
+                      family === "smi_2018"
+                        ? "ratio_legacy"
+                        : (config.normalization ?? "ratio_legacy"),
+                    ...(family === "imsfe_2025" || family === "imsfem_2025_olive"
+                      ? {
+                          variableIds: undefined,
+                          factorWeights: undefined,
+                          weightScheme: "expert_mean" as const,
+                        }
+                      : { variableIds: undefined }),
                   });
-                  return;
-                }
-                setConfig({
-                  methodFamily: family,
-                  normalization:
-                    family === "smi_2018"
-                      ? "ratio_legacy"
-                      : (config.normalization ?? "ratio_legacy"),
-                  ...(family === "imsfe_2025" || family === "imsfem_2025_olive"
-                    ? {
-                        variableIds: undefined,
-                        factorWeights: undefined,
-                        weightScheme: "expert_mean" as const,
-                      }
-                    : { variableIds: undefined }),
-                });
-              }}
-            />
+                }}
+              />
+            ) : null}
 
             <label className="flex items-center gap-2">
               <input
@@ -949,51 +922,53 @@ export function ConfigPanel({
               />
             </label>
 
-            <div className="config-actions">
-              <button
-                type="button"
-                data-testid="save-project"
-                onClick={() => void saveProject()}
-              >
-                {t("saveProject")}
-              </button>
-              <button
-                type="button"
-                data-testid="export-project"
-                onClick={() => {
-                  const blob = new Blob([exportProject()], {
-                    type: "application/json",
-                  });
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement("a");
-                  a.href = url;
-                  a.download = "project.atlas.json";
-                  a.click();
-                  URL.revokeObjectURL(url);
-                }}
-              >
-                {t("exportProject")}
-              </button>
-              <label className="file-import">
-                {t("importProject")}
-                <input
-                  type="file"
-                  accept="application/json,.json,.atlas.json"
-                  data-testid="import-project"
-                  onChange={async (e) => {
-                    const file = e.target.files?.[0];
-                    if (!file) return;
-                    try {
-                      const text = await file.text();
-                      importProject(text);
-                    } catch (err) {
-                      window.alert(err instanceof Error ? err.message : String(err));
-                    }
+            {layout === "page" ? null : (
+              <div className="config-actions">
+                <button
+                  type="button"
+                  data-testid="save-project"
+                  onClick={() => void saveProject()}
+                >
+                  {t("saveProject")}
+                </button>
+                <button
+                  type="button"
+                  data-testid="export-project"
+                  onClick={() => {
+                    const blob = new Blob([exportProject()], {
+                      type: "application/json",
+                    });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = "project.atlas.json";
+                    a.click();
+                    URL.revokeObjectURL(url);
                   }}
-                />
-              </label>
-              <PermalinkLink view="projects">{t("nav.projects")}</PermalinkLink>
-            </div>
+                >
+                  {t("exportProject")}
+                </button>
+                <label className="file-import">
+                  {t("importProject")}
+                  <input
+                    type="file"
+                    accept="application/json,.json,.atlas.json"
+                    data-testid="import-project"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      try {
+                        const text = await file.text();
+                        importProject(text);
+                      } catch (err) {
+                        window.alert(err instanceof Error ? err.message : String(err));
+                      }
+                    }}
+                  />
+                </label>
+                <PermalinkLink view="projects">{t("nav.projects")}</PermalinkLink>
+              </div>
+            )}
           </GuidedBlock>
         </div>
       </div>

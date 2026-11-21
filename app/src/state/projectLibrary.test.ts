@@ -125,6 +125,33 @@ describe("projectLibrary facade", () => {
     expect(rows.some((r) => r.id === local.id)).toBe(true);
   });
 
+  it("saves an incomplete draft locally and flags team fallback", async () => {
+    const draft = createEmptyProject({
+      name: "Borrador vacío",
+      config: { v: 1, view: "variables" },
+    });
+    const localOnly = await upsertProject(draft);
+    expect(localOnly.teamSync).toBe("local_only");
+    expect(localOnly.config.origin).toBeUndefined();
+    expect(await getProject(draft.id)).not.toBeNull();
+
+    setProjectLibraryMode("team");
+    fetchMock
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ ok: true }),
+      })
+      .mockRejectedValueOnce(new Error("network down"));
+
+    const fallback = await upsertProject({
+      ...draft,
+      name: "Borrador con fallo de equipo",
+      updatedAt: new Date().toISOString(),
+    });
+    expect(fallback.teamSync).toBe("local_fallback");
+    expect(fallback.name).toBe("Borrador con fallo de equipo");
+  });
+
   it("duplicates through the active library and uploads local projects", async () => {
     const p = createEmptyProject({
       name: "Base",

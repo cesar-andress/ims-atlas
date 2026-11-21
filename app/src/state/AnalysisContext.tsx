@@ -68,12 +68,15 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
   });
   const [activeProject, setActiveProject] = useState<AtlasProject | null>(null);
   const [dirty, setDirty] = useState(false);
+  const [saveStatus, setSaveStatus] =
+    useState<AnalysisContextValue["saveStatus"]>("idle");
   const configRef = useRef(config);
   configRef.current = config;
   const activeRef = useRef(activeProject);
   activeRef.current = activeProject;
   const dirtyRef = useRef(dirty);
   dirtyRef.current = dirty;
+  const savingRef = useRef(false);
 
   useEffect(() => {
     const view = viewFromPath(location.pathname);
@@ -180,42 +183,83 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
     [commit],
   );
 
-  // Autosave draft every 8s when dirty.
+  const persistNow = useCallback(
+    async (opts?: { label?: string; silent?: boolean }) => {
+      if (savingRef.current) return;
+      savingRef.current = true;
+      setSaveStatus("saving");
+      const es = uiIsSpanish(configRef.current.lang);
+      try {
+        const name =
+          opts?.label?.trim() ||
+          activeRef.current?.name ||
+          defaultNameFromConfig(configRef.current) ||
+          (es ? "Proyecto nuevo" : "New project");
+        // Incomplete drafts are valid: origin/product/year may be missing.
+        const proj = projectFromConfig(configRef.current, name, activeRef.current);
+        saveDraft(proj);
+        const saved = await persistActiveProject(proj);
+        setActiveProject(saved);
+        setDirty(false);
+        if (saved.teamSync === "local_fallback") {
+          setSaveStatus("error");
+          toast.push(
+            es
+              ? "No se ha podido guardar en el equipo. Está guardado en este navegador. Reintentar"
+              : "Could not save to the team. Saved in this browser. Retry",
+          );
+          return;
+        }
+        setSaveStatus(saved.teamSync === "ok" ? "saved_team" : "saved");
+        if (!opts?.silent) {
+          toast.push(es ? "Proyecto guardado" : "Project saved");
+        }
+      } catch (err) {
+        setSaveStatus("error");
+        const msg =
+          err instanceof Error && err.message.trim()
+            ? err.message
+            : es
+              ? "No se ha podido guardar"
+              : "Could not save";
+        toast.push(msg);
+      } finally {
+        savingRef.current = false;
+      }
+    },
+    [toast],
+  );
+
+  // Autosave 1 s after each dirty change (Prompt 4b).
   useEffect(() => {
     if (!dirty) return;
-    const t = window.setInterval(() => {
-      const proj = projectFromConfig(
-        configRef.current,
-        activeRef.current?.name,
-        activeRef.current,
-      );
-      saveDraft(proj);
-    }, 8000);
-    return () => window.clearInterval(t);
-  }, [dirty]);
+    const t = window.setTimeout(() => {
+      void persistNow({ silent: true });
+    }, 1000);
+    return () => window.clearTimeout(t);
+  }, [dirty, config, persistNow]);
+
+  // Warn before leaving with unsaved edits.
+  useEffect(() => {
+    function onBeforeUnload(e: BeforeUnloadEvent) {
+      if (!dirtyRef.current) return;
+      e.preventDefault();
+      e.returnValue = "";
+    }
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, []);
 
   // Ctrl/Cmd+S
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (!(e.ctrlKey || e.metaKey) || e.key.toLowerCase() !== "s") return;
       e.preventDefault();
-      void (async () => {
-        const proj = projectFromConfig(
-          configRef.current,
-          activeRef.current?.name ?? defaultNameFromConfig(configRef.current),
-          activeRef.current,
-        );
-        const saved = await persistActiveProject(proj);
-        setActiveProject(saved);
-        setDirty(false);
-        toast.push(
-          uiIsSpanish(configRef.current.lang) ? "Proyecto guardado" : "Project saved",
-        );
-      })();
+      void persistNow();
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [toast]);
+  }, [persistNow]);
 
   const value = useMemo<AnalysisContextValue>(
     () => ({
@@ -226,18 +270,9 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
       setLang,
       activeProject,
       dirty,
+      saveStatus,
       saveProject: async (label) => {
-        const name =
-          label?.trim() ||
-          activeRef.current?.name ||
-          defaultNameFromConfig(configRef.current);
-        const proj = projectFromConfig(configRef.current, name, activeRef.current);
-        const saved = await persistActiveProject(proj);
-        setActiveProject(saved);
-        setDirty(false);
-        toast.push(
-          uiIsSpanish(configRef.current.lang) ? "Proyecto guardado" : "Project saved",
-        );
+        await persistNow({ label, silent: false });
       },
       exportProject: () => {
         if (activeRef.current) {
@@ -257,6 +292,13 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
             const saved = await upsertProject(project);
             setActiveProject(saved);
             setDirty(false);
+            setSaveStatus(
+              saved.teamSync === "ok"
+                ? "saved_team"
+                : saved.teamSync === "local_fallback"
+                  ? "error"
+                  : "saved",
+            );
             commit(
               { ...saved.config, view: configRef.current.view },
               { markDirty: false },
@@ -279,6 +321,7 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
       openProject: (project, view = "analisis") => {
         setActiveProject(project);
         setDirty(false);
+        setSaveStatus("saved");
         // The UI language is a user preference, not a project property.
         const lang = configRef.current.lang ?? project.config.lang;
         commit(
@@ -289,6 +332,7 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
       clearActiveProject: () => {
         setActiveProject(null);
         setDirty(false);
+        setSaveStatus("idle");
       },
     }),
     [
@@ -299,6 +343,8 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
       setLang,
       activeProject,
       dirty,
+      saveStatus,
+      persistNow,
       commit,
       toast,
     ],

@@ -93,7 +93,7 @@ export function clearProjectStorage(): void {
 
 export async function persistActiveProject(
   project: AtlasProject,
-): Promise<AtlasProject> {
+): Promise<import("./projectLibrary").UpsertResult> {
   const saved = await upsertProject({
     ...project,
     updatedAt: new Date().toISOString(),

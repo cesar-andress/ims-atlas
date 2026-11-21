@@ -1,0 +1,687 @@
+{
+  "schema": "hs-nomenclature/v1",
+  "revision": "HS2012",
+  "source": "CEPII BACI HS12_V202601 product_codes_HS12_V202601.csv",
+  "note": "Codes and English labels from BACI product_codes. Spanish chapter labels overlay curated UI strings when available; otherwise English (BACI).",
+  "hs2": [
+    {
+      "code": "01",
+      "name": {
+        "en": "Live animals",
+        "es": "Animales vivos"
+      }
+    },
+    {
+      "code": "02",
+      "name": {
+        "en": "Meat",
+        "es": "Carne"
+      }
+    },
+    {
+      "code": "03",
+      "name": {
+        "en": "Fish",
+        "es": "Pescado"
+      }
+    },
+    {
+      "code": "04",
+      "name": {
+        "en": "Dairy",
+        "es": "Lácteos"
+      }
+    },
+    {
+      "code": "05",
+      "name": {
+        "en": "Animal products",
+        "es": "Animal products"
+      }
+    },
+    {
+      "code": "06",
+      "name": {
+        "en": "Plants, live",
+        "es": "Plants, live"
+      }
+    },
+    {
+      "code": "07",
+      "name": {
+        "en": "Vegetables",
+        "es": "Hortalizas"
+      }
+    },
+    {
+      "code": "08",
+      "name": {
+        "en": "Fruit & nuts",
+        "es": "Frutas y frutos secos"
+      }
+    },
+    {
+      "code": "09",
+      "name": {
+        "en": "Coffee, tea, spices",
+        "es": "Café, té, especias"
+      }
+    },
+    {
+      "code": "10",
+      "name": {
+        "en": "Cereals",
+        "es": "Cereals"
+      }
+    },
+    {
+      "code": "11",
+      "name": {
+        "en": "Wheat or meslin flour",
+        "es": "Wheat or meslin flour"
+      }
+    },
+    {
+      "code": "12",
+      "name": {
+        "en": "Soya beans",
+        "es": "Soya beans"
+      }
+    },
+    {
+      "code": "13",
+      "name": {
+        "en": "Gum Arabic",
+        "es": "Gum Arabic"
+      }
+    },
+    {
+      "code": "14",
+      "name": {
+        "en": "Bamboo used primarily for plaiting",
+        "es": "Bamboo used primarily for plaiting"
+      }
+    },
+    {
+      "code": "15",
+      "name": {
+        "en": "Fats & oils",
+        "es": "Grasas y aceites"
+      }
+    },
+    {
+      "code": "16",
+      "name": {
+        "en": "Meat preparations",
+        "es": "Meat preparations"
+      }
+    },
+    {
+      "code": "17",
+      "name": {
+        "en": "Sugars",
+        "es": "Azúcares"
+      }
+    },
+    {
+      "code": "18",
+      "name": {
+        "en": "Cocoa",
+        "es": "Cacao"
+      }
+    },
+    {
+      "code": "19",
+      "name": {
+        "en": "Food preparations",
+        "es": "Food preparations"
+      }
+    },
+    {
+      "code": "20",
+      "name": {
+        "en": "Vegetable preparations",
+        "es": "Vegetable preparations"
+      }
+    },
+    {
+      "code": "21",
+      "name": {
+        "en": "Extracts, essences and concentrates",
+        "es": "Extracts, essences and concentrates"
+      }
+    },
+    {
+      "code": "22",
+      "name": {
+        "en": "Beverages",
+        "es": "Bebidas"
+      }
+    },
+    {
+      "code": "23",
+      "name": {
+        "en": "Flours, meals and pellets",
+        "es": "Flours, meals and pellets"
+      }
+    },
+    {
+      "code": "24",
+      "name": {
+        "en": "Tobacco, (not stemmed or stripped)",
+        "es": "Tobacco, (not stemmed or stripped)"
+      }
+    },
+    {
+      "code": "25",
+      "name": {
+        "en": "Salt (including table salt and denatured salt)",
+        "es": "Salt (including table salt and denatured salt)"
+      }
+    },
+    {
+      "code": "26",
+      "name": {
+        "en": "Iron ores and concentrates",
+        "es": "Iron ores and concentrates"
+      }
+    },
+    {
+      "code": "27",
+      "name": {
+        "en": "Mineral fuels",
+        "es": "Combustibles minerales"
+      }
+    },
+    {
+      "code": "28",
+      "name": {
+        "en": "Chlorine",
+        "es": "Chlorine"
+      }
+    },
+    {
+      "code": "29",
+      "name": {
+        "en": "Acyclic hydrocarbons",
+        "es": "Acyclic hydrocarbons"
+      }
+    },
+    {
+      "code": "30",
+      "name": {
+        "en": "Pharmaceuticals",
+        "es": "Productos farmacéuticos"
+      }
+    },
+    {
+      "code": "31",
+      "name": {
+        "en": "Fertilizers, animal or vegetable",
+        "es": "Fertilizers, animal or vegetable"
+      }
+    },
+    {
+      "code": "32",
+      "name": {
+        "en": "Tanning extracts of vegetable origin",
+        "es": "Tanning extracts of vegetable origin"
+      }
+    },
+    {
+      "code": "33",
+      "name": {
+        "en": "Oils, essential",
+        "es": "Oils, essential"
+      }
+    },
+    {
+      "code": "34",
+      "name": {
+        "en": "Soap and organic surface-active products",
+        "es": "Soap and organic surface-active products"
+      }
+    },
+    {
+      "code": "35",
+      "name": {
+        "en": "Casein",
+        "es": "Casein"
+      }
+    },
+    {
+      "code": "36",
+      "name": {
+        "en": "Explosives",
+        "es": "Explosives"
+      }
+    },
+    {
+      "code": "37",
+      "name": {
+        "en": "Photographic plates and film",
+        "es": "Photographic plates and film"
+      }
+    },
+    {
+      "code": "38",
+      "name": {
+        "en": "Graphite",
+        "es": "Graphite"
+      }
+    },
+    {
+      "code": "39",
+      "name": {
+        "en": "Plastics",
+        "es": "Plásticos"
+      }
+    },
+    {
+      "code": "40",
+      "name": {
+        "en": "Rubber",
+        "es": "Caucho"
+      }
+    },
+    {
+      "code": "41",
+      "name": {
+        "en": "Raw hides and skins",
+        "es": "Raw hides and skins"
+      }
+    },
+    {
+      "code": "42",
+      "name": {
+        "en": "Saddlery and harness",
+        "es": "Saddlery and harness"
+      }
+    },
+    {
+      "code": "43",
+      "name": {
+        "en": "Furskins",
+        "es": "Furskins"
+      }
+    },
+    {
+      "code": "44",
+      "name": {
+        "en": "Wood",
+        "es": "Wood"
+      }
+    },
+    {
+      "code": "45",
+      "name": {
+        "en": "Cork",
+        "es": "Cork"
+      }
+    },
+    {
+      "code": "46",
+      "name": {
+        "en": "Plaiting materials, plaits and similar products of plaiting materials: mats, mat",
+        "es": "Plaiting materials, plaits and similar products of plaiting materials: mats, mat"
+      }
+    },
+    {
+      "code": "47",
+      "name": {
+        "en": "Wood pulp",
+        "es": "Wood pulp"
+      }
+    },
+    {
+      "code": "48",
+      "name": {
+        "en": "Paper",
+        "es": "Papel"
+      }
+    },
+    {
+      "code": "49",
+      "name": {
+        "en": "Printed matter",
+        "es": "Printed matter"
+      }
+    },
+    {
+      "code": "50",
+      "name": {
+        "en": "Silk",
+        "es": "Silk"
+      }
+    },
+    {
+      "code": "51",
+      "name": {
+        "en": "Wool",
+        "es": "Wool"
+      }
+    },
+    {
+      "code": "52",
+      "name": {
+        "en": "Cotton",
+        "es": "Cotton"
+      }
+    },
+    {
+      "code": "53",
+      "name": {
+        "en": "Flax",
+        "es": "Flax"
+      }
+    },
+    {
+      "code": "54",
+      "name": {
+        "en": "Sewing thread",
+        "es": "Sewing thread"
+      }
+    },
+    {
+      "code": "55",
+      "name": {
+        "en": "Fibres",
+        "es": "Fibres"
+      }
+    },
+    {
+      "code": "56",
+      "name": {
+        "en": "Wadding",
+        "es": "Wadding"
+      }
+    },
+    {
+      "code": "57",
+      "name": {
+        "en": "Carpets and other textile floor coverings",
+        "es": "Carpets and other textile floor coverings"
+      }
+    },
+    {
+      "code": "58",
+      "name": {
+        "en": "Fabrics",
+        "es": "Fabrics"
+      }
+    },
+    {
+      "code": "59",
+      "name": {
+        "en": "Textile fabrics",
+        "es": "Textile fabrics"
+      }
+    },
+    {
+      "code": "60",
+      "name": {
+        "en": "Fabrics",
+        "es": "Fabrics"
+      }
+    },
+    {
+      "code": "61",
+      "name": {
+        "en": "Apparel, knitted",
+        "es": "Prendas de punto"
+      }
+    },
+    {
+      "code": "62",
+      "name": {
+        "en": "Apparel, not knitted",
+        "es": "Prendas no de punto"
+      }
+    },
+    {
+      "code": "63",
+      "name": {
+        "en": "Blankets",
+        "es": "Blankets"
+      }
+    },
+    {
+      "code": "64",
+      "name": {
+        "en": "Footwear",
+        "es": "Calzado"
+      }
+    },
+    {
+      "code": "65",
+      "name": {
+        "en": "Hat-forms, hat bodies and hoods of felt, neither blocked to shape nor with made ",
+        "es": "Hat-forms, hat bodies and hoods of felt, neither blocked to shape nor with made "
+      }
+    },
+    {
+      "code": "66",
+      "name": {
+        "en": "Umbrellas and sun umbrellas",
+        "es": "Umbrellas and sun umbrellas"
+      }
+    },
+    {
+      "code": "67",
+      "name": {
+        "en": "Skins and other parts of birds with their feathers or down",
+        "es": "Skins and other parts of birds with their feathers or down"
+      }
+    },
+    {
+      "code": "68",
+      "name": {
+        "en": "Stone",
+        "es": "Stone"
+      }
+    },
+    {
+      "code": "69",
+      "name": {
+        "en": "Bricks, blocks, tiles and other ceramic goods of siliceous fossil meals (e.g. ki",
+        "es": "Bricks, blocks, tiles and other ceramic goods of siliceous fossil meals (e.g. ki"
+      }
+    },
+    {
+      "code": "70",
+      "name": {
+        "en": "Glass",
+        "es": "Glass"
+      }
+    },
+    {
+      "code": "71",
+      "name": {
+        "en": "Precious metals/stones",
+        "es": "Metales/piedras preciosas"
+      }
+    },
+    {
+      "code": "72",
+      "name": {
+        "en": "Iron & steel",
+        "es": "Hierro y acero"
+      }
+    },
+    {
+      "code": "73",
+      "name": {
+        "en": "Iron or steel",
+        "es": "Iron or steel"
+      }
+    },
+    {
+      "code": "74",
+      "name": {
+        "en": "Copper mattes",
+        "es": "Copper mattes"
+      }
+    },
+    {
+      "code": "75",
+      "name": {
+        "en": "Nickel",
+        "es": "Nickel"
+      }
+    },
+    {
+      "code": "76",
+      "name": {
+        "en": "Aluminium",
+        "es": "Aluminium"
+      }
+    },
+    {
+      "code": "78",
+      "name": {
+        "en": "Lead",
+        "es": "Lead"
+      }
+    },
+    {
+      "code": "79",
+      "name": {
+        "en": "Zinc",
+        "es": "Zinc"
+      }
+    },
+    {
+      "code": "80",
+      "name": {
+        "en": "Tin",
+        "es": "Tin"
+      }
+    },
+    {
+      "code": "81",
+      "name": {
+        "en": "Tungsten (wolfram)",
+        "es": "Tungsten (wolfram)"
+      }
+    },
+    {
+      "code": "82",
+      "name": {
+        "en": "Tools, hand",
+        "es": "Tools, hand"
+      }
+    },
+    {
+      "code": "83",
+      "name": {
+        "en": "Padlocks",
+        "es": "Padlocks"
+      }
+    },
+    {
+      "code": "84",
+      "name": {
+        "en": "Machinery",
+        "es": "Máquinas"
+      }
+    },
+    {
+      "code": "85",
+      "name": {
+        "en": "Electrical machinery",
+        "es": "Maquinaria eléctrica"
+      }
+    },
+    {
+      "code": "86",
+      "name": {
+        "en": "Rail locomotives",
+        "es": "Rail locomotives"
+      }
+    },
+    {
+      "code": "87",
+      "name": {
+        "en": "Vehicles",
+        "es": "Vehículos"
+      }
+    },
+    {
+      "code": "88",
+      "name": {
+        "en": "Balloons and dirigibles",
+        "es": "Balloons and dirigibles"
+      }
+    },
+    {
+      "code": "89",
+      "name": {
+        "en": "Cruise ships, excursion boats and similar vessels, principally designed for the ",
+        "es": "Cruise ships, excursion boats and similar vessels, principally designed for the "
+      }
+    },
+    {
+      "code": "90",
+      "name": {
+        "en": "Optical / medical",
+        "es": "Óptica / médicos"
+      }
+    },
+    {
+      "code": "91",
+      "name": {
+        "en": "Wrist-watches",
+        "es": "Wrist-watches"
+      }
+    },
+    {
+      "code": "92",
+      "name": {
+        "en": "Musical instruments",
+        "es": "Musical instruments"
+      }
+    },
+    {
+      "code": "93",
+      "name": {
+        "en": "Military weapons",
+        "es": "Military weapons"
+      }
+    },
+    {
+      "code": "94",
+      "name": {
+        "en": "Seats",
+        "es": "Seats"
+      }
+    },
+    {
+      "code": "95",
+      "name": {
+        "en": "Tricycles, scooters, pedal cars and similar wheeled toys",
+        "es": "Tricycles, scooters, pedal cars and similar wheeled toys"
+      }
+    },
+    {
+      "code": "96",
+      "name": {
+        "en": "Ivory and articles thereof",
+        "es": "Ivory and articles thereof"
+      }
+    },
+    {
+      "code": "97",
+      "name": {
+        "en": "Paintings, drawings and pastels",
+        "es": "Paintings, drawings and pastels"
+      }
+    }
+  ],
+  "counts": {
+    "hs2": 96,
+    "hs4": 1224,
+    "hs6": 5201
+  },
+  "hs4_count": 1224,
+  "hs6_count": 5201
+}

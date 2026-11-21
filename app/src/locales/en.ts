@@ -1023,6 +1023,11 @@ export const en = {
   projectUploadLocalDone: "Uploaded {n} projects to the team",
   projectTeamHint: "Projects are shared with everyone who has an active team session.",
   projectSavedTeam: "Saved, visible to the team",
+  projectSavedTeamAgo: "✓ Saved · just now · visible to the team",
+  projectSavedAgo: "✓ Saved · just now",
+  projectSaving: "Saving…",
+  projectSaveFailed: "Could not save · Retry",
+  projectSaveTeamFallback: "Could not save to the team. Saved in this browser. Retry",
   projectUntitled: "Untitled project",
   homeAria: "IMS Atlas, home",
   helpButton: "Help",
@@ -1036,11 +1041,16 @@ export const en = {
     "Choose the method family (IMSFE, SMI, or all panel variables). Then adjust each criterion weight; the total stays at 100%.",
   varsNeedScope:
     "Choose the origin, product and year first (the buttons in the project bar above).",
+  varsPanelAllBeforeScope:
+    "Weights are editable now; ranking unlocks after origin, product and year.",
+  varsWeightsPreviewNote:
+    "Preview of criterion weights. Set origin, product and year to compute the ranking.",
+  varsPickFamilyFirst: "Choose a method family above to see its criteria and weights.",
   varsWeightOf: "Weight of",
   varsCount: "{n} variables",
   varsResetExperts: "Back to the experts' weights",
   varsWeightsSource: "Now using: {source}.",
-  varsMore: "More options",
+  varsMore: "Method options",
   stepWeightsExpert: "the experts' weights",
   stepWeightsEqual: "equal weights",
   stepWeightsOwn: "your own weights",
@@ -1062,6 +1072,9 @@ export const en = {
   scopeDialogBody:
     "These three choices define the analysis. Changes apply to the whole project.",
   scopeDialogDone: "Done",
+  scopeDialogCancel: "Cancel",
+  scopeDialogIncomplete:
+    "Choose origin, product and year before continuing. Incomplete fields are highlighted.",
   projectCopySuffix: "copy",
   stepWarnNone: "no warnings",
   stepWarnOne: "1 warning",
@@ -1072,7 +1085,7 @@ export const en = {
   chipChoose: "choose",
   projectBar: "Project summary and steps",
   projectSaved: "Saved",
-  projectSaveNow: "Unsaved changes · Save",
+  projectSaveNow: "Save",
   projectExport: "Export",
   projectExportAtlas: "Project file (.atlas.json)",
   projectExportCite: "Cite and export results",

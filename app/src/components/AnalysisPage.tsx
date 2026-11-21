@@ -3,8 +3,8 @@ import { useTranslation } from "../i18n";
 import { localizeWarning } from "../ranking/localizeWarning";
 import type { AnalysisModelError } from "../ranking/analysisError";
 import type { RankingViewModel } from "../ranking/rankingEngine";
+import { requestOpenScope } from "../state/projectScope";
 import { useAnalysis } from "../state/useAnalysis";
-import { COL_HS64_PRESET } from "../state/schema";
 import { isAnalysisReady } from "../state/views";
 import { AnalysisSummary } from "./AnalysisSummary";
 import { HelpButton } from "./HelpButton";
@@ -49,7 +49,7 @@ export function AnalysisPage({
   children,
 }: Props) {
   const { t, i18n } = useTranslation();
-  const { config, replaceConfig } = useAnalysis();
+  const { config } = useAnalysis();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
   const ready = isAnalysisReady(config);
   const pending = error?.kind === "pending";
@@ -101,17 +101,14 @@ export function AnalysisPage({
           <p className="analysis-actions">
             <button
               type="button"
-              data-testid="analysis-load-preset"
-              onClick={() =>
-                replaceConfig({
-                  ...COL_HS64_PRESET,
-                  view: config.view,
-                  lang: config.lang ?? lang,
-                })
-              }
+              className="btn btn-primary"
+              data-testid="analysis-open-scope"
+              onClick={() => requestOpenScope()}
             >
-              {t("presetColHs64")}
+              {t("scopeDialogTitle")}
             </button>{" "}
+            <PermalinkLink view="variables">{t("stepVariables")}</PermalinkLink>{" "}
+            <PermalinkLink view="projects">{t("nav.projects")}</PermalinkLink>{" "}
             <PermalinkLink view="data_sources" hash="estado">
               {t("nav.status")}
             </PermalinkLink>

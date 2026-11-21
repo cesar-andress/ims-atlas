@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { encodeConfig, openMoreOptions, openScopeDialog } from "./_helpers";
+import { encodeConfig, openScopeDialog } from "./_helpers";
 
 const PRODUCT_CASES = [
   { name: "HS87", origin: "DEU", hs: "87", year: 2022 },
@@ -38,14 +38,15 @@ test.describe("Phase H product context", () => {
     });
   }
 
-  test("apply-col-hs64 example still works", async ({ page }) => {
-    await page.goto("/variables");
-    await openMoreOptions(page);
-    await page.getByTestId("apply-col-hs64").click();
+  test("COL·HS64 example scope loads from project permalink (no preset button)", async ({
+    page,
+  }) => {
+    await page.goto(`/variables?c=${encodeConfig(baseConfig("COL", "64", 2023))}`);
     await openScopeDialog(page, "origin");
     await expect(page.getByTestId("origin-input")).toHaveValue("COL");
     await expect(page.getByTestId("hs-input")).toHaveValue("64");
     await expect(page.getByTestId("year-input")).toHaveValue("2023");
+    await expect(page.getByTestId("apply-col-hs64")).toHaveCount(0);
   });
 
   test("Factors does not crash for non-demo product", async ({ page }) => {

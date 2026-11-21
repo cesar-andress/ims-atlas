@@ -78,16 +78,22 @@ export async function getProject(id: string): Promise<AtlasProject | null> {
   return idbGetProject(id);
 }
 
-export async function upsertProject(project: AtlasProject): Promise<AtlasProject> {
+/** Result of persisting a project (local always succeeds; team may fall back). */
+export type UpsertResult = AtlasProject & {
+  teamSync: "ok" | "local_only" | "local_fallback";
+};
+
+export async function upsertProject(project: AtlasProject): Promise<UpsertResult> {
   const local = await idbUpsertProject(project);
   if (await teamBackendReady()) {
     try {
-      return await teamUpsertProject(local);
+      const remote = await teamUpsertProject(local);
+      return { ...remote, teamSync: "ok" };
     } catch {
-      return local;
+      return { ...local, teamSync: "local_fallback" };
     }
   }
-  return local;
+  return { ...local, teamSync: "local_only" };
 }
 
 export async function deleteProject(id: string): Promise<void> {

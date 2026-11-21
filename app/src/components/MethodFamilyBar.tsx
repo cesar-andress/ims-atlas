@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { loadCatalogPreview } from "../data/catalogLoader";
 import { useTranslation } from "../i18n";
 import type { DemoPanel } from "../ranking/demoPanel";
 import { loadProjectPanel } from "../ranking/projectPanel";
 import type { AnalysisConfig } from "../state/schema";
+import { equalFactorWeights } from "../state/projectScope";
 import { useAnalysis } from "../state/useAnalysis";
 import { isAnalysisReady } from "../state/views";
 import { RadixSelectField } from "./RadixSelectField";
@@ -17,10 +19,15 @@ const FAMILY_VALUES: FamilyId[] = [
   "panel_all",
 ];
 
+type VarSource = {
+  ids: string[];
+  factors: string[];
+};
+
 function familyPatch(
   value: FamilyId,
   current: AnalysisConfig,
-  panel: DemoPanel | null,
+  source: VarSource | null,
 ): Partial<AnalysisConfig> {
   const base: Partial<AnalysisConfig> = {
     methodFamily: value,
@@ -28,11 +35,17 @@ function familyPatch(
       value === "smi_2018" ? "ratio_legacy" : (current.normalization ?? "ratio_legacy"),
   };
   if (value === "panel_all") {
+    const ids = source?.ids.length
+      ? source.ids
+      : current.variableIds;
+    const factors = source?.factors.length
+      ? source.factors
+      : [];
     return {
       ...base,
       weightScheme: "equal",
-      factorWeights: undefined,
-      variableIds: panel ? panel.variables.map((v) => v.id) : current.variableIds,
+      factorWeights: factors.length ? equalFactorWeights(factors) : undefined,
+      variableIds: ids,
     };
   }
   if (value === "imsfe_2025" || value === "imsfem_2025_olive") {
@@ -50,15 +63,25 @@ function familyPatch(
   };
 }
 
+function sourceFromPanel(panel: DemoPanel): VarSource {
+  const ids = panel.variables.map((v) => v.id);
+  const factors = [...new Set(panel.variables.map((v) => v.factor))];
+  return { ids, factors };
+}
+
 /** Prominent method-family picker + one-click “all panel variables”. */
 export function MethodFamilyBar() {
   const { t } = useTranslation();
   const { config, setConfig } = useAnalysis();
   const [panel, setPanel] = useState<DemoPanel | null>(null);
+  const [catalog, setCatalog] = useState<VarSource | null>(null);
 
+  const ready = isAnalysisReady(config);
+
+  // Product panel when origin · HS · year are set.
   useEffect(() => {
     let cancelled = false;
-    if (!isAnalysisReady(config)) {
+    if (!ready) {
       setPanel(null);
       return;
     }
@@ -77,10 +100,35 @@ export function MethodFamilyBar() {
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- scope fields only
-  }, [config.origin, config.hs, config.year]);
+  }, [config.origin, config.hs, config.year, ready]);
+
+  // Catalogue fallback so “all panel variables” is visible before scope is complete.
+  useEffect(() => {
+    let cancelled = false;
+    void loadCatalogPreview()
+      .then((c) => {
+        if (cancelled || c.variables.length === 0) return;
+        const factors = [
+          ...new Set(
+            c.factors.length
+              ? c.factors
+              : c.variables.map((v) => v.factor),
+          ),
+        ];
+        setCatalog({ ids: c.variables.map((v) => v.id), factors });
+      })
+      .catch(() => {
+        if (!cancelled) setCatalog(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const value = (config.methodFamily ?? "imsfe_2025") as FamilyId;
-  const nPanel = panel?.variables.length ?? 0;
+  const liveSource = panel ? sourceFromPanel(panel) : catalog;
+  const nPanel = liveSource?.ids.length ?? 0;
+  const canApply = Boolean(liveSource && nPanel > 0);
 
   return (
     <div className="method-family-bar" data-testid="method-family-bar">
@@ -104,7 +152,7 @@ export function MethodFamilyBar() {
         ]}
         onChange={(next) => {
           const id = next as FamilyId;
-          setConfig(familyPatch(id, config, panel));
+          setConfig(familyPatch(id, config, liveSource));
         }}
       />
       <div className="method-family-bar-actions">
@@ -112,14 +160,15 @@ export function MethodFamilyBar() {
           type="button"
           className="btn btn-secondary"
           data-testid="vars-apply-all-panel"
-          disabled={!panel || nPanel === 0}
-          onClick={() => setConfig(familyPatch("panel_all", config, panel))}
+          disabled={!canApply}
+          onClick={() => setConfig(familyPatch("panel_all", config, liveSource))}
         >
           {t("varsApplyAllPanel").replace("{n}", String(nPanel || "…"))}
         </button>
         {config.methodFamily === "panel_all" && config.variableIds?.length ? (
           <p className="muted small" data-testid="vars-all-panel-hint">
             {t("varsAllPanelHint").replace("{n}", String(config.variableIds.length))}
+            {!ready ? ` ${t("varsPanelAllBeforeScope")}` : ""}
           </p>
         ) : null}
       </div>

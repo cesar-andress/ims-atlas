@@ -53,10 +53,12 @@ test.describe("Phase W/U/M GUI flow", () => {
     await expect(page.getByTestId("project-bar")).toHaveCount(0);
   });
 
-  test("/analisis offers the example and keeps results read-only", async ({ page }) => {
-    await page.goto("/analisis");
+  test("/analisis with COL·HS64 permalink reaches results without COL preset button", async ({
+    page,
+  }) => {
+    await page.goto(`/analisis?c=${encodeConfig({ ...COL, view: "analisis" })}`);
     await expect(page.getByTestId("results-tabs")).toBeVisible({ timeout: 15_000 });
-    await page.getByTestId("analysis-load-preset").click();
+    await expect(page.getByTestId("analysis-load-preset")).toHaveCount(0);
     await expect(page.getByTestId("project-chips")).toContainText("Colombia", {
       timeout: 15_000,
     });

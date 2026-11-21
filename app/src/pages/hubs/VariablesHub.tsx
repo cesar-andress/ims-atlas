@@ -4,8 +4,8 @@ import { MethodFamilyBar } from "../../components/MethodFamilyBar";
 import { useTranslation } from "../../i18n";
 
 /**
- * Step 2, Variables y pesos: method family + optional “all panel variables”,
- * criterion weight cards, then ONE collapsed "Más opciones" block. Origin,
+ * Step 2, Variables y pesos: method family once at the top, criterion weight
+ * cards, then ONE collapsed "Opciones del método" block (Prompt 4b). Origin,
  * product and year are edited only from the project bar chips.
  */
 export function VariablesHub() {

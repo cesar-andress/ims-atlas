@@ -76,6 +76,23 @@ describe("layout full-width contracts", () => {
     expect(STYLES).not.toMatch(/\.wrap\s*\{[^}]*max-width:\s*80rem/s);
   });
 
+  it("Variables / ConfigPanel / Resultados do not re-cap to a centered 52rem/96rem column", () => {
+    expect(STYLES).toMatch(
+      /\.config-panel\.config-panel-page\s*\{[^}]*max-width:\s*100%/s,
+    );
+    expect(STYLES).toMatch(/\.variables-hub-header\s*\{[^}]*max-width:\s*100%/s);
+    expect(STYLES).toMatch(/\.method-family-bar\s*\{[^}]*max-width:\s*100%/s);
+    expect(STYLES).toMatch(
+      /main:has\(\.analysis-page\),\s*main:has\(\.builder\)\s*\{[^}]*max-width:\s*100%/s,
+    );
+    expect(STYLES).not.toMatch(
+      /\.config-panel\.config-panel-page\s*\{[^}]*max-width:\s*52rem/s,
+    );
+    expect(STYLES).not.toMatch(
+      /main:has\(\.analysis-page\),\s*main:has\(\.builder\)\s*\{[^}]*max-width:\s*96rem/s,
+    );
+  });
+
   it("uses the shared 900px layout breakpoint for desktop padding", () => {
     expect(TOKENS).toMatch(/@media\s*\(min-width:\s*900px\)/);
     expect(TOKENS).toContain("--page-inline-pad");

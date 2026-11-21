@@ -1030,6 +1030,12 @@ const es = {
   projectUploadLocalDone: "Subidos {n} proyectos al equipo",
   projectTeamHint: "Los proyectos se comparten con todo el equipo con sesión activa.",
   projectSavedTeam: "Guardado, visible para el equipo",
+  projectSavedTeamAgo: "✓ Guardado · hace un momento · visible para el equipo",
+  projectSavedAgo: "✓ Guardado · hace un momento",
+  projectSaving: "Guardando…",
+  projectSaveFailed: "No se ha podido guardar · Reintentar",
+  projectSaveTeamFallback:
+    "No se ha podido guardar en el equipo. Está guardado en este navegador. Reintentar",
   projectUntitled: "Proyecto sin nombre",
   homeAria: "IMS Atlas, inicio",
   helpButton: "Ayuda",
@@ -1043,11 +1049,17 @@ const es = {
     "Elige la familia de método (IMSFE, SMI o todas las variables del panel). Luego ajusta el peso de cada criterio; el total se mantiene en 100 %.",
   varsNeedScope:
     "Elige antes el origen, el producto y el año (los botones de la barra del proyecto, arriba).",
+  varsPanelAllBeforeScope:
+    "Los pesos se pueden editar ya; el ranking se desbloquea al fijar origen, producto y año.",
+  varsWeightsPreviewNote:
+    "Vista previa de los pesos por criterio. Fija origen, producto y año para calcular el ranking.",
+  varsPickFamilyFirst:
+    "Elige arriba una familia de método para ver sus criterios y pesos.",
   varsWeightOf: "Peso de",
   varsCount: "{n} variables",
   varsResetExperts: "Volver a los pesos de los expertos",
   varsWeightsSource: "Ahora se usan: {source}.",
-  varsMore: "Más opciones",
+  varsMore: "Opciones del método",
   stepWeightsExpert: "los pesos de los expertos",
   stepWeightsEqual: "pesos iguales",
   stepWeightsOwn: "tus propios pesos",
@@ -1069,6 +1081,9 @@ const es = {
   scopeDialogBody:
     "Estas tres elecciones definen el análisis. Los cambios se aplican a todo el proyecto.",
   scopeDialogDone: "Listo",
+  scopeDialogCancel: "Cancelar",
+  scopeDialogIncomplete:
+    "Elige origen, producto y año antes de continuar. Los campos incompletos están resaltados.",
   projectCopySuffix: "copia",
   stepWarnNone: "sin avisos",
   stepWarnOne: "1 aviso",
@@ -1079,7 +1094,7 @@ const es = {
   chipChoose: "elegir",
   projectBar: "Resumen y pasos del proyecto",
   projectSaved: "Guardado",
-  projectSaveNow: "Cambios sin guardar · Guardar",
+  projectSaveNow: "Guardar",
   projectExport: "Exportar",
   projectExportAtlas: "Archivo del proyecto (.atlas.json)",
   projectExportCite: "Citar y exportar resultados",
