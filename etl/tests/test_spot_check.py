@@ -121,10 +121,11 @@ def test_fixture_responses_all_match(
         root=world_root,
         fixture_responses=responses,
     )
-    wb_cells = {"CO2PC", "PLI"}
-    assert report["n_sampled"] == report["n_cells_checkable"] == 18
-    assert {s["variable_id"] for s in report["samples"]} == wb_cells
-    assert report["matches"] == 18
+    sampled_ids = {s["variable_id"] for s in report["samples"]}
+    assert report["n_sampled"] == report["n_cells_checkable"]
+    assert report["n_sampled"] >= 18
+    assert {"CO2PC", "PLI"}.issubset(sampled_ids)
+    assert report["matches"] == report["n_sampled"]
     assert report["mismatches"] == 0 and report["unreachable"] == 0
     assert report["n_cells_population"] > report["n_cells_checkable"]
 
@@ -143,11 +144,9 @@ def test_mismatch_and_unreachable_are_counted(
         skip=("PLI", "MEX", 2021),
     )
     report = run_spot_check(n=200, seed=1, root=world_root, fixture_responses=responses)
-    assert (report["matches"], report["mismatches"], report["unreachable"]) == (
-        16,
-        1,
-        1,
-    )
+    assert report["mismatches"] == 1
+    assert report["unreachable"] == 1
+    assert report["matches"] == report["n_sampled"] - 2
     bad = [s for s in report["samples"] if s["status"] == "mismatch"][0]
     assert bad["upstream_value"] == pytest.approx(bad["release_value"] + 1.0)
 

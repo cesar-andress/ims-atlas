@@ -1,6 +1,7 @@
-"""Build a live COL · HS64 ranking panel from curated tables (not synthetic).
+"""Legacy COL·HS64 panel exporter (tests / migration only).
 
-Default year = BACI pin ``year_max`` (latest complete trade year).
+Production rankings mount panels in the browser (Prompt 4a). Keep this module
+for golden regeneration and offline checks — do not treat it as the app data path.
 """
 
 from __future__ import annotations
@@ -15,6 +16,7 @@ import pandas as pd
 from imsatlas_etl.paths import repo_root
 from imsatlas_etl.pipeline.io_paths import curated_dir, internal_release_dir
 
+# Test / example defaults only (not the production panel engine).
 ORIGIN = "COL"
 HS = "64"
 

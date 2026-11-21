@@ -767,6 +767,174 @@
   - 'worldbank_wdi'
   'verified_by': 'CA'
   'verified_on': '2026-11-20'
+- 'id': 'CC'
+  'name':
+    'en': 'Control of Corruption (WGI estimate)'
+    'es': 'Control de la corrupción (estimación WGI)'
+  'factor': 'institutional'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'estimate'
+  'source': 'WB WGI'
+  'citation': 'World Bank. Worldwide Governance Indicators. CC.EST.'
+  'redistributable': true
+  'years':
+  - 2012
+  - 2023
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'WGI Control of Corruption estimate; also enters GOV mean.'
+    'es': 'Estimación WGI de control de la corrupción; también entra en la media GOV.'
+  'status': 'verified'
+  'code': 'CC.EST'
+  'origin_specific': false
+  'source_ids':
+  - 'worldbank_wgi'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'GE'
+  'name':
+    'en': 'Government Effectiveness (WGI estimate)'
+    'es': 'Eficacia del gobierno (estimación WGI)'
+  'factor': 'institutional'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'estimate'
+  'source': 'WB WGI'
+  'citation': 'World Bank. Worldwide Governance Indicators. GE.EST.'
+  'redistributable': true
+  'years':
+  - 2012
+  - 2023
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'WGI Government Effectiveness estimate; also enters GOV mean.'
+    'es': 'Estimación WGI de eficacia del gobierno; también entra en la media GOV.'
+  'status': 'verified'
+  'code': 'GE.EST'
+  'origin_specific': false
+  'source_ids':
+  - 'worldbank_wgi'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'RQ'
+  'name':
+    'en': 'Regulatory Quality (WGI estimate)'
+    'es': 'Calidad regulatoria (estimación WGI)'
+  'factor': 'institutional'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'estimate'
+  'source': 'WB WGI'
+  'citation': 'World Bank. Worldwide Governance Indicators. RQ.EST.'
+  'redistributable': true
+  'years':
+  - 2012
+  - 2023
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'WGI Regulatory Quality estimate; also enters GOV mean.'
+    'es': 'Estimación WGI de calidad regulatoria; también entra en la media GOV.'
+  'status': 'verified'
+  'code': 'RQ.EST'
+  'origin_specific': false
+  'source_ids':
+  - 'worldbank_wgi'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'RL'
+  'name':
+    'en': 'Rule of Law (WGI estimate)'
+    'es': 'Estado de derecho (estimación WGI)'
+  'factor': 'institutional'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'estimate'
+  'source': 'WB WGI'
+  'citation': 'World Bank. Worldwide Governance Indicators. RL.EST.'
+  'redistributable': true
+  'years':
+  - 2012
+  - 2023
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'WGI Rule of Law estimate; also enters GOV mean.'
+    'es': 'Estimación WGI de estado de derecho; también entra en la media GOV.'
+  'status': 'verified'
+  'code': 'RL.EST'
+  'origin_specific': false
+  'source_ids':
+  - 'worldbank_wgi'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'PV'
+  'name':
+    'en': 'Political Stability and Absence of Violence (WGI estimate)'
+    'es': 'Estabilidad política y ausencia de violencia (estimación WGI)'
+  'factor': 'institutional'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'estimate'
+  'source': 'WB WGI'
+  'citation': 'World Bank. Worldwide Governance Indicators. PV.EST.'
+  'redistributable': true
+  'years':
+  - 2012
+  - 2023
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'WGI Political Stability estimate; also enters GOV mean.'
+    'es': 'Estimación WGI de estabilidad política; también entra en la media GOV.'
+  'status': 'verified'
+  'code': 'PV.EST'
+  'origin_specific': false
+  'source_ids':
+  - 'worldbank_wgi'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
+- 'id': 'VA'
+  'name':
+    'en': 'Voice and Accountability (WGI estimate)'
+    'es': 'Voz y rendición de cuentas (estimación WGI)'
+  'factor': 'institutional'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'estimate'
+  'source': 'WB WGI'
+  'citation': 'World Bank. Worldwide Governance Indicators. VA.EST.'
+  'redistributable': true
+  'years':
+  - 2012
+  - 2023
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'WGI Voice and Accountability estimate; also enters GOV mean.'
+    'es': 'Estimación WGI de voz y rendición de cuentas; también entra en la media GOV.'
+  'status': 'verified'
+  'code': 'VA.EST'
+  'origin_specific': false
+  'source_ids':
+  - 'worldbank_wgi'
+  'verified_by': 'CA'
+  'verified_on': '2026-11-20'
 - 'id': 'PPAD'
   'name':
     'en': 'Product Price at Destination (PPAD)'

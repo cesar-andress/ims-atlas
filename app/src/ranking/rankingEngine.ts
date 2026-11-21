@@ -23,7 +23,8 @@ import {
 } from "@ims-atlas/core";
 import { baciVolumesFor } from "../data/baciImportCache";
 import { filterByRegion } from "../data/hsProducts";
-import { DemoPanelPendingError, loadDemoPanel, type DemoPanel } from "./demoPanel";
+import { loadDemoPanel, type DemoPanel } from "./demoPanel";
+import { loadProjectPanel } from "./projectPanel";
 
 export type RankingRequest = {
   origin?: string | undefined;
@@ -324,27 +325,30 @@ function columnValues(
   return out;
 }
 
-function hsDigits(code: string | undefined): string {
-  return (code ?? "").replace(/\D/g, "");
-}
-
 export async function computeRanking(req: RankingRequest): Promise<RankingViewModel> {
-  const panel = await loadDemoPanel();
   const warnings: string[] = [];
   const tree = treeForFamily(req.methodFamily);
   const presetId = treePresetId(req.methodFamily);
 
-  const reqHs = hsDigits(req.hs);
-  const panelHs = hsDigits(panel.hs);
-  // Exact HS only: HS 6401 must not reuse HS 64 panel numbers.
-  if (reqHs && panelHs && reqHs !== panelHs) {
-    throw new DemoPanelPendingError("TEAM_RESULTS_PENDING");
+  // Prompt 4a: mount the panel for this project's origin / HS / year.
+  let panel: DemoPanel;
+  try {
+    panel = await loadProjectPanel({
+      origin: req.origin,
+      hs: req.hs,
+      year: req.year,
+    });
+  } catch (err) {
+    // Vitest / offline fixtures still use the synthetic panel; never in production UI.
+    const isTest =
+      typeof import.meta !== "undefined" &&
+      (import.meta.env?.MODE === "test" || import.meta.env?.VITEST === true);
+    if (!isTest) throw err;
+    panel = await loadDemoPanel();
+    warnings.push("Test fixture panel (not production project panel).");
   }
-  if (req.origin && req.origin !== panel.origin) {
-    warnings.push(`Example panel is ${panel.origin}-only; using ${panel.origin}.`);
-  }
-  if (req.year && req.year !== panel.year) {
-    warnings.push(`Demo panel year is ${panel.year}; requested ${req.year}.`);
+  for (const note of panel.notes) {
+    if (note) warnings.push(note);
   }
   if (presetId) {
     warnings.push(`Criteria tree: ${presetId}`);

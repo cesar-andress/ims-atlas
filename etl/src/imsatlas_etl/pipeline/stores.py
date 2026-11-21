@@ -93,11 +93,28 @@ def write_stores(*, root: Path | None = None) -> dict[str, Any]:
     country_src = curated / "variables_country_year.parquet"
     bilateral_src = curated / "bilateral_year.parquet"
 
-    country = (
+    country_wide = (
         pd.read_parquet(country_src)
         if country_src.is_file()
-        else pd.DataFrame(columns=["iso3", "year", "variable_id", "value"])
+        else pd.DataFrame(columns=["iso3", "year"])
     )
+    # Stores expect long form (iso3, year, variable_id, value).
+    if (
+        not country_wide.empty
+        and "variable_id" not in country_wide.columns
+        and {"iso3", "year"}.issubset(country_wide.columns)
+    ):
+        value_cols = [c for c in country_wide.columns if c not in {"iso3", "year"}]
+        country = country_wide.melt(
+            id_vars=["iso3", "year"],
+            value_vars=value_cols,
+            var_name="variable_id",
+            value_name="value",
+        ).dropna(subset=["value"])
+    elif not country_wide.empty and "variable_id" in country_wide.columns:
+        country = country_wide
+    else:
+        country = pd.DataFrame(columns=["iso3", "year", "variable_id", "value"])
     bilateral = (
         pd.read_parquet(bilateral_src)
         if bilateral_src.is_file()

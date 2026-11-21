@@ -80,8 +80,12 @@ def test_catalog_has_eighteen_ported_and_status_mix() -> None:
     assert by_status["TARIF"] == "draft"
     assert by_status["CULT"] == "draft"
     assert by_status["ITU_IDI"] == "draft"
-    assert sum(1 for s in by_status.values() if s == "verified") == 28
+    # Prompt 4a: six WGI estimate series (CC/GE/RQ/RL/PV/VA) are first-class
+    # verified variables alongside GOV (mean).
+    assert sum(1 for s in by_status.values() if s == "verified") == 34
     assert sum(1 for s in by_status.values() if s == "draft") == 28
+    for wgi_id in ("CC", "GE", "RQ", "RL", "PV", "VA"):
+        assert by_status[wgi_id] == "verified"
     openness = [v for v in data["variables"] if v["id"] in {"EOC", "REEXP"}]
     assert all(v["factor"] == "openness" for v in openness)
 

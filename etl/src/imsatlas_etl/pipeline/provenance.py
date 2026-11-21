@@ -291,14 +291,25 @@ def resolve_country_origins(
         info = variables_meta.get(vid)
         if spec is None or not info or info.get("status") != "ok":
             raise ProvenanceError(f"no curated provenance metadata for {vid}")
-        source_id, version = str(spec["source_id"]), str(info["version"])
+        source_id = str(spec["source_id"])
+        version = str(info.get("version") or "")
+        if not version or version.lower() == "none":
+            raise ProvenanceError(f"no curated provenance version for {vid}")
         _check_registered(vid, source_id)
-        is_wb = spec["kind"] == "wb_indicator"
+        kind = str(spec.get("kind") or "")
+        is_wb = kind in {"wb_indicator", "derived_mean"}
         raw_dir = raw_source_dir(source_id, version, root=root)
         raw = raw_dir / ("indicators.csv" if is_wb else "values.csv")
         url, digest = _raw_artefact(raw)
         code = spec.get("code")
-        if is_wb and code:
+        if kind == "derived_mean":
+            steps = (
+                "load_raw_indicators",
+                "select_wgi_estimates",
+                "mean_gov",
+            )
+            code = None
+        elif is_wb and code:
             url = url.replace("{code}", api_indicator_code(code))
             steps = ("load_raw_indicators", "select_indicator")
         else:

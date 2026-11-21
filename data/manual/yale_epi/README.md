@@ -24,5 +24,7 @@ with `year=2026`. Manual drop below wins if present.
 ## Rules
 
 - This folder is **gitignored** except this README. Never commit drops.
+- Rights / redistribution status is **not human-verified** until César confirms
+  `use_research` / ship gates in the registry.
 - The ETL never invents a download URL; the connector URL was verified HTTP 200
   on 2026-11-20 before wiring.

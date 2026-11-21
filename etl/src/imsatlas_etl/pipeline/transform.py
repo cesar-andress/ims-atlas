@@ -48,7 +48,17 @@ def _versions(*, root: Path | None) -> dict[str, str]:
     if not path.is_file():
         return {}
     payload = json.loads(path.read_text(encoding="utf-8"))
-    return {row["source"]: str(row["upstream_version"]) for row in payload["sources"]}
+    out: dict[str, str] = {}
+    for row in payload.get("sources", []):
+        sid = str(row.get("source") or "")
+        ver = row.get("ingested_version") or row.get("upstream_version")
+        if not sid or ver is None:
+            continue
+        ver_s = str(ver).strip()
+        if not ver_s or ver_s.lower() == "none":
+            continue
+        out[sid] = ver_s
+    return out
 
 
 def _raw_table_path(source_id: str, version: str, *, root: Path | None) -> Path | None:

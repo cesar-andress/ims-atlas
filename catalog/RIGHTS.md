@@ -94,12 +94,6 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 | INFL | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | UNEMP | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | GOV | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
-| CC | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
-| GE | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
-| RQ | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
-| RL | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
-| PV | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
-| VA | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | EOC | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | REEXP | baci | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | ITU_IDI | itu_datahub | byod_only | evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
@@ -111,6 +105,12 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 | EPI | yale_epi | byod_only | commercial_use=no under commercial_context=true |
 | CO2PC | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | PLI | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| CC | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| GE | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| RQ | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| RL | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| PV | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| VA | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | PPAD | baci | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | INTC | freight_manual | byod_only | unknown rights: redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives |
 | CIBC | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |

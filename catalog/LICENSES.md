@@ -31,6 +31,12 @@ Generated from `catalog/variables.yaml` + `catalog/sources.yaml`. Do not edit by
 | EPI | yale_epi | CC-BY-NC-SA-4.0 | no (BYOD) | Wendling, Z. A., Emerson, J. W., Esty, D. C., de Sherbinin, A., Block, S., et al. (2026). 2026 Environmental Performance Index. Yale Center for Environmental Law & Policy. |
 | CO2PC | worldbank_wdi | CC-BY-4.0 | yes | World Bank. World Development Indicators. EN.GHG.CO2.PC.CE.AR5 (CO2 emissions excluding LULUCF per capita). |
 | PLI | worldbank_wdi | CC-BY-4.0 | yes | World Bank. World Development Indicators / ICP. PA.NUS.PRVT.PLI. |
+| CC | worldbank_wgi | CC-BY-4.0 | yes | World Bank. Worldwide Governance Indicators. CC.EST. |
+| GE | worldbank_wgi | CC-BY-4.0 | yes | World Bank. Worldwide Governance Indicators. GE.EST. |
+| RQ | worldbank_wgi | CC-BY-4.0 | yes | World Bank. Worldwide Governance Indicators. RQ.EST. |
+| RL | worldbank_wgi | CC-BY-4.0 | yes | World Bank. Worldwide Governance Indicators. RL.EST. |
+| PV | worldbank_wgi | CC-BY-4.0 | yes | World Bank. Worldwide Governance Indicators. PV.EST. |
+| VA | worldbank_wgi | CC-BY-4.0 | yes | World Bank. Worldwide Governance Indicators. VA.EST. |
 | PPAD | baci | etalab-2.0 | no (BYOD) | Phase J IMSFE 2025 draft mapping. Jose code; open candidate UVGAP/BACI unit values. licence to verify. |
 | INTC | freight_manual | UNKNOWN | no (BYOD) | Phase J IMSFE 2025 draft mapping. Workbook freight tools; BYOD; licence UNKNOWN. |
 | CIBC | worldbank_wdi | CC-BY-4.0 | no (BYOD) | Phase J IMSFE 2025 draft mapping. Doing Business IC.IMP.CSBC.CD archived; flag archived series. |

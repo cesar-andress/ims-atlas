@@ -5,9 +5,12 @@ import {
   type TransparencySource,
   type TransparencyVariable,
 } from "../data/transparency";
-import { loadDemoPanel, type DemoPanel } from "../ranking/demoPanel";
+import type { DemoPanel } from "../ranking/demoPanel";
+import { loadProjectPanel } from "../ranking/projectPanel";
 import { useTranslation } from "../i18n";
 import { useRankingModel } from "../ranking/useRankingModelApi";
+import { useAnalysis } from "./useAnalysis";
+import { isAnalysisReady } from "./views";
 
 export type DataAccess = "open" | "team" | "unknown";
 
@@ -31,11 +34,21 @@ type Bundle = {
   sources: TransparencySource[];
 };
 
-let bundlePromise: Promise<Bundle> | null = null;
-
-function loadBundle(): Promise<Bundle> {
-  bundlePromise ??= Promise.all([
-    loadDemoPanel().catch(() => null),
+function loadBundle(scope: {
+  origin?: string;
+  hs?: string;
+  year?: number;
+  ready: boolean;
+}): Promise<Bundle> {
+  const panelP = scope.ready
+    ? loadProjectPanel({
+        origin: scope.origin,
+        hs: scope.hs,
+        year: scope.year,
+      }).catch(() => null)
+    : Promise.resolve(null);
+  return Promise.all([
+    panelP,
     loadVariables()
       .then((r) => r.variables)
       .catch(() => [] as TransparencyVariable[]),
@@ -43,7 +56,6 @@ function loadBundle(): Promise<Bundle> {
       .then((r) => r.sources)
       .catch(() => [] as TransparencySource[]),
   ]).then(([panel, variables, sources]) => ({ panel, variables, sources }));
-  return bundlePromise;
 }
 
 function localName(
@@ -67,18 +79,26 @@ export function useProjectData(): {
 } {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
+  const { config } = useAnalysis();
   const { error } = useRankingModel();
   const [bundle, setBundle] = useState<Bundle | null>(null);
+  const ready = isAnalysisReady(config);
 
   useEffect(() => {
     let cancelled = false;
-    void loadBundle().then((b) => {
+    setBundle(null);
+    void loadBundle({
+      origin: config.origin,
+      hs: config.hs,
+      year: config.year,
+      ready,
+    }).then((b) => {
       if (!cancelled) setBundle(b);
     });
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [config.origin, config.hs, config.year, ready]);
 
   return useMemo(() => {
     if (!bundle) return { loading: true, rows: [], warnings: [], nSources: 0 };

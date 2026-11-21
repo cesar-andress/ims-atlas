@@ -2,7 +2,8 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useTranslation } from "../i18n";
 import { REGIONS } from "../data/hsProducts";
 import { analysisErrorFromUnknown } from "../ranking/analysisError";
-import { loadDemoPanel, type DemoPanel } from "../ranking/demoPanel";
+import type { DemoPanel } from "../ranking/demoPanel";
+import { loadProjectPanel } from "../ranking/projectPanel";
 import { prefetchRanking } from "../ranking/rankingCache";
 import { rankingRequestFromConfig } from "../ranking/rankingRequest";
 import { COL_HS64_PRESET, IMSFE_BAENA_CANO_PRESET } from "../state/schema";
@@ -79,8 +80,18 @@ export function ConfigPanel({
 
   useEffect(() => {
     let cancelled = false;
+    if (!isAnalysisReady(config)) {
+      setPanel(null);
+      setPanelStatus("pending");
+      setPanelDetail(undefined);
+      return;
+    }
     setPanelStatus("loading");
-    void loadDemoPanel()
+    void loadProjectPanel({
+      origin: config.origin,
+      hs: config.hs,
+      year: config.year,
+    })
       .then((p) => {
         if (cancelled) return;
         setPanel(p);
@@ -97,7 +108,8 @@ export function ConfigPanel({
     return () => {
       cancelled = true;
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- scope fields only
+  }, [config.origin, config.hs, config.year]);
 
   // Warm ranking cache as soon as the demo panel is available.
   useEffect(() => {

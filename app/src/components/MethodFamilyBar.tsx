@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "../i18n";
-import { loadDemoPanel, type DemoPanel } from "../ranking/demoPanel";
+import type { DemoPanel } from "../ranking/demoPanel";
+import { loadProjectPanel } from "../ranking/projectPanel";
 import type { AnalysisConfig } from "../state/schema";
 import { useAnalysis } from "../state/useAnalysis";
+import { isAnalysisReady } from "../state/views";
 import { RadixSelectField } from "./RadixSelectField";
 
 type FamilyId = NonNullable<AnalysisConfig["methodFamily"]>;
@@ -56,7 +58,15 @@ export function MethodFamilyBar() {
 
   useEffect(() => {
     let cancelled = false;
-    void loadDemoPanel()
+    if (!isAnalysisReady(config)) {
+      setPanel(null);
+      return;
+    }
+    void loadProjectPanel({
+      origin: config.origin,
+      hs: config.hs,
+      year: config.year,
+    })
       .then((p) => {
         if (!cancelled) setPanel(p);
       })
@@ -66,7 +76,8 @@ export function MethodFamilyBar() {
     return () => {
       cancelled = true;
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- scope fields only
+  }, [config.origin, config.hs, config.year]);
 
   const value = (config.methodFamily ?? "imsfe_2025") as FamilyId;
   const nPanel = panel?.variables.length ?? 0;
