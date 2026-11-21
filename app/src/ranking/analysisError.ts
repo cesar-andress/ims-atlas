@@ -13,6 +13,10 @@ export function analysisErrorFromUnknown(err: unknown): AnalysisModelError {
   if (err instanceof Error && err.name === "DemoPanelPendingError") {
     return { kind: "pending", message: err.message };
   }
+  // AtlasDataError from duckdbClient (name check avoids importing WASM client).
+  if (err instanceof Error && err.name === "AtlasDataError") {
+    return { kind: "error", message: err.message };
+  }
   return {
     kind: "error",
     message: err instanceof Error ? err.message : String(err),

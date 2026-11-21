@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { AtlasDataError } from "../data/duckdbClient";
 import { analysisErrorFromUnknown, analysisErrorMessage } from "./analysisError";
 import { DemoPanelPendingError } from "./demoPanel";
 
@@ -17,6 +18,17 @@ describe("analysisError", () => {
     const raw = new Error("stub");
     raw.name = "DemoPanelPendingError";
     expect(analysisErrorFromUnknown(raw).kind).toBe("pending");
+  });
+
+  it("maps AtlasDataError to user-visible analysis error (not pending)", () => {
+    expect(
+      analysisErrorFromUnknown(
+        new AtlasDataError("country_year missing", "missing_table"),
+      ),
+    ).toEqual({
+      kind: "error",
+      message: "country_year missing",
+    });
   });
 
   it("maps ordinary errors", () => {

@@ -12,4 +12,13 @@ describe("absoluteDataUrl", () => {
       "https://atlas.aiserv.es/data/release/internal/v1.1.0",
     );
   });
+
+  it("resolves public and internal release bases used by projectPanel", () => {
+    expect(absoluteDataUrl("/data/release/public/v1.1.0")).toMatch(
+      /\/data\/release\/public\/v1\.1\.0$/,
+    );
+    expect(absoluteDataUrl("/data/release/internal/v1.1.0")).toMatch(
+      /\/data\/release\/internal\/v1\.1\.0$/,
+    );
+  });
 });
