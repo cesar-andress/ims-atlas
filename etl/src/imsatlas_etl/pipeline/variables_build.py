@@ -166,6 +166,22 @@ INDEX_SPECS: dict[str, dict[str, str]] = {
     "STARTUPBLINK": {"source_id": "startupblink"},
 }
 
+# Edition year on the publisher file → observation year for LOCF (year <= t).
+# EPI 2026 report ≈ data through 2024; GII edition N ≈ data year N-1.
+INDEX_EDITION_LAG: dict[str, int] = {
+    "yale_epi": 2,
+    "wipo_gii": 1,
+}
+
+# IMF WEO indicator code → catalog variable id (see catalog/variables.yaml).
+WEO_CODE_TO_VAR: dict[str, str] = {
+    "NGDP_RPCH": "WEO_GROWTH",
+    "PCPIPCH": "WEO_INFL",
+    "NGDPDPC": "WEO_GDPPC",
+    "BCA_NGDPD": "WEO_CA",
+    "LUR": "WEO_UNEMP",
+}
+
 # Never surface these until César confirms use_research (Prompt 4a gate).
 BLOCKED_SOURCE_IDS = frozenset({"ecb_fx", "vat_rates"})
 
@@ -299,6 +315,14 @@ def build_variables_country_year(
             }
             continue
         meta["unmatched"][vid] = unmatched
+        lag = INDEX_EDITION_LAG.get(source_id, 0)
+        if lag and not series.empty:
+            series = series.copy()
+            series["year"] = series["year"].astype(int) - lag
+            meta.setdefault("edition_lag", {})[vid] = {
+                "source_id": source_id,
+                "lag_years": lag,
+            }
         _append_panel(panels, series, vid)
         meta["variables"][vid] = {
             "status": "ok",
@@ -308,7 +332,59 @@ def build_variables_country_year(
             "n_unmatched": len(unmatched),
             "years": sorted({int(y) for y in series["year"].dropna().unique()}),
             "catalog_status": (catalog_vars.get(vid) or {}).get("status"),
+            "edition_lag": lag or None,
         }
+
+    # IMF WEO long indicators.csv → WEO_* catalog ids.
+    if "imf_weo" not in BLOCKED_SOURCE_IDS:
+        if "imf_weo" not in versions:
+            for vid in WEO_CODE_TO_VAR.values():
+                meta["variables"][vid] = {
+                    "status": "source_not_in_freshness",
+                    "source_id": "imf_weo",
+                }
+        else:
+            weo_ver = versions["imf_weo"]
+            weo_path = raw_source_dir("imf_weo", weo_ver, root=root) / "indicators.csv"
+            try:
+                if not weo_path.is_file():
+                    raise FileNotFoundError(str(weo_path))
+                weo = pd.read_csv(weo_path)
+                need = {"iso3", "year", "indicator", "value"}
+                if not need.issubset(set(weo.columns)):
+                    raise ValueError(f"imf_weo columns {list(weo.columns)}")
+                for code, vid in WEO_CODE_TO_VAR.items():
+                    sub = weo[weo["indicator"] == code][["iso3", "year", "value"]].copy()
+                    sub = sub.dropna(subset=["iso3", "year", "value"])
+                    if sub.empty:
+                        meta["variables"][vid] = {
+                            "status": "raw_missing",
+                            "source_id": "imf_weo",
+                            "version": weo_ver,
+                            "code": code,
+                            "reason": "no rows",
+                        }
+                        continue
+                    _append_panel(panels, sub, vid)
+                    meta["variables"][vid] = {
+                        "status": "ok",
+                        "source_id": "imf_weo",
+                        "version": weo_ver,
+                        "code": code,
+                        "n_rows": int(len(sub)),
+                        "years": sorted(
+                            {int(y) for y in sub["year"].dropna().unique()},
+                        ),
+                        "catalog_status": (catalog_vars.get(vid) or {}).get("status"),
+                    }
+            except (FileNotFoundError, ValueError, OSError, pd.errors.ParserError) as exc:
+                for vid in WEO_CODE_TO_VAR.values():
+                    meta["variables"][vid] = {
+                        "status": "raw_missing",
+                        "source_id": "imf_weo",
+                        "version": versions.get("imf_weo"),
+                        "reason": str(exc),
+                    }
 
     if not panels:
         empty = pd.DataFrame(columns=["iso3", "year"])

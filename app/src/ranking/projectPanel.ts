@@ -285,6 +285,11 @@ export async function loadProjectPanel(req: ProjectPanelRequest): Promise<DemoPa
       "GII",
       "FSIN",
       "GLIN",
+      "WEO_GROWTH",
+      "WEO_INFL",
+      "WEO_GDPPC",
+      "WEO_CA",
+      "WEO_UNEMP",
     ]),
   ].filter((id) => metaFor(catalog, id));
 

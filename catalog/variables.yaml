@@ -1717,3 +1717,133 @@
   'source_ids':
   - 'icex_events'
   - 'trade_gov_events'
+- 'id': 'WEO_GROWTH'
+  'name':
+    'en': 'IMF WEO real GDP growth (%)'
+    'es': 'Crecimiento real del PIB (FMI WEO, %)'
+  'factor': 'macro_risk'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'percent'
+  'source': 'IMF WEO'
+  'citation': 'IMF. World Economic Outlook (SDMX). Indicator NGDP_RPCH.'
+  'redistributable': true
+  'years':
+  - 2010
+  - 2025
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Draft series from imf_weo extract. Not a substitute for verified WDI GDPPC.'
+    'es': 'Serie borrador del extracto imf_weo. No sustituye a GDPPC verificada de WDI.'
+  'status': 'draft'
+  'code': 'NGDP_RPCH'
+  'origin_specific': false
+  'source_ids':
+  - 'imf_weo'
+- 'id': 'WEO_INFL'
+  'name':
+    'en': 'IMF WEO CPI inflation (%)'
+    'es': 'Inflación IPC (FMI WEO, %)'
+  'factor': 'macro_risk'
+  'level': 'country'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'percent'
+  'source': 'IMF WEO'
+  'citation': 'IMF. World Economic Outlook (SDMX). Indicator PCPIPCH.'
+  'redistributable': true
+  'years':
+  - 2010
+  - 2025
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Draft parallel to verified INFL (WDI). Keep both until César verifies.'
+    'es': 'Borrador paralelo a INFL verificada (WDI). Mantener ambas hasta verificación.'
+  'status': 'draft'
+  'code': 'PCPIPCH'
+  'origin_specific': false
+  'source_ids':
+  - 'imf_weo'
+- 'id': 'WEO_GDPPC'
+  'name':
+    'en': 'IMF WEO GDP per capita (current USD)'
+    'es': 'PIB per cápita (FMI WEO, USD corrientes)'
+  'factor': 'demand'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'USD'
+  'source': 'IMF WEO'
+  'citation': 'IMF. World Economic Outlook (SDMX). Indicator NGDPDPC.'
+  'redistributable': true
+  'years':
+  - 2010
+  - 2025
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Draft; verified GDPPC remains the WDI PPP series.'
+    'es': 'Borrador; GDPPC verificada sigue siendo la serie WDI en PPA.'
+  'status': 'draft'
+  'code': 'NGDPDPC'
+  'origin_specific': false
+  'source_ids':
+  - 'imf_weo'
+- 'id': 'WEO_CA'
+  'name':
+    'en': 'IMF WEO current account (% of GDP)'
+    'es': 'Cuenta corriente (FMI WEO, % del PIB)'
+  'factor': 'macro_risk'
+  'level': 'country'
+  'direction': 'benefit'
+  'transform': 'none'
+  'unit': 'percent of GDP'
+  'source': 'IMF WEO'
+  'citation': 'IMF. World Economic Outlook (SDMX). Indicator BCA_NGDPD.'
+  'redistributable': true
+  'years':
+  - 2010
+  - 2025
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Draft; surplus positive. Direction benefit is a modelling choice for IMS panels.'
+    'es': 'Borrador; superávit positivo. Dirección benefit es una elección de modelado.'
+  'status': 'draft'
+  'code': 'BCA_NGDPD'
+  'origin_specific': false
+  'source_ids':
+  - 'imf_weo'
+- 'id': 'WEO_UNEMP'
+  'name':
+    'en': 'IMF WEO unemployment rate (%)'
+    'es': 'Desempleo (FMI WEO, %)'
+  'factor': 'macro_risk'
+  'level': 'country'
+  'direction': 'cost'
+  'transform': 'none'
+  'unit': 'percent'
+  'source': 'IMF WEO'
+  'citation': 'IMF. World Economic Outlook (SDMX). Indicator LUR.'
+  'redistributable': true
+  'years':
+  - 2010
+  - 2025
+  'frequency': 'annual'
+  'coverage_countries': null
+  'series_breaks': []
+  'notes':
+    'en': 'Draft parallel to verified UNEMP (WDI).'
+    'es': 'Borrador paralelo a UNEMP verificada (WDI).'
+  'status': 'draft'
+  'code': 'LUR'
+  'origin_specific': false
+  'source_ids':
+  - 'imf_weo'

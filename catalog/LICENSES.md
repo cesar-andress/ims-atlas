@@ -66,3 +66,8 @@ Generated from `catalog/variables.yaml` + `catalog/sources.yaml`. Do not edit by
 | FAIRS_INTL | auma_fairs | UNKNOWN | no (BYOD) | Share of foreign exhibitors at sector fairs in the destination. |
 | PROMO_OFFICE | icex_events | UNKNOWN | no (BYOD) | 1 if the origin country's trade-promotion agency has an office in the destination. |
 | PROMO_EVENTS | icex_events,trade_gov_events | UNKNOWN; UNKNOWN | no (BYOD) | Missions, matchmaking or pavilions by the origin agency in the destination (last 3 years). |
+| WEO_GROWTH | imf_weo | custom | yes | IMF. World Economic Outlook (SDMX). Indicator NGDP_RPCH. |
+| WEO_INFL | imf_weo | custom | yes | IMF. World Economic Outlook (SDMX). Indicator PCPIPCH. |
+| WEO_GDPPC | imf_weo | custom | yes | IMF. World Economic Outlook (SDMX). Indicator NGDPDPC. |
+| WEO_CA | imf_weo | custom | yes | IMF. World Economic Outlook (SDMX). Indicator BCA_NGDPD. |
+| WEO_UNEMP | imf_weo | custom | yes | IMF. World Economic Outlook (SDMX). Indicator LUR. |

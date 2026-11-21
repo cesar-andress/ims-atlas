@@ -82,6 +82,11 @@ def main() -> None:
         "GII",
         "FSIN",
         "GLIN",
+        "WEO_GROWTH",
+        "WEO_INFL",
+        "WEO_GDPPC",
+        "WEO_CA",
+        "WEO_UNEMP",
     ):
         if extra not in country_wanted and extra in vars_meta:
             country_wanted.append(extra)
