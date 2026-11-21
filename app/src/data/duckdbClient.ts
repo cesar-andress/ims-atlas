@@ -414,6 +414,11 @@ export function createDuckDbClient(): AtlasDataClient {
             `);
             bilateralMaterialised = false;
           }
+          // Drop chapter caches: VFS names are reused and would serve the old base.
+          if (releaseBase !== base) {
+            countryProductKeys.clear();
+            tradeUrls.clear();
+          }
           releaseBase = base;
           status = "ready";
         } catch (err) {
@@ -422,6 +427,8 @@ export function createDuckDbClient(): AtlasDataClient {
           error = mapped.message;
           releaseBase = null;
           bilateralMaterialised = false;
+          countryProductKeys.clear();
+          tradeUrls.clear();
           throw mapped;
         } finally {
           releasePromise = null;
@@ -433,18 +440,26 @@ export function createDuckDbClient(): AtlasDataClient {
     async loadTradeChapter(hs2, opts) {
       await ensureConn();
       const key = hs2Key(hs2);
-      if (tradeUrls.has(key)) return true;
       const base = absoluteDataUrl(opts?.basePath ?? releaseUrl());
+      const cacheKey = `${base}|${key}`;
+      if (tradeUrls.has(cacheKey)) return true;
       const url = `${base}/trade/hs2=${key}/part.parquet`;
       const ok = await parquetExists(url);
       if (!ok) return false;
       // URL only — aggregations call read_parquet(url) with a year filter.
-      // Creating a VIEW here would still open the chapter on register.
-      tradeUrls.set(key, url);
+      tradeUrls.set(cacheKey, url);
       return true;
     },
     tradeChapterUrl(hs2) {
-      return tradeUrls.get(hs2Key(hs2));
+      const key = hs2Key(hs2);
+      if (releaseBase) {
+        const hit = tradeUrls.get(`${releaseBase}|${key}`);
+        if (hit) return hit;
+      }
+      for (const [k, url] of tradeUrls) {
+        if (k.endsWith(`|${key}`)) return url;
+      }
+      return undefined;
     },
     async loadCountryProductChapter(hs2, opts) {
       const connection = await ensureConn();
@@ -456,14 +471,15 @@ export function createDuckDbClient(): AtlasDataClient {
             ? [opts.year]
             : undefined;
       const variableIds = opts?.variableIds;
-      const sliceKey = `${key}|y=${years?.join("-") ?? "*"}|v=${(variableIds ?? []).slice().sort().join(",") || "*"}`;
-      if (countryProductKeys.has(sliceKey)) return true;
       const base = absoluteDataUrl(opts?.basePath ?? releaseUrl());
+      const sliceKey = `${base}|${key}|y=${years?.join("-") ?? "*"}|v=${(variableIds ?? []).slice().sort().join(",") || "*"}`;
+      if (countryProductKeys.has(sliceKey)) return true;
       const chapter = `${base}/country_product/hs2=${key}`;
       const table = `country_product_hs2_${key}`;
       try {
         const indexRes = await fetch(`${chapter}/index.json`, CREDENTIALED);
-        if (indexRes.ok) {
+        const indexCt = (indexRes.headers.get("content-type") ?? "").toLowerCase();
+        if (indexRes.ok && !indexCt.includes("text/html")) {
           const index = (await indexRes.json()) as { parts?: string[] };
           const partOpts: {
             years?: readonly number[];

@@ -165,17 +165,28 @@ export async function loadProjectPanel(req: ProjectPanelRequest): Promise<DemoPa
   const yearWindow = locfYears(Number(year), LOCF_MAX_LAG);
   const yearMin = yearWindow[0]!;
 
-  // One hive slice for the LOCF window (avoid year-only then full-chapter fallback).
-  let productOk = await client.loadCountryProductChapter(hs2, {
-    basePath: base,
-    years: yearWindow,
-    variableIds: [...PRODUCT_VAR_IDS],
-  });
-  if (!productOk) {
+  // Prefer hive parts (public v1.1.0). Internal mono lacks index.json / some vars.
+  const productBases = team
+    ? [await resolvePublicReleaseBase(), base]
+    : [base];
+  let productOk = false;
+  let productBaseUsed = base;
+  for (const productBase of productBases) {
     productOk = await client.loadCountryProductChapter(hs2, {
-      basePath: base,
+      basePath: productBase,
+      years: yearWindow,
       variableIds: [...PRODUCT_VAR_IDS],
     });
+    if (!productOk) {
+      productOk = await client.loadCountryProductChapter(hs2, {
+        basePath: productBase,
+        variableIds: [...PRODUCT_VAR_IDS],
+      });
+    }
+    if (productOk) {
+      productBaseUsed = productBase;
+      break;
+    }
   }
   if (!productOk) {
     throw new DemoPanelPendingError("TEAM_RESULTS_PENDING");
@@ -334,6 +345,11 @@ export async function loadProjectPanel(req: ProjectPanelRequest): Promise<DemoPa
   const notes: string[] = [
     `Project panel ${origin} · HS ${hs} · ${year} (${variables.length} variables).`,
   ];
+  if (productBaseUsed !== base) {
+    notes.push(
+      `Product chapter loaded from ${productBaseUsed} (session release ${base}).`,
+    );
+  }
   const lagged = Object.entries(dataYears).filter(([, y]) => y < year);
   if (lagged.length) {
     const sample = lagged
