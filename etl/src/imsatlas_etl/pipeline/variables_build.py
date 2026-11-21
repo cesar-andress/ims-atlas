@@ -354,7 +354,8 @@ def build_variables_country_year(
                 if not need.issubset(set(weo.columns)):
                     raise ValueError(f"imf_weo columns {list(weo.columns)}")
                 for code, vid in WEO_CODE_TO_VAR.items():
-                    sub = weo[weo["indicator"] == code][["iso3", "year", "value"]].copy()
+                    cols = ["iso3", "year", "value"]
+                    sub = weo[weo["indicator"] == code][cols].copy()
                     sub = sub.dropna(subset=["iso3", "year", "value"])
                     if sub.empty:
                         meta["variables"][vid] = {
@@ -377,7 +378,12 @@ def build_variables_country_year(
                         ),
                         "catalog_status": (catalog_vars.get(vid) or {}).get("status"),
                     }
-            except (FileNotFoundError, ValueError, OSError, pd.errors.ParserError) as exc:
+            except (
+                FileNotFoundError,
+                ValueError,
+                OSError,
+                pd.errors.ParserError,
+            ) as exc:
                 for vid in WEO_CODE_TO_VAR.values():
                     meta["variables"][vid] = {
                         "status": "raw_missing",
