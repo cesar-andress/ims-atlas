@@ -126,14 +126,19 @@ import json, sys
 man_path, fresh_path = sys.argv[1], sys.argv[2]
 man = json.loads(open(man_path, encoding="utf-8").read())
 fresh = json.loads(open(fresh_path, encoding="utf-8").read())
-old = {str(k): str(v) for k, v in (man.get("source_versions") or {}).items()}
+def norm(v: object) -> str:
+    s = "" if v is None else str(v).strip()
+    if s in {"None", "null", "NULL"}:
+        return ""
+    return s
+
+old = {str(k): norm(v) for k, v in (man.get("source_versions") or {}).items()}
 new = {}
 for row in fresh.get("sources") or []:
     sid = str(row.get("source") or "")
     if not sid:
         continue
-    new[sid] = str(row.get("ingested_version") or row.get("upstream_version") or "")
-# Only compare keys present in either side with a non-empty new value or old value.
+    new[sid] = norm(row.get("ingested_version") or row.get("upstream_version") or "")
 keys = set(old) | set(new)
 changed = False
 for k in sorted(keys):
