@@ -72,7 +72,34 @@ function ingestLocfRows(
   }
 }
 
+async function probeInternalVersion(ver: string): Promise<boolean> {
+  const url = `/data/release/internal/v${ver}/country_year.parquet`;
+  try {
+    let probe = await fetch(url, {
+      method: "HEAD",
+      credentials: "include",
+      cache: "no-store",
+    });
+    if (probe.ok) return true;
+    probe = await fetch(url, {
+      method: "GET",
+      credentials: "include",
+      cache: "no-store",
+      headers: { Range: "bytes=0-3" },
+    });
+    return probe.ok || probe.status === 206;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Prefer live `/data/release/internal/CURRENT`, then probe known pins.
+ * Never return a version whose country_year.parquet 404s (stale config 1.1.0
+ * while CURRENT points at 1.2.0 caused mono httpfs misses).
+ */
 async function resolveInternalVersion(): Promise<string> {
+  const candidates: string[] = [];
   try {
     const res = await fetch("/data/release/internal/CURRENT", {
       credentials: "include",
@@ -80,12 +107,18 @@ async function resolveInternalVersion(): Promise<string> {
     });
     if (res.ok) {
       const text = (await res.text()).trim().replace(/^v/, "");
-      if (/^\d+\.\d+\.\d+$/.test(text)) return text;
+      if (/^\d+\.\d+\.\d+$/.test(text)) candidates.push(text);
     }
   } catch {
     /* fall through */
   }
-  return dataConfig.release_version;
+  for (const v of ["1.2.0", "1.1.0", dataConfig.release_version]) {
+    if (!candidates.includes(v)) candidates.push(v);
+  }
+  for (const ver of candidates) {
+    if (await probeInternalVersion(ver)) return ver;
+  }
+  return candidates[0] ?? dataConfig.release_version;
 }
 
 async function releaseBaseForSession(): Promise<{ base: string; team: boolean }> {
@@ -167,9 +200,7 @@ export async function loadProjectPanel(req: ProjectPanelRequest): Promise<DemoPa
   const yearMin = yearWindow[0]!;
 
   // Prefer hive parts (public v1.1.0). Internal mono lacks index.json / some vars.
-  const productBases = team
-    ? [await resolvePublicReleaseBase(), base]
-    : [base];
+  const productBases = team ? [await resolvePublicReleaseBase(), base] : [base];
 
   async function loadProductChapter(): Promise<string> {
     for (const productBase of productBases) {

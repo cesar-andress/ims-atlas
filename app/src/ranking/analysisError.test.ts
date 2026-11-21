@@ -38,4 +38,14 @@ describe("analysisError", () => {
     });
     expect(analysisErrorMessage("x")).toEqual({ kind: "error", message: "x" });
   });
+
+  it("does not surface Invalid Error WebAssembly.Exception as the toast text", () => {
+    const err = analysisErrorFromUnknown(
+      new Error("Invalid Error: [object WebAssembly.Exception]"),
+    );
+    expect(err.kind).toBe("error");
+    expect(err.message).not.toMatch(/Invalid Error/i);
+    expect(err.message).not.toMatch(/\[object WebAssembly/i);
+    expect(err.message).toMatch(/DuckDB WASM/i);
+  });
 });

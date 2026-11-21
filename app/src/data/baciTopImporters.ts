@@ -44,8 +44,8 @@ function hitFromCache(
  * Load HS2 trade parquet and aggregate importer totals for `year`.
  * On failure (no release / no chapter), marks cache unavailable and returns null rows.
  *
- * Uses the shared DuckDB client and aggregates directly against `read_parquet`
- * with a year filter (no full-chapter TABLE materialisation).
+ * Uses the shared DuckDB client VIEW `trade_hs2_XX` (credentialed VFS buffer;
+ * never `read_parquet(https://…/hs2=)` — DuckDB httpfs mangles hive `=` to `-`).
  */
 export async function loadBaciTopImporters(
   opts: {
@@ -79,17 +79,14 @@ export async function loadBaciTopImporters(
     const ok = await client.loadTradeChapter(hs2);
     if (!ok) return missResult(hs2, opts.year);
 
-    const url = client.tradeChapterUrl(hs2);
+    // Always query the credentialed VFS VIEW — never read_parquet(https://…/hs2=).
+    // DuckDB httpfs rewrites hive `hs2=26` to `hs2-26` and fails HEAD/GET.
     const table = `trade_hs2_${hs2}`;
-    // Prefer direct parquet path (year pushdown); fall back to registered VIEW.
-    const fromClause = url
-      ? `read_parquet('${url.replace(/'/g, "''")}')`
-      : table;
     const rows = await client.querySql(`
       SELECT
         CAST(importer AS VARCHAR) AS iso3,
         SUM(CAST(value_usd AS DOUBLE)) AS imports
-      FROM ${fromClause}
+      FROM ${table}
       WHERE year = ${opts.year}
       GROUP BY 1
       ORDER BY imports DESC

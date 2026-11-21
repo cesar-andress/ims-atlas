@@ -127,7 +127,8 @@ def test_assert_release_not_shrunk_blocks_20pct_drop(tmp_path: Path) -> None:
 
 def _full_chapters(release: Path) -> None:
     for i in range(MIN_COUNTRY_PRODUCT_CHAPTERS):
-        (release / "country_product" / f"hs2={i:02d}").mkdir(parents=True, exist_ok=True)
+        chapter = release / "country_product" / f"hs2={i:02d}"
+        chapter.mkdir(parents=True, exist_ok=True)
 
 
 def test_current_pointer_rejects_empty_when_newer_full_exists(tmp_path: Path) -> None:

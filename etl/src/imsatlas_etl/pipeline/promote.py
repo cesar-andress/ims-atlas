@@ -69,8 +69,10 @@ def _best_full_sibling(
         chapters = country_product_chapters(path)
         if chapters < MIN_COUNTRY_PRODUCT_CHAPTERS:
             continue
-        if best is None or chapters > best[1] or (
-            chapters == best[1] and _version_key(path.name) > _version_key(best[0])
+        if (
+            best is None
+            or chapters > best[1]
+            or (chapters == best[1] and _version_key(path.name) > _version_key(best[0]))
         ):
             best = (path.name, chapters)
     return best
@@ -158,10 +160,9 @@ def assert_current_update_allowed(
     if not current_dir.is_dir():
         return
     current_chapters = country_product_chapters(current_dir)
-    if (
-        current_chapters >= MIN_COUNTRY_PRODUCT_CHAPTERS
-        and _version_key(current_name) > _version_key(f"v{version}")
-    ):
+    if current_chapters >= MIN_COUNTRY_PRODUCT_CHAPTERS and _version_key(
+        current_name
+    ) > _version_key(f"v{version}"):
         raise ValueError(
             f"refuse CURRENT demotion from {current_name} "
             f"({current_chapters} chapters) to v{version}; "

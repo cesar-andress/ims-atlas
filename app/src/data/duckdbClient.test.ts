@@ -7,6 +7,7 @@ import {
   createDuckDbWasmLogger,
   createMemoryDataClient,
   clearParquetByteCacheForTests,
+  duckDbErrorText,
   fetchParquetBytes,
   fetchParquetBytesCached,
   getAtlasDataClient,
@@ -98,7 +99,25 @@ describe("createDuckDbWasmLogger", () => {
   });
 });
 
-describe("classifyDuckDbError", () => {
+describe("duckDbErrorText / classifyDuckDbError", () => {
+  it("unwraps Invalid Error WebAssembly.Exception wrappers", () => {
+    const wrapped = new Error("Invalid Error: [object WebAssembly.Exception]");
+    expect(duckDbErrorText(wrapped)).toBe("");
+    const mapped = classifyDuckDbError(wrapped);
+    expect(mapped.kind).toBe("http_io");
+    expect(mapped.message).toMatch(/HTTP\/WASM/i);
+  });
+
+  it("maps httpfs HEAD/GET hive-path failures", () => {
+    const err = classifyDuckDbError(
+      new Error(
+        "FAIL WITH: HEAD and GET requests failed: https://atlas.aiserv.es/data/release/internal/v1.1.0/country_product/hs2-26/part.parquet",
+      ),
+    );
+    expect(err.kind).toBe("http_io");
+    expect(err.message).toMatch(/hs2-26|parquet/i);
+  });
+
   it("preserves AtlasDataError instances", () => {
     const err = new AtlasDataError("x", "missing_table");
     expect(classifyDuckDbError(err)).toBe(err);

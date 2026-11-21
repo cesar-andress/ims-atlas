@@ -6,6 +6,31 @@ export type AnalysisModelError = {
   message: string;
 };
 
+function isOpaqueWasmFaultMessage(text: string): boolean {
+  const m = text.trim();
+  if (!m) return true;
+  if (m === "[object WebAssembly.Exception]" || m === "[object Object]") {
+    return true;
+  }
+  return /Invalid Error:/i.test(m) || /\[object WebAssembly\.Exception\]/i.test(m);
+}
+
+function readableUnknownMessage(err: unknown): string {
+  if (err instanceof Error) {
+    const m = (err.message ?? "").trim();
+    if (m && !isOpaqueWasmFaultMessage(m)) return m;
+    const cause = (err as Error & { cause?: unknown }).cause;
+    if (cause !== undefined) {
+      const nested = readableUnknownMessage(cause);
+      if (nested) return nested;
+    }
+    return "Could not read release data (DuckDB WASM).";
+  }
+  const s = String(err ?? "").trim();
+  if (s && !isOpaqueWasmFaultMessage(s)) return s;
+  return "Could not read release data (DuckDB WASM).";
+}
+
 export function analysisErrorFromUnknown(err: unknown): AnalysisModelError {
   if (err instanceof DemoPanelPendingError) {
     return { kind: "pending", message: err.message };
@@ -19,7 +44,7 @@ export function analysisErrorFromUnknown(err: unknown): AnalysisModelError {
   }
   return {
     kind: "error",
-    message: err instanceof Error ? err.message : String(err),
+    message: readableUnknownMessage(err),
   };
 }
 

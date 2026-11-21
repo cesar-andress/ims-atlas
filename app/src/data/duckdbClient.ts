@@ -37,7 +37,10 @@ export type AtlasDataClient = {
     /** Default true. Set false to load only country_year first. */
     includeBilateral?: boolean;
   }): Promise<void>;
-  /** Ensure trade chapter URL is reachable (no full-table materialisation). */
+  /**
+   * Register trade chapter bytes and create VIEW `trade_hs2_XX`
+   * (credentialed fetch — never DuckDB httpfs on hive paths).
+   */
   loadTradeChapter(hs2: string, opts?: { basePath?: string }): Promise<boolean>;
   /**
    * Country–product panel for one HS2 chapter. Prefer `year` / `years` /
@@ -54,7 +57,11 @@ export type AtlasDataClient = {
       variableIds?: string[];
     },
   ): Promise<boolean>;
-  /** Absolute URL of a registered trade chapter parquet, if loaded. */
+  /**
+   * @deprecated Always `undefined`. Trade is a VFS VIEW after
+   * {@link AtlasDataClient.loadTradeChapter}; do not pass https URLs to
+   * `read_parquet` (DuckDB rewrites `hs2=` → `hs2-`).
+   */
   tradeChapterUrl(hs2: string): string | undefined;
   queryCountryYear(opts?: {
     variableIds?: string[];
@@ -90,12 +97,54 @@ export class AtlasDataError extends Error {
 }
 
 /**
+ * Stable string from DuckDB / WASM faults.
+ * DuckDB often wraps `WebAssembly.Exception` as
+ * `Invalid Error: [object WebAssembly.Exception]` with an empty useful message.
+ */
+function isOpaqueWasmFaultMessage(text: string): boolean {
+  const m = text.trim();
+  if (!m) return true;
+  if (m === "[object WebAssembly.Exception]" || m === "[object Object]") {
+    return true;
+  }
+  // DuckDB: "Invalid Error: [object WebAssembly.Exception]"
+  // String(Error): "Error: Invalid Error: [object WebAssembly.Exception]"
+  return /Invalid Error:/i.test(m) || /\[object WebAssembly\.Exception\]/i.test(m);
+}
+
+export function duckDbErrorText(err: unknown): string {
+  if (err instanceof AtlasDataError) return err.message;
+  if (err instanceof Error) {
+    const m = (err.message ?? "").trim();
+    if (!isOpaqueWasmFaultMessage(m)) return m;
+    const cause = (err as Error & { cause?: unknown }).cause;
+    if (cause !== undefined) {
+      const nested = duckDbErrorText(cause);
+      if (nested) return nested;
+    }
+    return "";
+  }
+  if (err && typeof err === "object") {
+    const o = err as Record<string, unknown>;
+    for (const key of ["message", "msg", "str"] as const) {
+      const v = o[key];
+      if (typeof v === "string" && v.trim() && !isOpaqueWasmFaultMessage(v)) {
+        return v.trim();
+      }
+    }
+  }
+  const s = String(err ?? "").trim();
+  if (s && !isOpaqueWasmFaultMessage(s)) return s;
+  return "";
+}
+
+/**
  * Map a DuckDB / httpfs failure to a stable {@link AtlasDataError}.
  * Empty result sets are success — do not call this for “no rows”.
  */
 export function classifyDuckDbError(err: unknown): AtlasDataError {
   if (err instanceof AtlasDataError) return err;
-  const msg = err instanceof Error ? err.message : String(err);
+  const msg = duckDbErrorText(err);
   const lower = msg.toLowerCase();
   if (
     /\b401\b/.test(lower) ||
@@ -128,10 +177,22 @@ export function classifyDuckDbError(err: unknown): AtlasDataError {
     lower.includes("io error") ||
     lower.includes("http") ||
     lower.includes("failed to read") ||
-    lower.includes("parquet")
+    lower.includes("parquet") ||
+    lower.includes("head and get") ||
+    lower.includes("webassembly")
   ) {
     return new AtlasDataError(
-      `Could not read release parquet: ${msg}`,
+      msg
+        ? `Could not read release parquet: ${msg}`
+        : "Could not read release parquet (DuckDB HTTP/WASM).",
+      "http_io",
+      { cause: err },
+    );
+  }
+  // Bare WASM exception with no message → treat as I/O (usual httpfs mangling).
+  if (!msg) {
+    return new AtlasDataError(
+      "Could not read release parquet (DuckDB HTTP/WASM).",
       "http_io",
       { cause: err },
     );
@@ -517,7 +578,7 @@ export function createDuckDbClient(): AtlasDataClient {
       return releasePromise;
     },
     async loadTradeChapter(hs2, opts) {
-      await ensureConn();
+      const connection = await ensureConn();
       const key = hs2Key(hs2);
       const base = absoluteDataUrl(opts?.basePath ?? releaseUrl());
       const cacheKey = `${base}|${key}`;
@@ -525,19 +586,28 @@ export function createDuckDbClient(): AtlasDataClient {
       const url = `${base}/trade/hs2=${key}/part.parquet`;
       const ok = await parquetExists(url);
       if (!ok) return false;
-      // URL only — aggregations call read_parquet(url) with a year filter.
-      tradeUrls.set(cacheKey, url);
+      if (!db) return false;
+      // Never pass https://…/hs2=XX to DuckDB httpfs: it rewrites `=` → `-`
+      // (hs2-26) and HEAD/GET fail. Register bytes, then VIEW on VFS name.
+      const vfs = `atlas_trade_${key}.parquet`;
+      const table = `trade_hs2_${key}`;
+      try {
+        await registerParquetBuffer(db, vfs, url);
+        await connection.query(`
+          CREATE OR REPLACE VIEW ${table} AS
+          SELECT * FROM read_parquet('${escapeSqlString(vfs)}');
+        `);
+      } catch (err) {
+        if (err instanceof AtlasDataError) throw err;
+        throw classifyDuckDbError(err);
+      }
+      tradeUrls.set(cacheKey, table);
       return true;
     },
     tradeChapterUrl(hs2) {
-      const key = hs2Key(hs2);
-      if (releaseBase) {
-        const hit = tradeUrls.get(`${releaseBase}|${key}`);
-        if (hit) return hit;
-      }
-      for (const [k, url] of tradeUrls) {
-        if (k.endsWith(`|${key}`)) return url;
-      }
+      // Legacy: used to return an https URL for read_parquet. Always undefined
+      // now — callers must query the VIEW created by loadTradeChapter.
+      void hs2;
       return undefined;
     },
     async loadCountryProductChapter(hs2, opts) {
@@ -592,7 +662,9 @@ export function createDuckDbClient(): AtlasDataClient {
         }
         countryProductKeys.add(sliceKey);
         return true;
-      } catch {
+      } catch (err) {
+        // Auth / hard I/O must surface; missing chapter stays soft-false.
+        if (err instanceof AtlasDataError) throw err;
         return false;
       }
     },
