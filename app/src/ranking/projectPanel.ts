@@ -48,23 +48,39 @@ function escapeSql(value: string): string {
   return value.replace(/'/g, "''");
 }
 
+async function resolveInternalVersion(): Promise<string> {
+  try {
+    const res = await fetch("/data/release/internal/CURRENT", {
+      credentials: "include",
+      cache: "no-store",
+    });
+    if (res.ok) {
+      const text = (await res.text()).trim().replace(/^v/, "");
+      if (/^\d+\.\d+\.\d+$/.test(text)) return text;
+    }
+  } catch {
+    /* fall through */
+  }
+  return dataConfig.release_version;
+}
+
 async function releaseBaseForSession(): Promise<{ base: string; team: boolean }> {
   const publicBase = releaseUrl();
   try {
     const cfg = await loadAccessConfig();
     const cerrada = cfg.auth.cerrada_base_path.replace(/\/$/, "");
-    // Prefer internal release (team catalog) when cerrada cookie can read meta.
-    const probe = await fetch(`${cerrada}/meta/col_hs64_panel.json`, {
+    // Auth check: any cerrada path behind Authelia. Do not depend on COL·HS64.
+    const probe = await fetch(`${cerrada}/manifest.json`, {
       credentials: "include",
       cache: "no-store",
       headers: { Accept: "application/json" },
+      redirect: "manual",
     });
-    if (probe.ok || probe.status === 404) {
-      // Logged-in team: internal release has draft + research-use series.
-      return {
-        base: `/data/release/internal/v${dataConfig.release_version}`,
-        team: true,
-      };
+    // Authelia: 200/404 = session reached cerrada; 302/401 = anonymous.
+    const team = probe.ok || probe.status === 404;
+    if (team) {
+      const ver = await resolveInternalVersion();
+      return { base: `/data/release/internal/v${ver}`, team: true };
     }
   } catch {
     /* anonymous */

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 import shutil
 from datetime import UTC, datetime
 from pathlib import Path
@@ -16,9 +17,34 @@ from imsatlas_etl.pipeline.io_paths import (
     staging_release_dir,
 )
 
+# Keep the current release plus this many older version directories.
+KEEP_RELEASE_VERSIONS = 3
+_VERSION_DIR = re.compile(r"^v(\d+\.\d+\.\d+)$")
+
 
 def _now_iso() -> str:
     return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def _version_key(name: str) -> tuple[int, ...]:
+    match = _VERSION_DIR.match(name)
+    if not match:
+        return (0, 0, 0)
+    return tuple(int(part) for part in match.group(1).split("."))
+
+
+def prune_old_releases(dest_parent: Path, *, keep: int = KEEP_RELEASE_VERSIONS) -> list[str]:
+    """Delete oldest ``vX.Y.Z`` dirs beyond ``keep`` (never touch CURRENT)."""
+    versions = sorted(
+        (path for path in dest_parent.iterdir() if path.is_dir() and _VERSION_DIR.match(path.name)),
+        key=lambda path: _version_key(path.name),
+    )
+    removed: list[str] = []
+    while len(versions) > keep:
+        old = versions.pop(0)
+        shutil.rmtree(old)
+        removed.append(old.name)
+    return removed
 
 
 def promote_release(
@@ -72,10 +98,13 @@ def promote_release(
     current = dest_parent / "CURRENT"
     current.write_text(f"v{version}\n", encoding="utf-8")
 
+    pruned = prune_old_releases(dest_parent)
+
     return {
         "version": version,
         "path": str(dest),
         "audience": audience,
         "promoted_by": who,
         "promoted_at": manifest["promoted_at"],
+        "pruned": pruned,
     }

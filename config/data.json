@@ -1,5 +1,5 @@
 {
-  "release_version": "1.1.0",
+  "release_version": "1.2.0",
   "release_base_path": "/data",
-  "comment": "App loads parquet/catalog from {release_base_path}/v{release_version}/ on the same origin. v1.1.0 currently ships zero verified redistributable variables."
+  "comment": "App loads parquet/catalog from {release_base_path}/v{release_version}/ on the same origin. Prefer /data/release/internal/CURRENT when logged in."
 }

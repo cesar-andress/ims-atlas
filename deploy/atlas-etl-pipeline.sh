@@ -15,9 +15,11 @@ if ! flock -n 9; then
   exit 0
 fi
 
-VERSION="${ATLAS_RELEASE_VERSION:-1.1.0}"
+VERSION="${ATLAS_RELEASE_VERSION:-1.2.0}"
 BY="${ATLAS_PROMOTE_BY:-pipeline}"
 LOG_TAG="ims-atlas-pipeline"
+# Full BACI transforms / dual-release need headroom (host previously OOM'd).
+ETL_MEMORY="${ATLAS_ETL_MEMORY:-24g}"
 
 log() { printf '%s %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*"; }
 
@@ -33,6 +35,7 @@ run_etl() {
     env_args+=(--env-file /etc/ims-atlas/check.env)
   fi
   docker run --rm \
+    --memory="$ETL_MEMORY" \
     -v "$ROOT:/w" -w /w/etl \
     -e ATLAS_ROOT=/w \
     "${env_args[@]}" \

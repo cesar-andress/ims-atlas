@@ -277,11 +277,36 @@ def run_transform(
             .rename(columns={"SP.POP.TOTL": "value"})
             .dropna()
         )
-    product = write_curated_product_metrics(
-        trades["trade_hs6"],
-        root=root,
-        population=population,
-    )
+    # Never replace a full country_product with an empty rebuild (OOM / missing
+    # BACI extract previously wiped the release). Reuse curated partitions.
+    trade_hs6 = trades["trade_hs6"]
+    existing_cp = out_dir / "country_product.parquet"
+    existing_by = out_dir / "country_product_by_hs2"
+    existing_chapters = 0
+    if existing_by.is_dir():
+        existing_chapters = sum(
+            1
+            for path in existing_by.iterdir()
+            if path.is_dir()
+            and path.name.startswith("hs2=")
+            and "_empty" not in path.name
+        )
+    if trade_hs6.empty and existing_chapters >= 90 and existing_cp.is_file():
+        product = {
+            "rows": int(len(pd.read_parquet(existing_cp, columns=["iso3"]))),
+            "partitions": {
+                "bytes_by_hs2": {},
+                "rows_by_hs2": {},
+                "reused": True,
+                "chapters": existing_chapters,
+            },
+        }
+    else:
+        product = write_curated_product_metrics(
+            trade_hs6,
+            root=root,
+            population=population,
+        )
     chapters_path = status_root(root=root) / "hs_chapters.json"
     chapters_path.parent.mkdir(parents=True, exist_ok=True)
     chapters_path.write_text(

@@ -79,6 +79,35 @@ export function absoluteDataUrl(path: string): string {
   return new URL(path, `${origin}/`).href.replace(/\/$/, "");
 }
 
+/**
+ * Bilateral may be a single parquet or hive parts under bilateral_year/
+ * (when the long table exceeds the 5 MiB SPEC budget).
+ * Returns a DuckDB ``read_parquet(...)`` argument list literal.
+ */
+async function resolveBilateralParquetSource(base: string): Promise<string> {
+  const indexUrl = `${base}/bilateral_year/index.json`;
+  try {
+    const indexRes = await fetch(indexUrl, { cache: "no-store" });
+    if (indexRes.ok) {
+      const index = (await indexRes.json()) as { parts?: string[] };
+      const parts = index.parts ?? [];
+      if (parts.length) {
+        const list = parts
+          .map(
+            (rel) =>
+              `'${escapeSqlString(`${base}/bilateral_year/${rel}`)}'`,
+          )
+          .join(", ");
+        return `[${list}]`;
+      }
+    }
+  } catch {
+    /* fall through to monolithic file */
+  }
+  const mono = `${base}/bilateral_year.parquet`;
+  return `'${escapeSqlString(mono)}'`;
+}
+
 function hs2Key(hs2: string): string {
   return hs2.padStart(2, "0").slice(0, 2);
 }
@@ -174,25 +203,25 @@ export function createDuckDbClient(): AtlasDataClient {
       releasePromise = (async () => {
         status = "loading";
         const countryUrl = `${base}/country_year.parquet`;
-        const bilateralUrl = `${base}/bilateral_year.parquet`;
         try {
           // Small panel (~18k rows): materialise once for snappy SQL console.
           await connection.query(`
             CREATE OR REPLACE TABLE country_year AS
             SELECT * FROM read_parquet('${escapeSqlString(countryUrl)}');
           `);
+          const bilateralSource = await resolveBilateralParquetSource(base);
           if (materialiseBilateral) {
             // Explicit opt-in only — expands to ~250 MiB WASM heap.
             await connection.query(`
               CREATE OR REPLACE TABLE bilateral_year AS
-              SELECT * FROM read_parquet('${escapeSqlString(bilateralUrl)}');
+              SELECT * FROM read_parquet(${bilateralSource});
             `);
             bilateralMaterialised = true;
           } else {
-            // VIEW: LIMIT / filtered queries avoid loading all 4.8M rows up front.
+            // VIEW: LIMIT / filtered queries avoid loading all rows up front.
             await connection.query(`
               CREATE OR REPLACE VIEW bilateral_year AS
-              SELECT * FROM read_parquet('${escapeSqlString(bilateralUrl)}');
+              SELECT * FROM read_parquet(${bilateralSource});
             `);
             bilateralMaterialised = false;
           }

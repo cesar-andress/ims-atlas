@@ -387,9 +387,15 @@ def resolve_bilateral_origins(
 
 def _read_cells(release_dir: Path, table: str) -> pd.DataFrame:
     path = release_dir / f"{table}.parquet"
-    if not path.is_file():
-        raise ProvenanceError(f"release table missing: {path}")
-    return pd.read_parquet(path)
+    if path.is_file():
+        return pd.read_parquet(path)
+    # Partitioned layout (e.g. bilateral_year/variable_id=*/part.parquet).
+    parts_dir = release_dir / table
+    if parts_dir.is_dir():
+        parts = sorted(parts_dir.glob("variable_id=*/part.parquet"))
+        if parts:
+            return pd.concat([pd.read_parquet(p) for p in parts], ignore_index=True)
+    raise ProvenanceError(f"release table missing: {path}")
 
 
 def write_provenance_parquet(frame: pd.DataFrame, path: Path) -> None:
