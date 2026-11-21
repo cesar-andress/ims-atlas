@@ -679,6 +679,13 @@ def promote_cmd(
         typer.Option("--audience", help="public or internal"),
     ] = "public",
     force: Annotated[bool, typer.Option("--force")] = False,
+    allow_pointer_demote: Annotated[
+        bool,
+        typer.Option(
+            "--allow-pointer-demote",
+            help="Allow CURRENT to move from a newer full release to an older one",
+        ),
+    ] = False,
 ) -> None:
     """Promote staging release to public or internal data/release/.../vX.Y.Z."""
     from imsatlas_etl.pipeline.promote import promote_release
@@ -689,6 +696,7 @@ def promote_cmd(
             by=by,
             force=force,
             audience=audience,
+            allow_pointer_demote=allow_pointer_demote,
         )
     except (FileExistsError, FileNotFoundError, ValueError) as exc:
         typer.secho(str(exc), fg=typer.colors.RED, err=True)
@@ -698,6 +706,43 @@ def promote_cmd(
         f"audience={result.get('audience', audience)} "
         f"by {result['promoted_by']} -> {result['path']}",
     )
+
+
+@app.command("check-current")
+def check_current_cmd(
+    audience: Annotated[
+        str,
+        typer.Option("--audience", help="public, internal, or both"),
+    ] = "both",
+) -> None:
+    """Fail if CURRENT points at empty country_product while a fuller release exists."""
+    from pathlib import Path
+
+    from imsatlas_etl.pipeline.io_paths import internal_release_dir, public_release_dir
+    from imsatlas_etl.pipeline.promote import assert_current_pointer_healthy
+
+    targets: list[tuple[str, Path]] = []
+    if audience in ("public", "both"):
+        targets.append(("public", public_release_dir()))
+    if audience in ("internal", "both"):
+        targets.append(("internal", internal_release_dir()))
+    if not targets:
+        typer.secho(f"unknown audience {audience!r}", fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=1)
+
+    failed = False
+    for label, parent in targets:
+        if not parent.is_dir():
+            typer.echo(f"skip {label}: missing {parent}")
+            continue
+        try:
+            pointed = assert_current_pointer_healthy(parent)
+            typer.echo(f"ok {label}: CURRENT -> {pointed}")
+        except ValueError as exc:
+            failed = True
+            typer.secho(f"FAIL {label}: {exc}", fg=typer.colors.RED, err=True)
+    if failed:
+        raise typer.Exit(code=1)
 
 
 @app.command("verify-release")

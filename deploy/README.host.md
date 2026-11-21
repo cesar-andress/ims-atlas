@@ -110,7 +110,10 @@ them on the server with the same fixture/live pipeline.
 
 Release builds **refuse** an empty `country_product` when curated has ≥90 HS2
 chapters, and refuse >20 % row shrink vs the previous release of the same
-audience. Promote keeps the last **3** version directories.
+audience. Promote keeps the last **3** version directories. Promote also refuses
+to move `CURRENT` onto an empty `country_product` (or demote from a newer full
+release to an older one) unless `--allow-pointer-demote` is set. Hourly
+pipeline runs `atlas-etl check-current` so a stale/empty pointer fails the tick.
 
 ### Repair empty internal `country_product` (ops)
 

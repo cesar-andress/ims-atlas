@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
-"""Stage internal v1.1.0 using live country/bilateral + public country_product.
+"""Stage internal release using live country/bilateral + public country_product.
 
 Workaround for OOM / flaky nested parquet writes when re-nesting the full
 87M-row product frame for the internal audience. Product metrics come from
 BACI and are identical across audiences once gated.
+
+Default version follows ``ATLAS_RELEASE_VERSION``, else internal CURRENT, else
+``1.2.0``. Do not default to an older pointer that would demote CURRENT on
+promote.
 """
 
 from __future__ import annotations
@@ -20,6 +24,7 @@ if str(_ETL_SRC) not in sys.path:
     sys.path.insert(0, str(_ETL_SRC))
 
 from imsatlas_etl.pipeline.io_paths import (
+    internal_release_dir,
     public_release_dir,
     staging_internal_release_dir,
 )
@@ -32,9 +37,21 @@ from imsatlas_etl.pipeline.release_tables import (
 )
 
 
+def _default_version(root: Path) -> str:
+    env = os.environ.get("ATLAS_RELEASE_VERSION", "").strip()
+    if env:
+        return env.lstrip("v")
+    current = internal_release_dir(root=root) / "CURRENT"
+    if current.is_file():
+        raw = current.read_text(encoding="utf-8").strip().lstrip("v")
+        if raw:
+            return raw
+    return "1.2.0"
+
+
 def main() -> None:
     root = Path(os.environ.get("ATLAS_ROOT", Path(__file__).resolve().parents[1]))
-    version = os.environ.get("ATLAS_RELEASE_VERSION", "1.1.0")
+    version = _default_version(root)
     dest = staging_internal_release_dir(root=root) / f"v{version}"
     if dest.exists():
         shutil.rmtree(dest)

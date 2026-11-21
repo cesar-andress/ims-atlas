@@ -8,7 +8,11 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from imsatlas_etl.pipeline.promote import prune_old_releases
+from imsatlas_etl.pipeline.promote import (
+    assert_current_pointer_healthy,
+    assert_current_update_allowed,
+    prune_old_releases,
+)
 from imsatlas_etl.pipeline.release import assert_release_not_shrunk
 from imsatlas_etl.pipeline.release_tables import (
     MIN_COUNTRY_PRODUCT_CHAPTERS,
@@ -119,3 +123,48 @@ def test_assert_release_not_shrunk_blocks_20pct_drop(tmp_path: Path) -> None:
             {"country_product_rows": 100, "country_year_rows": 700},
             previous=prev,
         )
+
+
+def _full_chapters(release: Path) -> None:
+    for i in range(MIN_COUNTRY_PRODUCT_CHAPTERS):
+        (release / "country_product" / f"hs2={i:02d}").mkdir(parents=True, exist_ok=True)
+
+
+def test_current_pointer_rejects_empty_when_newer_full_exists(tmp_path: Path) -> None:
+    empty = tmp_path / "v1.1.0"
+    (empty / "country_product" / "hs2=_empty").mkdir(parents=True)
+    good = tmp_path / "v1.2.0"
+    _full_chapters(good)
+    (tmp_path / "CURRENT").write_text("v1.1.0\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="refuse empty/old pointer"):
+        assert_current_pointer_healthy(tmp_path)
+
+
+def test_current_update_refuses_demotion_to_older(tmp_path: Path) -> None:
+    older = tmp_path / "v1.1.0"
+    _full_chapters(older)
+    newer = tmp_path / "v1.2.0"
+    _full_chapters(newer)
+    (tmp_path / "CURRENT").write_text("v1.2.0\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="refuse CURRENT demotion"):
+        assert_current_update_allowed(tmp_path, "1.1.0")
+    assert_current_update_allowed(tmp_path, "1.1.0", allow_pointer_demote=True)
+
+
+def test_current_pointer_ok_when_pointing_at_full(tmp_path: Path) -> None:
+    older = tmp_path / "v1.1.0"
+    (older / "country_product" / "hs2=_empty").mkdir(parents=True)
+    newer = tmp_path / "v1.2.0"
+    _full_chapters(newer)
+    (tmp_path / "CURRENT").write_text("v1.2.0\n", encoding="utf-8")
+    assert assert_current_pointer_healthy(tmp_path) == "v1.2.0"
+
+
+def test_current_pointer_rejects_stale_when_newer_full_exists(tmp_path: Path) -> None:
+    older = tmp_path / "v1.1.0"
+    _full_chapters(older)
+    newer = tmp_path / "v1.2.0"
+    _full_chapters(newer)
+    (tmp_path / "CURRENT").write_text("v1.1.0\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="refuse stale pointer"):
+        assert_current_pointer_healthy(tmp_path)

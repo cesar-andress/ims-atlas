@@ -58,6 +58,9 @@ fi
 
 ./deploy/sync-public-status.sh || fail "sync-public-status failed"
 
+# Fail loudly if CURRENT lags behind a fuller/newer release (empty or stale).
+run_etl check-current --audience both || fail "CURRENT pointer unhealthy"
+
 if command -v docker >/dev/null 2>&1; then
   docker compose -f deploy/docker-compose.yml up -d || fail "compose up failed"
 fi
