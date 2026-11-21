@@ -8,8 +8,8 @@ const panel = {
   year: 2024,
   candidates: ["DEU", "FRA"],
   variables: [
-    { id: "DIST", factor: "access", direction: "min" as const },
-    { id: "PLI", factor: "demand", direction: "min" as const },
+    { id: "DIST", factor: "access", direction: "cost" as const },
+    { id: "PLI", factor: "demand", direction: "cost" as const },
   ],
   values: [
     [1850, 110],
