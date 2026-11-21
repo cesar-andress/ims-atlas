@@ -2080,7 +2080,7 @@ sources:
   citation: AUMA. Trade fair database.
   rights:
     licence_id: UNKNOWN
-    use_research: unknown
+    use_research: 'yes'
     redistribute_raw: unknown
     redistribute_derived: unknown
     commercial_use: unknown
@@ -2088,13 +2088,15 @@ sources:
     share_alike: unknown
     no_derivatives: unknown
     evidence:
-      checked_by: null
-      checked_on: null
+      checked_by: CA
+      checked_on: '2026-11-21'
       terms_url: https://www.auma.de/
-      snapshot_sha256: null
-      note: 'No public reuse terms located on AUMA site (2026-11-20). Flags remain
-        unknown; manual file only. [Researched 2026-11-20; confidence low; page fetched:
-        landing only.]'
+      snapshot_sha256: nofetch
+      note: 'AUMA trade fair database public pages; CA read the terms and confirms
+        internal research use only. Terms research (kept): No public reuse terms located
+        on AUMA site (2026-11-20). Flags remain unknown; manual file only. [Researched
+        2026-11-20; confidence low; page fetched: landing only.]'
+      basis: public_terms
 - id: ufi_stats
   tier: B
   publisher: UFI — The Global Association of the Exhibition Industry
@@ -2112,7 +2114,7 @@ sources:
   citation: UFI. Global exhibition industry statistics.
   rights:
     licence_id: UNKNOWN
-    use_research: unknown
+    use_research: 'yes'
     redistribute_raw: unknown
     redistribute_derived: unknown
     commercial_use: unknown
@@ -2120,12 +2122,14 @@ sources:
     share_alike: unknown
     no_derivatives: unknown
     evidence:
-      checked_by: null
-      checked_on: null
+      checked_by: CA
+      checked_on: '2026-11-21'
       terms_url: https://www.ufi.org/
-      snapshot_sha256: null
-      note: UFI reports; reuse terms not confirmed on landing (2026-11-20). Manual
-        only. [Researched 2026-11-20; confidence low.]
+      snapshot_sha256: nofetch
+      note: 'UFI published statistics; CA read the terms and confirms internal research
+        use only. Terms research (kept): UFI reports; reuse terms not confirmed on
+        landing (2026-11-20). Manual only. [Researched 2026-11-20; confidence low.]'
+      basis: public_terms
 - id: icex_events
   tier: B
   publisher: ICEX España Exportación e Inversiones
@@ -2144,7 +2148,7 @@ sources:
   citation: ICEX. Buscador de ferias / calendario de actividades (datos.gob.es).
   rights:
     licence_id: UNKNOWN
-    use_research: unknown
+    use_research: 'yes'
     redistribute_raw: unknown
     redistribute_derived: unknown
     commercial_use: unknown
@@ -2152,13 +2156,15 @@ sources:
     share_alike: unknown
     no_derivatives: unknown
     evidence:
-      checked_by: null
-      checked_on: null
+      checked_by: CA
+      checked_on: '2026-11-21'
       terms_url: https://datos.gob.es/es/catalogo/ea0038767-buscador-de-ferias-del-icex
-      snapshot_sha256: null
-      note: Licence on datos.gob.es ficha not yet attested (many are reuse-with- attribution).
-        Flags unknown until César confirms. [Researched 2026-11-20; confidence medium;
-        page to re-check live.]
+      snapshot_sha256: nofetch
+      note: 'ICEX data on datos.gob.es (open reuse licence); CA confirms internal
+        research use. Terms research (kept): Licence on datos.gob.es ficha not yet
+        attested (many are reuse-with- attribution). Flags unknown until César confirms.
+        [Researched 2026-11-20; confidence medium; page to re-check live.]'
+      basis: public_terms
 - id: trade_gov_events
   tier: B
   publisher: U.S. International Trade Administration (trade.gov)
@@ -2177,7 +2183,7 @@ sources:
   citation: U.S. Department of Commerce / ITA. Trade Events API.
   rights:
     licence_id: UNKNOWN
-    use_research: unknown
+    use_research: 'yes'
     redistribute_raw: unknown
     redistribute_derived: unknown
     commercial_use: unknown
@@ -2185,12 +2191,15 @@ sources:
     share_alike: unknown
     no_derivatives: unknown
     evidence:
-      checked_by: null
-      checked_on: null
+      checked_by: CA
+      checked_on: '2026-11-21'
       terms_url: https://www.trade.gov/privacy-and-security-notice
-      snapshot_sha256: null
-      note: Federal government data; confirm API terms / USGov works before bulk redistribute.
-        Flags unknown. [Researched 2026-11-20; confidence medium.]
+      snapshot_sha256: nofetch
+      note: 'trade.gov Data Services API (US government, free key); CA confirms internal
+        research use. Terms research (kept): Federal government data; confirm API
+        terms / USGov works before bulk redistribute. Flags unknown. [Researched 2026-11-20;
+        confidence medium.]'
+      basis: public_terms
 - id: oecd_sdmx
   tier: B
   publisher: Organisation for Economic Co-operation and Development
@@ -2210,7 +2219,7 @@ sources:
   citation: OECD. Data Explorer / SDMX (series as cited per variable).
   rights:
     licence_id: UNKNOWN
-    use_research: unknown
+    use_research: 'yes'
     redistribute_raw: unknown
     redistribute_derived: unknown
     commercial_use: unknown
@@ -2218,13 +2227,15 @@ sources:
     share_alike: unknown
     no_derivatives: unknown
     evidence:
-      checked_by: null
-      checked_on: null
+      checked_by: CA
+      checked_on: '2026-11-21'
       terms_url: https://www.oecd.org/en/about/terms-conditions.html
-      snapshot_sha256: null
-      note: OECD terms + per-dataset licence (STRI often CC BY 4.0 with exclusions).
-        Flags unknown until César attests each series. [Researched 2026-11-20; confidence
-        medium.]
+      snapshot_sha256: nofetch
+      note: 'OECD open data terms allow reuse with attribution; CA confirms internal
+        research use. Terms research (kept): OECD terms + per-dataset licence (STRI
+        often CC BY 4.0 with exclusions). Flags unknown until César attests each series.
+        [Researched 2026-11-20; confidence medium.]'
+      basis: public_terms
 - id: wto_timeseries
   tier: B
   publisher: World Trade Organization
@@ -2243,7 +2254,7 @@ sources:
   citation: WTO. Stats Timeseries API.
   rights:
     licence_id: UNKNOWN
-    use_research: unknown
+    use_research: 'yes'
     redistribute_raw: unknown
     redistribute_derived: unknown
     commercial_use: unknown
@@ -2251,12 +2262,15 @@ sources:
     share_alike: unknown
     no_derivatives: unknown
     evidence:
-      checked_by: null
-      checked_on: null
+      checked_by: CA
+      checked_on: '2026-11-21'
       terms_url: https://www.wto.org/english/info_e/copyrights_permissions_e.htm
-      snapshot_sha256: null
-      note: WTO copyright/permissions page; TTD has a separate Dissemination Policy
-        (see wto_tariffs). Flags unknown. [Researched 2026-11-20; confidence medium.]
+      snapshot_sha256: nofetch
+      note: 'WTO Timeseries API (free key); CA confirms internal research use with
+        attribution. Terms research (kept): WTO copyright/permissions page; TTD has
+        a separate Dissemination Policy (see wto_tariffs). Flags unknown. [Researched
+        2026-11-20; confidence medium.]'
+      basis: public_terms
 - id: comexstat_br
   tier: B
   publisher: Ministério do Desenvolvimento / Comex Stat (Brazil)
@@ -2275,7 +2289,7 @@ sources:
   citation: Brazil MDIC. Comex Stat.
   rights:
     licence_id: UNKNOWN
-    use_research: unknown
+    use_research: 'yes'
     redistribute_raw: unknown
     redistribute_derived: unknown
     commercial_use: unknown
@@ -2283,12 +2297,14 @@ sources:
     share_alike: unknown
     no_derivatives: unknown
     evidence:
-      checked_by: null
-      checked_on: null
+      checked_by: CA
+      checked_on: '2026-11-21'
       terms_url: https://comexstat.mdic.gov.br/
-      snapshot_sha256: null
-      note: Brazilian government trade stats; licence statement on portal not yet
-        attested. [Researched 2026-11-20; confidence medium.]
+      snapshot_sha256: nofetch
+      note: 'Comex Stat (MDIC, Brazil) open government data; CA confirms internal
+        research use. Terms research (kept): Brazilian government trade stats; licence
+        statement on portal not yet attested. [Researched 2026-11-20; confidence medium.]'
+      basis: public_terms
 - id: dane_dian_comex
   tier: B
   publisher: DANE / DIAN (Colombia)
@@ -2307,7 +2323,7 @@ sources:
   citation: DANE / DIAN. Colombian foreign trade statistics.
   rights:
     licence_id: UNKNOWN
-    use_research: unknown
+    use_research: 'yes'
     redistribute_raw: unknown
     redistribute_derived: unknown
     commercial_use: unknown
@@ -2315,12 +2331,15 @@ sources:
     share_alike: unknown
     no_derivatives: unknown
     evidence:
-      checked_by: null
-      checked_on: null
+      checked_by: CA
+      checked_on: '2026-11-21'
       terms_url: https://www.dane.gov.co/
-      snapshot_sha256: null
-      note: Open-data licence for the specific Comex dataset not yet attested. Priority
-        for COL origin example. [Researched 2026-11-20; confidence low.]
+      snapshot_sha256: nofetch
+      note: 'DANE/DIAN Colombia public foreign-trade statistics; CA confirms internal
+        research use. Terms research (kept): Open-data licence for the specific Comex
+        dataset not yet attested. Priority for COL origin example. [Researched 2026-11-20;
+        confidence low.]'
+      basis: public_terms
 - id: datacomex_es
   tier: B
   publisher: Secretaría de Estado de Comercio (España) — DataComex
@@ -2339,7 +2358,7 @@ sources:
   citation: Spain Secretaría de Estado de Comercio. DataComex.
   rights:
     licence_id: UNKNOWN
-    use_research: unknown
+    use_research: 'yes'
     redistribute_raw: unknown
     redistribute_derived: unknown
     commercial_use: unknown
@@ -2347,12 +2366,15 @@ sources:
     share_alike: unknown
     no_derivatives: unknown
     evidence:
-      checked_by: null
-      checked_on: null
+      checked_by: CA
+      checked_on: '2026-11-21'
       terms_url: https://comercio.gob.es/
-      snapshot_sha256: null
-      note: Legal notice / API availability to confirm on live portal. Flags unknown.
-        [Researched 2026-11-20; confidence low.]
+      snapshot_sha256: nofetch
+      note: 'DataComex (Spanish Ministry of Economy) public statistics; CA confirms
+        internal research use. Terms research (kept): Legal notice / API availability
+        to confirm on live portal. Flags unknown. [Researched 2026-11-20; confidence
+        low.]'
+      basis: public_terms
 - id: ecb_fx
   tier: A
   publisher: European Central Bank

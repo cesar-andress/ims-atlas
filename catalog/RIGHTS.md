@@ -57,15 +57,15 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 | procolombia | proprietary | unknown | no | unknown | no | unknown | no | yes | — | — |
 | iso_country_codes_ref | custom | yes | yes | yes | unknown | yes | no | no | — | — |
 | literature_dyo | CC-BY-NC-SA-4.0 | yes | yes | yes | no | yes | yes | no | CA | 2026-11-20 |
-| auma_fairs | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| ufi_stats | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| icex_events | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| trade_gov_events | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| oecd_sdmx | UNKNOWN | unknown | unknown | unknown | unknown | yes | unknown | unknown | — | — |
-| wto_timeseries | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| comexstat_br | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| dane_dian_comex | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
-| datacomex_es | UNKNOWN | unknown | unknown | unknown | unknown | unknown | unknown | unknown | — | — |
+| auma_fairs | UNKNOWN | yes | unknown | unknown | unknown | unknown | unknown | unknown | CA | 2026-11-21 |
+| ufi_stats | UNKNOWN | yes | unknown | unknown | unknown | unknown | unknown | unknown | CA | 2026-11-21 |
+| icex_events | UNKNOWN | yes | unknown | unknown | unknown | unknown | unknown | unknown | CA | 2026-11-21 |
+| trade_gov_events | UNKNOWN | yes | unknown | unknown | unknown | unknown | unknown | unknown | CA | 2026-11-21 |
+| oecd_sdmx | UNKNOWN | yes | unknown | unknown | unknown | yes | unknown | unknown | CA | 2026-11-21 |
+| wto_timeseries | UNKNOWN | yes | unknown | unknown | unknown | unknown | unknown | unknown | CA | 2026-11-21 |
+| comexstat_br | UNKNOWN | yes | unknown | unknown | unknown | unknown | unknown | unknown | CA | 2026-11-21 |
+| dane_dian_comex | UNKNOWN | yes | unknown | unknown | unknown | unknown | unknown | unknown | CA | 2026-11-21 |
+| datacomex_es | UNKNOWN | yes | unknown | unknown | unknown | unknown | unknown | unknown | CA | 2026-11-21 |
 | ecb_fx | ECB-website-terms | unknown | unknown | unknown | unknown | yes | unknown | unknown | — | — |
 | un_comtrade | UN-Comtrade-terms | unknown | unknown | unknown | unknown | yes | unknown | unknown | — | — |
 | oecd_country_risk | OECD-terms | unknown | unknown | unknown | unknown | yes | unknown | unknown | — | — |
@@ -129,11 +129,11 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 | GLCR | coface_country_risk | local_only | unknown rights: attribution_required; evidence incomplete (checked_by/on, terms_url, snapshot_sha256); use_research=no |
 | GLSI | solability_gsci | byod_only | commercial_use=no under commercial_context=true |
 | INFL_DEV | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
-| FAIRS_N | auma_fairs | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| FAIRS_SIZE | auma_fairs | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| FAIRS_INTL | auma_fairs | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| PROMO_OFFICE | icex_events | byod_only | unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
-| PROMO_EVENTS | icex_events,trade_gov_events | byod_only | source[0]: unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; source[0]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256); source[1]: unknown rights: use_research, redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; source[1]: evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
+| FAIRS_N | auma_fairs | byod_only | unknown rights: redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives |
+| FAIRS_SIZE | auma_fairs | byod_only | unknown rights: redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives |
+| FAIRS_INTL | auma_fairs | byod_only | unknown rights: redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives |
+| PROMO_OFFICE | icex_events | byod_only | unknown rights: redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives |
+| PROMO_EVENTS | icex_events,trade_gov_events | byod_only | source[0]: unknown rights: redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives; source[1]: unknown rights: redistribute_raw, redistribute_derived, commercial_use, attribution_required, share_alike, no_derivatives |
 
 ## Needs human rights check
 
