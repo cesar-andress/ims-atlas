@@ -195,6 +195,22 @@ describe("fetchParquetBytes (credentialed; rejects Authelia HTML)", () => {
       fetchParquetBytes("https://atlas.aiserv.es/data/v1.1.0/country_year.parquet"),
     ).rejects.toMatchObject({ name: "AtlasDataError", kind: "http_auth" });
   });
+
+  it("maps missing release paths (stale CURRENT → 404 HTML) to http_io", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(
+        async () =>
+          new Response("<html>404</html>", {
+            status: 404,
+            headers: { "content-type": "text/html" },
+          }),
+      ),
+    );
+    await expect(
+      fetchParquetBytes("https://atlas.aiserv.es/data/v1.2.0/country_year.parquet"),
+    ).rejects.toMatchObject({ name: "AtlasDataError", kind: "http_io" });
+  });
 });
 
 describe("loadRelease auth probe", () => {

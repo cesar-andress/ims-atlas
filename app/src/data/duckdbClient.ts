@@ -199,6 +199,12 @@ export async function fetchParquetBytes(url: string): Promise<Uint8Array> {
       "http_auth",
     );
   }
+  if (res.status === 404) {
+    throw new AtlasDataError(
+      `Release parquet missing (HTTP 404): ${url}. Check /data/CURRENT vs data/release/public.`,
+      "http_io",
+    );
+  }
   if (!res.ok) {
     throw new AtlasDataError(
       `Could not fetch parquet (${res.status}): ${url}`,

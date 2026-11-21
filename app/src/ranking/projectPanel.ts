@@ -6,7 +6,7 @@
 import type { Direction, VariableSpec } from "@ims-atlas/core";
 import { loadAccessConfig } from "../auth/accessConfig";
 import { loadCatalogPreview } from "../data/catalogLoader";
-import { dataConfig, releaseUrl } from "../dataConfig";
+import { dataConfig, resolvePublicReleaseBase } from "../dataConfig";
 import { getAtlasDataClient } from "../data/duckdbClient";
 import { clampTradeYear } from "../data/hsProducts";
 import { escapeSqlLiteral, locfSelectSql, locfYears } from "../data/panelQueryHelpers";
@@ -93,7 +93,6 @@ async function releaseBaseForSession(): Promise<{ base: string; team: boolean }>
   if (sessionCache && now - sessionCache.at < SESSION_TTL_MS) {
     return { base: sessionCache.base, team: sessionCache.team };
   }
-  const publicBase = releaseUrl();
   try {
     const cfg = await loadAccessConfig();
     const cerrada = cfg.auth.cerrada_base_path.replace(/\/$/, "");
@@ -115,6 +114,8 @@ async function releaseBaseForSession(): Promise<{ base: string; team: boolean }>
   } catch {
     /* anonymous */
   }
+  // Prefer a reachable /data/vX (skip CURRENT that was bumped before public promote).
+  const publicBase = await resolvePublicReleaseBase();
   const out = { base: publicBase, team: false };
   sessionCache = { at: now, ...out };
   return out;
