@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./App";
+import { installClientErrorCapture } from "./diagnostics/clientErrorJournal";
 import { I18nProvider, preloadBootLanguage } from "./i18n";
 import "./design/tokens.css";
 import "./index.tw.css";
@@ -11,6 +12,7 @@ import { applyTheme, readStoredTheme } from "./theme";
 void import.meta.env;
 
 applyTheme(readStoredTheme());
+installClientErrorCapture();
 
 const root = document.getElementById("root");
 if (!root) {

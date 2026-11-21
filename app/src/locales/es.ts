@@ -189,6 +189,8 @@ const es = {
   projectCoverageLink: "Cobertura",
   projectDashboardLink: "Panel",
   projectExportTables: "ZIP tablas",
+  projectDisplayId: "Identificador",
+  projectReadOnlyOwned: "solo lectura (otro autor)",
   projectVarsIntro:
     "Elige variables del proyecto. Izquierda: lista de variables. Derecha: cesta con avisos en vivo.",
   projectVarsSummary: "{n} variables · {c} criterios · cobertura {cov} % · {w} avisos",
@@ -812,7 +814,7 @@ const es = {
   imsfeImportErrorNoScores: "El informe no tiene puntuaciones finales.",
   imsfeImportErrorGeneric: "No se pudo leer el informe de importación.",
   aiVerifyIntro:
-    "Cargue candidatos (IA o fuente secundaria) como CSV. Atlas no llama a ninguna IA; solo verifica en el navegador.",
+    "Cargue candidatos desde un CSV (propuesta externa o fuente secundaria). Atlas no llama a ningún modelo; la verificación queda en el navegador.",
   aiVerifyLocalOnly:
     "Los candidatos no salen del navegador. ai_candidate y rejected nunca entran en el cálculo.",
   aiVerifyLoadCsv: "CSV (variable_id,iso3,year,value,source_url,origin)",

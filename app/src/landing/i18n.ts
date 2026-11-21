@@ -24,6 +24,15 @@ const copy = {
       "Ranking de mercados, matriz de atractivo frente a apertura, mapa y comparación entre países.",
     howCaption:
       "Vista de la herramienta (acceso del equipo): ranking y matriz con marca de agua del proyecto.",
+    flowTitle: "Flujo del método",
+    flowBody:
+      "Datos → variables y pesos → ranking → matriz de apertura → mapa. Capturas del área de equipo (requiere acceso).",
+    flowRankCaption: "Ranking de mercados",
+    flowMatrixCaption: "Matriz IMSFE × apertura",
+    flowMapCaption: "Mapa de mercados",
+    citeSoftwareTitle: "Citar el software",
+    citeSoftwareLead:
+      "Si usa IMS Atlas, cite el software así (APA y BibTeX; sin DOI inventado).",
     methodTitle: "Metodología",
     methodBody:
       "IMS Atlas aplica la técnica multicriterio híbrida para selección de mercados internacionales desarrollada por Baena-Rojas y coautores desde 2018. El método combina una preselección por importaciones, criterios y subcriterios ponderados por expertos (AHP), normalización de indicadores, una suma ponderada del atractivo y una matriz estratégica frente a la apertura comercial. Se ha aplicado a bebidas carbonatadas, productos químicos, textil, pymes y bienes en general. La herramienta digitaliza ese flujo con datos actualizados y proyectos guardados en el navegador del usuario.",
@@ -65,6 +74,15 @@ const copy = {
       "Market ranking, attractiveness-versus-openness matrix, map and country comparison.",
     howCaption:
       "Tool view (team access): ranking and matrix with the project watermark.",
+    flowTitle: "Method flow",
+    flowBody:
+      "Data → variables and weights → ranking → openness matrix → map. Screenshots from the team area (access required).",
+    flowRankCaption: "Market ranking",
+    flowMatrixCaption: "IMSFE × openness matrix",
+    flowMapCaption: "Market map",
+    citeSoftwareTitle: "Cite the software",
+    citeSoftwareLead:
+      "If you use IMS Atlas, cite the software as follows (APA and BibTeX; no invented DOI).",
     methodTitle: "Methodology",
     methodBody:
       "IMS Atlas applies the hybrid multicriteria technique for international market selection developed by Baena-Rojas and co-authors since 2018. The method combines import-based preselection, expert-weighted criteria and sub-criteria (AHP), indicator normalisation, a weighted attractiveness score and a strategic matrix against trade openness. It has been applied to carbonated beverages, chemicals, textiles, SMEs and goods in general. The tool digitises that flow with updated data and projects stored in the user's browser.",

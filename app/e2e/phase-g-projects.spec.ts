@@ -34,8 +34,8 @@ test.describe("Phase G projects", () => {
     expect(name.length).toBeGreaterThan(3);
 
     await page.goto("/projects");
-    await expect(page.getByTestId("projects-table")).toBeVisible();
-    const openBtn = page.locator('[data-testid^="project-open-"]').first();
+    await expect(page.getByTestId("projects-kanban")).toBeVisible();
+    const openBtn = page.locator('[data-testid^="project-open-card-"]').first();
     await expect(openBtn).toBeVisible();
     await openBtn.click();
     await expect(page.getByTestId("results-shell")).toBeVisible({

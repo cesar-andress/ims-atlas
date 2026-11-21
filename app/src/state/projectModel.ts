@@ -51,6 +51,8 @@ export type ProjectListItem = {
   createdBy?: string;
   updatedBy?: string;
   source?: "team" | "local";
+  /** Visible team autoincrement id (SQLite display_id). */
+  displayId?: number;
 };
 
 function isObject(v: unknown): v is Record<string, unknown> {

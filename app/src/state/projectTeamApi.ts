@@ -76,6 +76,9 @@ export async function teamListProjects(): Promise<TeamProjectListItem[]> {
     if (r.isExample === true) item.isExample = true;
     if (typeof r.createdBy === "string") item.createdBy = r.createdBy;
     if (typeof r.updatedBy === "string") item.updatedBy = r.updatedBy;
+    if (typeof r.displayId === "number" && Number.isFinite(r.displayId)) {
+      item.displayId = r.displayId;
+    }
     return item;
   });
 }

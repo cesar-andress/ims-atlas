@@ -57,13 +57,75 @@ def init_db(conn: sqlite3.Connection) -> None:
           body_json TEXT NOT NULL,
           FOREIGN KEY(project_id) REFERENCES projects(id)
         );
+        CREATE TABLE IF NOT EXISTS client_errors (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          received_at TEXT NOT NULL,
+          actor TEXT NOT NULL,
+          payload_json TEXT NOT NULL
+        );
         CREATE INDEX IF NOT EXISTS idx_projects_updated
           ON projects(updated_at DESC);
         CREATE INDEX IF NOT EXISTS idx_versions_project
           ON project_versions(project_id, version_at DESC);
         """
     )
+    cols = {row[1] for row in conn.execute("PRAGMA table_info(projects)").fetchall()}
+    if "display_id" not in cols:
+        conn.execute("ALTER TABLE projects ADD COLUMN display_id INTEGER")
+        rows = conn.execute(
+            "SELECT id FROM projects ORDER BY created_at ASC, id ASC"
+        ).fetchall()
+        for i, row in enumerate(rows, start=1):
+            conn.execute(
+                "UPDATE projects SET display_id = ? WHERE id = ?",
+                (i, row["id"]),
+            )
+    conn.execute(
+        """
+        CREATE UNIQUE INDEX IF NOT EXISTS idx_projects_display_id
+          ON projects(display_id)
+        """
+    )
+    conn.execute(
+        """
+        CREATE UNIQUE INDEX IF NOT EXISTS idx_projects_name_active
+          ON projects(lower(name))
+          WHERE deleted_at IS NULL
+        """
+    )
     conn.commit()
+
+
+def next_display_id(conn: sqlite3.Connection) -> int:
+    row = conn.execute(
+        "SELECT COALESCE(MAX(display_id), 0) + 1 AS n FROM projects"
+    ).fetchone()
+    return int(row["n"])
+
+
+def name_taken(
+    conn: sqlite3.Connection, name: str, *, exclude_id: str | None = None
+) -> bool:
+    key = name.strip().lower()
+    if exclude_id:
+        row = conn.execute(
+            """
+            SELECT 1 FROM projects
+            WHERE deleted_at IS NULL AND lower(name) = ? AND id != ?
+            LIMIT 1
+            """,
+            (key, exclude_id),
+        ).fetchone()
+    else:
+        row = conn.execute(
+            """
+            SELECT 1 FROM projects
+            WHERE deleted_at IS NULL AND lower(name) = ?
+            LIMIT 1
+            """,
+            (key,),
+        ).fetchone()
+    return row is not None
 
 
 def actor_from_headers(headers: Any) -> tuple[str, str] | None:
@@ -119,6 +181,9 @@ def list_item(row: sqlite3.Row) -> dict[str, Any]:
         "updatedBy": row["updated_by"],
         "source": "team",
     }
+    display_id = row["display_id"] if "display_id" in row.keys() else None
+    if isinstance(display_id, int):
+        item["displayId"] = display_id
     origin = cfg.get("origin")
     hs = cfg.get("hs")
     if isinstance(origin, str) and origin:
@@ -278,12 +343,19 @@ class ProjectsHandler(BaseHTTPRequestHandler):
                 "SELECT * FROM projects WHERE id = ?", (pid,)
             ).fetchone()
             if existing is None:
+                if name_taken(conn, body["name"]):
+                    self._error(
+                        HTTPStatus.CONFLICT,
+                        "A project with this name already exists.",
+                    )
+                    return
                 body.setdefault("createdAt", now)
+                display_id = next_display_id(conn)
                 conn.execute(
                     """
                     INSERT INTO projects
-                    (id, name, body_json, created_at, updated_at, created_by, updated_by, deleted_at)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, NULL)
+                    (id, name, body_json, created_at, updated_at, created_by, updated_by, deleted_at, display_id)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, NULL, ?)
                     """,
                     (
                         pid,
@@ -293,9 +365,22 @@ class ProjectsHandler(BaseHTTPRequestHandler):
                         now,
                         user,
                         user,
+                        display_id,
                     ),
                 )
             else:
+                if existing["deleted_at"] is None and existing["created_by"] != user:
+                    self._error(
+                        HTTPStatus.FORBIDDEN,
+                        "Only the owner can edit this project.",
+                    )
+                    return
+                if name_taken(conn, body["name"], exclude_id=pid):
+                    self._error(
+                        HTTPStatus.CONFLICT,
+                        "A project with this name already exists.",
+                    )
+                    return
                 # Conflict: keep the write as a new version; never drop prior body.
                 conn.execute(
                     """
@@ -322,7 +407,16 @@ class ProjectsHandler(BaseHTTPRequestHandler):
             row = conn.execute(
                 "SELECT * FROM projects WHERE id = ?", (pid,)
             ).fetchone()
-        self._send(HTTPStatus.OK, json.loads(row["body_json"]))
+        out = json.loads(row["body_json"])
+        if isinstance(row["display_id"], int):
+            out["_meta"] = {
+                **(out.get("_meta") if isinstance(out.get("_meta"), dict) else {}),
+                "displayId": row["display_id"],
+                "createdBy": row["created_by"],
+                "updatedBy": row["updated_by"],
+                "source": "team",
+            }
+        self._send(HTTPStatus.OK, out)
 
     def do_POST(self) -> None:  # noqa: N802
         actor = self._require_actor()
@@ -330,6 +424,27 @@ class ProjectsHandler(BaseHTTPRequestHandler):
             return
         user, _name = actor
         path = urlparse(self.path).path.rstrip("/")
+        if path == "/api/projects/client-errors":
+            try:
+                raw = self._read_json()
+            except (ValueError, json.JSONDecodeError, UnicodeDecodeError) as exc:
+                self._error(HTTPStatus.BAD_REQUEST, str(exc))
+                return
+            events = []
+            if isinstance(raw, dict) and isinstance(raw.get("events"), list):
+                events = raw["events"][:200]
+            with _lock:
+                conn = self.server.conn  # type: ignore[attr-defined]
+                conn.execute(
+                    """
+                    INSERT INTO client_errors (received_at, actor, payload_json)
+                    VALUES (?, ?, ?)
+                    """,
+                    (utc_now(), user, json.dumps(raw, ensure_ascii=False)),
+                )
+                conn.commit()
+            self._send(HTTPStatus.OK, {"ok": True, "accepted": len(events)})
+            return
         if path == "/api/projects/migrate-local":
             try:
                 raw = self._read_json()
@@ -354,12 +469,15 @@ class ProjectsHandler(BaseHTTPRequestHandler):
                         "SELECT id FROM projects WHERE id = ?", (pid,)
                     ).fetchone()
                     if existing is None:
+                        if name_taken(conn, body["name"]):
+                            continue
                         body.setdefault("createdAt", now)
+                        display_id = next_display_id(conn)
                         conn.execute(
                             """
                             INSERT INTO projects
-                            (id, name, body_json, created_at, updated_at, created_by, updated_by, deleted_at)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, NULL)
+                            (id, name, body_json, created_at, updated_at, created_by, updated_by, deleted_at, display_id)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, NULL, ?)
                             """,
                             (
                                 pid,
@@ -369,9 +487,17 @@ class ProjectsHandler(BaseHTTPRequestHandler):
                                 now,
                                 user,
                                 user,
+                                display_id,
                             ),
                         )
                     else:
+                        owner_row = conn.execute(
+                            "SELECT created_by FROM projects WHERE id = ?", (pid,)
+                        ).fetchone()
+                        if owner_row and owner_row["created_by"] != user:
+                            continue
+                        if name_taken(conn, body["name"], exclude_id=pid):
+                            continue
                         conn.execute(
                             """
                             UPDATE projects
@@ -450,6 +576,7 @@ class ProjectsHandler(BaseHTTPRequestHandler):
         body["updatedAt"] = now
         body.setdefault("createdAt", now)
         pid = body["id"]
+        display_id = 0
         with _lock:
             conn = self.server.conn  # type: ignore[attr-defined]
             existing = conn.execute(
@@ -458,11 +585,18 @@ class ProjectsHandler(BaseHTTPRequestHandler):
             if existing is not None:
                 self._error(HTTPStatus.CONFLICT, "Project id already exists; use PUT.")
                 return
+            if name_taken(conn, body["name"]):
+                self._error(
+                    HTTPStatus.CONFLICT,
+                    "A project with this name already exists.",
+                )
+                return
+            display_id = next_display_id(conn)
             conn.execute(
                 """
                 INSERT INTO projects
-                (id, name, body_json, created_at, updated_at, created_by, updated_by, deleted_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, NULL)
+                (id, name, body_json, created_at, updated_at, created_by, updated_by, deleted_at, display_id)
+                VALUES (?, ?, ?, ?, ?, ?, ?, NULL, ?)
                 """,
                 (
                     pid,
@@ -472,6 +606,7 @@ class ProjectsHandler(BaseHTTPRequestHandler):
                     now,
                     user,
                     user,
+                    display_id,
                 ),
             )
             conn.execute(
@@ -482,7 +617,14 @@ class ProjectsHandler(BaseHTTPRequestHandler):
                 (pid, now, user, json.dumps(body, ensure_ascii=False)),
             )
             conn.commit()
-        self._send(HTTPStatus.CREATED, body)
+        created = dict(body)
+        created["_meta"] = {
+            "displayId": display_id,
+            "createdBy": user,
+            "updatedBy": user,
+            "source": "team",
+        }
+        self._send(HTTPStatus.CREATED, created)
 
     def do_DELETE(self) -> None:  # noqa: N802
         actor = self._require_actor()
@@ -503,6 +645,12 @@ class ProjectsHandler(BaseHTTPRequestHandler):
             ).fetchone()
             if row is None:
                 self._error(HTTPStatus.NOT_FOUND, "Project not found.")
+                return
+            if row["created_by"] != user:
+                self._error(
+                    HTTPStatus.FORBIDDEN,
+                    "Only the owner can delete this project.",
+                )
                 return
             conn.execute(
                 """

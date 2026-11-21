@@ -1969,6 +1969,128 @@ button.linkish {
   gap: 0.35rem;
 }
 
+.projects-kanban {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr));
+  gap: 0.9rem;
+  margin: 0.75rem 0 1.5rem;
+}
+
+.project-kanban-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border, #ddd);
+  border-radius: 0.45rem;
+  background: var(--surface, #fff);
+  min-height: 9.5rem;
+}
+
+.project-kanban-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.project-kanban-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.project-kanban-title h2 {
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.project-display-id {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink-3, #666);
+  padding-top: 0.15rem;
+}
+
+.project-kanban-scope,
+.project-kanban-meta {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.project-kanban-open {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+.project-gear {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.project-gear-btn {
+  border: 1px solid var(--border, #ddd);
+  background: var(--surface-2, #f7f7f7);
+  border-radius: 0.35rem;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.project-gear-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.25rem);
+  z-index: 20;
+  min-width: 11rem;
+  margin: 0;
+  padding: 0.25rem;
+  list-style: none;
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #ddd);
+  border-radius: 0.4rem;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.08);
+}
+
+.project-gear-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  padding: 0.4rem 0.55rem;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+.project-gear-menu button:hover {
+  background: var(--surface-2, #f3f3f3);
+}
+
+.project-gear-menu button.danger {
+  color: var(--danger, #b42318);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .project-vars-summary {
   font-weight: 600;
   margin: 0.5rem 0 0.75rem;

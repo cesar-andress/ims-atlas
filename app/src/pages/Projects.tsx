@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { PageShell } from "../components/PageShell";
 import { PermalinkLink } from "../components/PermalinkLink";
+import { useAccessSession } from "../auth/accessSession";
 import { useToast } from "../state/toastContext";
 import { useTranslation } from "../i18n";
 import {
@@ -26,11 +27,169 @@ import { importAtlasProjectJson } from "../state/projectStore";
 import { useAnalysis } from "../state/useAnalysis";
 import { COL_HS64_PRESET } from "../state/schema";
 import { preferredProjectView } from "../state/views";
+import { countryLabel } from "../design/formatLocale";
+
+function canEditProject(item: ProjectListItem, user: string | undefined): boolean {
+  if (item.source !== "team") return true;
+  if (!item.createdBy) return true;
+  if (!user) return false;
+  return item.createdBy === user;
+}
+
+function ProjectGearMenu({
+  item,
+  busy,
+  editable,
+  onOpen,
+  onRename,
+  onDuplicate,
+  onExportAtlas,
+  onExportWorkbook,
+  onDelete,
+}: {
+  item: ProjectListItem;
+  busy: boolean;
+  editable: boolean;
+  onOpen: () => void;
+  onRename: () => void;
+  onDuplicate: () => void;
+  onExportAtlas: () => void;
+  onExportWorkbook: () => void;
+  onDelete: () => void;
+}) {
+  const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    function onDoc(ev: MouseEvent) {
+      if (!rootRef.current?.contains(ev.target as Node)) setOpen(false);
+    }
+    function onKey(ev: KeyboardEvent) {
+      if (ev.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("mousedown", onDoc);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDoc);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  return (
+    <div className="project-gear" ref={rootRef}>
+      <button
+        type="button"
+        className="project-gear-btn"
+        data-testid={`project-gear-${item.id}`}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-label={t("projectActions")}
+        disabled={busy}
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpen((v) => !v);
+        }}
+      >
+        ⚙
+      </button>
+      {open ? (
+        <ul
+          className="project-gear-menu"
+          role="menu"
+          data-testid={`project-gear-menu-${item.id}`}
+        >
+          <li role="none">
+            <button
+              type="button"
+              role="menuitem"
+              data-testid={`project-open-${item.id}`}
+              onClick={() => {
+                setOpen(false);
+                onOpen();
+              }}
+            >
+              {t("projectOpen")}
+            </button>
+          </li>
+          {editable ? (
+            <li role="none">
+              <button
+                type="button"
+                role="menuitem"
+                onClick={() => {
+                  setOpen(false);
+                  onRename();
+                }}
+              >
+                {t("projectRename")}
+              </button>
+            </li>
+          ) : null}
+          <li role="none">
+            <button
+              type="button"
+              role="menuitem"
+              onClick={() => {
+                setOpen(false);
+                onDuplicate();
+              }}
+            >
+              {t("projectDuplicate")}
+            </button>
+          </li>
+          <li role="none">
+            <button
+              type="button"
+              role="menuitem"
+              onClick={() => {
+                setOpen(false);
+                onExportAtlas();
+              }}
+            >
+              .atlas.json
+            </button>
+          </li>
+          <li role="none">
+            <button
+              type="button"
+              role="menuitem"
+              onClick={() => {
+                setOpen(false);
+                onExportWorkbook();
+              }}
+            >
+              {t("projectExportTables")}
+            </button>
+          </li>
+          {editable ? (
+            <li role="none">
+              <button
+                type="button"
+                role="menuitem"
+                className="danger"
+                data-testid={`project-delete-${item.id}`}
+                onClick={() => {
+                  setOpen(false);
+                  onDelete();
+                }}
+              >
+                {t("projectDelete")}
+              </button>
+            </li>
+          ) : null}
+        </ul>
+      ) : null}
+    </div>
+  );
+}
 
 export function Projects() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith("es") ? "es" : "en";
   const toast = useToast();
+  const { profile } = useAccessSession();
   const { config, openProject, clearActiveProject, activeProject } = useAnalysis();
   const [items, setItems] = useState<ProjectListItem[]>([]);
   const [status, setStatus] = useState<ProjectLibraryStatus | null>(null);
@@ -54,7 +213,8 @@ export function Projects() {
       (p) =>
         p.name.toLowerCase().includes(q) ||
         (p.origin ?? "").toLowerCase().includes(q) ||
-        (p.hs ?? "").includes(q),
+        (p.hs ?? "").includes(q) ||
+        (p.displayId !== undefined && String(p.displayId).includes(q)),
     );
   }, [items, query]);
 
@@ -71,10 +231,14 @@ export function Projects() {
     };
     const project = createEmptyProject(partial);
     const { upsertProject } = await import("../state/projectLibrary");
-    const saved = await upsertProject(project);
-    await refresh();
-    openProject(saved, preferredProjectView(saved.config));
-    toast.push(t("projectCreated"));
+    try {
+      const saved = await upsertProject(project);
+      await refresh();
+      openProject(saved, preferredProjectView(saved.config));
+      toast.push(t("projectCreated"));
+    } catch (err) {
+      toast.push(plainErrorMessage(err));
+    }
   }
 
   async function onOpen(id: string) {
@@ -98,6 +262,8 @@ export function Projects() {
         updatedAt: new Date().toISOString(),
       });
       await refresh();
+    } catch (err) {
+      toast.push(plainErrorMessage(err));
     } finally {
       setBusyId(null);
     }
@@ -109,6 +275,8 @@ export function Projects() {
       await duplicateProject(id);
       await refresh();
       toast.push(t("projectDuplicated"));
+    } catch (err) {
+      toast.push(plainErrorMessage(err));
     } finally {
       setBusyId(null);
     }
@@ -122,6 +290,8 @@ export function Projects() {
       if (activeProject?.id === id) clearActiveProject();
       await refresh();
       toast.push(t("projectDeleted"));
+    } catch (err) {
+      toast.push(plainErrorMessage(err));
     } finally {
       setBusyId(null);
     }
@@ -218,81 +388,79 @@ export function Projects() {
         {config.hs ? ` · HS${config.hs}` : ""}
       </p>
 
-      <table className="projects-table" data-testid="projects-table">
-        <thead>
-          <tr>
-            <th>{t("projectName")}</th>
-            <th>{t("origin")}</th>
-            <th>HS</th>
-            <th>{t("projectUpdated")}</th>
-            <th>{t("projectActions")}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filtered.length === 0 ? (
-            <tr>
-              <td colSpan={5} className="muted">
-                {t("projectsEmpty")}
-              </td>
-            </tr>
-          ) : (
-            filtered.map((p) => (
-              <tr key={p.id} data-testid={`project-row-${p.id}`}>
-                <td>{p.name}</td>
-                <td>{p.origin ?? "-"}</td>
-                <td>{p.hs ?? "-"}</td>
-                <td>{p.updatedAt.slice(0, 19).replace("T", " ")}</td>
-                <td className="projects-actions">
-                  <button
-                    type="button"
-                    data-testid={`project-open-${p.id}`}
-                    disabled={busyId === p.id}
-                    onClick={() => void onOpen(p.id)}
-                  >
-                    {t("projectOpen")}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => void onRename(p.id, p.name)}
-                    disabled={busyId === p.id}
-                  >
-                    {t("projectRename")}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => void onDuplicate(p.id)}
-                    disabled={busyId === p.id}
-                  >
-                    {t("projectDuplicate")}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => void onExportAtlas(p.id)}
-                    disabled={busyId === p.id}
-                  >
-                    .atlas.json
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => void onExportWorkbook(p.id)}
-                    disabled={busyId === p.id}
-                  >
-                    {t("projectExportTables")}
-                  </button>
-                  <button
-                    type="button"
-                    data-testid={`project-delete-${p.id}`}
-                    onClick={() => void onDelete(p.id, p.name)}
-                    disabled={busyId === p.id}
-                  >
-                    {t("projectDelete")}
-                  </button>
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+      {filtered.length === 0 ? (
+        <p className="muted" data-testid="projects-kanban-empty">
+          {t("projectsEmpty")}
+        </p>
+      ) : (
+        <div className="projects-kanban" data-testid="projects-kanban">
+          {/* Keep legacy test id for older e2e until CI catches up */}
+          <div className="visually-hidden" data-testid="projects-table" aria-hidden>
+            kanban
+          </div>
+          {filtered.map((p) => {
+            const editable = canEditProject(p, profile?.user);
+            const scope = [
+              p.origin ? countryLabel(p.origin, lang) : null,
+              p.hs ? `HS ${p.hs}` : null,
+              p.yearFrom !== undefined ? String(p.yearFrom) : null,
+            ].filter((x): x is string => x !== null);
+            const edited = p.updatedAt.slice(0, 19).replace("T", " ");
+            return (
+              <article
+                key={p.id}
+                className="project-kanban-card"
+                data-testid={`project-card-${p.id}`}
+              >
+                <header className="project-kanban-head">
+                  <div className="project-kanban-title">
+                    {p.displayId !== undefined ? (
+                      <span
+                        className="project-display-id"
+                        data-testid={`project-id-${p.id}`}
+                        title={t("projectDisplayId")}
+                      >
+                        #{p.displayId}
+                      </span>
+                    ) : null}
+                    <h2>{p.name}</h2>
+                  </div>
+                  <ProjectGearMenu
+                    item={p}
+                    busy={busyId === p.id}
+                    editable={editable}
+                    onOpen={() => void onOpen(p.id)}
+                    onRename={() => void onRename(p.id, p.name)}
+                    onDuplicate={() => void onDuplicate(p.id)}
+                    onExportAtlas={() => void onExportAtlas(p.id)}
+                    onExportWorkbook={() => void onExportWorkbook(p.id)}
+                    onDelete={() => void onDelete(p.id, p.name)}
+                  />
+                </header>
+                <p className="project-kanban-scope">
+                  {scope.length > 0 ? scope.join(" · ") : t("projectScopePending")}
+                </p>
+                <p className="project-kanban-meta muted small">
+                  {t("projectUpdated")}: {edited}
+                  {p.createdBy ? ` · ${p.createdBy}` : ""}
+                  {!editable && p.source === "team" ? (
+                    <> · {t("projectReadOnlyOwned")}</>
+                  ) : null}
+                </p>
+                <button
+                  type="button"
+                  className="btn secondary project-kanban-open"
+                  data-testid={`project-open-card-${p.id}`}
+                  disabled={busyId === p.id}
+                  onClick={() => void onOpen(p.id)}
+                >
+                  {t("projectOpen")}
+                </button>
+              </article>
+            );
+          })}
+        </div>
+      )}
     </PageShell>
   );
 }

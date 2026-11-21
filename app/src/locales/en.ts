@@ -187,6 +187,8 @@ export const en = {
   projectCoverageLink: "Coverage",
   projectDashboardLink: "Dashboard",
   projectExportTables: "Tables ZIP",
+  projectDisplayId: "Id",
+  projectReadOnlyOwned: "read-only (another owner)",
   projectVarsIntro:
     "Choose variables for this project. Left: the variable list. Right: basket with live warnings.",
   projectVarsSummary: "{n} variables · {c} criteria · coverage {cov} % · {w} warnings",
@@ -805,7 +807,7 @@ export const en = {
   imsfeImportErrorNoScores: "Report has no final scores.",
   imsfeImportErrorGeneric: "Could not read the import report.",
   aiVerifyIntro:
-    "Load candidates (AI or secondary source) as CSV. Atlas does not call any AI; verification stays in the browser.",
+    "Load candidates from a CSV (external proposal or secondary source). Atlas does not call any model; verification stays in the browser.",
   aiVerifyLocalOnly:
     "Candidates never leave the browser. ai_candidate and rejected never enter the computation.",
   aiVerifyLoadCsv: "CSV (variable_id,iso3,year,value,source_url,origin)",

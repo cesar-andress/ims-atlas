@@ -14,7 +14,9 @@ from pathlib import Path
 import server as api
 
 
-def _req(method: str, url: str, body: dict | None = None, user: str = "cesar") -> tuple[int, dict | list]:
+def _req(
+    method: str, url: str, body: dict | None = None, user: str = "cesar"
+) -> tuple[int, dict | list]:
     data = None if body is None else json.dumps(body).encode("utf-8")
     req = urllib.request.Request(
         url,
@@ -34,11 +36,10 @@ def _req(method: str, url: str, body: dict | None = None, user: str = "cesar") -
         return exc.code, payload
 
 
-def test_team_crud_and_share(tmp_path: Path | None = None) -> None:
+def test_team_crud_share_acl_and_unique_names(tmp_path: Path | None = None) -> None:
     root = Path(tempfile.mkdtemp()) if tmp_path is None else tmp_path
     db = root / "projects.sqlite3"
     os.environ["ATLAS_PROJECTS_DB"] = str(db)
-    # Re-bind module path used by connect()
     api.DB_PATH = db
     srv = api.ProjectsServer(("127.0.0.1", 0), db)
     port = srv.server_address[1]
@@ -57,36 +58,76 @@ def test_team_crud_and_share(tmp_path: Path | None = None) -> None:
             "name": "HS64 COL",
             "createdAt": "2026-11-20T10:00:00Z",
             "updatedAt": "2026-11-20T10:00:00Z",
-            "config": {"v": 1, "view": "analisis", "origin": "COL", "hs": "64", "year": 2023},
+            "config": {
+                "v": 1,
+                "view": "analisis",
+                "origin": "COL",
+                "hs": "64",
+                "year": 2023,
+            },
             "yearFrom": 2023,
             "yearTo": 2023,
         }
         code, created = _req("POST", base, project, user="ana")
         assert code == 201
         assert created["id"] == "p-share-1"
+        assert created.get("_meta", {}).get("displayId") == 1
 
         code, listed = _req("GET", base, user="bob")
         assert code == 200
         assert isinstance(listed, list) and any(x["id"] == "p-share-1" for x in listed)
+        row = next(x for x in listed if x["id"] == "p-share-1")
+        assert row.get("displayId") == 1
+        assert row.get("createdBy") == "ana"
 
+        # Bob can see/use, but cannot edit Ana's project.
         project["name"] = "HS64 COL edited"
-        project["config"] = {
-            **project["config"],
-            "weights": {"market_size": 0.5},
-        }
-        code, _ = _req("PUT", f"{base}/p-share-1", project, user="bob")
+        code, denied = _req("PUT", f"{base}/p-share-1", project, user="bob")
+        assert code == 403
+        assert "owner" in str(denied.get("error", "")).lower()
+
+        # Owner can edit.
+        code, _ = _req("PUT", f"{base}/p-share-1", project, user="ana")
         assert code == 200
 
-        code, got = _req("GET", f"{base}/p-share-1", user="ana")
+        code, got = _req("GET", f"{base}/p-share-1", user="bob")
         assert code == 200
         assert got["name"] == "HS64 COL edited"
-        assert got["config"]["weights"]["market_size"] == 0.5
 
-        code, versions = _req("GET", f"{base}/p-share-1/versions", user="ana")
+        # Unique names
+        other = {
+            **project,
+            "id": "p-share-2",
+            "name": "HS64 COL edited",
+        }
+        code, conflict = _req("POST", base, other, user="bob")
+        assert code == 409
+
+        other["name"] = "HS64 COL bob"
+        code, created2 = _req("POST", base, other, user="bob")
+        assert code == 201
+        assert created2.get("_meta", {}).get("displayId") == 2
+
+        code, del_denied = _req("DELETE", f"{base}/p-share-1", user="bob")
+        assert code == 403
+
+        code, deleted = _req("DELETE", f"{base}/p-share-1", user="ana")
         assert code == 200
-        assert isinstance(versions, list) and len(versions) >= 2
-        editors = {v["editedBy"] for v in versions}
-        assert "ana" in editors and "bob" in editors
+        assert deleted.get("ok") is True
+
+        # Client error journal ingest
+        code, accepted = _req(
+            "POST",
+            f"{base}/client-errors",
+            {
+                "schemaVersion": 1,
+                "kind": "ims-atlas-client-errors",
+                "events": [{"id": "e1", "message": "boom"}],
+            },
+            user="ana",
+        )
+        assert code == 200
+        assert accepted.get("accepted") == 1
     finally:
         srv.shutdown()
         srv.server_close()
@@ -94,5 +135,5 @@ def test_team_crud_and_share(tmp_path: Path | None = None) -> None:
 
 
 if __name__ == "__main__":
-    test_team_crud_and_share()
+    test_team_crud_share_acl_and_unique_names()
     print("ok")

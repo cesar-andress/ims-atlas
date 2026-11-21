@@ -1,9 +1,27 @@
 import { Link } from "react-router-dom";
 import { LANDING_PUBLICATIONS, formatPublicationApa } from "../publications";
-import { ToolPreviewSvg } from "../ToolPreviewSvg";
+import { ATLAS_SOFTWARE_APA, ATLAS_SOFTWARE_BIBTEX } from "../softwareCite";
 import type { LandingCopy } from "../i18n";
 
 const ENTER_HREF = "/projects";
+
+const FLOW_SHOTS = [
+  {
+    src: "/landing/ranking.png",
+    captionKey: "flowRankCaption" as const,
+    testId: "landing-shot-ranking",
+  },
+  {
+    src: "/landing/matriz.png",
+    captionKey: "flowMatrixCaption" as const,
+    testId: "landing-shot-matriz",
+  },
+  {
+    src: "/landing/mapa.png",
+    captionKey: "flowMapCaption" as const,
+    testId: "landing-shot-mapa",
+  },
+];
 
 export function HomeLanding({
   copy,
@@ -60,10 +78,25 @@ export function HomeLanding({
             <p>{copy.how3Body}</p>
           </article>
         </div>
-        <figure className="l-shot">
-          <ToolPreviewSvg />
-          <figcaption>{copy.howCaption}</figcaption>
-        </figure>
+      </section>
+
+      <section className="l-section l-wrap" id="flujo" data-testid="landing-flow">
+        <h2>{copy.flowTitle}</h2>
+        <p className="l-prose">{copy.flowBody}</p>
+        <div className="l-flow-shots">
+          {FLOW_SHOTS.map((shot) => (
+            <figure key={shot.src} className="l-shot" data-testid={shot.testId}>
+              <img
+                src={shot.src}
+                alt={copy[shot.captionKey]}
+                loading="lazy"
+                width={640}
+                height={800}
+              />
+              <figcaption>{copy[shot.captionKey]}</figcaption>
+            </figure>
+          ))}
+        </div>
       </section>
 
       <section
@@ -96,6 +129,21 @@ export function HomeLanding({
             </li>
           ))}
         </ol>
+      </section>
+
+      <section
+        className="l-section l-wrap"
+        id="citar-software"
+        data-testid="landing-cite-software"
+      >
+        <h2>{copy.citeSoftwareTitle}</h2>
+        <p className="l-prose">{copy.citeSoftwareLead}</p>
+        <p className="l-prose" data-testid="landing-cite-apa">
+          {ATLAS_SOFTWARE_APA}
+        </p>
+        <pre className="l-bibtex" data-testid="landing-cite-bibtex">
+          <code>{ATLAS_SOFTWARE_BIBTEX}</code>
+        </pre>
       </section>
 
       <section className="l-section l-wrap" id="equipo" data-testid="landing-team">

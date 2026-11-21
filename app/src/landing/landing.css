@@ -284,6 +284,34 @@ a:hover {
   color: var(--l-muted);
 }
 
+.l-flow-shots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.l-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid var(--l-border);
+  background: var(--l-surface);
+}
+
+.l-bibtex {
+  margin: 0.75rem 0 0;
+  padding: 0.85rem 1rem;
+  overflow-x: auto;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  background: var(--l-surface);
+  border: 1px solid var(--l-border);
+  border-radius: 10px;
+  max-width: 72ch;
+}
+
 .l-footer {
   margin-top: 2rem;
   padding: 1.5rem 0 2.5rem;
