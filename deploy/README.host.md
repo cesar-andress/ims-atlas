@@ -7,7 +7,7 @@
 | Domain | `https://atlas.aiserv.es` (+ `www.atlas.aiserv.es` → apex) |
 | Bind | `10.204.0.3:8121` → nginx container (never publish `0.0.0.0:8121`) |
 | Edge | Caddy on vpn-server (`aiserv-server`) → `10.204.0.3:8121` |
-| Auth | Authelia via Caddy (public: `/`, `/metodologia`, `/privacidad`, `/aviso-legal`, assets) |
+| Auth | Authelia via Caddy (public: `/`, `/metodologia`, `/privacidad`, `/aviso-legal`, `/landing/*`, assets) |
 
 ## First install
 

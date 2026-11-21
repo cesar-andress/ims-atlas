@@ -29,6 +29,18 @@ test.describe("Prompt 4 public landing", () => {
       await expect(page.getByTestId(`landing-pub-${id}`)).toBeVisible();
     }
 
+    for (const shot of [
+      "landing-shot-ranking",
+      "landing-shot-matriz",
+      "landing-shot-mapa",
+    ]) {
+      const img = page.getByTestId(shot).locator("img");
+      await expect(img).toBeVisible();
+      await expect
+        .poll(async () => img.evaluate((el: HTMLImageElement) => el.naturalWidth))
+        .toBeGreaterThan(0);
+    }
+
     const body = await page.locator("body").innerText();
     expect(body).not.toMatch(/Ejemplo ilustrativo/i);
     // No ranking score lines like "1. … 0.9"

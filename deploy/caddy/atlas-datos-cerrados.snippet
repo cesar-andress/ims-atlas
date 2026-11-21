@@ -3,7 +3,8 @@
 # Docs: deploy/README-access.md
 #
 # Prompt 4: Authelia for everything except a minimal public whitelist
-# (landing, metodologia, privacidad, aviso-legal, robots, favicon, og, assets).
+# (landing HTML routes, /landing/* screenshots, metodologia, privacidad,
+# aviso-legal, robots, favicon, og, assets).
 
 # --- whoami (authenticate, then synthesize JSON from forward_auth headers) ---
 handle /datos-cerrados/whoami.json {
@@ -27,6 +28,7 @@ handle /datos-cerrados/whoami.json {
 	path /favicon.ico
 	path /favicon.svg
 	path /og-landing.svg
+	path /landing/*
 	path /assets/*
 }
 

@@ -5,21 +5,28 @@ import type { LandingCopy } from "../i18n";
 
 const ENTER_HREF = "/projects";
 
+/** Intrinsic sizes from app/public/landing/*.png (do not invent pixels). */
 const FLOW_SHOTS = [
   {
     src: "/landing/ranking.png",
     captionKey: "flowRankCaption" as const,
     testId: "landing-shot-ranking",
+    width: 1280,
+    height: 1605,
   },
   {
     src: "/landing/matriz.png",
     captionKey: "flowMatrixCaption" as const,
     testId: "landing-shot-matriz",
+    width: 1280,
+    height: 2651,
   },
   {
     src: "/landing/mapa.png",
     captionKey: "flowMapCaption" as const,
     testId: "landing-shot-mapa",
+    width: 1280,
+    height: 1605,
   },
 ];
 
@@ -90,8 +97,9 @@ export function HomeLanding({
                 src={shot.src}
                 alt={copy[shot.captionKey]}
                 loading="lazy"
-                width={640}
-                height={800}
+                width={shot.width}
+                height={shot.height}
+                decoding="async"
               />
               <figcaption>{copy[shot.captionKey]}</figcaption>
             </figure>

@@ -235,7 +235,6 @@ a:hover {
   background: var(--l-surface);
 }
 
-.l-shot img,
 .l-shot svg {
   display: block;
   width: 100%;
@@ -289,15 +288,21 @@ a:hover {
   grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
   gap: 1rem;
   margin-top: 1rem;
+  align-items: start;
+}
+
+.l-flow-shots .l-shot {
+  margin-top: 0;
 }
 
 .l-shot img {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 10px;
-  border: 1px solid var(--l-border);
-  background: var(--l-surface);
+  max-height: min(70vh, 36rem);
+  object-fit: contain;
+  object-position: top center;
+  background: color-mix(in srgb, var(--l-ground) 55%, var(--l-surface));
 }
 
 .l-bibtex {

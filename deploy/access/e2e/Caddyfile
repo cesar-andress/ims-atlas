@@ -30,6 +30,7 @@ atlas.e2e.local {
 		path /favicon.ico
 		path /favicon.svg
 		path /og-landing.svg
+		path /landing/*
 		path /assets/*
 	}
 

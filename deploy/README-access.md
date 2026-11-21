@@ -11,7 +11,7 @@ ims-atlas checkout).
 | **Edge** | Caddy on vpn-server (`aiserv-server`) — TLS, `forward_auth`, headers |
 | **Portal** | `https://auth.aiserv.es` — already proxies to Authelia on vpn-aplicaciones **`10.204.0.3:9091`** (do not republish Authelia on `0.0.0.0`) |
 | **App origin** | nginx on vpn-aplicaciones `10.204.0.3:8121` — public SPA + static cerrada tree at `/datos-cerrados/` |
-| **Policy** | Authelia `access_control` for `*.aiserv.es` (one_factor). Caddy on vpn-server applies `forward_auth` to **all** `atlas.aiserv.es` paths except a public whitelist (landing, metodología, privacidad, aviso-legal, robots, favicon, og, `/assets/*`). |
+| **Policy** | Authelia `access_control` for `*.aiserv.es` (one_factor). Caddy on vpn-server applies `forward_auth` to **all** `atlas.aiserv.es` paths except a public whitelist (landing, metodología, privacidad, aviso-legal, robots, favicon, og, `/landing/*` screenshots, `/assets/*`). |
 
 nginx serves files only; it does **not** authenticate. Caddy enforces Authelia on
 the edge. Public HTML shells are `landing.html` for `/`, `/metodologia`, `/privacidad`,
