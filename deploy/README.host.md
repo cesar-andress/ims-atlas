@@ -118,8 +118,9 @@ sudo systemctl enable --now ims-atlas-pipeline.timer
 ## Daily full pipeline timer
 
 `ims-atlas-daily.timer` at **03:30 Europe/Madrid** (`RandomizedDelaySec=3m`).
-Host `timedatectl` is often `Etc/UTC`; the unit sets `Timezone=Europe/Madrid`
-explicitly (winter ≈ 02:30 UTC, summer ≈ 01:30 UTC).
+Host `timedatectl` is `Etc/UTC`; the calendar embeds the TZ
+(`OnCalendar=*-*-* 03:30:00 Europe/Madrid`) because bare `Timezone=` on
+`.timer` units is ignored on this host. Winter ≈ 02:30 UTC; summer ≈ 01:30 UTC.
 
 Sets `ATLAS_FULL_RELEASE=1` and runs, in order:
 

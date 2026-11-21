@@ -3,10 +3,10 @@ Description=Daily IMS Atlas full pipeline (R-0 + release-dual + promote)
 After=ims-atlas-pipeline.timer
 
 [Timer]
-# 03:30 Europe/Madrid. Host clock is often Etc/UTC; systemd Timezone= still applies.
-# Winter (CET): 02:30 UTC. Summer (CEST): 01:30 UTC.
-OnCalendar=*-*-* 03:30:00
-Timezone=Europe/Madrid
+# Embed TZ in the calendar expression. Host timedatectl is Etc/UTC and bare
+# Timezone= on .timer is ignored here (systemd shows next_elapse in UTC).
+# 03:30 Europe/Madrid → winter 02:30 UTC / summer 01:30 UTC.
+OnCalendar=*-*-* 03:30:00 Europe/Madrid
 Persistent=true
 RandomizedDelaySec=3m
 Unit=ims-atlas-daily.service

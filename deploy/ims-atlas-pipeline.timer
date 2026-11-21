@@ -3,9 +3,9 @@ Description=Hourly IMS Atlas pipeline tick (R-0)
 After=ims-atlas-check.timer
 
 [Timer]
-# Every hour, Europe/Madrid. flock in atlas-etl-pipeline.sh skips overlap.
-OnCalendar=hourly
-Timezone=Europe/Madrid
+# Every hour. Embed TZ; host clock is Etc/UTC (bare Timezone= on .timer ignored).
+# flock in atlas-etl-pipeline.sh skips overlap with daily.
+OnCalendar=hourly Europe/Madrid
 Persistent=true
 RandomizedDelaySec=3m
 Unit=ims-atlas-pipeline.service
