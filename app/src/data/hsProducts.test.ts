@@ -15,7 +15,10 @@ import {
   isFullHsNomenclatureReady,
   resetHsNomenclatureForTests,
   searchHs,
+  clampTradeYear,
   tradeYearOptions,
+  HS_TRADE_YEAR_MAX,
+  HS_TRADE_YEAR_MIN,
 } from "./hsProducts";
 
 const fullPath = join(
@@ -91,6 +94,12 @@ describe("HS nomenclature catalogue", () => {
     expect(years[0]).toBe(2024);
     expect(years[years.length - 1]).toBe(2012);
     expect(years).toContain(2020);
+  });
+
+  it("clamps obsolete years (2025/2026) into the BACI pin window", () => {
+    expect(clampTradeYear(2026)).toBe(HS_TRADE_YEAR_MAX);
+    expect(clampTradeYear(2010)).toBe(HS_TRADE_YEAR_MIN);
+    expect(clampTradeYear(2020)).toBe(2020);
   });
 
   it("ensureFullHsNomenclature is idempotent after hydrate", async () => {

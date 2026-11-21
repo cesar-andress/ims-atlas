@@ -258,6 +258,15 @@ export function topImporterHints(hsCode: string): string[] {
 export const HS_TRADE_YEAR_MIN = 2012;
 export const HS_TRADE_YEAR_MAX = 2024;
 
+/** Clamp analysis year to the BACI pin window (rejects stale 2025/2026 drafts). */
+export function clampTradeYear(year: number): number {
+  if (!Number.isFinite(year)) return HS_TRADE_YEAR_MAX;
+  return Math.min(
+    HS_TRADE_YEAR_MAX,
+    Math.max(HS_TRADE_YEAR_MIN, Math.trunc(year)),
+  );
+}
+
 export function tradeYearOptions(): number[] {
   const years: number[] = [];
   for (let y = HS_TRADE_YEAR_MAX; y >= HS_TRADE_YEAR_MIN; y -= 1) years.push(y);

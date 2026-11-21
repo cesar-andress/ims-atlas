@@ -9,6 +9,7 @@ import {
   type KeyboardEvent,
 } from "react";
 import {
+  clampTradeYear,
   ensureFullHsNomenclature,
   hsCategoryTree,
   hsLabel,
@@ -53,7 +54,9 @@ export const ProjectScopeFields = forwardRef<ProjectScopeFieldsHandle, Props>(
 
     const [origin, setOrigin] = useState(config.origin ?? "");
     const [hs, setHs] = useState(config.hs ?? "");
-    const [year, setYear] = useState<number | undefined>(config.year);
+    const [year, setYear] = useState<number | undefined>(
+      config.year != null ? clampTradeYear(config.year) : undefined,
+    );
 
     useEffect(() => {
       onDraftChange?.({ origin, hs, year });
@@ -70,7 +73,7 @@ export const ProjectScopeFields = forwardRef<ProjectScopeFieldsHandle, Props>(
     useEffect(() => {
       setOrigin(config.origin ?? "");
       setHs(config.hs ?? "");
-      setYear(config.year);
+      setYear(config.year != null ? clampTradeYear(config.year) : undefined);
     }, [config.origin, config.hs, config.year]);
 
     useEffect(() => {
@@ -100,7 +103,7 @@ export const ProjectScopeFields = forwardRef<ProjectScopeFieldsHandle, Props>(
         const snap: ScopeSnapshot = {
           origin: origin || undefined,
           hs: nextHs || undefined,
-          year,
+          year: year != null ? clampTradeYear(year) : undefined,
         };
         setConfig({
           origin: snap.origin,

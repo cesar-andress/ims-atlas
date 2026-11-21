@@ -178,15 +178,79 @@ export function absoluteDataUrl(path: string): string {
   return new URL(path, `${origin}/`).href.replace(/\/$/, "");
 }
 
-/** Same-origin Authelia session cookies for index/HEAD probes. */
+/** Same-origin Authelia session cookies for index/HEAD/GET probes. */
 const CREDENTIALED: RequestInit = { credentials: "include" };
 
 /**
- * Bilateral may be a single parquet or hive parts under bilateral_year/
- * (when the long table exceeds the 5 MiB SPEC budget).
- * Returns a DuckDB ``read_parquet(...)`` argument list literal.
+ * Fetch a parquet over HTTP **with browser cookies**.
+ * DuckDB-WASM httpfs does not send Authelia cookies; `read_parquet(https://…)`
+ * often receives the login HTML and fails. Register buffers instead.
  */
-async function resolveBilateralParquetSource(base: string): Promise<string> {
+export async function fetchParquetBytes(url: string): Promise<Uint8Array> {
+  const res = await fetch(url, {
+    method: "GET",
+    ...CREDENTIALED,
+    cache: "force-cache",
+    redirect: "follow",
+  });
+  if (res.status === 401 || res.status === 403) {
+    throw new AtlasDataError(
+      "Data release requires an authenticated session (HTTP 401/403).",
+      "http_auth",
+    );
+  }
+  if (!res.ok) {
+    throw new AtlasDataError(
+      `Could not fetch parquet (${res.status}): ${url}`,
+      "http_io",
+    );
+  }
+  const ct = (res.headers.get("content-type") ?? "").toLowerCase();
+  const bytes = new Uint8Array(await res.arrayBuffer());
+  const head = new TextDecoder("utf-8", { fatal: false }).decode(
+    bytes.subarray(0, Math.min(64, bytes.length)),
+  );
+  if (
+    ct.includes("text/html") ||
+    /^\s*<!DOCTYPE/i.test(head) ||
+    /^\s*<html/i.test(head)
+  ) {
+    throw new AtlasDataError(
+      "Data release returned HTML instead of parquet (login wall).",
+      "http_auth",
+    );
+  }
+  // Parquet magic "PAR1" at start (and end); reject obvious non-parquet.
+  if (
+    bytes.length >= 4 &&
+    !(bytes[0] === 0x50 && bytes[1] === 0x41 && bytes[2] === 0x52 && bytes[3] === 0x31)
+  ) {
+    throw new AtlasDataError(
+      `Not a parquet file at ${url} (missing PAR1 magic).`,
+      "http_io",
+    );
+  }
+  return bytes;
+}
+
+async function registerParquetBuffer(
+  database: AsyncDuckDB,
+  vfsName: string,
+  url: string,
+): Promise<string> {
+  const bytes = await fetchParquetBytes(url);
+  await database.registerFileBuffer(vfsName, bytes);
+  return vfsName;
+}
+
+/**
+ * Bilateral may be a single parquet or hive parts under bilateral_year/.
+ * Returns registered VFS names for ``read_parquet(...)`` (credentialed).
+ */
+async function resolveBilateralParquetVfs(
+  database: AsyncDuckDB,
+  base: string,
+): Promise<string> {
   const indexUrl = `${base}/bilateral_year/index.json`;
   try {
     const indexRes = await fetch(indexUrl, {
@@ -197,20 +261,25 @@ async function resolveBilateralParquetSource(base: string): Promise<string> {
       const index = (await indexRes.json()) as { parts?: string[] };
       const parts = index.parts ?? [];
       if (parts.length) {
-        const list = parts
-          .map(
-            (rel) =>
-              `'${escapeSqlString(`${base}/bilateral_year/${rel}`)}'`,
-          )
-          .join(", ");
-        return `[${list}]`;
+        const names: string[] = [];
+        for (let i = 0; i < parts.length; i++) {
+          const rel = parts[i]!;
+          const url = `${base}/bilateral_year/${rel}`;
+          const vfs = `atlas_bil_${i}.parquet`;
+          await registerParquetBuffer(database, vfs, url);
+          names.push(`'${escapeSqlString(vfs)}'`);
+        }
+        return `[${names.join(", ")}]`;
       }
     }
-  } catch {
+  } catch (err) {
+    if (err instanceof AtlasDataError) throw err;
     /* fall through to monolithic file */
   }
   const mono = `${base}/bilateral_year.parquet`;
-  return `'${escapeSqlString(mono)}'`;
+  const vfs = "atlas_bilateral_year.parquet";
+  await registerParquetBuffer(database, vfs, mono);
+  return `'${escapeSqlString(vfs)}'`;
 }
 
 function hs2Key(hs2: string): string {
@@ -315,28 +384,15 @@ export function createDuckDbClient(): AtlasDataClient {
         status = "loading";
         const countryUrl = `${base}/country_year.parquet`;
         try {
-          const probe = await fetch(countryUrl, {
-            method: "HEAD",
-            ...CREDENTIALED,
-          });
-          if (probe.status === 401 || probe.status === 403) {
-            throw new AtlasDataError(
-              "Data release requires an authenticated session (HTTP 401/403).",
-              "http_auth",
-            );
-          }
-          if (!(await parquetExists(countryUrl))) {
-            throw new AtlasDataError(
-              `country_year.parquet not reachable at ${countryUrl}`,
-              "http_io",
-            );
-          }
-          // Small panel (~18k rows): materialise once for snappy SQL console.
+          if (!db) throw new AtlasDataError("DuckDB not initialised", "init");
+          // Credentialed browser fetch → VFS buffer (httpfs skips Authelia cookies).
+          const cyVfs = "atlas_country_year.parquet";
+          await registerParquetBuffer(db, cyVfs, countryUrl);
           await connection.query(`
             CREATE OR REPLACE TABLE country_year AS
-            SELECT * FROM read_parquet('${escapeSqlString(countryUrl)}');
+            SELECT * FROM read_parquet('${escapeSqlString(cyVfs)}');
           `);
-          const bilateralSource = await resolveBilateralParquetSource(base);
+          const bilateralSource = await resolveBilateralParquetVfs(db, base);
           if (materialiseBilateral) {
             // Explicit opt-in only — expands to ~250 MiB WASM heap.
             await connection.query(`
@@ -345,7 +401,7 @@ export function createDuckDbClient(): AtlasDataClient {
             `);
             bilateralMaterialised = true;
           } else {
-            // VIEW: LIMIT / filtered queries avoid loading all rows up front.
+            // VIEW over registered buffers — filters push down in SQL.
             await connection.query(`
               CREATE OR REPLACE VIEW bilateral_year AS
               SELECT * FROM read_parquet(${bilateralSource});
@@ -411,20 +467,28 @@ export function createDuckDbClient(): AtlasDataClient {
           if (variableIds?.length) partOpts.variableIds = variableIds;
           const parts = filterCountryProductParts(index.parts ?? [], partOpts);
           if (!parts.length) return false;
-          const list = parts
-            .map((rel) => `'${escapeSqlString(`${chapter}/${rel}`)}'`)
-            .join(", ");
-          // VIEW over the filtered part list — no CREATE TABLE AS full copy.
+          if (!db) return false;
+          const vfsNames: string[] = [];
+          for (let i = 0; i < parts.length; i++) {
+            const rel = parts[i]!;
+            const url = `${chapter}/${rel}`;
+            const vfs = `atlas_cp_${key}_${i}.parquet`;
+            await registerParquetBuffer(db, vfs, url);
+            vfsNames.push(`'${escapeSqlString(vfs)}'`);
+          }
           await connection.query(`
             CREATE OR REPLACE VIEW ${table} AS
-            SELECT * FROM read_parquet([${list}]);
+            SELECT * FROM read_parquet([${vfsNames.join(", ")}]);
           `);
         } else {
           const url = `${chapter}/part.parquet`;
+          if (!db) return false;
           if (!(await parquetExists(url))) return false;
+          const vfs = `atlas_cp_${key}_mono.parquet`;
+          await registerParquetBuffer(db, vfs, url);
           await connection.query(`
             CREATE OR REPLACE VIEW ${table} AS
-            SELECT * FROM read_parquet('${escapeSqlString(url)}');
+            SELECT * FROM read_parquet('${escapeSqlString(vfs)}');
           `);
         }
         countryProductKeys.add(sliceKey);

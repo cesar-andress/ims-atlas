@@ -8,6 +8,7 @@ import { loadAccessConfig } from "../auth/accessConfig";
 import { loadCatalogPreview } from "../data/catalogLoader";
 import { dataConfig, releaseUrl } from "../dataConfig";
 import { getAtlasDataClient } from "../data/duckdbClient";
+import { clampTradeYear } from "../data/hsProducts";
 import { escapeSqlLiteral, locfSelectSql, locfYears } from "../data/panelQueryHelpers";
 import type { CatalogVariable } from "../data/types";
 import {
@@ -137,10 +138,11 @@ function metaFor(
 export async function loadProjectPanel(req: ProjectPanelRequest): Promise<DemoPanel> {
   const origin = (req.origin ?? "").trim().toUpperCase();
   const hs = (req.hs ?? "").trim();
-  const year = req.year;
-  if (!origin || !hs || year == null || !Number.isFinite(year)) {
+  if (!origin || !hs || req.year == null || !Number.isFinite(req.year)) {
     throw new DemoPanelPendingError("TEAM_RESULTS_PENDING");
   }
+  // BACI pin ends at HS_TRADE_YEAR_MAX; 2025/2026 drafts yielded empty LOCF windows.
+  const year = clampTradeYear(Number(req.year));
 
   const [{ base, team }, catalogPreview] = await Promise.all([
     releaseBaseForSession(),

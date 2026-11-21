@@ -6,6 +6,7 @@ import {
   createDuckDbClient,
   createDuckDbWasmLogger,
   createMemoryDataClient,
+  fetchParquetBytes,
   getAtlasDataClient,
   resetAtlasDataClientForTests,
 } from "./duckdbClient";
@@ -143,6 +144,59 @@ describe("absoluteDataUrl + credentialed release probe contract", () => {
   });
 });
 
+describe("fetchParquetBytes (credentialed; rejects Authelia HTML)", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("requires credentials:include so Authelia cookies travel with the GET", async () => {
+    const parquet = new Uint8Array([0x50, 0x41, 0x52, 0x31, 0, 0, 0, 0]);
+    const fetchMock = vi.fn(
+      async () =>
+        new Response(parquet, {
+          status: 200,
+          headers: { "content-type": "application/octet-stream" },
+        }),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+    const bytes = await fetchParquetBytes(
+      "https://atlas.aiserv.es/data/v1.1.0/country_year.parquet",
+    );
+    expect(bytes[0]).toBe(0x50);
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.stringContaining("country_year.parquet"),
+      expect.objectContaining({ credentials: "include", method: "GET" }),
+    );
+  });
+
+  it("maps HTTP 401 to AtlasDataError http_auth", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => new Response(null, { status: 401 })),
+    );
+    await expect(
+      fetchParquetBytes("https://atlas.aiserv.es/data/v1.1.0/country_year.parquet"),
+    ).rejects.toMatchObject({ name: "AtlasDataError", kind: "http_auth" });
+  });
+
+  it("rejects Authelia HTML login pages (DuckDB httpfs would misread them)", async () => {
+    const html = "<!DOCTYPE html><html><body>Login</body></html>";
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(
+        async () =>
+          new Response(html, {
+            status: 200,
+            headers: { "content-type": "text/html; charset=utf-8" },
+          }),
+      ),
+    );
+    await expect(
+      fetchParquetBytes("https://atlas.aiserv.es/data/v1.1.0/country_year.parquet"),
+    ).rejects.toMatchObject({ name: "AtlasDataError", kind: "http_auth" });
+  });
+});
+
 describe("loadRelease auth probe", () => {
   afterEach(() => {
     vi.unstubAllGlobals();
@@ -155,8 +209,6 @@ describe("loadRelease auth probe", () => {
       vi.fn(async () => new Response(null, { status: 401 })),
     );
     const client = createDuckDbClient();
-    // Force past ensureConn by stubbing init + connection path is heavy;
-    // instead exercise classify path via a synthetic loadRelease failure message.
     const mapped = classifyDuckDbError(
       new AtlasDataError(
         "Data release requires an authenticated session (HTTP 401/403).",
@@ -164,7 +216,6 @@ describe("loadRelease auth probe", () => {
       ),
     );
     expect(mapped.kind).toBe("http_auth");
-    // fetch stub ensures credentialed probes are the contract callers rely on
     await fetch("https://atlas.aiserv.es/data/release/public/v1.1.0/country_year.parquet", {
       method: "HEAD",
       credentials: "include",
