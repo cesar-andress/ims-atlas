@@ -8,6 +8,7 @@ import pandas as pd
 
 from imsatlas_etl.pipeline.product_metrics import (
     compute_product_metrics,
+    write_parquet_retry,
     write_product_metrics_partitioned,
 )
 
@@ -119,3 +120,35 @@ def test_partition_write_fine_budget(tmp_path) -> None:
     assert part.is_file()
     frame = pd.read_parquet(part)
     assert set(frame["hs2"].unique()) == {"87"}
+
+
+def test_write_parquet_retry_remakes_vanished_parent(tmp_path, monkeypatch) -> None:
+    """Simulate concurrent --force wiping the parent mid-write (pyarrow OSError)."""
+    path = tmp_path / "hs2=93" / "year=2017" / "variable_id=IMPC" / "part.parquet"
+    frame = pd.DataFrame(
+        {
+            "iso3": ["DEU"],
+            "year": [2017],
+            "hs_code": ["93"],
+            "hs_level": ["hs2"],
+            "hs2": ["93"],
+            "variable_id": ["IMPC"],
+            "value": [1.0],
+        },
+    )
+    real_to_parquet = pd.DataFrame.to_parquet
+    calls = {"n": 0}
+
+    def flaky(self, path_arg, *args, **kwargs):  # type: ignore[no-untyped-def]
+        calls["n"] += 1
+        if calls["n"] == 1:
+            raise OSError(
+                "Cannot save file into a non-existent directory: "
+                f"'{path_arg}'",
+            )
+        return real_to_parquet(self, path_arg, *args, **kwargs)
+
+    monkeypatch.setattr(pd.DataFrame, "to_parquet", flaky)
+    write_parquet_retry(frame, path)
+    assert path.is_file()
+    assert calls["n"] == 2

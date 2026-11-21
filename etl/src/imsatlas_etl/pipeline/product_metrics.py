@@ -8,6 +8,7 @@ present in the trade table, every importer and year. IMPC requires population
 from __future__ import annotations
 
 import json
+import time
 from pathlib import Path
 from typing import Any
 
@@ -18,6 +19,30 @@ from imsatlas_etl.pipeline.io_paths import curated_dir
 
 ASIA_SUPPLIERS = frozenset({"CHN", "VNM"})
 PRODUCT_VAR_IDS = ("IMPV", "GRW", "HHI", "ASIASH", "REEXP", "IMPC")
+
+# Concurrent ``release --force`` can wipe staging between mkdir and to_parquet
+# (pyarrow: "Cannot save file into a non-existent directory"). Remake + retry.
+_PARQUET_WRITE_ATTEMPTS = 5
+
+
+def write_parquet_retry(frame: pd.DataFrame, path: Path) -> None:
+    """Write parquet after ensuring parents exist; retry on vanished-dir races."""
+    last: OSError | None = None
+    for attempt in range(_PARQUET_WRITE_ATTEMPTS):
+        try:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            frame.to_parquet(path, index=False)
+            return
+        except OSError as exc:
+            last = exc
+            msg = str(exc).lower()
+            if "non-existent directory" not in msg and "no such file" not in msg:
+                raise
+            if attempt + 1 >= _PARQUET_WRITE_ATTEMPTS:
+                break
+            time.sleep(0.05 * (attempt + 1))
+    assert last is not None
+    raise last
 
 
 def _hs_levels(trade: pd.DataFrame) -> dict[str, pd.DataFrame]:
@@ -204,8 +229,7 @@ def write_product_metrics_partitioned(
     sizes: dict[str, int] = {}
     if frame.empty:
         empty = base / "hs2=_empty" / "part.parquet"
-        empty.parent.mkdir(parents=True, exist_ok=True)
-        frame.to_parquet(empty, index=False)
+        write_parquet_retry(frame, empty)
         return {"parts": 1, "rows": 0, "bytes_by_hs2": {"_empty": empty.stat().st_size}}
     bytes_by: dict[str, int] = {}
     n_parts = 0
@@ -222,7 +246,7 @@ def write_product_metrics_partitioned(
 
         if max_file_bytes is None:
             path = hs2_dir / "part.parquet"
-            chunk.reset_index(drop=True).to_parquet(path, index=False)
+            write_parquet_retry(chunk.reset_index(drop=True), path)
             sizes[hs2_key] = int(len(chunk))
             bytes_by[hs2_key] = path.stat().st_size
             n_parts += 1
@@ -233,8 +257,7 @@ def write_product_metrics_partitioned(
         for (year, vid), sub in chunk.groupby(["year", "variable_id"], sort=True):
             rel = f"year={int(year)}/variable_id={vid}/part.parquet"
             path = hs2_dir / rel
-            path.parent.mkdir(parents=True, exist_ok=True)
-            sub.reset_index(drop=True).to_parquet(path, index=False)
+            write_parquet_retry(sub.reset_index(drop=True), path)
             size = path.stat().st_size
             if size > max_file_bytes:
                 raise ValueError(
@@ -244,6 +267,8 @@ def write_product_metrics_partitioned(
             part_paths.append(rel)
             chapter_bytes += size
             n_parts += 1
+        # index.json after parts; remake parent if a concurrent force wiped it.
+        hs2_dir.mkdir(parents=True, exist_ok=True)
         index_path.write_text(
             json.dumps(
                 {"hs2": hs2_key, "parts": part_paths, "rows": int(len(chunk))},
