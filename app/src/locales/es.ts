@@ -163,7 +163,10 @@ const es = {
   method: "Método",
   saveProject: "Guardar",
   exportProject: "Exportar JSON",
-  importProject: "Importar JSON",
+  importProject: "Abrir un proyecto guardado en mi ordenador",
+  notFoundTitle: "No encontrada",
+  notFoundBody: "Esta ruta no existe en Atlas. Vuelve a tus proyectos o al inicio.",
+  notFoundHome: "Ir al inicio",
   projectsIntro:
     "Guarda, reabre y exporta proyectos de análisis. Con sesión de equipo se comparten en el servidor; sin ella, en este navegador.",
   projectCreate: "Nuevo proyecto",

@@ -161,7 +161,10 @@ export const en = {
   method: "Method",
   saveProject: "Save",
   exportProject: "Export JSON",
-  importProject: "Import JSON",
+  importProject: "Open a project saved on my computer",
+  notFoundTitle: "Not found",
+  notFoundBody: "This path is not part of Atlas. Go back to your projects or home.",
+  notFoundHome: "Go to home",
   projectsIntro:
     "Save, reopen and export analysis projects. With a team session they are shared on the server; otherwise they stay in this browser.",
   projectCreate: "New project",

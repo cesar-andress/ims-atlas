@@ -5,6 +5,7 @@ import { PageShell } from "../components/PageShell";
 import { PermalinkLink } from "../components/PermalinkLink";
 import { hsLabel } from "../data/hsProducts";
 import { countryLabel } from "../design/formatLocale";
+import { formatProjectEditedAt } from "../design/relativeTime";
 import { useTranslation } from "../i18n";
 import {
   createEmptyProject,
@@ -91,9 +92,7 @@ function ProjectCard({
     item.hs ? hsLabel(item.hs, lang) : null,
     item.yearFrom !== undefined ? String(item.yearFrom) : null,
   ].filter((x): x is string => x !== null);
-  const edited = new Intl.DateTimeFormat(lang === "es" ? "es-ES" : "en-GB", {
-    dateStyle: "medium",
-  }).format(new Date(item.updatedAt));
+  const edited = formatProjectEditedAt(item.updatedAt, lang);
   return (
     <button
       type="button"

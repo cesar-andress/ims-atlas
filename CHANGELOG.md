@@ -15,6 +15,8 @@ All notable changes to IMS Atlas are documented in this file.
 - Default normalisation `log_minmax`; COL·HS64 example stays Spanish.
 - `+ Nuevo proyecto` opens Datos empty and the scope wizard (nothing preselected).
 - Pure `checkRankingSanity` helpers for COL·64 / ESP·0901 CI predicates.
+- `/proyectos` → `/projects`; unknown routes → «No encontrada»; project dates as
+  «hoy, 9:18»; import label «Abrir un proyecto guardado en mi ordenador».
 
 ### Security / release policy (P0, 2026-11-21)
 

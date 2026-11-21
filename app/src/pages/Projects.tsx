@@ -28,6 +28,7 @@ import { EMPTY_PROJECT_CONFIG } from "../state/schema";
 import { requestOpenScope } from "../state/projectScope";
 import { preferredProjectView } from "../state/views";
 import { countryLabel } from "../design/formatLocale";
+import { formatProjectEditedAt } from "../design/relativeTime";
 
 function canEditProject(item: ProjectListItem, user: string | undefined): boolean {
   if (item.source !== "team") return true;
@@ -410,7 +411,7 @@ export function Projects() {
               p.hs ? `HS ${p.hs}` : null,
               p.yearFrom !== undefined ? String(p.yearFrom) : null,
             ].filter((x): x is string => x !== null);
-            const edited = p.updatedAt.slice(0, 19).replace("T", " ");
+            const edited = formatProjectEditedAt(p.updatedAt, lang);
             return (
               <article
                 key={p.id}

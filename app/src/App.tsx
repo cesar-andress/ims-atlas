@@ -144,6 +144,9 @@ const Plan4P = lazy(() =>
 const PrepararEnvio = lazy(() =>
   import("./pages/PrepararEnvio").then((m) => ({ default: m.PrepararEnvio })),
 );
+const NotFound = lazy(() =>
+  import("./pages/NotFound").then((m) => ({ default: m.NotFound })),
+);
 
 function RouteFallback() {
   const { t } = useTranslation();
@@ -195,6 +198,7 @@ function AppShell() {
             <Route path="/compare" element={results("compare", <Compare />)} />
             <Route path="/norm_lab" element={<NormLab />} />
             <Route path="/projects" element={<Projects />} />
+            <Route path="/proyectos" element={<Navigate to="/projects" replace />} />
             <Route path="/project_variables" element={<ProjectVariables />} />
             <Route path="/project_coverage" element={<ProjectCoverage />} />
             <Route path="/project_dashboard" element={<ProjectDashboard />} />
@@ -211,6 +215,7 @@ function AppShell() {
             <Route path="/mercado_objetivo" element={<MercadoObjetivo />} />
             <Route path="/plan_4p" element={<Plan4P />} />
             <Route path="/preparar_envio" element={<PrepararEnvio />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </AppShellFrame>
