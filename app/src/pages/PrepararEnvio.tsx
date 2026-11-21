@@ -1,15 +1,24 @@
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
-  JOSE_CORRECTED_DDP_TOTAL,
-  JOSE_DEFAULT_INPUT,
-  JOSE_EXCEL_DDP_TOTAL,
-  JOSE_EXCEL_EXW_TOTAL,
   liquidateIncoterms,
+  version as APP_VERSION,
   type IncotermMode,
+  type LiquidationRow,
 } from "@ims-atlas/core";
 import { PermalinkLink } from "../components/PermalinkLink";
+import { countryLabel } from "../design/formatLocale";
+import { dataConfig } from "../dataConfig";
+import {
+  delayExtraEur,
+  emptyProjectForm,
+  formToLiquidationInput,
+  joseExampleForm,
+  type IncotermsFormState,
+} from "../data/incotermsForm";
 import { useTranslation } from "../i18n";
 import { useAnalysis } from "../state/useAnalysis";
+import { downloadBlob } from "../state/projectExport";
+import { buildXlsx, readmeSheet, rowsToCsv } from "../export/xlsx";
 
 type TabId = "contenedor" | "incoterms" | "documentos" | "syscomer";
 
@@ -99,35 +108,108 @@ function ContainerSketch(props: {
   );
 }
 
+function IncotermStaircase(props: {
+  rows: LiquidationRow[];
+  selected: string;
+  fmt: (n: number) => string;
+}) {
+  const { rows, selected, fmt } = props;
+  const max = Math.max(...rows.map((r) => r.totalEur), 1);
+  return (
+    <div className="envio-stair" data-testid="envio-stair">
+      {rows.map((r) => {
+        const pct = Math.max(4, (r.totalEur / max) * 100);
+        const active = r.key === selected;
+        return (
+          <div
+            key={r.key}
+            className={`envio-stair-row${active ? " active" : ""}`}
+            title={`${r.key}: ${fmt(r.totalEur)}`}
+          >
+            <span className="envio-stair-label">{r.key}</span>
+            <div className="envio-stair-track">
+              <div className="envio-stair-bar" style={{ width: `${pct}%` }} />
+            </div>
+            <span className="envio-stair-val">{fmt(r.totalEur)}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function numOrNull(raw: string): number | null {
+  if (raw.trim() === "") return null;
+  const n = Number(raw.replace(",", "."));
+  return Number.isFinite(n) ? n : null;
+}
+
 /**
- * Step 6 — Contenedor, Incoterms (Jose), Documentos (Próximamente), ideas Syscomer.
+ * Step 6 — Contenedor, Incoterms (project data + Jose preset), Documentos, Syscomer.
  */
 export function PrepararEnvio() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language.startsWith("es") ? "es" : "en";
   const { config, setConfig } = useAnalysis();
   const [tab, setTab] = useState<TabId>("incoterms");
   const [contType, setContType] = useState("40");
   const [palletL, setPalletL] = useState(1.2);
   const [palletW, setPalletW] = useState(0.8);
   const [layers, setLayers] = useState(2);
-  const [delayDays, setDelayDays] = useState(0);
+  const [unitsPerPallet, setUnitsPerPallet] = useState<number | null>(null);
 
-  const mode: IncotermMode = config.incotermsMode ?? "excel";
-  const selected = config.selectedIncoterm ?? "DDP";
+  const originLabel = config.origin
+    ? countryLabel(config.origin, lang)
+    : t("chipChoose");
+  const destLabel = config.targetMarket
+    ? countryLabel(config.targetMarket, lang)
+    : t("chipChoose");
 
-  const rows = useMemo(
-    () =>
-      liquidateIncoterms({
-        ...JOSE_DEFAULT_INPUT,
-        mode,
-        dutyBase: mode === "corrected" ? "fob" : "cif",
-        vatRate: 0,
-      }),
-    [mode],
+  const [form, setForm] = useState<IncotermsFormState>(() =>
+    emptyProjectForm({
+      originIso3: config.origin,
+      targetIso3: config.targetMarket,
+      originLabel,
+      destLabel,
+    }),
   );
 
-  const selectedRow = rows.find((r) => r.key === selected) ?? rows[rows.length - 1]!;
-  const delayCost = delayDays * 75; // illustrative demurrage stub €/day (labelled as example)
+  // Refresh autofill when project origin / target changes (keep user costs).
+  useEffect(() => {
+    setForm((prev) => {
+      if (prev.preset === "jose") return prev;
+      const next = emptyProjectForm(
+        {
+          originIso3: config.origin,
+          targetIso3: config.targetMarket,
+          originLabel,
+          destLabel,
+        },
+        prev.mode,
+      );
+      return {
+        ...next,
+        units: prev.units,
+        exwUnitEur: prev.exwUnitEur,
+        freightEur: prev.freightEur,
+        insuranceEur: prev.insuranceEur,
+        exportClearanceEur: prev.exportClearanceEur,
+        importClearanceEur: prev.importClearanceEur,
+        unloadEur: prev.unloadEur,
+        delayDays: prev.delayDays,
+        delayCostPerDayEur: prev.delayCostPerDayEur,
+        mode: prev.mode,
+      };
+    });
+  }, [config.origin, config.targetMarket, originLabel, destLabel]);
+
+  const mode: IncotermMode = form.mode;
+  const selected = config.selectedIncoterm ?? "DDP";
+
+  const input = useMemo(() => formToLiquidationInput(form), [form]);
+  const rows = useMemo(() => (input ? liquidateIncoterms(input) : []), [input]);
+  const selectedRow = rows.find((r) => r.key === selected) ?? rows[rows.length - 1];
+  const delayExtra = delayExtraEur(form);
 
   const cont =
     CONTAINER_PRESETS.find((c) => c.id === contType) ?? CONTAINER_PRESETS[1]!;
@@ -135,6 +217,14 @@ export function PrepararEnvio() {
   const across = Math.max(1, Math.floor(cont.widthM / palletW));
   const floorPallets = along * across;
   const totalPallets = floorPallets * Math.max(1, layers);
+  const projectUnits = form.units;
+  const containersNeeded =
+    projectUnits != null &&
+    unitsPerPallet != null &&
+    unitsPerPallet > 0 &&
+    totalPallets > 0
+      ? Math.ceil(projectUnits / (totalPallets * unitsPerPallet))
+      : null;
 
   const fmtEur = (n: number, digits = 0) =>
     new Intl.NumberFormat("es-ES", {
@@ -143,20 +233,84 @@ export function PrepararEnvio() {
       maximumFractionDigits: digits,
     }).format(n);
 
-  const joseOk =
-    mode === "excel"
-      ? Math.abs(
-          (rows.find((r) => r.key === "EXW")?.totalEur ?? 0) - JOSE_EXCEL_EXW_TOTAL,
-        ) < 0.5 &&
-        Math.abs(
-          (rows.find((r) => r.key === "DDP")?.totalEur ?? 0) - JOSE_EXCEL_DDP_TOTAL,
-        ) < 0.5
-      : Math.abs(
-          (rows.find((r) => r.key === "EXW")?.totalEur ?? 0) - JOSE_EXCEL_EXW_TOTAL,
-        ) < 0.5 &&
-        Math.abs(
-          (rows.find((r) => r.key === "DDP")?.totalEur ?? 0) - JOSE_CORRECTED_DDP_TOTAL,
-        ) < 0.5;
+  function patchForm(patch: Partial<IncotermsFormState>) {
+    setForm((prev) => ({ ...prev, ...patch, preset: patch.preset ?? prev.preset }));
+  }
+
+  function loadJose() {
+    const next = joseExampleForm(mode);
+    setForm(next);
+    setConfig({
+      incotermsMode: next.mode,
+      selectedIncoterm: "DDP",
+      view: "preparar_envio",
+    });
+  }
+
+  function resetProject() {
+    setForm(
+      emptyProjectForm(
+        {
+          originIso3: config.origin,
+          targetIso3: config.targetMarket,
+          originLabel,
+          destLabel,
+        },
+        mode,
+      ),
+    );
+  }
+
+  function downloadIncotermsXlsx() {
+    if (!rows.length) return;
+    const table = [
+      ["incoterm", "meaning_es", "total_eur", "unit_eur", "days"],
+      ...rows.map((r) => [
+        r.key,
+        r.plainEs,
+        String(r.totalEur),
+        String(r.unitEur),
+        r.days != null ? String(r.days) : "",
+      ]),
+    ];
+    const sources = [
+      `Origen: ${form.originPlace}`,
+      `Destino: ${form.destPlace}`,
+      `Preset: ${form.preset}`,
+      form.dutySource ? `Arancel: ${form.dutySource}` : "",
+      form.vatSource ? `IVA: ${form.vatSource}` : "",
+      form.fxSource ? `FX: ${form.fxSource}` : "",
+    ].filter(Boolean);
+    const blob = buildXlsx([
+      readmeSheet({
+        title: "IMS Atlas — liquidación Incoterms",
+        appVersion: APP_VERSION,
+        releaseId: dataConfig.release_version,
+        exportDate: new Date().toISOString().slice(0, 10),
+        sources,
+      }),
+      { name: "incoterms", rows: table },
+    ]);
+    downloadBlob(blob, "ims-atlas-incoterms.xlsx");
+  }
+
+  function downloadIncotermsCsv() {
+    if (!rows.length) return;
+    const body = rowsToCsv([
+      ["incoterm", "meaning_es", "total_eur", "unit_eur", "days"],
+      ...rows.map((r) => [
+        r.key,
+        r.plainEs,
+        String(r.totalEur),
+        String(r.unitEur),
+        r.days != null ? String(r.days) : "",
+      ]),
+    ]);
+    downloadBlob(
+      new Blob([body], { type: "text/csv;charset=utf-8" }),
+      "ims-atlas-incoterms.csv",
+    );
+  }
 
   const tabs: { id: TabId; label: string }[] = [
     { id: "contenedor", label: t("envioTabContenedor") },
@@ -170,6 +324,19 @@ export function PrepararEnvio() {
       <header className="page-head">
         <h1>{t("stepEnvio")}</h1>
         <p className="muted lead">{t("envioLead")}</p>
+        <p className="envio-project-chip" data-testid="envio-project-context">
+          <span>
+            {t("chipOrigin")} <b>{originLabel}</b>
+          </span>
+          <span>
+            {t("mercadoTarget")} <b>{destLabel}</b>
+          </span>
+          {config.year != null ? (
+            <span>
+              {t("chipYear")} <b>{config.year}</b>
+            </span>
+          ) : null}
+        </p>
       </header>
 
       <div
@@ -196,6 +363,24 @@ export function PrepararEnvio() {
       {tab === "contenedor" ? (
         <div className="envio-panel" data-testid="envio-contenedor">
           <p className="muted">{t("envioContLead")}</p>
+          <div className="envio-hero-stats">
+            <div className="envio-stat">
+              <span className="envio-stat-label">{t("envioContPallets")}</span>
+              <strong data-testid="envio-cont-pallets">{totalPallets}</strong>
+            </div>
+            <div className="envio-stat">
+              <span className="envio-stat-label">{t("envioContUnits")}</span>
+              <strong data-testid="envio-cont-units">
+                {projectUnits != null ? projectUnits : "—"}
+              </strong>
+            </div>
+            <div className="envio-stat">
+              <span className="envio-stat-label">{t("envioContNeed")}</span>
+              <strong data-testid="envio-cont-need">
+                {containersNeeded != null ? containersNeeded : "—"}
+              </strong>
+            </div>
+          </div>
           <label className="field">
             <span>{t("envioContType")}</span>
             <select
@@ -241,6 +426,17 @@ export function PrepararEnvio() {
                 onChange={(e) => setLayers(Math.trunc(Number(e.target.value)) || 1)}
               />
             </label>
+            <label className="field">
+              <span>{t("envioUnitsPerPallet")}</span>
+              <input
+                type="number"
+                min={1}
+                data-testid="envio-units-per-pallet"
+                value={unitsPerPallet ?? ""}
+                placeholder={t("envioLeaveEmpty")}
+                onChange={(e) => setUnitsPerPallet(numOrNull(e.target.value))}
+              />
+            </label>
           </div>
           <ContainerSketch
             along={along}
@@ -256,21 +452,74 @@ export function PrepararEnvio() {
               .replace("{along}", String(along))
               .replace("{across}", String(across))}
           </p>
-          <p className="muted small">{t("envioContJoseHint")}</p>
+          {containersNeeded == null ? (
+            <p className="muted small" data-testid="envio-cont-need-hint">
+              {t("envioContNeedHint")}
+            </p>
+          ) : (
+            <p data-testid="envio-cont-need-msg">
+              {t("envioContNeedMsg")
+                .replace("{n}", String(containersNeeded))
+                .replace("{units}", String(projectUnits))}
+            </p>
+          )}
         </div>
       ) : null}
 
       {tab === "incoterms" ? (
         <div className="envio-panel" data-testid="envio-incoterms">
           <p className="muted">{t("envioIncoLead")}</p>
+          <div className="envio-preset-row">
+            <button
+              type="button"
+              className="btn"
+              data-testid="envio-load-jose"
+              onClick={loadJose}
+            >
+              {t("envioLoadJose")}
+            </button>
+            <button
+              type="button"
+              className="btn"
+              data-testid="envio-reset-project"
+              onClick={resetProject}
+            >
+              {t("envioResetProject")}
+            </button>
+            <button
+              type="button"
+              className="btn"
+              data-testid="envio-download-xlsx"
+              disabled={!rows.length}
+              onClick={downloadIncotermsXlsx}
+            >
+              Excel
+            </button>
+            <button
+              type="button"
+              className="btn"
+              data-testid="envio-download-csv"
+              disabled={!rows.length}
+              onClick={downloadIncotermsCsv}
+            >
+              CSV
+            </button>
+          </div>
+          {form.preset === "jose" ? (
+            <p className="pill" data-testid="envio-jose-preset-pill">
+              {t("envioJosePresetOn")}
+            </p>
+          ) : null}
+
           <div className="envio-mode" role="group" aria-label={t("envioIncoMode")}>
             <button
               type="button"
               className={`btn${mode === "excel" ? " btn-primary" : ""}`}
               data-testid="envio-mode-excel"
-              onClick={() =>
-                setConfig({ incotermsMode: "excel", view: "preparar_envio" })
-              }
+              onClick={() => {
+                patchForm({ mode: "excel" });
+                setConfig({ incotermsMode: "excel", view: "preparar_envio" });
+              }}
             >
               {t("envioModeExcel")}
             </button>
@@ -278,78 +527,290 @@ export function PrepararEnvio() {
               type="button"
               className={`btn${mode === "corrected" ? " btn-primary" : ""}`}
               data-testid="envio-mode-corrected"
-              onClick={() =>
-                setConfig({ incotermsMode: "corrected", view: "preparar_envio" })
-              }
+              onClick={() => {
+                patchForm({ mode: "corrected" });
+                setConfig({ incotermsMode: "corrected", view: "preparar_envio" });
+              }}
             >
               {t("envioModeCorrected")}
             </button>
           </div>
-          <p
-            className={`pill${joseOk ? " ok" : " warn"}`}
-            data-testid="envio-jose-badge"
-          >
-            {mode === "excel" ? t("envioJoseBadge") : t("envioCorrectedBadge")}
-          </p>
-          <p data-testid="envio-selected-summary">
-            {selectedRow.key}: {fmtEur(selectedRow.totalEur)} ·{" "}
-            {fmtEur(selectedRow.unitEur, 2)}/{t("envioPerUnit")}
-            {selectedRow.days != null
-              ? ` · ${selectedRow.days + delayDays} ${t("envioDays")}`
-              : null}
-            {delayDays > 0
-              ? ` · ${t("envioDelayCost")} ${fmtEur(selectedRow.totalEur + delayCost)}`
-              : null}
-          </p>
-          <label className="field">
-            <span>{t("envioDelayDays")}</span>
-            <input
-              type="number"
-              min={0}
-              max={60}
-              value={delayDays}
-              data-testid="envio-delay-days"
-              onChange={(e) =>
-                setDelayDays(Math.max(0, Math.trunc(Number(e.target.value)) || 0))
-              }
-            />
-          </label>
-          <div className="table-scroll">
-            <table className="data-table" data-testid="envio-inco-table">
-              <thead>
-                <tr>
-                  <th>{t("envioColIncoterm")}</th>
-                  <th>{t("envioColMeaning")}</th>
-                  <th>{t("envioColTotal")}</th>
-                  <th>{t("envioColUnit")}</th>
-                  <th>{t("envioColDays")}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((r) => (
-                  <tr
-                    key={r.key}
-                    className={r.key === selected ? "row-target" : undefined}
-                    onClick={() =>
-                      setConfig({
-                        selectedIncoterm: r.key,
-                        view: "preparar_envio",
-                      })
-                    }
-                    style={{ cursor: "pointer" }}
-                  >
-                    <td>
-                      <b>{r.key}</b>
-                    </td>
-                    <td>{r.plainEs}</td>
-                    <td>{fmtEur(r.totalEur)}</td>
-                    <td>{fmtEur(r.unitEur, 2)}</td>
-                    <td>{r.days ?? "—"}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+
+          <div className="envio-form-grid" data-testid="envio-inco-form">
+            <label className="field">
+              <span>{t("envioFieldUnits")}</span>
+              <input
+                type="number"
+                min={1}
+                data-testid="envio-units"
+                value={form.units ?? ""}
+                placeholder={t("envioLeaveEmpty")}
+                onChange={(e) => patchForm({ units: numOrNull(e.target.value) })}
+              />
+            </label>
+            <label className="field">
+              <span>{t("envioFieldExw")}</span>
+              <input
+                type="number"
+                min={0}
+                step={0.01}
+                data-testid="envio-exw"
+                value={form.exwUnitEur ?? ""}
+                placeholder={t("envioLeaveEmpty")}
+                onChange={(e) => patchForm({ exwUnitEur: numOrNull(e.target.value) })}
+              />
+            </label>
+            <label className="field">
+              <span>{t("envioFieldOrigin")}</span>
+              <input
+                type="text"
+                data-testid="envio-origin-place"
+                value={form.originPlace}
+                onChange={(e) =>
+                  patchForm({ originPlace: e.target.value.slice(0, 120) })
+                }
+              />
+            </label>
+            <label className="field">
+              <span>{t("envioFieldDest")}</span>
+              <input
+                type="text"
+                data-testid="envio-dest-place"
+                value={form.destPlace}
+                onChange={(e) => patchForm({ destPlace: e.target.value.slice(0, 120) })}
+              />
+            </label>
+            <label className="field">
+              <span>{t("envioFieldFreight")}</span>
+              <input
+                type="number"
+                min={0}
+                data-testid="envio-freight"
+                value={form.freightEur ?? ""}
+                placeholder={t("envioLeaveEmpty")}
+                onChange={(e) => patchForm({ freightEur: numOrNull(e.target.value) })}
+              />
+            </label>
+            <label className="field">
+              <span>{t("envioFieldInsurance")}</span>
+              <input
+                type="number"
+                min={0}
+                data-testid="envio-insurance"
+                value={form.insuranceEur ?? ""}
+                placeholder={t("envioLeaveEmpty")}
+                onChange={(e) => patchForm({ insuranceEur: numOrNull(e.target.value) })}
+              />
+            </label>
+            <label className="field">
+              <span>{t("envioFieldExportClear")}</span>
+              <input
+                type="number"
+                min={0}
+                data-testid="envio-export-clear"
+                value={form.exportClearanceEur ?? ""}
+                placeholder={t("envioLeaveEmpty")}
+                onChange={(e) =>
+                  patchForm({ exportClearanceEur: numOrNull(e.target.value) })
+                }
+              />
+            </label>
+            <label className="field">
+              <span>{t("envioFieldImportClear")}</span>
+              <input
+                type="number"
+                min={0}
+                data-testid="envio-import-clear"
+                value={form.importClearanceEur ?? ""}
+                placeholder={t("envioLeaveEmpty")}
+                onChange={(e) =>
+                  patchForm({ importClearanceEur: numOrNull(e.target.value) })
+                }
+              />
+            </label>
+            <label className="field">
+              <span>{t("envioFieldUnload")}</span>
+              <input
+                type="number"
+                min={0}
+                data-testid="envio-unload"
+                value={form.unloadEur ?? ""}
+                placeholder={t("envioLeaveEmpty")}
+                onChange={(e) => patchForm({ unloadEur: numOrNull(e.target.value) })}
+              />
+            </label>
+            <label className="field">
+              <span>{t("envioFieldDuty")}</span>
+              <input
+                type="number"
+                min={0}
+                max={100}
+                step={0.01}
+                data-testid="envio-duty"
+                value={form.dutyRate != null ? form.dutyRate * 100 : ""}
+                placeholder={t("envioLeaveEmpty")}
+                onChange={(e) => {
+                  const pct = numOrNull(e.target.value);
+                  patchForm({
+                    dutyRate: pct == null ? null : pct / 100,
+                    dutySource: undefined,
+                  });
+                }}
+              />
+              {form.dutySource ? (
+                <span className="field-source" data-testid="envio-duty-source">
+                  {form.dutySource}
+                </span>
+              ) : (
+                <span className="field-source muted">{t("envioSourceMissing")}</span>
+              )}
+            </label>
+            <label className="field">
+              <span>{t("envioFieldVat")}</span>
+              <input
+                type="number"
+                min={0}
+                max={100}
+                step={0.01}
+                data-testid="envio-vat"
+                value={form.vatRate != null ? form.vatRate * 100 : ""}
+                placeholder={t("envioLeaveEmpty")}
+                onChange={(e) => {
+                  const pct = numOrNull(e.target.value);
+                  patchForm({
+                    vatRate: pct == null ? null : pct / 100,
+                    vatSource: undefined,
+                  });
+                }}
+              />
+              {form.vatSource ? (
+                <span className="field-source" data-testid="envio-vat-source">
+                  {form.vatSource}
+                </span>
+              ) : (
+                <span className="field-source muted">{t("envioSourceMissing")}</span>
+              )}
+            </label>
+            <label className="field">
+              <span>{t("envioFieldFx")}</span>
+              <input
+                type="number"
+                min={0}
+                step={0.0001}
+                data-testid="envio-fx"
+                value={form.fxRate ?? ""}
+                placeholder={t("envioLeaveEmpty")}
+                onChange={(e) =>
+                  patchForm({ fxRate: numOrNull(e.target.value), fxSource: undefined })
+                }
+              />
+              {form.fxSource ? (
+                <span className="field-source" data-testid="envio-fx-source">
+                  {form.fxSource}
+                </span>
+              ) : (
+                <span className="field-source muted">{t("envioSourceMissing")}</span>
+              )}
+            </label>
+            <label className="field">
+              <span>{t("envioDelayDays")}</span>
+              <input
+                type="number"
+                min={0}
+                max={60}
+                data-testid="envio-delay-days"
+                value={form.delayDays}
+                onChange={(e) =>
+                  patchForm({
+                    delayDays: Math.max(0, Math.trunc(Number(e.target.value)) || 0),
+                  })
+                }
+              />
+            </label>
+            <label className="field">
+              <span>{t("envioDelayCostPerDay")}</span>
+              <input
+                type="number"
+                min={0}
+                data-testid="envio-delay-cost"
+                value={form.delayCostPerDayEur ?? ""}
+                placeholder={t("envioDelayCostHint")}
+                onChange={(e) =>
+                  patchForm({ delayCostPerDayEur: numOrNull(e.target.value) })
+                }
+              />
+            </label>
           </div>
+
+          {!rows.length ? (
+            <p className="muted" role="status" data-testid="envio-need-units">
+              {t("envioNeedUnits")}
+            </p>
+          ) : (
+            <>
+              {selectedRow ? (
+                <article
+                  className="envio-hero-card"
+                  data-testid="envio-selected-summary"
+                >
+                  <p className="envio-hero-kicker">{selectedRow.key}</p>
+                  <p className="envio-hero-total">
+                    {fmtEur(selectedRow.totalEur + delayExtra)}
+                  </p>
+                  <p className="muted">
+                    {fmtEur(selectedRow.unitEur, 2)}/{t("envioPerUnit")}
+                    {selectedRow.days != null
+                      ? ` · ${selectedRow.days + form.delayDays} ${t("envioDays")}`
+                      : null}
+                    {delayExtra > 0
+                      ? ` · ${t("envioDelayExtra")} ${fmtEur(delayExtra)}`
+                      : null}
+                  </p>
+                </article>
+              ) : null}
+              <IncotermStaircase
+                rows={rows}
+                selected={selected}
+                fmt={(n) => fmtEur(n)}
+              />
+              <div className="table-scroll">
+                <table className="data-table" data-testid="envio-inco-table">
+                  <thead>
+                    <tr>
+                      <th>{t("envioColIncoterm")}</th>
+                      <th>{t("envioColMeaning")}</th>
+                      <th>{t("envioColTotal")}</th>
+                      <th>{t("envioColUnit")}</th>
+                      <th>{t("envioColDays")}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rows.map((r) => (
+                      <tr
+                        key={r.key}
+                        className={r.key === selected ? "row-target" : undefined}
+                        onClick={() =>
+                          setConfig({
+                            selectedIncoterm: r.key,
+                            view: "preparar_envio",
+                          })
+                        }
+                        style={{ cursor: "pointer" }}
+                      >
+                        <td>
+                          <b>{r.key}</b>
+                        </td>
+                        <td>{r.plainEs}</td>
+                        <td>{fmtEur(r.totalEur)}</td>
+                        <td>{fmtEur(r.unitEur, 2)}</td>
+                        <td>{r.days ?? "—"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
         </div>
       ) : null}
 
