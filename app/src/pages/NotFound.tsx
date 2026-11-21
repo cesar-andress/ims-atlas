@@ -1,4 +1,4 @@
-import { PermalinkLink } from "../components/PermalinkLink";
+import { Link } from "react-router-dom";
 import { PageShell } from "../components/PageShell";
 import { useTranslation } from "../i18n";
 
@@ -11,9 +11,9 @@ export function NotFound() {
         {t("notFoundBody")}
       </p>
       <p>
-        <PermalinkLink to="/inicio" className="btn btn-primary">
+        <Link to="/inicio" className="btn btn-primary" data-testid="not-found-home">
           {t("notFoundHome")}
-        </PermalinkLink>
+        </Link>
       </p>
     </PageShell>
   );
