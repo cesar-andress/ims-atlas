@@ -17,6 +17,11 @@ import {
   type ProjectLibraryStatus,
 } from "./projectIdb";
 import {
+  isNameConflictError,
+  preferredSaveName,
+  withNameDisambiguation,
+} from "./projectName";
+import {
   teamApiAvailable,
   teamDeleteProject,
   teamGetProject,
@@ -24,6 +29,8 @@ import {
   teamMigrateLocal,
   teamUpsertProject,
 } from "./projectTeamApi";
+
+const NAME_CONFLICT_RETRIES = 8;
 
 export type ProjectLibraryMode = "local" | "team";
 
@@ -81,17 +88,47 @@ export async function getProject(id: string): Promise<AtlasProject | null> {
 /** Result of persisting a project (local always succeeds; team may fall back). */
 export type UpsertResult = AtlasProject & {
   teamSync: "ok" | "local_only" | "local_fallback";
+  /** Present when the team save used a different name than the request. */
+  renamedFrom?: string;
+  /** Server / network message when teamSync is local_fallback. */
+  teamSyncError?: string;
 };
 
 export async function upsertProject(project: AtlasProject): Promise<UpsertResult> {
-  const local = await idbUpsertProject(project);
+  const preferred = preferredSaveName(project);
+  const prepared: AtlasProject =
+    preferred === project.name.trim()
+      ? project
+      : { ...project, name: preferred, updatedAt: new Date().toISOString() };
+  const local = await idbUpsertProject(prepared);
   if (await teamBackendReady()) {
-    try {
-      const remote = await teamUpsertProject(local);
-      return { ...remote, teamSync: "ok" };
-    } catch {
-      return { ...local, teamSync: "local_fallback" };
+    let lastError: unknown;
+    for (let n = 1; n <= NAME_CONFLICT_RETRIES; n += 1) {
+      const candidate: AtlasProject = {
+        ...local,
+        name: withNameDisambiguation(preferred, n),
+        updatedAt: new Date().toISOString(),
+      };
+      try {
+        const remote = await teamUpsertProject(candidate);
+        const mirrored = await idbUpsertProject(remote);
+        const renamedFrom =
+          mirrored.name !== project.name.trim() ? project.name.trim() : undefined;
+        return {
+          ...mirrored,
+          teamSync: "ok",
+          ...(renamedFrom ? { renamedFrom } : {}),
+        };
+      } catch (err) {
+        lastError = err;
+        if (!isNameConflictError(err) || n === NAME_CONFLICT_RETRIES) break;
+      }
     }
+    const teamSyncError =
+      lastError instanceof Error && lastError.message.trim()
+        ? lastError.message.trim()
+        : "Team projects API error";
+    return { ...local, teamSync: "local_fallback", teamSyncError };
   }
   return { ...local, teamSync: "local_only" };
 }

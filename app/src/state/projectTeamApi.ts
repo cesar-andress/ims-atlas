@@ -16,6 +16,19 @@ export type TeamProjectListItem = ProjectListItem & {
   source?: "team";
 };
 
+/** Structured team API failure (status + optional machine code from the server). */
+export class TeamProjectsApiError extends Error {
+  readonly status: number;
+  readonly code?: string;
+
+  constructor(status: number, message: string, code?: string) {
+    super(message);
+    this.name = "TeamProjectsApiError";
+    this.status = status;
+    if (code) this.code = code;
+  }
+}
+
 async function apiFetch(path: string, init?: RequestInit): Promise<Response> {
   return fetch(path, {
     credentials: "include",
@@ -37,6 +50,16 @@ function errorMessage(res: Response, body: unknown): string {
   return `Team projects API HTTP ${res.status}`;
 }
 
+function throwApiError(res: Response, body: unknown): never {
+  const code =
+    body !== null &&
+    typeof body === "object" &&
+    typeof (body as { code?: unknown }).code === "string"
+      ? (body as { code: string }).code
+      : undefined;
+  throw new TeamProjectsApiError(res.status, errorMessage(res, body), code);
+}
+
 export async function teamApiAvailable(): Promise<boolean> {
   try {
     const res = await apiFetch(`${API_BASE}/health`);
@@ -55,7 +78,7 @@ export async function teamApiAvailable(): Promise<boolean> {
 export async function teamListProjects(): Promise<TeamProjectListItem[]> {
   const res = await apiFetch(API_BASE);
   const body: unknown = await res.json().catch(() => null);
-  if (!res.ok) throw new Error(errorMessage(res, body));
+  if (!res.ok) throwApiError(res, body);
   if (!Array.isArray(body)) throw new Error("Invalid team project list.");
   return body.map((row) => {
     if (row === null || typeof row !== "object") {
@@ -87,7 +110,7 @@ export async function teamGetProject(id: string): Promise<AtlasProject | null> {
   const res = await apiFetch(`${API_BASE}/${encodeURIComponent(id)}`);
   if (res.status === 404) return null;
   const body: unknown = await res.json().catch(() => null);
-  if (!res.ok) throw new Error(errorMessage(res, body));
+  if (!res.ok) throwApiError(res, body);
   if (body !== null && typeof body === "object" && "_meta" in body) {
     const clone = { ...(body as Record<string, unknown>) };
     delete clone._meta;
@@ -102,7 +125,12 @@ export async function teamUpsertProject(project: AtlasProject): Promise<AtlasPro
     body: JSON.stringify(project),
   });
   const body: unknown = await res.json().catch(() => null);
-  if (!res.ok) throw new Error(errorMessage(res, body));
+  if (!res.ok) throwApiError(res, body);
+  if (body !== null && typeof body === "object" && "_meta" in body) {
+    const clone = { ...(body as Record<string, unknown>) };
+    delete clone._meta;
+    return parseAtlasProject(clone);
+  }
   return parseAtlasProject(body);
 }
 
@@ -112,7 +140,7 @@ export async function teamDeleteProject(id: string): Promise<void> {
   });
   if (res.status === 404) return;
   const body: unknown = await res.json().catch(() => null);
-  if (!res.ok) throw new Error(errorMessage(res, body));
+  if (!res.ok) throwApiError(res, body);
 }
 
 export async function teamMigrateLocal(
@@ -123,7 +151,7 @@ export async function teamMigrateLocal(
     body: JSON.stringify({ projects }),
   });
   const body: unknown = await res.json().catch(() => null);
-  if (!res.ok) throw new Error(errorMessage(res, body));
+  if (!res.ok) throwApiError(res, body);
   if (body === null || typeof body !== "object") {
     throw new Error("Invalid migrate-local response.");
   }

@@ -240,15 +240,28 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
         setDirty(false);
         if (saved.teamSync === "local_fallback") {
           setSaveStatus("error");
+          const nameConflict =
+            typeof saved.teamSyncError === "string" &&
+            /already exists|name_conflict/i.test(saved.teamSyncError);
           toast.push(
-            es
-              ? "No se ha podido guardar en el equipo. Está guardado en este navegador. Reintentar"
-              : "Could not save to the team. Saved in this browser. Retry",
+            nameConflict
+              ? es
+                ? "Ya existe un proyecto con ese nombre en el equipo. Cámbialo y reintenta (está guardado en este navegador)."
+                : "A project with that name already exists on the team. Rename and retry (saved in this browser)."
+              : es
+                ? "No se ha podido guardar en el equipo. Está guardado en este navegador. Reintentar"
+                : "Could not save to the team. Saved in this browser. Retry",
           );
           return;
         }
         setSaveStatus(saved.teamSync === "ok" ? "saved_team" : "saved");
-        if (!opts?.silent) {
+        if (saved.renamedFrom && saved.teamSync === "ok") {
+          toast.push(
+            es
+              ? `Guardado como "${saved.name}" (ese nombre ya estaba en uso en el equipo).`
+              : `Saved as "${saved.name}" (that name was already in use on the team).`,
+          );
+        } else if (!opts?.silent) {
           toast.push(es ? "Proyecto guardado" : "Project saved");
         }
       } catch (err) {

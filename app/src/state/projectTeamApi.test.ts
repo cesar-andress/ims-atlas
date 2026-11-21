@@ -121,4 +121,32 @@ describe("projectTeamApi", () => {
     });
     await expect(teamListProjects()).rejects.toThrow(/Authentication required/);
   });
+
+  it("throws TeamProjectsApiError with code on 409 name_conflict", async () => {
+    const { TeamProjectsApiError } = await import("./projectTeamApi");
+    const project = createEmptyProject({
+      id: "p-conflict",
+      name: "Proyecto nuevo",
+      config: { v: 1, view: "analisis" },
+    });
+    fetchMock.mockResolvedValueOnce({
+      ok: false,
+      status: 409,
+      json: async () => ({
+        error: "A project with this name already exists.",
+        code: "name_conflict",
+      }),
+    });
+    try {
+      await teamUpsertProject(project);
+      expect.unreachable("expected name_conflict");
+    } catch (err) {
+      expect(err).toBeInstanceOf(TeamProjectsApiError);
+      expect(err).toMatchObject({
+        status: 409,
+        code: "name_conflict",
+        message: expect.stringMatching(/already exists/i),
+      });
+    }
+  });
 });

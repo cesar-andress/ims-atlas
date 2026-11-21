@@ -102,6 +102,18 @@ def test_team_crud_share_acl_and_unique_names(tmp_path: Path | None = None) -> N
         }
         code, conflict = _req("POST", base, other, user="bob")
         assert code == 409
+        assert conflict.get("code") == "name_conflict"
+
+        # PUT insert also rejects a taken name with the same code.
+        put_dup = {
+            **project,
+            "id": "p-share-put-dup",
+            "name": "HS64 COL edited",
+        }
+        code, put_conflict = _req("PUT", f"{base}/p-share-put-dup", put_dup, user="bob")
+        assert code == 409
+        assert put_conflict.get("code") == "name_conflict"
+        assert "already exists" in str(put_conflict.get("error", "")).lower()
 
         other["name"] = "HS64 COL bob"
         code, created2 = _req("POST", base, other, user="bob")

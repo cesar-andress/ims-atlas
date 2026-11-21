@@ -152,6 +152,58 @@ describe("projectLibrary facade", () => {
     expect(fallback.name).toBe("Borrador con fallo de equipo");
   });
 
+  it("retries team PUT on name_conflict with a disambiguated scope name", async () => {
+    setProjectLibraryMode("team");
+    const draft = createEmptyProject({
+      id: "503d863a-3737-4550-a70c-6520d9bf1717",
+      name: "Proyecto nuevo",
+      config: {
+        v: 1,
+        view: "variables",
+        origin: "ESP",
+        hs: "8901",
+        year: 2024,
+        lang: "es",
+      },
+      yearFrom: 2024,
+      yearTo: 2024,
+    });
+
+    fetchMock
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ ok: true }),
+      })
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 409,
+        json: async () => ({
+          error: "A project with this name already exists.",
+          code: "name_conflict",
+        }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          ...draft,
+          name: "Barcos · España · 2024 (2)",
+        }),
+      });
+
+    const saved = await upsertProject(draft);
+    expect(saved.teamSync).toBe("ok");
+    expect(saved.renamedFrom).toBe("Proyecto nuevo");
+    expect(saved.name).not.toBe("Proyecto nuevo");
+    const putCalls = fetchMock.mock.calls.filter(
+      (c) => (c[1] as RequestInit | undefined)?.method === "PUT",
+    );
+    expect(putCalls.length).toBeGreaterThanOrEqual(2);
+    const firstBody = JSON.parse(String((putCalls[0]?.[1] as RequestInit).body)) as {
+      name: string;
+    };
+    expect(firstBody.name).not.toBe("Proyecto nuevo");
+  });
+
   it("duplicates through the active library and uploads local projects", async () => {
     const p = createEmptyProject({
       name: "Base",

@@ -222,8 +222,13 @@ class ProjectsHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(raw)
 
-    def _error(self, code: int, message: str) -> None:
-        self._send(code, {"error": message})
+    def _error(
+        self, code: int, message: str, *, error_code: str | None = None
+    ) -> None:
+        payload: dict[str, Any] = {"error": message}
+        if error_code:
+            payload["code"] = error_code
+        self._send(code, payload)
 
     def _read_json(self) -> Any:
         length = int(self.headers.get("Content-Length") or "0")
@@ -347,6 +352,7 @@ class ProjectsHandler(BaseHTTPRequestHandler):
                     self._error(
                         HTTPStatus.CONFLICT,
                         "A project with this name already exists.",
+                        error_code="name_conflict",
                     )
                     return
                 body.setdefault("createdAt", now)
@@ -379,6 +385,7 @@ class ProjectsHandler(BaseHTTPRequestHandler):
                     self._error(
                         HTTPStatus.CONFLICT,
                         "A project with this name already exists.",
+                        error_code="name_conflict",
                     )
                     return
                 # Conflict: keep the write as a new version; never drop prior body.
@@ -583,12 +590,17 @@ class ProjectsHandler(BaseHTTPRequestHandler):
                 "SELECT id FROM projects WHERE id = ?", (pid,)
             ).fetchone()
             if existing is not None:
-                self._error(HTTPStatus.CONFLICT, "Project id already exists; use PUT.")
+                self._error(
+                    HTTPStatus.CONFLICT,
+                    "Project id already exists; use PUT.",
+                    error_code="id_conflict",
+                )
                 return
             if name_taken(conn, body["name"]):
                 self._error(
                     HTTPStatus.CONFLICT,
                     "A project with this name already exists.",
+                    error_code="name_conflict",
                 )
                 return
             display_id = next_display_id(conn)
