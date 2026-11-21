@@ -203,9 +203,7 @@ function CoverageBody() {
         </aside>
       ) : null}
       <p className="small">
-        <PermalinkLink view="project_dashboard">
-          {t("projectDashboardLink")}
-        </PermalinkLink>
+        <PermalinkLink view="analisis">{t("projectDashboardLink")}</PermalinkLink>
         {" · "}
         <button type="button" onClick={() => void saveProject()}>
           {t("saveProject")}

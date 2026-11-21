@@ -1,30 +1,30 @@
-:root,
-[data-theme="light"] {
-  --bg: #f7f7f5;
-  --fg: #1a1a1a;
-  --muted: #5c5c5c;
-  --border: #d8d8d4;
-  --accent: #0b5f4a;
-  --surface: #ffffff;
-  --present: #0b5f4a;
-  --missing: #b33;
-  --unknown: #c8c8c0;
-}
-
-[data-theme="dark"] {
-  --bg: #121412;
-  --fg: #f2f2f0;
-  --muted: #a8a8a0;
-  --border: #2c2f2c;
-  --accent: #5dcaa8;
-  --surface: #1b1e1b;
-  --present: #5dcaa8;
-  --missing: #e88;
-  --unknown: #3a3d3a;
-}
+/* Theme tokens live in design/tokens.css (single source for light/dark). */
 
 * {
   box-sizing: border-box;
+}
+
+/* Content links only — do not override .logo / .btn / nav chrome. */
+p a,
+li a,
+.muted a,
+.small a,
+.analysis-actions a,
+.project-dash-links a,
+.project-dash-export a:not(.btn),
+.lead a {
+  color: var(--accent);
+}
+
+p a:visited,
+li a:visited,
+.muted a:visited,
+.small a:visited,
+.analysis-actions a:visited,
+.project-dash-links a:visited,
+.project-dash-export a:not(.btn):visited,
+.lead a:visited {
+  color: var(--primary-ink);
 }
 
 html,
@@ -566,10 +566,10 @@ textarea:focus-visible {
 
 main {
   flex: 1;
-  padding: 1.5rem 1.25rem 2rem;
-  max-width: 72rem;
+  padding: 1.5rem var(--page-inline-pad, 1.25rem) 2rem;
+  max-width: 100%;
   width: 100%;
-  margin: 0 auto;
+  margin: 0;
   box-sizing: border-box;
   min-width: 0;
 }
@@ -827,6 +827,98 @@ main {
 
 .catalog-cell-coverage {
   margin-top: 0.65rem;
+}
+
+.catalog-source-links {
+  margin: 0.85rem 0 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border, #e4e4e7);
+}
+
+.catalog-source-links h3 {
+  margin: 0 0 0.4rem;
+  font-size: 0.95rem;
+}
+
+.catalog-source-block {
+  margin: 0 0 0.55rem;
+}
+
+.catalog-source-id {
+  margin: 0 0 0.2rem;
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+}
+
+.catalog-source-link-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.catalog-source-link-list a {
+  color: var(--accent, #3a6ea5);
+  word-break: break-all;
+}
+
+.catalog-country-years {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border, #e4e4e7);
+}
+
+.catalog-country-years h3 {
+  margin: 0 0 0.4rem;
+  font-size: 0.95rem;
+}
+
+.catalog-country-search {
+  display: block;
+  margin: 0 0 0.5rem;
+}
+
+.catalog-country-search input {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--border, #d4d4d8);
+  border-radius: 0.35rem;
+  background: var(--surface, #fff);
+}
+
+.catalog-country-hits {
+  list-style: none;
+  margin: 0 0 0.65rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  max-height: 10rem;
+  overflow: auto;
+}
+
+.catalog-country-hits button {
+  width: 100%;
+  text-align: left;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--border, #d4d4d8);
+  border-radius: 0.3rem;
+  background: var(--surface, #fff);
+  cursor: pointer;
+}
+
+.catalog-country-hits button.active {
+  border-color: var(--accent, #3a6ea5);
+  background: color-mix(in srgb, var(--accent, #3a6ea5) 10%, #fff);
+}
+
+.catalog-country-year-report p {
+  margin: 0.35rem 0;
+  line-height: 1.45;
 }
 
 .licence-badge {
@@ -1207,9 +1299,10 @@ main {
 }
 
 .warnings {
-  background: color-mix(in srgb, #c90 12%, transparent);
+  background: var(--notice-bg);
+  color: var(--notice-fg);
   border: 1px solid var(--border);
-  border-radius: 0.35rem;
+  border-radius: var(--radius-btn, 9px);
   padding: 0.5rem 0.75rem 0.5rem 1.5rem;
   margin: 0 0 1rem;
   font-size: 0.85rem;
@@ -2235,7 +2328,17 @@ button.linkish {
 }
 
 .warn {
-  color: #8a4b00;
+  color: var(--notice-fg);
+}
+
+.project-dash-links a,
+.project-dash-export a {
+  text-decoration: none;
+}
+
+.project-dash-links a.btn,
+.project-dash-export .btn {
+  text-decoration: none;
 }
 
 .global-search {
@@ -2386,9 +2489,10 @@ button.pinned {
 
 /* —— GUI-0 results dashboard —— */
 .analysis-page-results {
-  max-width: var(--max-content, 1440px);
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   padding: 0;
+  width: 100%;
 }
 
 .results-dash {
@@ -3067,10 +3171,10 @@ button.pinned {
    criterion cards, results tabs, data table. Colours come from design/tokens.css.
    --------------------------------------------------------------------------- */
 .wrap {
-  max-width: 80rem;
-  margin: 0 auto;
-  padding-left: max(1rem, env(safe-area-inset-left, 0px));
-  padding-right: max(1rem, env(safe-area-inset-right, 0px));
+  max-width: 100%;
+  margin: 0;
+  padding-left: max(var(--page-inline-pad, 1rem), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--page-inline-pad, 1rem), env(safe-area-inset-right, 0px));
   width: 100%;
 }
 

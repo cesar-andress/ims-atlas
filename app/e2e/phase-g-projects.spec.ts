@@ -26,9 +26,10 @@ test.describe("Phase G projects", () => {
     await expect(page.getByTestId("projects-view")).toBeVisible({ timeout: 15_000 });
     await page.getByTestId("project-create").click();
     await expect(page.getByTestId("toast")).toBeVisible({ timeout: 5_000 });
-    await expect(page.getByTestId("project-dashboard-view")).toBeVisible({
+    await expect(page.getByTestId("results-shell")).toBeVisible({
       timeout: 15_000,
     });
+    await expect(page.getByTestId("project-bar")).toBeVisible();
     const name = await page.getByTestId("header-project-name").innerText();
     expect(name.length).toBeGreaterThan(3);
 
@@ -37,7 +38,7 @@ test.describe("Phase G projects", () => {
     const openBtn = page.locator('[data-testid^="project-open-"]').first();
     await expect(openBtn).toBeVisible();
     await openBtn.click();
-    await expect(page.getByTestId("project-dashboard-view")).toBeVisible({
+    await expect(page.getByTestId("results-shell")).toBeVisible({
       timeout: 15_000,
     });
   });
@@ -45,12 +46,13 @@ test.describe("Phase G projects", () => {
   test("export download and import round-trip", async ({ page }) => {
     await page.goto("/projects");
     await page.getByTestId("project-create").click();
-    await expect(page.getByTestId("project-dashboard-view")).toBeVisible({
+    await expect(page.getByTestId("project-bar")).toBeVisible({
       timeout: 15_000,
     });
 
+    await page.getByTestId("project-export").locator("summary").click();
     const downloadPromise = page.waitForEvent("download");
-    await page.getByTestId("project-dash-export-atlas").click();
+    await page.getByTestId("project-export-atlas").click();
     const download = await downloadPromise;
     expect(download.suggestedFilename()).toMatch(/\.atlas\.json$/);
     const path = await download.path();
@@ -61,6 +63,23 @@ test.describe("Phase G projects", () => {
     await expect(page.getByTestId("toast")).toContainText(/imported|importado/i, {
       timeout: 5_000,
     });
+  });
+
+  test("legacy project_dashboard redirects to modern project chrome", async ({
+    page,
+  }) => {
+    await page.goto(
+      `/project_dashboard?c=${encodeConfig({
+        ...COL_HS64_PRESET,
+        view: "project_dashboard",
+        lang: "en",
+      })}`,
+    );
+    await expect(page).toHaveURL(/\/analisis/);
+    await expect(page.getByTestId("results-shell")).toBeVisible({
+      timeout: 15_000,
+    });
+    await expect(page.getByTestId("project-bar")).toBeVisible();
   });
 
   test("coverage grid renders with policies", async ({ page }) => {

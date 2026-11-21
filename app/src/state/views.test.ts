@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   isProjectScreen,
+  preferredProjectView,
   PROJECT_STEP_VIEWS,
   projectStepOf,
   RESULT_VIEWS,
@@ -26,5 +27,18 @@ describe("project steps", () => {
       expect(isProjectScreen(view)).toBe(false);
       expect(projectStepOf(view)).toBeNull();
     }
+  });
+
+  it("opens ready projects on Resultados and incomplete ones on Datos", () => {
+    expect(
+      preferredProjectView({
+        v: 1,
+        view: "project_dashboard",
+        origin: "COL",
+        hs: "64",
+        year: 2019,
+      }),
+    ).toBe("analisis");
+    expect(preferredProjectView({ v: 1, view: "project_dashboard" })).toBe("datos");
   });
 });

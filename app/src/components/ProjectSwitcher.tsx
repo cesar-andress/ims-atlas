@@ -5,7 +5,7 @@ import { useTranslation } from "../i18n";
 import { createEmptyProject, type ProjectListItem } from "../state/projectModel";
 import { getProject, listProjects, upsertProject } from "../state/projectLibrary";
 import { useAnalysis } from "../state/useAnalysis";
-import { isAnalysisReady, isProjectScreen } from "../state/views";
+import { isProjectScreen, preferredProjectView } from "../state/views";
 import { PermalinkLink } from "./PermalinkLink";
 
 function scopeLine(item: ProjectListItem, lang: "en" | "es"): string {
@@ -65,7 +65,7 @@ export function ProjectSwitcher() {
     try {
       const project = await getProject(id);
       if (!project) return;
-      openProject(project, isAnalysisReady(project.config) ? "analisis" : "datos");
+      openProject(project, preferredProjectView(project.config));
       setOpen(false);
     } finally {
       setBusy(false);
@@ -81,7 +81,7 @@ export function ProjectSwitcher() {
         config: { v: 1, view: "datos", lang },
       });
       const saved = await upsertProject(project);
-      openProject(saved, "datos");
+      openProject(saved, preferredProjectView(saved.config));
       setOpen(false);
     } finally {
       setBusy(false);

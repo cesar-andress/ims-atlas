@@ -25,6 +25,7 @@ import {
 import { importAtlasProjectJson } from "../state/projectStore";
 import { useAnalysis } from "../state/useAnalysis";
 import { COL_HS64_PRESET } from "../state/schema";
+import { preferredProjectView } from "../state/views";
 
 export function Projects() {
   const { t, i18n } = useTranslation();
@@ -60,7 +61,7 @@ export function Projects() {
   async function createNew() {
     const base = {
       ...COL_HS64_PRESET,
-      view: "project_dashboard" as const,
+      view: "analisis" as const,
       lang: lang as "en" | "es",
     };
     const partial = {
@@ -72,7 +73,7 @@ export function Projects() {
     const { upsertProject } = await import("../state/projectLibrary");
     const saved = await upsertProject(project);
     await refresh();
-    openProject(saved, "project_dashboard");
+    openProject(saved, preferredProjectView(saved.config));
     toast.push(t("projectCreated"));
   }
 
@@ -80,7 +81,7 @@ export function Projects() {
     const { getProject } = await import("../state/projectLibrary");
     const p = await getProject(id);
     if (!p) return;
-    openProject(p, "project_dashboard");
+    openProject(p, preferredProjectView(p.config));
   }
 
   async function onRename(id: string, current: string) {
@@ -168,6 +169,7 @@ export function Projects() {
       <div className="projects-toolbar">
         <button
           type="button"
+          className="btn primary"
           data-testid="project-create"
           onClick={() => void createNew()}
         >

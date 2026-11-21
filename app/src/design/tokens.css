@@ -15,13 +15,19 @@
   --fg: var(--ink);
   --muted: var(--ink-2);
   --accent: var(--primary);
+  --present: #0f766e;
+  --missing: #b91c1c;
+  --unknown: #cbd5e1;
   --radius-card: 14px;
   --radius-btn: 9px;
   --radius-chip: 999px;
   --page-pad: 24px;
   --gap: 20px;
-  --max-content: 1440px;
+  /* Desktop: fill the viewport; padding lives on .wrap / main. */
+  --max-content: none;
   --header-h: 64px;
+  --layout-bp: 900px;
+  --page-inline-pad: 1.25rem;
 
   --crit-cost: #0072b2;
   --crit-logi: #e69f00;
@@ -72,6 +78,9 @@
   --fg: var(--ink);
   --muted: var(--ink-2);
   --accent: var(--primary);
+  --present: #2dd4bf;
+  --missing: #f87171;
+  --unknown: #334155;
   --notice-bg: #422006;
   --notice-fg: #fde68a;
   --select-bg: #134e4a;
@@ -82,6 +91,14 @@
   --ok-bg: #0e3326;
   --ok-fg: #6ee7b7;
   --shadow-card: none;
+}
+
+@media (min-width: 900px) {
+  :root,
+  [data-theme="light"],
+  [data-theme="dark"] {
+    --page-inline-pad: clamp(1.25rem, 2vw, 2rem);
+  }
 }
 
 .font-tabular {

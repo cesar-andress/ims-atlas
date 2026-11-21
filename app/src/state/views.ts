@@ -70,6 +70,11 @@ export function isAnalysisReady(config: AnalysisConfig): boolean {
   return Boolean(config.origin && config.hs && config.year);
 }
 
+/** Canonical screen after opening a project (modern chrome, not legacy dashboard). */
+export function preferredProjectView(config: AnalysisConfig): ViewId {
+  return isAnalysisReady(config) ? "analisis" : "datos";
+}
+
 /** Result screens must not show config (GUI simplicity rule). */
 export function isResultsView(view: ViewId): boolean {
   return (

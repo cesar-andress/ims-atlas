@@ -21,7 +21,7 @@ import {
 import { importAtlasProjectJson } from "../state/projectStore";
 import { COL_HS64_PRESET } from "../state/schema";
 import { useAnalysis } from "../state/useAnalysis";
-import { isAnalysisReady } from "../state/views";
+import { preferredProjectView } from "../state/views";
 
 const EXAMPLE_SEEDED_KEY = "ims-atlas.example-seeded";
 const FIRST_VISIT_KEY = "ims-atlas.first-visit-dismissed";
@@ -155,7 +155,7 @@ export function Home() {
   async function onOpen(id: string) {
     const project = await getProject(id);
     if (!project) return;
-    openProject(project, isAnalysisReady(project.config) ? "analisis" : "datos");
+    openProject(project, preferredProjectView(project.config));
   }
 
   async function onNew() {
@@ -165,7 +165,7 @@ export function Home() {
     });
     const saved = await upsertProject(project);
     await refresh();
-    openProject(saved, "datos");
+    openProject(saved, preferredProjectView(saved.config));
   }
 
   function onImport(file: File) {
@@ -174,7 +174,7 @@ export function Home() {
       try {
         const saved = await upsertProject(importAtlasProjectJson(text));
         await refresh();
-        openProject(saved, isAnalysisReady(saved.config) ? "analisis" : "datos");
+        openProject(saved, preferredProjectView(saved.config));
       } catch (err) {
         setImportError(plainErrorMessage(err));
       }
