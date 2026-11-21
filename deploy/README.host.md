@@ -120,11 +120,12 @@ overwrite the broken tree) from curated:
 
 ```bash
 cd /opt/services/ims-atlas
-docker run --rm -v "$PWD:/w" -w /w --memory=24g \
+docker run --rm -v "$PWD:/w" -w /w -e ATLAS_ROOT=/w --memory=24g \
   ghcr.io/astral-sh/uv:python3.11-bookworm-slim \
-  bash -lc 'cd /w/etl && uv sync --extra backtest --group dev \
+  bash -lc 'apt-get update -qq && apt-get install -y -qq git >/dev/null \
+    && cd /w/etl && uv sync --group dev \
     && uv run python ../scripts/repair_internal_release_product.py \
-    --from-version 1.1.0 --to-version 1.2.0'
+    --root /w --from-version 1.1.0 --to-version 1.2.0'
 ./deploy/sync-public-status.sh
 docker compose -f deploy/docker-compose.yml up -d
 ```

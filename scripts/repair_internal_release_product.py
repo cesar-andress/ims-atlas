@@ -48,13 +48,25 @@ def _chapters(path: Path) -> list[str]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--root", type=Path, default=Path("."))
+    parser.add_argument(
+        "--root",
+        type=Path,
+        default=None,
+        help="Repo root (default: parent of scripts/ or $ATLAS_ROOT)",
+    )
     parser.add_argument("--from-version", default="1.1.0")
     parser.add_argument("--to-version", default="1.2.0")
     parser.add_argument("--min-chapters", type=int, default=90)
     args = parser.parse_args()
 
-    root: Path = args.root.resolve()
+    if args.root is not None:
+        root = args.root.resolve()
+    elif (atlas := (Path(__file__).resolve().parents[1])).joinpath("data").is_dir():
+        root = atlas
+    elif (env_root := __import__("os").environ.get("ATLAS_ROOT")):
+        root = Path(env_root).resolve()
+    else:
+        root = Path.cwd().resolve()
     sys.path.insert(0, str(root / "etl" / "src"))
 
     from imsatlas_etl.pipeline.integrity import write_sha256sums
