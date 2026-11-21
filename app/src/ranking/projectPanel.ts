@@ -8,6 +8,7 @@ import { loadAccessConfig } from "../auth/accessConfig";
 import { loadCatalogPreview } from "../data/catalogLoader";
 import { dataConfig, releaseUrl } from "../dataConfig";
 import { getAtlasDataClient } from "../data/duckdbClient";
+import { escapeSqlLiteral, locfSelectSql, locfYears } from "../data/panelQueryHelpers";
 import type { CatalogVariable } from "../data/types";
 import {
   DemoPanelPendingError,
@@ -39,13 +40,35 @@ export type ProjectPanelRequest = {
 type CacheEntry = { key: string; panel: DemoPanel; builtAt: number };
 let cache: CacheEntry | null = null;
 
+/** Short TTL so Authelia probe is not repeated on every weight tweak. */
+let sessionCache: { at: number; base: string; team: boolean } | null = null;
+const SESSION_TTL_MS = 60_000;
+
 function hs2Of(hs: string): string {
   const digits = hs.replace(/\D/g, "");
   return digits.slice(0, 2).padStart(2, "0");
 }
 
 function escapeSql(value: string): string {
-  return value.replace(/'/g, "''");
+  return escapeSqlLiteral(value);
+}
+
+function ingestLocfRows(
+  rows: Record<string, unknown>[],
+  into: Map<string, { year: number; value: number }>,
+  allowIso?: Set<string>,
+): void {
+  for (const row of rows) {
+    const iso = String(row.iso3 ?? "");
+    const vid = String(row.variable_id ?? "");
+    const y = Number(row.year);
+    const val = row.value == null ? null : Number(row.value);
+    if (!iso || !vid || !Number.isFinite(y) || val == null || !Number.isFinite(val)) {
+      continue;
+    }
+    if (allowIso && !allowIso.has(iso)) continue;
+    into.set(`${iso}|${vid}`, { year: y, value: val });
+  }
 }
 
 async function resolveInternalVersion(): Promise<string> {
@@ -65,6 +88,10 @@ async function resolveInternalVersion(): Promise<string> {
 }
 
 async function releaseBaseForSession(): Promise<{ base: string; team: boolean }> {
+  const now = Date.now();
+  if (sessionCache && now - sessionCache.at < SESSION_TTL_MS) {
+    return { base: sessionCache.base, team: sessionCache.team };
+  }
   const publicBase = releaseUrl();
   try {
     const cfg = await loadAccessConfig();
@@ -80,12 +107,16 @@ async function releaseBaseForSession(): Promise<{ base: string; team: boolean }>
     const team = probe.ok || probe.status === 404;
     if (team) {
       const ver = await resolveInternalVersion();
-      return { base: `/data/release/internal/v${ver}`, team: true };
+      const out = { base: `/data/release/internal/v${ver}`, team: true };
+      sessionCache = { at: now, ...out };
+      return out;
     }
   } catch {
     /* anonymous */
   }
-  return { base: publicBase, team: false };
+  const out = { base: publicBase, team: false };
+  sessionCache = { at: now, ...out };
+  return out;
 }
 
 function metaFor(
@@ -111,11 +142,13 @@ export async function loadProjectPanel(req: ProjectPanelRequest): Promise<DemoPa
     throw new DemoPanelPendingError("TEAM_RESULTS_PENDING");
   }
 
-  const { base, team } = await releaseBaseForSession();
+  const [{ base, team }, catalogPreview] = await Promise.all([
+    releaseBaseForSession(),
+    loadCatalogPreview(),
+  ]);
   const key = `${origin}|${hs}|${year}|${base}`;
   if (cache && cache.key === key) return cache.panel;
 
-  const catalogPreview = await loadCatalogPreview();
   const catalog = new Map(catalogPreview.variables.map((v) => [v.id, v]));
 
   const client = getAtlasDataClient();
@@ -126,48 +159,38 @@ export async function loadProjectPanel(req: ProjectPanelRequest): Promise<DemoPa
   const hsDigits = hs.replace(/\D/g, "");
   const hsLevel = hsDigits.length <= 2 ? "hs2" : hsDigits.length <= 4 ? "hs4" : "hs6";
   const hsCode = hsDigits.length <= 2 ? hs2 : hsDigits;
+  const yearWindow = locfYears(Number(year), LOCF_MAX_LAG);
+  const yearMin = yearWindow[0]!;
 
-  const productOk = await client.loadCountryProductChapter(hs2, {
+  // One hive slice for the LOCF window (avoid year-only then full-chapter fallback).
+  let productOk = await client.loadCountryProductChapter(hs2, {
     basePath: base,
-    year,
+    years: yearWindow,
     variableIds: [...PRODUCT_VAR_IDS],
   });
   if (!productOk) {
-    // Try without year filter (LOCF across product years).
-    const anyYear = await client.loadCountryProductChapter(hs2, {
+    productOk = await client.loadCountryProductChapter(hs2, {
       basePath: base,
       variableIds: [...PRODUCT_VAR_IDS],
     });
-    if (!anyYear) {
-      throw new DemoPanelPendingError("TEAM_RESULTS_PENDING");
-    }
+  }
+  if (!productOk) {
+    throw new DemoPanelPendingError("TEAM_RESULTS_PENDING");
   }
 
   const table = `country_product_hs2_${hs2}`;
-  const productRows = await client.querySql(`
-    SELECT iso3, year, variable_id, value
-    FROM ${table}
-    WHERE hs_level = '${escapeSql(hsLevel)}'
-      AND CAST(hs_code AS VARCHAR) = '${escapeSql(hsCode)}'
-      AND year <= ${Number(year)}
-      AND year >= ${Number(year) - LOCF_MAX_LAG}
-      AND variable_id IN (${PRODUCT_VAR_IDS.map((id) => `'${id}'`).join(",")})
-  `);
-
-  // LOCF per (iso3, variable_id): latest year <= project year.
   const productBest = new Map<string, { year: number; value: number }>();
-  for (const row of productRows) {
-    const iso = String(row.iso3 ?? "");
-    const vid = String(row.variable_id ?? "");
-    const y = Number(row.year);
-    const val = row.value == null ? null : Number(row.value);
-    if (!iso || !vid || !Number.isFinite(y) || val == null || !Number.isFinite(val)) {
-      continue;
-    }
-    const k = `${iso}|${vid}`;
-    const prev = productBest.get(k);
-    if (!prev || y > prev.year) productBest.set(k, { year: y, value: val });
-  }
+  const productRows = await client.querySql(
+    locfSelectSql({
+      from: table,
+      isoColumn: "iso3",
+      yearMax: Number(year),
+      yearMin,
+      variableIds: PRODUCT_VAR_IDS,
+      extraWhere: `hs_level = '${escapeSql(hsLevel)}' AND CAST(hs_code AS VARCHAR) = '${escapeSql(hsCode)}'`,
+    }),
+  );
+  ingestLocfRows(productRows, productBest);
 
   const candidates = new Set<string>();
   for (const [k, cell] of productBest) {
@@ -177,6 +200,7 @@ export async function loadProjectPanel(req: ProjectPanelRequest): Promise<DemoPa
   if (candidates.size < 20) {
     throw new DemoPanelPendingError("TEAM_RESULTS_PENDING");
   }
+  const candidateListSorted = [...candidates].sort();
 
   // Country-year with LOCF (catalog ids that are not product/bilateral).
   const productSet = new Set<string>(PRODUCT_VAR_IDS);
@@ -217,54 +241,38 @@ export async function loadProjectPanel(req: ProjectPanelRequest): Promise<DemoPa
     ]),
   ].filter((id) => metaFor(catalog, id));
 
-  const countryRows = await client.querySql(`
-    SELECT iso3, year, variable_id, value
-    FROM country_year
-    WHERE year <= ${Number(year)}
-      AND year >= ${Number(year) - LOCF_MAX_LAG}
-      AND variable_id IN (${countryWanted.map((id) => `'${escapeSql(id)}'`).join(",") || "''"})
-  `);
   const countryBest = new Map<string, { year: number; value: number }>();
-  for (const row of countryRows) {
-    const iso = String(row.iso3 ?? "");
-    const vid = String(row.variable_id ?? "");
-    const y = Number(row.year);
-    const val = row.value == null ? null : Number(row.value);
-    if (!iso || !vid || !Number.isFinite(y) || val == null || !Number.isFinite(val)) {
-      continue;
-    }
-    if (!candidates.has(iso)) continue;
-    const k = `${iso}|${vid}`;
-    const prev = countryBest.get(k);
-    if (!prev || y > prev.year) countryBest.set(k, { year: y, value: val });
+  if (countryWanted.length) {
+    const countryRows = await client.querySql(
+      locfSelectSql({
+        from: "country_year",
+        isoColumn: "iso3",
+        yearMax: Number(year),
+        yearMin,
+        variableIds: countryWanted,
+        isoFilter: candidateListSorted,
+      }),
+    );
+    ingestLocfRows(countryRows, countryBest, candidates);
   }
 
-  // Bilateral for origin → destination.
-  let bilateralBest = new Map<string, { year: number; value: number }>();
+  // Bilateral for origin → destination (filter destinations in SQL — never LIMIT 500000).
+  const bilateralBest = new Map<string, { year: number; value: number }>();
   try {
-    const bilRows = await client.querySql(`
-      SELECT iso3_d AS iso3, year, variable_id, value
-      FROM bilateral_year
-      WHERE iso3_o = '${escapeSql(origin)}'
-        AND year <= ${Number(year)}
-        AND year >= ${Number(year) - LOCF_MAX_LAG}
-        AND variable_id IN (${BILATERAL_VAR_IDS.map((id) => `'${id}'`).join(",")})
-      LIMIT 500000
-    `);
-    bilateralBest = new Map();
-    for (const row of bilRows) {
-      const iso = String(row.iso3 ?? "");
-      const vid = String(row.variable_id ?? "");
-      const y = Number(row.year);
-      const val = row.value == null ? null : Number(row.value);
-      if (!iso || !vid || !candidates.has(iso)) continue;
-      if (!Number.isFinite(y) || val == null || !Number.isFinite(val)) continue;
-      const k = `${iso}|${vid}`;
-      const prev = bilateralBest.get(k);
-      if (!prev || y > prev.year) bilateralBest.set(k, { year: y, value: val });
-    }
+    const bilRows = await client.querySql(
+      locfSelectSql({
+        from: "bilateral_year",
+        isoColumn: "iso3_d",
+        yearMax: Number(year),
+        yearMin,
+        variableIds: BILATERAL_VAR_IDS,
+        isoFilter: candidateListSorted,
+        extraWhere: `iso3_o = '${escapeSql(origin)}'`,
+      }),
+    );
+    ingestLocfRows(bilRows, bilateralBest, candidates);
   } catch {
-    bilateralBest = new Map();
+    bilateralBest.clear();
   }
 
   const usedIds = new Set<string>();
@@ -297,7 +305,7 @@ export async function loadProjectPanel(req: ProjectPanelRequest): Promise<DemoPa
     throw new DemoPanelPendingError("TEAM_RESULTS_PENDING");
   }
 
-  const candidateList = [...candidates].sort();
+  const candidateList = candidateListSorted;
   const values: (number | null)[][] = [];
   const importVolume: Record<string, number> = {};
   const coveragePct: Record<string, number> = {};
@@ -374,6 +382,7 @@ export async function loadProjectPanel(req: ProjectPanelRequest): Promise<DemoPa
 
 export function resetProjectPanelCache(): void {
   cache = null;
+  sessionCache = null;
   resetDemoPanelCache();
 }
 

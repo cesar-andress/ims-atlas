@@ -8,9 +8,17 @@
  * - Trade / country_product: register URLs or VIEWs; push filters into
  *   `read_parquet(...)` so HTTP range + parquet stats can skip work.
  * - One shared client ({@link getAtlasDataClient}) so WASM is not re-booted.
+ *
+ * Logging: default `ConsoleLogger` (INFO) dumps every QUERY RUN as
+ * `console.log(LogEntry)` — DevTools floods with expandable Objects on
+ * Resultados. Always use {@link createDuckDbWasmLogger} (VoidLogger).
  */
 
-import type { AsyncDuckDB, AsyncDuckDBConnection } from "@duckdb/duckdb-wasm";
+import type {
+  AsyncDuckDB,
+  AsyncDuckDBConnection,
+  Logger,
+} from "@duckdb/duckdb-wasm";
 import { releaseUrl } from "../dataConfig";
 import { filterCountryProductParts } from "./panelQueryHelpers";
 import type { CountryYearRow, DataStatus } from "./types";
@@ -55,6 +63,93 @@ export type AtlasDataClient = {
   querySql(sql: string): Promise<Record<string, unknown>[]>;
 };
 
+/** Kind of DuckDB / HTTP failure (for UI mapping; never dump raw LogEntry). */
+export type AtlasDataErrorKind =
+  | "http_auth"
+  | "http_io"
+  | "missing_table"
+  | "query"
+  | "init";
+
+export class AtlasDataError extends Error {
+  readonly kind: AtlasDataErrorKind;
+
+  constructor(
+    message: string,
+    kind: AtlasDataErrorKind,
+    options?: { cause?: unknown },
+  ) {
+    super(
+      message,
+      options?.cause !== undefined ? { cause: options.cause } : undefined,
+    );
+    this.name = "AtlasDataError";
+    this.kind = kind;
+  }
+}
+
+/**
+ * Map a DuckDB / httpfs failure to a stable {@link AtlasDataError}.
+ * Empty result sets are success — do not call this for “no rows”.
+ */
+export function classifyDuckDbError(err: unknown): AtlasDataError {
+  if (err instanceof AtlasDataError) return err;
+  const msg = err instanceof Error ? err.message : String(err);
+  const lower = msg.toLowerCase();
+  if (
+    /\b401\b/.test(lower) ||
+    /\b403\b/.test(lower) ||
+    lower.includes("unauthorized") ||
+    lower.includes("forbidden") ||
+    lower.includes("authentication")
+  ) {
+    return new AtlasDataError(
+      "Data release requires an authenticated session (HTTP 401/403).",
+      "http_auth",
+      { cause: err },
+    );
+  }
+  if (
+    lower.includes("table with name") ||
+    lower.includes("does not exist") ||
+    lower.includes("catalog error") ||
+    lower.includes("catalog_error") ||
+    lower.includes("not find") ||
+    lower.includes("no files found that match")
+  ) {
+    return new AtlasDataError(
+      `Release table unavailable: ${msg}`,
+      "missing_table",
+      { cause: err },
+    );
+  }
+  if (
+    lower.includes("io error") ||
+    lower.includes("http") ||
+    lower.includes("failed to read") ||
+    lower.includes("parquet")
+  ) {
+    return new AtlasDataError(
+      `Could not read release parquet: ${msg}`,
+      "http_io",
+      { cause: err },
+    );
+  }
+  return new AtlasDataError(msg || "DuckDB query failed", "query", {
+    cause: err,
+  });
+}
+
+/**
+ * Quiet WASM logger. Never use default ConsoleLogger(INFO): it
+ * `console.log`s every SQL LogEntry and looks like a Resultados failure flood.
+ */
+export function createDuckDbWasmLogger(duckdb: {
+  VoidLogger: new () => Logger;
+}): Logger {
+  return new duckdb.VoidLogger();
+}
+
 let duckdbModulePromise: Promise<typeof import("@duckdb/duckdb-wasm")> | null =
   null;
 
@@ -82,6 +177,9 @@ export function absoluteDataUrl(path: string): string {
       : "http://localhost";
   return new URL(path, `${origin}/`).href.replace(/\/$/, "");
 }
+
+/** Same-origin Authelia session cookies for index/HEAD probes. */
+const CREDENTIALED: RequestInit = { credentials: "include" };
 
 /**
  * Bilateral may be a single parquet or hive parts under bilateral_year/
@@ -118,9 +216,6 @@ async function resolveBilateralParquetSource(base: string): Promise<string> {
 function hs2Key(hs2: string): string {
   return hs2.padStart(2, "0").slice(0, 2);
 }
-
-/** Same-origin Authelia session cookies (DuckDB httpfs alone often omits them). */
-const CREDENTIALED: RequestInit = { credentials: "include" };
 
 /** Probe that a release parquet is reachable without downloading the body. */
 async function parquetExists(url: string): Promise<boolean> {
@@ -177,19 +272,23 @@ export function createDuckDbClient(): AtlasDataClient {
             }),
           );
           const worker = new Worker(workerUrl);
-          // VoidLogger: ConsoleLogger dumps every SQL as a red Object and stalls the UI.
-          const logger = new duckdb.VoidLogger();
+          const logger = createDuckDbWasmLogger(duckdb);
           db = new duckdb.AsyncDuckDB(logger, worker);
           await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
           conn = await db.connect();
           status = "ready";
           URL.revokeObjectURL(workerUrl);
         } catch (err) {
+          const mapped = new AtlasDataError(
+            err instanceof Error ? err.message : String(err),
+            "init",
+            { cause: err },
+          );
           status = "error";
-          error = err instanceof Error ? err.message : String(err);
+          error = mapped.message;
           db = null;
           conn = null;
-          throw err;
+          throw mapped;
         } finally {
           initPromise = null;
         }
@@ -216,6 +315,22 @@ export function createDuckDbClient(): AtlasDataClient {
         status = "loading";
         const countryUrl = `${base}/country_year.parquet`;
         try {
+          const probe = await fetch(countryUrl, {
+            method: "HEAD",
+            ...CREDENTIALED,
+          });
+          if (probe.status === 401 || probe.status === 403) {
+            throw new AtlasDataError(
+              "Data release requires an authenticated session (HTTP 401/403).",
+              "http_auth",
+            );
+          }
+          if (!(await parquetExists(countryUrl))) {
+            throw new AtlasDataError(
+              `country_year.parquet not reachable at ${countryUrl}`,
+              "http_io",
+            );
+          }
           // Small panel (~18k rows): materialise once for snappy SQL console.
           await connection.query(`
             CREATE OR REPLACE TABLE country_year AS
@@ -240,11 +355,12 @@ export function createDuckDbClient(): AtlasDataClient {
           releaseBase = base;
           status = "ready";
         } catch (err) {
+          const mapped = classifyDuckDbError(err);
           status = "error";
-          error = err instanceof Error ? err.message : String(err);
+          error = mapped.message;
           releaseBase = null;
           bilateralMaterialised = false;
-          throw err;
+          throw mapped;
         } finally {
           releasePromise = null;
           releasePromiseKey = null;
@@ -287,10 +403,13 @@ export function createDuckDbClient(): AtlasDataClient {
         const indexRes = await fetch(`${chapter}/index.json`, CREDENTIALED);
         if (indexRes.ok) {
           const index = (await indexRes.json()) as { parts?: string[] };
-          const parts = filterCountryProductParts(index.parts ?? [], {
-            years,
-            variableIds,
-          });
+          const partOpts: {
+            years?: readonly number[];
+            variableIds?: readonly string[];
+          } = {};
+          if (years?.length) partOpts.years = years;
+          if (variableIds?.length) partOpts.variableIds = variableIds;
+          const parts = filterCountryProductParts(index.parts ?? [], partOpts);
           if (!parts.length) return false;
           const list = parts
             .map((rel) => `'${escapeSqlString(`${chapter}/${rel}`)}'`)
@@ -333,26 +452,34 @@ export function createDuckDbClient(): AtlasDataClient {
         ${where}
         LIMIT ${limit}
       `;
-      const table = await connection.query(sql);
-      return table.toArray().map((row) => {
-        const r = row.toJSON() as Record<string, unknown>;
-        return {
-          iso3: String(r.iso3),
-          year: Number(r.year),
-          variable_id: String(r.variable_id),
-          value:
-            r.value === null || r.value === undefined ? null : Number(r.value),
-          flag_imputed: Boolean(r.flag_imputed),
-          flag_locf: Boolean(r.flag_locf),
-        };
-      });
+      try {
+        const table = await connection.query(sql);
+        return table.toArray().map((row) => {
+          const r = row.toJSON() as Record<string, unknown>;
+          return {
+            iso3: String(r.iso3),
+            year: Number(r.year),
+            variable_id: String(r.variable_id),
+            value:
+              r.value === null || r.value === undefined ? null : Number(r.value),
+            flag_imputed: Boolean(r.flag_imputed),
+            flag_locf: Boolean(r.flag_locf),
+          };
+        });
+      } catch (err) {
+        throw classifyDuckDbError(err);
+      }
     },
     async querySql(sql: string) {
       const connection = await ensureConn();
-      const table = await connection.query(sql);
-      return table
-        .toArray()
-        .map((row) => row.toJSON() as Record<string, unknown>);
+      try {
+        const table = await connection.query(sql);
+        return table
+          .toArray()
+          .map((row) => row.toJSON() as Record<string, unknown>);
+      } catch (err) {
+        throw classifyDuckDbError(err);
+      }
     },
   };
 

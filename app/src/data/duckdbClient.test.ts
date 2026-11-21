@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   createDuckDbClient,
@@ -5,6 +8,17 @@ import {
   getAtlasDataClient,
   resetAtlasDataClientForTests,
 } from "./duckdbClient";
+
+describe("DuckDB logger choice", () => {
+  it("uses VoidLogger (ConsoleLogger floods the browser and stalls Results)", () => {
+    const src = readFileSync(
+      join(dirname(fileURLToPath(import.meta.url)), "duckdbClient.ts"),
+      "utf8",
+    );
+    expect(src).toContain("new duckdb.VoidLogger()");
+    expect(src).not.toMatch(/new duckdb\.ConsoleLogger\(/);
+  });
+});
 
 describe("memory data client", () => {
   it("filters country-year rows", async () => {

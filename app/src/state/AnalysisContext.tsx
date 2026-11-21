@@ -272,7 +272,9 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
       dirty,
       saveStatus,
       saveProject: async (label) => {
-        await persistNow({ label, silent: false });
+        await persistNow(
+          label !== undefined ? { label, silent: false } : { silent: false },
+        );
       },
       exportProject: () => {
         if (activeRef.current) {
