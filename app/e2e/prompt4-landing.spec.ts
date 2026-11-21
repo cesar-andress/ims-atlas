@@ -41,10 +41,9 @@ test.describe("Prompt 4 public landing", () => {
     await expect(page.getByTestId("metodologia-page")).toBeVisible();
     await page.goto("/privacidad");
     await expect(page.getByTestId("privacy-view")).toBeVisible();
-    await expect(page.getByTestId("privacy-contact-marker")).toContainText(
-      /CONTACTO PRIVACIDAD/i,
-    );
+    await expect(page.locator("body")).not.toContainText(/pendiente César/i);
     await page.goto("/aviso-legal");
     await expect(page.getByTestId("legal-view")).toBeVisible();
+    await expect(page.locator("body")).not.toContainText(/pendiente César/i);
   });
 });

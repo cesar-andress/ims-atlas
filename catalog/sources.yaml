@@ -2399,7 +2399,7 @@ sources:
     no_derivatives: unknown
     evidence:
       terms_url: https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html
-      note: '[Pending César rights-set] ECB disclaimer allows use of statistics with
+      note: 'ECB disclaimer allows use of statistics with
         attribution; commercial/redistribution not confirmed in this entry.'
       basis: public_terms
       scope: use
@@ -2428,8 +2428,8 @@ sources:
     no_derivatives: unknown
     evidence:
       terms_url: https://comtradeplus.un.org/About/Disclaimer
-      note: '[Pending César rights-set] Free API key with daily limits; redistribution
-        terms unknown until rights-set.'
+      note: 'Free API key with daily limits; redistribution
+        terms unknown.'
       basis: public_terms
       scope: use
   kind: official_api
@@ -2457,8 +2457,8 @@ sources:
     no_derivatives: unknown
     evidence:
       terms_url: https://www.oecd.org/en/about/terms-and-conditions.html
-      note: '[Pending César rights-set] Intended Coface substitute; rights unknown
-        until rights-set.'
+      note: 'Intended Coface substitute; rights unknown
+       .'
       basis: public_terms
       scope: use
   kind: official_report_pdf
@@ -2486,7 +2486,7 @@ sources:
     no_derivatives: unknown
     evidence:
       terms_url: https://www.wto.org/english/info_e/cont_e.htm
-      note: '[Pending César rights-set] OTC/MSF notifications; rights unknown until
+      note: 'OTC/MSF notifications; rights unknown until
         rights-set.'
       basis: public_terms
       scope: use
@@ -2515,8 +2515,8 @@ sources:
     no_derivatives: unknown
     evidence:
       terms_url: https://commission.europa.eu/legal-notice_en
-      note: '[Pending César rights-set] Tariffs/rules of origin in Spanish UI; rights
-        unknown until rights-set.'
+      note: 'Tariffs/rules of origin in Spanish UI; rights
+        unknown.'
       basis: public_terms
       scope: use
   kind: official_portal
@@ -2544,7 +2544,7 @@ sources:
     no_derivatives: unknown
     evidence:
       terms_url: https://www.un.org/en/about-us/terms-of-use
-      note: '[Pending César rights-set] Population by age/urban; rights unknown until
+      note: 'Population by age/urban; rights unknown until
         rights-set.'
       basis: public_terms
       scope: use
@@ -2574,7 +2574,7 @@ sources:
     no_derivatives: unknown
     evidence:
       terms_url: https://atlas.aiserv.es/aviso-legal
-      note: '[Pending César rights-set] Compiled rates with per-row official citation;
+      note: 'Compiled rates with per-row official citation;
         confirm redistribution.'
       basis: public_terms
       scope: use

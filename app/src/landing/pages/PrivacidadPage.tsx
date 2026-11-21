@@ -50,13 +50,8 @@ export function PrivacidadPage({ lang }: { lang: LandingLang }) {
         <h2>{es ? "Derechos" : "Rights"}</h2>
         <p>
           {es
-            ? "Puede ejercer los derechos de acceso, rectificación, borrado, oposición y limitación del tratamiento contactando a:"
-            : "You may exercise access, rectification, erasure, objection and restriction rights by contacting:"}
-        </p>
-        <p>
-          <span className="l-marker" data-testid="privacy-contact-marker">
-            [CONTACTO PRIVACIDAD: pendiente César]
-          </span>
+            ? "Puede ejercer los derechos de acceso, rectificación, borrado, oposición y limitación del tratamiento ante el responsable del tratamiento: AISERV SYSTEMS SLU (Madrid, España)."
+            : "You may exercise access, rectification, erasure, objection and restriction rights with the data controller: AISERV SYSTEMS SLU (Madrid, Spain)."}
         </p>
       </div>
     </article>

@@ -101,7 +101,7 @@ export function HomeLanding({
       <section className="l-section l-wrap" id="equipo" data-testid="landing-team">
         <h2>{copy.teamTitle}</h2>
         <p className="l-prose">{copy.teamNames}</p>
-        <span className="l-marker">{copy.teamAffil}</span>
+        {copy.teamAffil ? <p className="l-prose">{copy.teamAffil}</p> : null}
       </section>
     </>
   );

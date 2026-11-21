@@ -11,13 +11,6 @@ export function AvisoLegalPage({ lang }: { lang: LandingLang }) {
             ? "Titular del sitio: AISERV SYSTEMS SLU (Madrid, España)."
             : "Site owner: AISERV SYSTEMS SLU (Madrid, Spain)."}
         </p>
-        <p>
-          <span className="l-marker" data-testid="legal-registry-marker">
-            {es
-              ? "[DATOS REGISTRALES: pendiente César]"
-              : "[REGISTRY DETAILS: pending César]"}
-          </span>
-        </p>
         <h2>{es ? "Licencias de las fuentes de datos" : "Data source licences"}</h2>
         <p>
           {es
