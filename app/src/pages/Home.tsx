@@ -18,7 +18,7 @@ import {
   uploadLocalProjectsToTeam,
   upsertProject,
 } from "../state/projectLibrary";
-import { importAtlasProjectJson } from "../state/projectStore";
+import { importAtlasProjectJson, prepareImportedProject } from "../state/projectStore";
 import { COL_HS64_PRESET } from "../state/schema";
 import { useAnalysis } from "../state/useAnalysis";
 import { preferredProjectView } from "../state/views";
@@ -172,7 +172,12 @@ export function Home() {
     setImportError(null);
     void file.text().then(async (text) => {
       try {
-        const saved = await upsertProject(importAtlasProjectJson(text));
+        const imported = importAtlasProjectJson(text);
+        const project = prepareImportedProject(
+          imported,
+          lang === "es" ? "importado" : "imported",
+        );
+        const saved = await upsertProject(project);
         await refresh();
         openProject(saved, preferredProjectView(saved.config));
       } catch (err) {

@@ -3,7 +3,7 @@ import { apaCitation, bibtexCitation, risCitation, SOFTWARE_DOI } from "./citati
 import { hashConfig } from "./configHash";
 
 describe("citations", () => {
-  it("marks BYOD variables and pending DOI", () => {
+  it("marks uploaded variables and pending DOI", () => {
     const apa = apaCitation({
       configHash: "abc",
       origin: "COL",

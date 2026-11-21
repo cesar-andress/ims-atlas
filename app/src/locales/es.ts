@@ -559,8 +559,8 @@ const es = {
   normLabBefore: "Antes",
   normLabAfter: "Después",
   normLabWinsorFlag: "{n} celdas winsorizadas (marcadas).",
-  normLabTop5: "Top 5 tras pipeline A",
-  normLabBottom5: "Bottom 5 tras pipeline A",
+  normLabTop5: "5 mejores tras el flujo A",
+  normLabBottom5: "5 peores tras el flujo A",
   normLabCompareTitle: "Ranking A vs B (esta variable)",
   normLabTop10Overlap: "Solape top-10",
   normLabCorrTitle: "Avisos de correlación alta (|ρ| ≥ 0.8)",
@@ -786,6 +786,14 @@ const es = {
   citeIntro:
     "Permalink, citas y exportaciones del análisis actual. Los DOI son placeholders hasta Zenodo.",
   doiPending: "DOI pendientes",
+  citePermalinkLabel: "Enlace permanente",
+  citeApaHeading: "APA",
+  citeBibtexHeading: "BibTeX",
+  citeRisHeading: "RIS",
+  citeMethodPubsTitle: "Metodología (artículos de referencia)",
+  exportRankingCsv: "CSV del ranking",
+  exportConfigJson: "JSON de configuración",
+  exportPythonSnippet: "Fragmento Python",
   configHash: "Hash de configuración",
   byodInCitation: "Variables subidas en este análisis",
   download: "Descargar",
@@ -816,7 +824,7 @@ const es = {
   aiVerifyIntro:
     "Cargue candidatos desde un CSV (propuesta externa o fuente secundaria). Atlas no llama a ningún modelo; la verificación queda en el navegador.",
   aiVerifyLocalOnly:
-    "Los candidatos no salen del navegador. ai_candidate y rejected nunca entran en el cálculo.",
+    "Los candidatos no salen del navegador. Las filas marcadas como propuesta o rechazadas no entran en el cálculo.",
   aiVerifyLoadCsv: "CSV (variable_id,iso3,year,value,source_url,origin)",
   aiVerifyInitials: "Iniciales del verificador",
   aiVerifyErrorCsv: "CSV inválido o vacío.",
@@ -891,7 +899,7 @@ const es = {
       methods:
         "Normalización, agregación (WSM/TOPSIS/…), missing y SMAA se documentan aquí.",
       why_normalize:
-        "Escalas y sesgo distintos pueden dominar. El laboratorio muestra cada paso del pipeline.",
+        "Escalas y sesgo distintos pueden dominar. El laboratorio muestra cada paso del flujo de normalización.",
       glossary: "Definiciones breves de IMS, MCDM, NDCG, SMAA y HS.",
       tutorials: "Tres rutas cortas: exportador, investigador y agencia.",
       sources:
@@ -1052,7 +1060,7 @@ const es = {
   varsNeedScope:
     "Elige antes el origen, el producto y el año (los botones de la barra del proyecto, arriba).",
   varsPanelAllBeforeScope:
-    "Los pesos se pueden editar ya; el ranking se desbloquea al fijar origen, producto y año.",
+    "Los pesos se pueden editar ya; el ranking estará disponible al fijar origen, producto y año.",
   varsWeightsPreviewNote:
     "Vista previa de los pesos por criterio. Fija origen, producto y año para calcular el ranking.",
   varsPickFamilyFirst:

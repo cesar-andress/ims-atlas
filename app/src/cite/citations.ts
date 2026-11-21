@@ -26,7 +26,7 @@ export function apaCitation(input: CiteInputs): string {
   ].join(" · ");
   const byod =
     input.byodVariableIds.length > 0
-      ? ` BYOD variables: ${input.byodVariableIds.join(", ")}.`
+      ? ` Uploaded variables: ${input.byodVariableIds.join(", ")}.`
       : "";
   return (
     `${TOOL_PAPER_CITE} Analysis config ${scope}; software ${SOFTWARE_DOI} ` +
@@ -39,7 +39,7 @@ export function apaCitation(input: CiteInputs): string {
 export function bibtexCitation(input: CiteInputs): string {
   const byodNote =
     input.byodVariableIds.length > 0
-      ? ` BYOD={${input.byodVariableIds.join(", ")}},`
+      ? ` uploaded_variables={${input.byodVariableIds.join(", ")}},`
       : "";
   return `@software{ims_atlas_analysis_${input.configHash.slice(0, 8)},
   author = {Baena-Rojas, Jose Jaime and Andrés, César},
@@ -61,7 +61,9 @@ export function risCitation(input: CiteInputs): string {
     `UR  - ${input.permalink}`,
     `DO  - ${SOFTWARE_DOI}`,
     `N1  - Data DOI ${DATA_DOI}; config hash ${input.configHash}` +
-      (input.byodVariableIds.length ? `; BYOD ${input.byodVariableIds.join(",")}` : ""),
+      (input.byodVariableIds.length
+        ? `; uploaded variables ${input.byodVariableIds.join(",")}`
+        : ""),
     "ER  -",
   ];
   return lines.join("\n");

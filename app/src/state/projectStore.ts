@@ -85,6 +85,42 @@ export function importAtlasProjectJson(text: string): AtlasProject {
   return project;
 }
 
+/**
+ * Import as a new library row: new id, fresh timestamps, name suffix.
+ * Avoids overwriting an existing team/local project with the same id.
+ */
+export function prepareImportedProject(
+  project: AtlasProject,
+  copySuffix = "imported",
+): AtlasProject {
+  const now = new Date().toISOString();
+  const baseName = project.name.trim() || "Untitled project";
+  const withSuffix = `${baseName} (${copySuffix})`.slice(0, 160);
+  return createEmptyProject({
+    name: withSuffix,
+    config: project.config,
+    createdAt: now,
+    updatedAt: now,
+    ...(project.description !== undefined ? { description: project.description } : {}),
+    ...(project.yearFrom !== undefined ? { yearFrom: project.yearFrom } : {}),
+    ...(project.yearTo !== undefined ? { yearTo: project.yearTo } : {}),
+    ...(project.candidateIsos !== undefined
+      ? { candidateIsos: project.candidateIsos }
+      : {}),
+    ...(project.notes !== undefined ? { notes: project.notes } : {}),
+    ...(project.dataReleaseId !== undefined
+      ? { dataReleaseId: project.dataReleaseId }
+      : {}),
+    ...(project.byodDefinitions !== undefined
+      ? { byodDefinitions: project.byodDefinitions }
+      : {}),
+    ...(project.missingPolicyByVar !== undefined
+      ? { missingPolicyByVar: project.missingPolicyByVar }
+      : {}),
+    includeByodValues: false,
+  });
+}
+
 export function clearProjectStorage(): void {
   if (typeof localStorage !== "undefined") {
     localStorage.removeItem(STORAGE_KEY);

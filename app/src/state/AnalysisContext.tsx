@@ -17,6 +17,7 @@ import {
   importProjectJson,
   loadProjectFromStorage,
   persistActiveProject,
+  prepareImportedProject,
   projectFromConfig,
 } from "./projectStore";
 import { readActiveProjectId, writeActiveProjectId } from "./activeProjectPersist";
@@ -326,7 +327,11 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
       importProject: (json) => {
         void (async () => {
           try {
-            const project = importAtlasProjectJson(json);
+            const imported = importAtlasProjectJson(json);
+            const project = prepareImportedProject(
+              imported,
+              uiIsSpanish(configRef.current.lang) ? "importado" : "imported",
+            );
             const saved = await upsertProject(project);
             setActiveProject(saved);
             writeActiveProjectId(saved.id);

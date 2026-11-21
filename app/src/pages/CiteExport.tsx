@@ -62,7 +62,7 @@ function CiteBody({
         {t("configHash")}: <code>{hash || "…"}</code>
       </p>
       <p data-testid="cite-permalink">
-        Permalink:{" "}
+        {t("citePermalinkLabel")}:{" "}
         <a href={permalink} data-testid="cite-permalink-link">
           {permalink}
         </a>
@@ -73,7 +73,7 @@ function CiteBody({
         </p>
       ) : null}
 
-      <h2>APA</h2>
+      <h2>{t("citeApaHeading")}</h2>
       <pre data-testid="cite-apa">{apa}</pre>
       <button
         type="button"
@@ -82,7 +82,7 @@ function CiteBody({
         {t("download")} APA
       </button>
 
-      <h2 data-testid="cite-method-pubs-title">Metodología (publicaciones)</h2>
+      <h2 data-testid="cite-method-pubs-title">{t("citeMethodPubsTitle")}</h2>
       <ol data-testid="cite-method-pubs">
         {LANDING_PUBLICATIONS.map((p) => (
           <li key={p.id}>
@@ -93,7 +93,7 @@ function CiteBody({
         ))}
       </ol>
 
-      <h2>BibTeX</h2>
+      <h2>{t("citeBibtexHeading")}</h2>
       <pre data-testid="cite-bibtex">{bib}</pre>
       <button
         type="button"
@@ -102,7 +102,7 @@ function CiteBody({
         {t("download")} BibTeX
       </button>
 
-      <h2>RIS</h2>
+      <h2>{t("citeRisHeading")}</h2>
       <pre data-testid="cite-ris">{ris}</pre>
       <button
         type="button"
@@ -128,7 +128,7 @@ function CiteBody({
                 )
               }
             >
-              CSV ranking
+              {t("exportRankingCsv")}
             </button>
             <button
               type="button"
@@ -230,14 +230,14 @@ function CiteBody({
             )
           }
         >
-          JSON config
+          {t("exportConfigJson")}
         </button>
         <button
           type="button"
           data-testid="export-python"
           onClick={() => downloadText("ims-atlas-reproduce.py", py, "text/x-python")}
         >
-          Python snippet
+          {t("exportPythonSnippet")}
         </button>
       </div>
       <pre data-testid="cite-python" className="small">

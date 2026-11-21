@@ -23,7 +23,7 @@ import {
   projectWorkbookZip,
   safeFilename,
 } from "../state/projectExport";
-import { importAtlasProjectJson } from "../state/projectStore";
+import { importAtlasProjectJson, prepareImportedProject } from "../state/projectStore";
 import { useAnalysis } from "../state/useAnalysis";
 import { COL_HS64_PRESET } from "../state/schema";
 import { preferredProjectView } from "../state/views";
@@ -315,7 +315,11 @@ export function Projects() {
     setImportError(null);
     void file.text().then(async (text) => {
       try {
-        const project = importAtlasProjectJson(text);
+        const imported = importAtlasProjectJson(text);
+        const project = prepareImportedProject(
+          imported,
+          lang === "es" ? "importado" : "imported",
+        );
         const { upsertProject } = await import("../state/projectLibrary");
         const saved = await upsertProject(project);
         await refresh();

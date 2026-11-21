@@ -1,5 +1,7 @@
 /** Client-side download helpers (never upload). */
 
+import { rowsToCsv } from "../export/xlsx";
+
 export function downloadText(filename: string, text: string, mime: string): void {
   const blob = new Blob([text], { type: mime });
   const url = URL.createObjectURL(blob);
@@ -45,14 +47,14 @@ export function rankingToCsv(
   const factorKeys = factorScores
     ? [...new Set(Object.values(factorScores).flatMap((m) => Object.keys(m)))].sort()
     : [];
-  const header = ["iso3", "rank", "score", ...factorKeys];
-  const lines = [header.join(",")];
+  const table: string[][] = [["iso3", "rank", "score", ...factorKeys]];
   for (const r of rows) {
-    const cols = [r.iso3, String(r.rank), String(r.score)];
-    for (const f of factorKeys) {
-      cols.push(String(factorScores?.[r.iso3]?.[f] ?? ""));
-    }
-    lines.push(cols.join(","));
+    table.push([
+      r.iso3,
+      String(r.rank),
+      String(r.score),
+      ...factorKeys.map((f) => String(factorScores?.[r.iso3]?.[f] ?? "")),
+    ]);
   }
-  return lines.join("\n") + "\n";
+  return rowsToCsv(table);
 }

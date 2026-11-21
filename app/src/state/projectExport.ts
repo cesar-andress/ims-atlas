@@ -5,6 +5,7 @@
 
 import { serializeAtlasProject, type AtlasProject } from "./projectModel";
 import { buildZip } from "../export/zip";
+import { rowsToCsv } from "../export/xlsx";
 
 export { buildZip };
 
@@ -16,6 +17,15 @@ export function atlasJsonBlob(project: AtlasProject): Blob {
 
 export function projectWorkbookZip(project: AtlasProject): Blob {
   const cfg = project.config;
+  const yFrom = project.yearFrom ?? cfg.year;
+  const yTo = project.yearTo ?? cfg.year;
+  const yearRange =
+    yFrom !== undefined && yTo !== undefined
+      ? yFrom === yTo
+        ? String(yFrom)
+        : `${yFrom}-${yTo}`
+      : "";
+
   const readme = [
     "IMS Atlas project export",
     `Name: ${project.name}`,
@@ -23,31 +33,50 @@ export function projectWorkbookZip(project: AtlasProject): Blob {
     `Updated: ${project.updatedAt}`,
     `Origin: ${cfg.origin ?? ""}`,
     `HS: ${cfg.hs ?? ""}`,
-    `Years: ${project.yearFrom ?? cfg.year ?? ""}–${project.yearTo ?? cfg.year ?? ""}`,
+    `Years: ${yearRange}`,
+    `Weight scheme: ${cfg.weightScheme ?? ""}`,
+    `Variables: ${(cfg.variableIds ?? []).length}`,
     "",
-    "Sheets are CSV (UTF-8). Re-open the analysis with the .atlas.json file.",
+    "Files are CSV (UTF-8). Re-open the analysis with the .atlas.json file.",
     "PDF report and chart ZIP: use Cite & export (full analysis / PDF report).",
+    "Uploaded-data cell values are never embedded in .atlas.json unless explicitly opted in.",
     "© IMS Atlas · atlas.aiserv.es · AISERV SYSTEMS SLU",
   ].join("\n");
 
-  const configCsv = [
-    "key,value",
-    `name,${JSON.stringify(project.name)}`,
-    `origin,${cfg.origin ?? ""}`,
-    `hs,${cfg.hs ?? ""}`,
-    `year,${cfg.year ?? ""}`,
-    `normalization,${cfg.normalization ?? ""}`,
-    `mcdm,${cfg.mcdm ?? ""}`,
-    `weightScheme,${cfg.weightScheme ?? ""}`,
-    `variables,"${(cfg.variableIds ?? []).join(";")}"`,
-  ].join("\n");
+  const configRows: string[][] = [
+    ["key", "value"],
+    ["name", project.name],
+    ["id", project.id],
+    ["origin", cfg.origin ?? ""],
+    ["hs", cfg.hs ?? ""],
+    ["year", cfg.year != null ? String(cfg.year) : ""],
+    ["yearFrom", yFrom != null ? String(yFrom) : ""],
+    ["yearTo", yTo != null ? String(yTo) : ""],
+    ["normalization", cfg.normalization ?? ""],
+    ["mcdm", cfg.mcdm ?? ""],
+    ["weightScheme", cfg.weightScheme ?? ""],
+    ["methodFamily", cfg.methodFamily ?? ""],
+    ["variables", (cfg.variableIds ?? []).join(";")],
+  ];
 
-  const varsCsv = ["variable_id", ...(cfg.variableIds ?? [])].join("\n");
+  const varsRows: string[][] = [
+    ["variable_id"],
+    ...(cfg.variableIds ?? []).map((id) => [id]),
+  ];
+
+  const weightEntries = Object.entries(cfg.factorWeights ?? {}).sort(([a], [b]) =>
+    a.localeCompare(b),
+  );
+  const weightsRows: string[][] = [
+    ["factor_id", "weight"],
+    ...weightEntries.map(([k, v]) => [k, String(v)]),
+  ];
 
   return buildZip([
     { name: "README.txt", body: `${readme}\n` },
-    { name: "config.csv", body: `${configCsv}\n` },
-    { name: "variables.csv", body: `${varsCsv}\n` },
+    { name: "config.csv", body: rowsToCsv(configRows) },
+    { name: "variables.csv", body: rowsToCsv(varsRows) },
+    { name: "weights.csv", body: rowsToCsv(weightsRows) },
   ]);
 }
 

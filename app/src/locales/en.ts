@@ -553,8 +553,8 @@ export const en = {
   normLabBefore: "Before",
   normLabAfter: "After",
   normLabWinsorFlag: "{n} cells winsorised (flagged).",
-  normLabTop5: "Top 5 after pipeline A",
-  normLabBottom5: "Bottom 5 after pipeline A",
+  normLabTop5: "Top 5 after flow A",
+  normLabBottom5: "Bottom 5 after flow A",
   normLabCompareTitle: "Ranking A vs B (this variable)",
   normLabTop10Overlap: "Top-10 overlap",
   normLabCorrTitle: "High correlation warnings (|ρ| ≥ 0.8)",
@@ -779,6 +779,14 @@ export const en = {
   citeIntro:
     "Permalink, citation formats, and exports for the current analysis. DOIs are placeholders until Zenodo deposits exist.",
   doiPending: "DOI placeholders",
+  citePermalinkLabel: "Permalink",
+  citeApaHeading: "APA",
+  citeBibtexHeading: "BibTeX",
+  citeRisHeading: "RIS",
+  citeMethodPubsTitle: "Methodology (publications)",
+  exportRankingCsv: "Ranking CSV",
+  exportConfigJson: "Config JSON",
+  exportPythonSnippet: "Python snippet",
   configHash: "Config hash",
   byodInCitation: "Uploaded variables in this analysis",
   download: "Download",
@@ -809,7 +817,7 @@ export const en = {
   aiVerifyIntro:
     "Load candidates from a CSV (external proposal or secondary source). Atlas does not call any model; verification stays in the browser.",
   aiVerifyLocalOnly:
-    "Candidates never leave the browser. ai_candidate and rejected never enter the computation.",
+    "Candidates never leave the browser. Rows marked as proposal or rejected never enter the computation.",
   aiVerifyLoadCsv: "CSV (variable_id,iso3,year,value,source_url,origin)",
   aiVerifyInitials: "Verifier initials",
   aiVerifyErrorCsv: "Invalid or empty CSV.",
@@ -1044,7 +1052,7 @@ export const en = {
   varsNeedScope:
     "Choose the origin, product and year first (the buttons in the project bar above).",
   varsPanelAllBeforeScope:
-    "Weights are editable now; ranking unlocks after origin, product and year.",
+    "Weights are editable now; ranking becomes available after origin, product and year.",
   varsWeightsPreviewNote:
     "Preview of criterion weights. Set origin, product and year to compute the ranking.",
   varsPickFamilyFirst: "Choose a method family above to see its criteria and weights.",
