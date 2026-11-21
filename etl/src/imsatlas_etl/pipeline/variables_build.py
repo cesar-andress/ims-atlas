@@ -182,6 +182,15 @@ WEO_CODE_TO_VAR: dict[str, str] = {
     "LUR": "WEO_UNEMP",
 }
 
+# Provenance / release tracing (same shape as WB indicators; file is indicators.csv).
+for _weo_code, _weo_vid in WEO_CODE_TO_VAR.items():
+    VARIABLE_SPECS[_weo_vid] = {
+        "source_id": "imf_weo",
+        "kind": "wb_indicator",
+        "code": _weo_code,
+        "byod": "false",
+    }
+
 # Empty: César confirmed use_research=yes for ecb_fx / vat_rates (2026-11-21).
 # Keep the symbol so callers and tests can still consult it.
 BLOCKED_SOURCE_IDS: frozenset[str] = frozenset()
