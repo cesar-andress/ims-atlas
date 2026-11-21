@@ -5289,17 +5289,32 @@ ul.callout {
   cursor: pointer;
 }
 
-/* Prompt 4d: mercado / 4P / envío */
+/* Prompt 4d/4e: mercado / 4P / envío */
 .page-mercado .lead,
 .page-plan4p .lead,
 .page-envio .lead {
   max-width: 42rem;
 }
 
-.mercado-picks {
+.envio-project-chip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1.1rem;
+  margin: 0.75rem 0 0;
+  font-size: 0.95rem;
+}
+
+.mercado-picks,
+.mercado-hero-picks {
   margin: 1rem 0;
   display: grid;
-  gap: 0.35rem;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.mercado-pick-card .envio-hero-total {
+  font-size: 1.35rem;
+  line-height: 1.25;
 }
 
 .mercado-actions {
@@ -5328,11 +5343,66 @@ ul.callout {
   border-radius: 12px;
   padding: 1rem 1.1rem;
   background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
 }
 
 .plan4p-card h2 {
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.35rem;
   font-size: 1.05rem;
+}
+
+.plan4p-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin: 0;
+}
+
+.plan4p-metric-label {
+  font-size: 0.8rem;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.plan4p-list {
+  margin: 0.25rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.plan4p-top3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0 1.25rem;
+}
+
+.plan4p-top3-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: flex-start;
+  text-align: left;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.plan4p-top3-card:hover,
+.plan4p-top3-card.active {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary) 35%, transparent);
+}
+
+.plan4p-top3-rank {
+  font-size: 0.8rem;
+  color: var(--ink-3);
 }
 
 .page-nav-row {
@@ -5351,18 +5421,137 @@ ul.callout {
   background: var(--surface);
 }
 
-.envio-mode {
+.envio-mode,
+.envio-preset-row {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
   margin: 0.75rem 0;
 }
 
-.envio-cont-grid {
+.envio-cont-grid,
+.envio-form-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.75rem;
   margin: 0.75rem 0;
+}
+
+.envio-form-grid .field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.envio-form-grid .field input {
+  width: 100%;
+  font: inherit;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg, var(--surface));
+  color: var(--ink);
+}
+
+.field-source {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--ink-3);
+  line-height: 1.35;
+}
+
+.envio-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0.75rem 0 1rem;
+}
+
+.envio-stat {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  background: color-mix(in srgb, var(--primary) 6%, var(--surface));
+}
+
+.envio-stat-label {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--ink-3);
+  margin-bottom: 0.25rem;
+}
+
+.envio-stat strong {
+  font-size: 1.6rem;
+}
+
+.envio-hero-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.1rem 1.25rem;
+  margin: 0.75rem 0 1rem;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--primary) 10%, var(--surface)),
+    var(--surface)
+  );
+}
+
+.envio-hero-kicker {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.envio-hero-total {
+  margin: 0.2rem 0;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.envio-stair {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0.75rem 0 1.25rem;
+}
+
+.envio-stair-row {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr 6.5rem;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.envio-stair-row.active .envio-stair-bar {
+  background: var(--primary);
+}
+
+.envio-stair-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.envio-stair-track {
+  height: 0.65rem;
+  border-radius: 999px;
+  background: var(--soft);
+  overflow: hidden;
+}
+
+.envio-stair-bar {
+  height: 100%;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--primary) 55%, var(--soft));
+}
+
+.envio-stair-val {
+  font-size: 0.85rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 .field.block {
@@ -5402,7 +5591,14 @@ ul.callout {
 
 @media (max-width: 720px) {
   .plan4p-grid,
-  .envio-cont-grid {
+  .envio-cont-grid,
+  .envio-form-grid,
+  .envio-hero-stats,
+  .mercado-hero-picks {
     grid-template-columns: 1fr;
+  }
+
+  .envio-stair-row {
+    grid-template-columns: 4.2rem 1fr 5rem;
   }
 }

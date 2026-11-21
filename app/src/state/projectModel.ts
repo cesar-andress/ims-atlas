@@ -3,6 +3,8 @@
  * Legacy `ims-atlas-project` (v1 ProjectFile) migrates to schemaVersion 2.
  */
 
+import { countryLabel } from "../design/formatLocale";
+import { hsLabel } from "../data/hsProducts";
 import { parseAnalysisConfig, type AnalysisConfig, type ProjectFile } from "./schema";
 
 export type MissingFillPolicy = "drop" | "locf" | "median" | "keep";
@@ -214,10 +216,13 @@ export function parseAtlasProject(raw: unknown): AtlasProject {
 }
 
 export function defaultNameFromConfig(config: AnalysisConfig): string {
-  const origin = config.origin ?? "???";
-  const hs = config.hs ?? "??";
+  const product = config.hs ? hsLabel(config.hs, "es") : "???";
+  // Shorten long HS labels: take first clause before comma / parenthesis.
+  const shortProduct = product.split(/[,;(]/)[0]!.trim().slice(0, 40) || product;
+  const origin = config.origin ? countryLabel(config.origin, "es") : "???";
   const y0 = config.year ?? "????";
-  return `Project HS${hs} ${origin} ${y0}`;
+  // Plain scope label (Prompt 4e): «Café · España · 2024», not «Project HS09 ESP…».
+  return `${shortProduct} · ${origin} · ${y0}`;
 }
 
 export function toListItem(p: AtlasProject): ProjectListItem {

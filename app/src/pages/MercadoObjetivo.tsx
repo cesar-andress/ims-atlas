@@ -1,10 +1,11 @@
 import { useMemo } from "react";
+import { PermalinkLink } from "../components/PermalinkLink";
 import { countryLabel } from "../design/formatLocale";
+import { hsLabel } from "../data/hsProducts";
 import { useTranslation } from "../i18n";
 import { useRankingModel } from "../ranking/useRankingModelApi";
 import { useAnalysis } from "../state/useAnalysis";
 import { isAnalysisReady } from "../state/views";
-import { PermalinkLink } from "../components/PermalinkLink";
 
 /**
  * Step 4 — choose target market + up to 3 reserves from the ranking.
@@ -17,6 +18,11 @@ export function MercadoObjetivo() {
   const { model, loading } = useRankingModel();
   const ready = isAnalysisReady(config);
 
+  const product = config.hs
+    ? hsLabel(config.hs, lang === "es" ? "es" : "en")
+    : t("chipChoose");
+  const origin = config.origin ? countryLabel(config.origin, lang) : t("chipChoose");
+
   const ranked = useMemo(() => {
     if (!model?.ranking?.length) return [];
     return model.ranking.map((r) => ({
@@ -26,6 +32,7 @@ export function MercadoObjetivo() {
     }));
   }, [model]);
 
+  const topCards = ranked.slice(0, 6);
   const reserves = config.reserveMarkets ?? [];
 
   function pickTarget(iso3: string) {
@@ -70,28 +77,64 @@ export function MercadoObjetivo() {
       <header className="page-head">
         <h1>{t("stepMercado")}</h1>
         <p className="muted lead">{t("mercadoLead")}</p>
+        <p className="envio-project-chip" data-testid="mercado-project-context">
+          <span>
+            {t("chipProduct")} <b>{product}</b>
+          </span>
+          <span>
+            {t("chipOrigin")} <b>{origin}</b>
+          </span>
+          {config.year != null ? (
+            <span>
+              {t("chipYear")} <b>{config.year}</b>
+            </span>
+          ) : null}
+        </p>
       </header>
 
       {loading ? <p className="muted">{t("loading")}</p> : null}
 
-      <div className="mercado-picks" data-testid="mercado-picks">
-        <p>
-          {t("mercadoTarget")}:{" "}
-          <b data-testid="mercado-target-label">
+      <div className="mercado-hero-picks" data-testid="mercado-picks">
+        <article className="envio-hero-card mercado-pick-card">
+          <p className="envio-hero-kicker">{t("mercadoTarget")}</p>
+          <p className="envio-hero-total" data-testid="mercado-target-label">
             {config.targetMarket
               ? countryLabel(config.targetMarket, lang)
               : t("chipChoose")}
-          </b>
-        </p>
-        <p>
-          {t("mercadoReserves")}:{" "}
-          <b data-testid="mercado-reserves-label">
+          </p>
+        </article>
+        <article className="envio-hero-card mercado-pick-card">
+          <p className="envio-hero-kicker">{t("mercadoReserves")}</p>
+          <p className="envio-hero-total" data-testid="mercado-reserves-label">
             {reserves.length
               ? reserves.map((iso) => countryLabel(iso, lang)).join(", ")
               : t("mercadoNoReserves")}
-          </b>
-        </p>
+          </p>
+        </article>
       </div>
+
+      {topCards.length ? (
+        <div className="plan4p-top3" data-testid="mercado-top-cards">
+          {topCards.map((row) => {
+            const isTarget = row.iso3 === config.targetMarket;
+            return (
+              <button
+                key={row.iso3}
+                type="button"
+                className={`plan4p-top3-card${isTarget ? " active" : ""}`}
+                data-testid={`mercado-card-${row.iso3}`}
+                onClick={() => pickTarget(row.iso3)}
+              >
+                <span className="plan4p-top3-rank">#{row.rank}</span>
+                <strong>{countryLabel(row.iso3, lang)}</strong>
+                <span className="muted small">
+                  {Number.isFinite(row.score) ? row.score.toFixed(3) : "—"}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
 
       <label className="field block">
         <span>{t("mercadoWhy")}</span>
