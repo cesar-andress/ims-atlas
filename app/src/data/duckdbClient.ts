@@ -65,6 +65,20 @@ function escapeSqlString(value: string): string {
   return value.replace(/'/g, "''");
 }
 
+/**
+ * DuckDB-WASM resolves a bare "/data/…" path against its in-memory virtual
+ * filesystem, not the web server ("No files found that match the pattern").
+ * Always hand it an absolute http(s) URL so httpfs fetches the file.
+ */
+export function absoluteDataUrl(path: string): string {
+  if (/^[a-z][a-z0-9+.-]*:\/\//i.test(path)) return path.replace(/\/$/, "");
+  const origin =
+    typeof window !== "undefined" && window.location?.origin
+      ? window.location.origin
+      : "http://localhost";
+  return new URL(path, `${origin}/`).href.replace(/\/$/, "");
+}
+
 function hs2Key(hs2: string): string {
   return hs2.padStart(2, "0").slice(0, 2);
 }
@@ -143,7 +157,7 @@ export function createDuckDbClient(): AtlasDataClient {
     },
     async loadRelease(opts) {
       const connection = await ensureConn();
-      const base = opts?.basePath ?? releaseUrl();
+      const base = absoluteDataUrl(opts?.basePath ?? releaseUrl());
       const materialiseBilateral = opts?.materialiseBilateral === true;
       const wantKey = `${base}|mat=${materialiseBilateral ? 1 : 0}`;
       // Idempotent: same base already registered at the requested materialisation level.
@@ -201,7 +215,7 @@ export function createDuckDbClient(): AtlasDataClient {
       await ensureConn();
       const key = hs2Key(hs2);
       if (tradeUrls.has(key)) return true;
-      const base = opts?.basePath ?? releaseUrl();
+      const base = absoluteDataUrl(opts?.basePath ?? releaseUrl());
       const url = `${base}/trade/hs2=${key}/part.parquet`;
       const ok = await parquetExists(url);
       if (!ok) return false;
@@ -220,7 +234,7 @@ export function createDuckDbClient(): AtlasDataClient {
       const variableIds = opts?.variableIds;
       const sliceKey = `${key}|y=${year ?? "*"}|v=${(variableIds ?? []).slice().sort().join(",") || "*"}`;
       if (countryProductKeys.has(sliceKey)) return true;
-      const base = opts?.basePath ?? releaseUrl();
+      const base = absoluteDataUrl(opts?.basePath ?? releaseUrl());
       const chapter = `${base}/country_product/hs2=${key}`;
       const table = `country_product_hs2_${key}`;
       try {
