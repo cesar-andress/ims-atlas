@@ -1,20 +1,28 @@
 /**
  * Prompt 4a acceptance against the live host (optional).
  *
- * Requires ATLAS_E2E_BASE_URL (e.g. https://atlas.aiserv.es) and an Authelia
- * session cookie via storageState, or a prior login. Skips when unset.
+ * Requires:
+ * - ATLAS_E2E_BASE_URL (e.g. https://atlas.aiserv.es)
+ * - ATLAS_E2E_USER + ATLAS_E2E_PASS (Authelia; never commit these)
  *
  * Fails on DuckDB ``IO Error`` / ``No files found`` in the console.
  */
 import { expect, test } from "@playwright/test";
+import { e2eCredentials, loginViaAutheliaIfNeeded } from "./autheliaLogin";
 import { skipOnboarding } from "./_helpers";
 
 const baseURL = process.env.ATLAS_E2E_BASE_URL?.replace(/\/$/, "");
 
 test.describe("ESP · café · 2024 live panel", () => {
   test.skip(!baseURL, "Set ATLAS_E2E_BASE_URL to run against the live host");
+  test.skip(
+    !e2eCredentials(),
+    "Set ATLAS_E2E_USER and ATLAS_E2E_PASS for Authelia login",
+  );
 
-  test("new project loads ranking without parquet IO errors", async ({ page }) => {
+  test("login then new project loads ranking without parquet IO errors", async ({
+    page,
+  }) => {
     const ioErrors: string[] = [];
     page.on("console", (msg) => {
       const text = msg.text();
@@ -27,7 +35,11 @@ test.describe("ESP · café · 2024 live panel", () => {
     });
 
     await skipOnboarding(page);
-    await page.goto(baseURL!, { waitUntil: "networkidle" });
+    await page.goto(`${baseURL}/inicio`, { waitUntil: "domcontentloaded" });
+    const loggedIn = await loginViaAutheliaIfNeeded(page);
+    expect(loggedIn, "Authelia login failed or needs a second factor").toBe(true);
+
+    await page.goto(`${baseURL}/inicio`, { waitUntil: "networkidle" });
 
     const newBtn = page.getByRole("button", {
       name: /nuevo proyecto|new project/i,
@@ -58,6 +70,10 @@ test.describe("ESP · café · 2024 live panel", () => {
       await page.getByRole("option", { name: "2024" }).first().click();
     }
 
+    await page
+      .getByTestId("step-resultados")
+      .click({ timeout: 15_000 })
+      .catch(() => undefined);
     await page.waitForTimeout(8_000);
     expect(ioErrors, `console IO errors: ${ioErrors.join(" | ")}`).toEqual([]);
   });
