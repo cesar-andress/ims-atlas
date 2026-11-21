@@ -316,3 +316,20 @@ export {
   type StrategicMatrixResult,
   type StrategicPoint,
 } from "./strategic.js";
+
+export {
+  CORRECTED_RULES,
+  EXCEL_RULES,
+  JOSE_CORRECTED_DDP_TOTAL,
+  JOSE_COST_ITEMS,
+  JOSE_DEFAULT_INPUT,
+  JOSE_EXCEL_DDP_TOTAL,
+  JOSE_EXCEL_EXW_TOTAL,
+  liquidateIncoterms,
+  type IncotermCostItem,
+  type IncotermMode,
+  type IncotermRule,
+  type IncotermRuleKey,
+  type LiquidationInput,
+  type LiquidationRow,
+} from "./incotermsLiquidation.js";

@@ -42,6 +42,9 @@ const VIEWS = [
   "sql",
   "advanced_tools",
   "privacy",
+  "mercado_objetivo",
+  "plan_4p",
+  "preparar_envio",
 ] as const;
 
 export type ViewId = (typeof VIEWS)[number];
@@ -162,6 +165,18 @@ export type AnalysisConfig = {
   scatterY?: string | undefined;
   /** Expert SQL console unlock. */
   expertMode?: boolean | undefined;
+  /** Prompt 4d: chosen target market (ISO3). */
+  targetMarket?: string | undefined;
+  /** Prompt 4d: up to three reserve markets (ISO3). */
+  reserveMarkets?: string[] | undefined;
+  /** Prompt 4d: free-text rationale for the target market. */
+  whyTargetMarket?: string | undefined;
+  /** Prompt 4d: pasted shop/catalogue prices (raw text; never invented). */
+  pastedShopPrices?: string | undefined;
+  /** Prompt 4d: Incoterms liquidation mode. */
+  incotermsMode?: "excel" | "corrected" | undefined;
+  /** Prompt 4d: selected Incoterm key for display. */
+  selectedIncoterm?: string | undefined;
 };
 
 export type ProjectFile = {
@@ -528,6 +543,34 @@ export function parseAnalysisConfig(input: unknown): AnalysisConfig {
     out.scatterY = input.scatterY.trim().slice(0, 32);
   }
   if (typeof input.expertMode === "boolean") out.expertMode = input.expertMode;
+
+  const targetMarket = asIso3(input.targetMarket);
+  if (targetMarket) out.targetMarket = targetMarket;
+
+  if (Array.isArray(input.reserveMarkets)) {
+    const reserves = input.reserveMarkets
+      .filter((x): x is string => typeof x === "string" && /^[A-Za-z]{3}$/.test(x))
+      .map((x) => x.toUpperCase())
+      .slice(0, 3);
+    if (reserves.length) out.reserveMarkets = reserves;
+  }
+
+  if (typeof input.whyTargetMarket === "string") {
+    const why = input.whyTargetMarket.trim().slice(0, 2000);
+    if (why) out.whyTargetMarket = why;
+  }
+
+  if (typeof input.pastedShopPrices === "string") {
+    const prices = input.pastedShopPrices.trim().slice(0, 8000);
+    if (prices) out.pastedShopPrices = prices;
+  }
+
+  const incotermsMode = asEnum(input.incotermsMode, ["excel", "corrected"] as const);
+  if (incotermsMode) out.incotermsMode = incotermsMode;
+
+  if (typeof input.selectedIncoterm === "string" && input.selectedIncoterm.trim()) {
+    out.selectedIncoterm = input.selectedIncoterm.trim().slice(0, 16);
+  }
 
   return out;
 }

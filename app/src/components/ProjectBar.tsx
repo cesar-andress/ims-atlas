@@ -443,7 +443,7 @@ export function ProjectBar() {
           </PermalinkLink>
           <PermalinkLink
             view="analisis"
-            className="step"
+            className={`step${ready && model ? " done" : ""}`}
             aria-current={step === 3 ? "step" : undefined}
             data-testid="step-resultados"
           >
@@ -451,6 +451,46 @@ export function ProjectBar() {
             <span className="t">
               <b>{t("stepResultados")}</b>
               <span>{t("stepResultadosStatus")}</span>
+            </span>
+          </PermalinkLink>
+          <PermalinkLink
+            view="mercado_objetivo"
+            className={`step${config.targetMarket ? " done" : ""}`}
+            aria-current={step === 4 ? "step" : undefined}
+            data-testid="step-mercado"
+          >
+            <span className="n">4</span>
+            <span className="t">
+              <b>{t("stepMercado")}</b>
+              <span>
+                {config.targetMarket
+                  ? t("stepMercadoStatusDone")
+                  : t("stepMercadoStatus")}
+              </span>
+            </span>
+          </PermalinkLink>
+          <PermalinkLink
+            view="plan_4p"
+            className={`step${config.pastedShopPrices || config.targetMarket ? " done" : ""}`}
+            aria-current={step === 5 ? "step" : undefined}
+            data-testid="step-plan4p"
+          >
+            <span className="n">5</span>
+            <span className="t">
+              <b>{t("stepPlan4p")}</b>
+              <span>{t("stepPlan4pStatus")}</span>
+            </span>
+          </PermalinkLink>
+          <PermalinkLink
+            view="preparar_envio"
+            className="step"
+            aria-current={step === 6 ? "step" : undefined}
+            data-testid="step-envio"
+          >
+            <span className="n">6</span>
+            <span className="t">
+              <b>{t("stepEnvio")}</b>
+              <span>{t("stepEnvioStatus")}</span>
             </span>
           </PermalinkLink>
         </nav>

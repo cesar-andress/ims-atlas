@@ -124,6 +124,12 @@ export function configToSearch(config: AnalysisConfig): string {
   if (config.scatterX) compact.scatterX = config.scatterX;
   if (config.scatterY) compact.scatterY = config.scatterY;
   if (config.expertMode !== undefined) compact.expertMode = config.expertMode;
+  if (config.targetMarket) compact.targetMarket = config.targetMarket;
+  if (config.reserveMarkets?.length) compact.reserveMarkets = config.reserveMarkets;
+  if (config.whyTargetMarket) compact.whyTargetMarket = config.whyTargetMarket;
+  if (config.pastedShopPrices) compact.pastedShopPrices = config.pastedShopPrices;
+  if (config.incotermsMode) compact.incotermsMode = config.incotermsMode;
+  if (config.selectedIncoterm) compact.selectedIncoterm = config.selectedIncoterm;
   return `?${PARAM}=${encodeConfig(AnalysisConfigSchema.parse(compact))}`;
 }
 

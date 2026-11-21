@@ -1,44 +1,33 @@
 import { describe, expect, it } from "vitest";
-import {
-  isProjectScreen,
-  preferredProjectView,
-  PROJECT_STEP_VIEWS,
-  projectStepOf,
-  RESULT_VIEWS,
-} from "./views";
+import { PROJECT_STEP_VIEWS, projectStepOf, RESULT_VIEWS } from "./views";
 
-describe("project steps", () => {
-  it("has exactly three steps in order Datos, Variables, Resultados", () => {
-    expect(PROJECT_STEP_VIEWS).toEqual(["datos", "variables", "analisis"]);
+describe("projectStepOf", () => {
+  it("maps the six Prompt 4d steps", () => {
+    expect(PROJECT_STEP_VIEWS).toEqual([
+      "datos",
+      "variables",
+      "analisis",
+      "mercado_objetivo",
+      "plan_4p",
+      "preparar_envio",
+    ]);
     expect(projectStepOf("datos")).toBe(1);
     expect(projectStepOf("variables")).toBe(2);
     expect(projectStepOf("analisis")).toBe(3);
+    expect(projectStepOf("mercado_objetivo")).toBe(4);
+    expect(projectStepOf("plan_4p")).toBe(5);
+    expect(projectStepOf("preparar_envio")).toBe(6);
   });
 
-  it("maps every result view to step 3 and shows the project bar", () => {
+  it("keeps result tabs on step 3", () => {
     for (const view of RESULT_VIEWS) {
       expect(projectStepOf(view)).toBe(3);
-      expect(isProjectScreen(view)).toBe(true);
     }
   });
 
-  it("keeps Home and static pages free of the project bar", () => {
-    for (const view of ["home", "projects", "docs", "data_sources", "cite"] as const) {
-      expect(isProjectScreen(view)).toBe(false);
+  it("returns null outside project steps", () => {
+    for (const view of ["home", "docs", "projects", "cite"] as const) {
       expect(projectStepOf(view)).toBeNull();
     }
-  });
-
-  it("opens ready projects on Resultados and incomplete ones on Datos", () => {
-    expect(
-      preferredProjectView({
-        v: 1,
-        view: "project_dashboard",
-        origin: "COL",
-        hs: "64",
-        year: 2019,
-      }),
-    ).toBe("analisis");
-    expect(preferredProjectView({ v: 1, view: "project_dashboard" })).toBe("datos");
   });
 });

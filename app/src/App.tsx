@@ -135,6 +135,15 @@ const VariablesHub = lazy(() =>
 const AdvancedTools = lazy(() =>
   import("./pages/AdvancedTools").then((m) => ({ default: m.AdvancedTools })),
 );
+const MercadoObjetivo = lazy(() =>
+  import("./pages/MercadoObjetivo").then((m) => ({ default: m.MercadoObjetivo })),
+);
+const Plan4P = lazy(() =>
+  import("./pages/Plan4P").then((m) => ({ default: m.Plan4P })),
+);
+const PrepararEnvio = lazy(() =>
+  import("./pages/PrepararEnvio").then((m) => ({ default: m.PrepararEnvio })),
+);
 
 function RouteFallback() {
   const { t } = useTranslation();
@@ -199,6 +208,9 @@ function AppShell() {
             <Route path="/data/pipeline" element={<DataPipeline />} />
             <Route path="/data/releases" element={<DataReleases />} />
             <Route path="/data/updates" element={<DataUpdates />} />
+            <Route path="/mercado_objetivo" element={<MercadoObjetivo />} />
+            <Route path="/plan_4p" element={<Plan4P />} />
+            <Route path="/preparar_envio" element={<PrepararEnvio />} />
           </Routes>
         </Suspense>
       </AppShellFrame>
