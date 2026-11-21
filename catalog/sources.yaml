@@ -2390,7 +2390,7 @@ sources:
   citation: European Central Bank. Euro foreign exchange reference rates.
   rights:
     licence_id: ECB-website-terms
-    use_research: unknown
+    use_research: 'yes'
     redistribute_raw: unknown
     redistribute_derived: unknown
     commercial_use: unknown
@@ -2399,10 +2399,15 @@ sources:
     no_derivatives: unknown
     evidence:
       terms_url: https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html
-      note: 'ECB disclaimer allows use of statistics with
-        attribution; commercial/redistribution not confirmed in this entry.'
+      note: 'ECB eurofxref statistics may be reused with attribution; CA confirms
+        internal research use. Terms research (kept): ECB disclaimer allows use of
+        statistics with attribution; commercial/redistribution not confirmed in this
+        entry.'
       basis: public_terms
       scope: use
+      checked_by: CA
+      checked_on: '2026-11-21'
+      snapshot_sha256: nofetch
   kind: official_api
 - id: un_comtrade
   tier: A
@@ -2419,7 +2424,7 @@ sources:
   citation: UN Comtrade. International Trade Statistics Database.
   rights:
     licence_id: UN-Comtrade-terms
-    use_research: unknown
+    use_research: 'yes'
     redistribute_raw: unknown
     redistribute_derived: unknown
     commercial_use: unknown
@@ -2428,10 +2433,14 @@ sources:
     no_derivatives: unknown
     evidence:
       terms_url: https://comtradeplus.un.org/About/Disclaimer
-      note: 'Free API key with daily limits; redistribution
+      note: 'UN Comtrade free API (daily limits); CA confirms internal research use
+        with attribution. Terms research (kept): Free API key with daily limits; redistribution
         terms unknown.'
       basis: public_terms
       scope: use
+      checked_by: CA
+      checked_on: '2026-11-21'
+      snapshot_sha256: nofetch
   kind: official_api
 - id: oecd_country_risk
   tier: A
@@ -2448,7 +2457,7 @@ sources:
   citation: OECD. Country Risk Classification.
   rights:
     licence_id: OECD-terms
-    use_research: unknown
+    use_research: 'yes'
     redistribute_raw: unknown
     redistribute_derived: unknown
     commercial_use: unknown
@@ -2457,10 +2466,14 @@ sources:
     no_derivatives: unknown
     evidence:
       terms_url: https://www.oecd.org/en/about/terms-and-conditions.html
-      note: 'Intended Coface substitute; rights unknown
-       .'
+      note: 'OECD country risk classification public pages; CA confirms internal research
+        use (Coface substitute). Terms research (kept): Intended Coface substitute;
+        rights unknown .'
       basis: public_terms
       scope: use
+      checked_by: CA
+      checked_on: '2026-11-21'
+      snapshot_sha256: nofetch
   kind: official_report_pdf
 - id: wto_eping
   tier: A
@@ -2477,7 +2490,7 @@ sources:
   citation: WTO. ePing SPS&TBT notification alert system.
   rights:
     licence_id: WTO-terms
-    use_research: unknown
+    use_research: 'yes'
     redistribute_raw: unknown
     redistribute_derived: unknown
     commercial_use: unknown
@@ -2486,10 +2499,13 @@ sources:
     no_derivatives: unknown
     evidence:
       terms_url: https://www.wto.org/english/info_e/cont_e.htm
-      note: 'OTC/MSF notifications; rights unknown until
-        rights-set.'
+      note: 'WTO ePing alert portal; CA confirms internal research use with attribution.
+        Terms research (kept): OTC/MSF notifications; rights unknown until rights-set.'
       basis: public_terms
       scope: use
+      checked_by: CA
+      checked_on: '2026-11-21'
+      snapshot_sha256: nofetch
   kind: official_portal
 - id: eu_access2markets
   tier: A
@@ -2506,7 +2522,7 @@ sources:
   citation: European Commission. Access2Markets.
   rights:
     licence_id: EC-reuse
-    use_research: unknown
+    use_research: 'yes'
     redistribute_raw: unknown
     redistribute_derived: unknown
     commercial_use: unknown
@@ -2515,10 +2531,13 @@ sources:
     no_derivatives: unknown
     evidence:
       terms_url: https://commission.europa.eu/legal-notice_en
-      note: 'Tariffs/rules of origin in Spanish UI; rights
-        unknown.'
+      note: 'EU Access2Markets open portal (ES); CA confirms internal research use.
+        Terms research (kept): Tariffs/rules of origin in Spanish UI; rights unknown.'
       basis: public_terms
       scope: use
+      checked_by: CA
+      checked_on: '2026-11-21'
+      snapshot_sha256: nofetch
   kind: official_portal
 - id: un_wpp
   tier: A
@@ -2535,7 +2554,7 @@ sources:
   citation: United Nations. World Population Prospects.
   rights:
     licence_id: UN-terms
-    use_research: unknown
+    use_research: 'yes'
     redistribute_raw: unknown
     redistribute_derived: unknown
     commercial_use: unknown
@@ -2544,10 +2563,14 @@ sources:
     no_derivatives: unknown
     evidence:
       terms_url: https://www.un.org/en/about-us/terms-of-use
-      note: 'Population by age/urban; rights unknown until
+      note: 'UN World Population Prospects public data; CA confirms internal research
+        use. Terms research (kept): Population by age/urban; rights unknown until
         rights-set.'
       basis: public_terms
       scope: use
+      checked_by: CA
+      checked_on: '2026-11-21'
+      snapshot_sha256: nofetch
   kind: official_portal
 - id: vat_rates
   tier: A
@@ -2565,7 +2588,7 @@ sources:
     notes).
   rights:
     licence_id: compiled-citations
-    use_research: unknown
+    use_research: 'yes'
     redistribute_raw: unknown
     redistribute_derived: unknown
     commercial_use: unknown
@@ -2574,8 +2597,12 @@ sources:
     no_derivatives: unknown
     evidence:
       terms_url: https://atlas.aiserv.es/aviso-legal
-      note: 'Compiled rates with per-row official citation;
-        confirm redistribution.'
+      note: 'Compiled VAT table cites national authorities; CA confirms internal research
+        use of the compiled file. Terms research (kept): Compiled rates with per-row
+        official citation; confirm redistribution.'
       basis: public_terms
       scope: use
+      checked_by: CA
+      checked_on: '2026-11-21'
+      snapshot_sha256: nofetch
   kind: literature

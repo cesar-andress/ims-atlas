@@ -66,13 +66,13 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 | comexstat_br | UNKNOWN | yes | unknown | unknown | unknown | unknown | unknown | unknown | CA | 2026-11-21 |
 | dane_dian_comex | UNKNOWN | yes | unknown | unknown | unknown | unknown | unknown | unknown | CA | 2026-11-21 |
 | datacomex_es | UNKNOWN | yes | unknown | unknown | unknown | unknown | unknown | unknown | CA | 2026-11-21 |
-| ecb_fx | ECB-website-terms | unknown | unknown | unknown | unknown | yes | unknown | unknown | — | — |
-| un_comtrade | UN-Comtrade-terms | unknown | unknown | unknown | unknown | yes | unknown | unknown | — | — |
-| oecd_country_risk | OECD-terms | unknown | unknown | unknown | unknown | yes | unknown | unknown | — | — |
-| wto_eping | WTO-terms | unknown | unknown | unknown | unknown | yes | unknown | unknown | — | — |
-| eu_access2markets | EC-reuse | unknown | unknown | unknown | unknown | yes | unknown | unknown | — | — |
-| un_wpp | UN-terms | unknown | unknown | unknown | unknown | yes | unknown | unknown | — | — |
-| vat_rates | compiled-citations | unknown | unknown | unknown | unknown | yes | unknown | unknown | — | — |
+| ecb_fx | ECB-website-terms | yes | unknown | unknown | unknown | yes | unknown | unknown | CA | 2026-11-21 |
+| un_comtrade | UN-Comtrade-terms | yes | unknown | unknown | unknown | yes | unknown | unknown | CA | 2026-11-21 |
+| oecd_country_risk | OECD-terms | yes | unknown | unknown | unknown | yes | unknown | unknown | CA | 2026-11-21 |
+| wto_eping | WTO-terms | yes | unknown | unknown | unknown | yes | unknown | unknown | CA | 2026-11-21 |
+| eu_access2markets | EC-reuse | yes | unknown | unknown | unknown | yes | unknown | unknown | CA | 2026-11-21 |
+| un_wpp | UN-terms | yes | unknown | unknown | unknown | yes | unknown | unknown | CA | 2026-11-21 |
+| vat_rates | compiled-citations | yes | unknown | unknown | unknown | yes | unknown | unknown | CA | 2026-11-21 |
 
 ## Variables (gate)
 
@@ -94,6 +94,12 @@ Deployment `commercial_context`: **True** (atlas.aiserv.es).
 | INFL | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | UNEMP | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | GOV | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| CC | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| GE | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| RQ | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| RL | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| PV | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
+| VA | worldbank_wgi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | EOC | worldbank_wdi | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | REEXP | baci | ship_raw | redistribute_raw=yes with evidence and commercial ok |
 | ITU_IDI | itu_datahub | byod_only | evidence incomplete (checked_by/on, terms_url, snapshot_sha256) |
