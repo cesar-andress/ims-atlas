@@ -4,10 +4,23 @@
 |------|--------|
 | Git origin | `https://github.com/cesar-andress/ims-atlas.git` (or SSH as `cesar-andress`) |
 | Checkout | `/opt/services/ims-atlas` |
+| Bulk data | `/data/ims-atlas` (raw, curated, release, store, …); `/opt/services/ims-atlas/data` → symlink |
 | Domain | `https://atlas.aiserv.es` (+ `www.atlas.aiserv.es` → apex) |
 | Bind | `10.204.0.3:8121` → nginx container (never publish `0.0.0.0:8121`) |
 | Edge | Caddy on vpn-server (`aiserv-server`) → `10.204.0.3:8121` |
 | Auth | Authelia via Caddy (public: `/`, `/metodologia`, `/privacidad`, `/aviso-legal`, `/landing/*`, assets) |
+
+## Data volume (`/data`)
+
+On vpn-aplicaciones the git checkout stays on the root LV under `/opt/services/ims-atlas`.
+Bulky trees live on the large `/data` volume:
+
+- Canonical store: `/data/ims-atlas/{raw,curated,manual,release,store,static,local}`
+- Repo path: `/opt/services/ims-atlas/data` → `/data/ims-atlas` (symlink)
+
+Compose still mounts `../data/release` and `../data/store/cerrada` relative to the
+checkout. Docker ETL jobs keep `-v /opt/services/ims-atlas:/w` and `ATLAS_ROOT=/w`;
+writes go through the symlink onto `/data`. Do not put large releases back on `/opt`.
 
 ## First install
 
