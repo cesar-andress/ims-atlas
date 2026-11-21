@@ -4,6 +4,7 @@
  */
 
 import { hierarchicalWsm } from "./mcdm.js";
+import { compareScoreDescending } from "./math.js";
 import type { HierarchicalWeights } from "./types.js";
 import { validateWeights } from "./weights.js";
 
@@ -19,7 +20,7 @@ export type TornadoBar = {
 function ranksFromScores(scores: readonly number[]): number[] {
   const order = scores
     .map((score, i) => ({ score, i }))
-    .sort((a, b) => b.score - a.score || a.i - b.i);
+    .sort((a, b) => compareScoreDescending(a.score, b.score, a.i - b.i));
   const ranks = Array(scores.length).fill(0) as number[];
   order.forEach((o, r) => {
     ranks[o.i] = r + 1;

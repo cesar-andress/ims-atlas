@@ -31,6 +31,7 @@ import { useImsfeEocMatrix } from "../../ranking/useImsfeEocMatrix";
 import type { RankingViewModel } from "../../ranking/rankingEngine";
 import { useAnalysis } from "../../state/useAnalysis";
 import { useCompareSelection } from "../../state/useCompareSelection";
+import { topScoredMarkets } from "./topScoredMarkets";
 
 const PREVIEW = 12;
 
@@ -119,12 +120,18 @@ export function ResultsDashboard({ model }: Props) {
     return model.ranking.map((r) => r.iso3).filter((iso) => !have.has(iso));
   }, [eoc, model.ranking]);
 
+  /** Markets with a computable IMSFE score — never treat null/NaN as "best". */
+  const scoredRanking = useMemo(
+    () => model.ranking.filter((r) => Number.isFinite(r.score)),
+    [model.ranking],
+  );
+
   const selectedIso =
     compareA && model.ranking.some((r) => r.iso3 === compareA)
       ? compareA
-      : model.ranking[0]?.iso3;
+      : (scoredRanking[0] ?? model.ranking[0])?.iso3;
 
-  const top = model.ranking[0];
+  const top = scoredRanking[0];
   const leaders = eoc ? eoc.points.filter((p) => p.quadrant === 1) : [];
   const leadersKnown = eoc != null;
   const topQ = top ? (qByIso.get(top.iso3) ?? null) : null;
@@ -178,22 +185,18 @@ export function ResultsDashboard({ model }: Props) {
         ? `No markets in quadrant 1 (leaders) of ${model.ranking.length} candidates.`
         : `Global leaders: ${leaders.length} of ${model.ranking.length}.`;
 
+  const podium = topScoredMarkets(model.ranking, 3);
+  const topThreeLabel = podium
+    .map((r) => `${countryLabel(r.iso3, lang)} (${formatScoreLocale(r.score, lang)})`)
+    .join(", ");
   const summary =
     lang === "es"
-      ? `Para HS${config.hs ?? "-"} desde ${config.origin ?? "-"} (${yearLabel}), los tres mejores mercados son ${model.ranking
-          .slice(0, 3)
-          .map(
-            (r) =>
-              `${countryLabel(r.iso3, lang)} (${formatScoreLocale(r.score, lang)})`,
-          )
-          .join(", ")}. ${highlight} ${leadersLine}`
-      : `For HS${config.hs ?? "-"} from ${config.origin ?? "-"} (${yearLabel}), the top three markets are ${model.ranking
-          .slice(0, 3)
-          .map(
-            (r) =>
-              `${countryLabel(r.iso3, lang)} (${formatScoreLocale(r.score, lang)})`,
-          )
-          .join(", ")}. ${highlight} ${leadersLine}`;
+      ? podium.length === 0
+        ? `Para HS${config.hs ?? "-"} desde ${config.origin ?? "-"} (${yearLabel}), no hay mercados con puntuación IMSFE computable. ${leadersLine}`
+        : `Para HS${config.hs ?? "-"} desde ${config.origin ?? "-"} (${yearLabel}), los tres mejores mercados son ${topThreeLabel}. ${highlight} ${leadersLine}`
+      : podium.length === 0
+        ? `For HS${config.hs ?? "-"} from ${config.origin ?? "-"} (${yearLabel}), no markets have a computable IMSFE score. ${leadersLine}`
+        : `For HS${config.hs ?? "-"} from ${config.origin ?? "-"} (${yearLabel}), the top three markets are ${topThreeLabel}. ${highlight} ${leadersLine}`;
 
   const notice = illustrative
     ? t("illustrativeBanner")

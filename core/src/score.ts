@@ -3,6 +3,7 @@
  */
 
 import { factorContributions, score as scoreMcdm } from "./mcdm.js";
+import { compareScoreDescending } from "./math.js";
 import { prepareBlock, type PrepareBlockInput } from "./missing.js";
 import { normalizeMatrix } from "./normalize.js";
 import type {
@@ -101,7 +102,9 @@ export function scoreBlock(input: ScoreBlockInput): ScoreBlockResult {
 
   const order = scores
     .map((score, i) => ({ iso3: prepared.candidates[i]!, score, i }))
-    .sort((a, b) => b.score - a.score || a.iso3.localeCompare(b.iso3));
+    .sort((a, b) =>
+      compareScoreDescending(a.score, b.score, a.iso3.localeCompare(b.iso3)),
+    );
 
   const ranking = order.map((row, rank0) => ({
     iso3: row.iso3,

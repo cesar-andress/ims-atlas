@@ -44,8 +44,9 @@ export type ImsfeEocMatrixResult = {
 };
 
 function median(xs: number[]): number {
-  if (xs.length === 0) return 0;
-  const s = [...xs].sort((a, b) => a - b);
+  const finite = xs.filter((v) => Number.isFinite(v));
+  if (finite.length === 0) return 0;
+  const s = [...finite].sort((a, b) => a - b);
   const mid = Math.floor(s.length / 2);
   if (s.length % 2 === 0) return (s[mid - 1]! + s[mid]!) / 2;
   return s[mid]!;
@@ -73,7 +74,8 @@ export function eocQuadrantOf(
   eocNorm: number,
   cutImsfe: number,
   cutEoc: number,
-): ImsfeEocQuadrant {
+): ImsfeEocQuadrant | null {
+  if (!Number.isFinite(imsfe) || !Number.isFinite(eocNorm)) return null;
   const highI = imsfe >= cutImsfe;
   const highE = eocNorm >= cutEoc;
   if (highI && highE) return 1;
@@ -90,11 +92,16 @@ export function buildImsfeEocMatrix(input: {
   fixedCutEoc?: number;
   scaleMax?: number;
 }): ImsfeEocMatrixResult {
+  // Missing IMSFE must not enter quadrant cuts or strategy labels (NaN compares
+  // as "low IMSFE" and falsely lands in EMERGING OPPORTUNITIES / CHALLENGING).
+  const rows = input.rows.filter(
+    (r) => Number.isFinite(r.imsfe) && Number.isFinite(r.eocRaw),
+  );
   const eocNorms = normalizeEocRatio(
-    input.rows.map((r) => r.eocRaw),
+    rows.map((r) => r.eocRaw),
     input.scaleMax ?? 10,
   );
-  const enriched = input.rows.map((r, i) => ({
+  const enriched = rows.map((r, i) => ({
     iso3: r.iso3,
     imsfe: r.imsfe,
     eocRaw: r.eocRaw,
@@ -111,10 +118,12 @@ export function buildImsfeEocMatrix(input: {
       ? (input.fixedCutEoc ?? 0.5)
       : median(enriched.map((p) => p.eocNorm));
 
-  const points: ImsfeEocPoint[] = enriched.map((p) => ({
-    ...p,
-    quadrant: eocQuadrantOf(p.imsfe, p.eocNorm, cutImsfe, cutEoc),
-  }));
+  const points: ImsfeEocPoint[] = [];
+  for (const p of enriched) {
+    const quadrant = eocQuadrantOf(p.imsfe, p.eocNorm, cutImsfe, cutEoc);
+    if (quadrant == null) continue;
+    points.push({ ...p, quadrant });
+  }
 
   return { points, cutImsfe, cutEoc };
 }

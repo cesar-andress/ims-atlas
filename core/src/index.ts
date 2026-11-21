@@ -219,6 +219,21 @@ export {
 export { scoreBlock, type ScoreBlockInput, type ScoreBlockResult } from "./score.js";
 
 export {
+  column,
+  compareScoreDescending,
+  covPop,
+  finiteValues,
+  isFiniteNumber,
+  mean,
+  median,
+  pearson,
+  rankAverage,
+  stdPop,
+  stdSample,
+  transpose,
+} from "./math.js";
+
+export {
   EXPERT_FACTOR_MEANS,
   EXPERT_VARIABLE_MEANS,
   LEGACY_FACTOR_MAP,

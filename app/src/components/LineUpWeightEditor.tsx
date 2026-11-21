@@ -65,7 +65,17 @@ export function LineUpWeightEditor() {
         prevRank: model.ranking.find((r) => r.iso3 === iso)?.rank ?? i + 1,
       };
     });
-    scored.sort((a, b) => b.score - a.score || a.iso3.localeCompare(b.iso3));
+    scored.sort((a, b) => {
+      const aOk = Number.isFinite(a.score);
+      const bOk = Number.isFinite(b.score);
+      if (aOk && !bOk) return -1;
+      if (!aOk && bOk) return 1;
+      if (aOk && bOk) {
+        const d = b.score - a.score;
+        if (d !== 0) return d;
+      }
+      return a.iso3.localeCompare(b.iso3);
+    });
     return scored.slice(0, 8).map((r, i) => ({ ...r, rank: i + 1 }));
   }, [model, draft, factors]);
 

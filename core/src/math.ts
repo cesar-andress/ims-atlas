@@ -83,6 +83,31 @@ export function rankAverage(values: readonly number[]): number[] {
   return ranks;
 }
 
+/**
+ * Descending score order for rankings. Non-finite scores (NaN / ±Infinity)
+ * sort after every finite score. When both sides are non-finite or tied,
+ * callers pass a tie-break (e.g. ISO3 localeCompare).
+ *
+ * Important: do not use `b - a || tieBreak` alone — `NaN` is falsy, so that
+ * pattern falls through to the tie-break and can rank missing scores as if
+ * they were competitive (e.g. alphabetical ISO order as "top markets").
+ */
+export function compareScoreDescending(
+  scoreA: number,
+  scoreB: number,
+  tieBreak = 0,
+): number {
+  const aOk = Number.isFinite(scoreA);
+  const bOk = Number.isFinite(scoreB);
+  if (aOk && !bOk) return -1;
+  if (!aOk && bOk) return 1;
+  if (aOk && bOk) {
+    const d = scoreB - scoreA;
+    if (d !== 0) return d;
+  }
+  return tieBreak;
+}
+
 export function column(matrix: readonly (readonly number[])[], j: number): number[] {
   return matrix.map((row) => row[j]!);
 }

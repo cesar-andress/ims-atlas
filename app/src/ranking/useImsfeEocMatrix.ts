@@ -20,6 +20,7 @@ export function useImsfeEocMatrix(
     if (eocIdx < 0) return null;
 
     const rows = model.ranking.flatMap((r) => {
+      if (!Number.isFinite(r.score)) return [];
       const candIdx = model.panel.candidates.indexOf(r.iso3);
       if (candIdx < 0) return [];
       const v = model.panel.values[candIdx]?.[eocIdx];
