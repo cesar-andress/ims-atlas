@@ -18,7 +18,7 @@ import pandas as pd
 from imsatlas_etl.pipeline.io_paths import curated_dir
 
 ASIA_SUPPLIERS = frozenset({"CHN", "VNM"})
-PRODUCT_VAR_IDS = ("IMPV", "GRW", "HHI", "ASIASH", "REEXP", "IMPC")
+PRODUCT_VAR_IDS = ("IMPV", "GRW", "HHI", "ASIASH", "REEXP", "IMPC", "UVGAP")
 
 # Concurrent ``release --force`` can wipe staging between mkdir and to_parquet
 # (pyarrow: "Cannot save file into a non-existent directory"). Remake + retry.
@@ -211,6 +211,30 @@ def compute_product_metrics(
         else:
             panel["impc"] = np.nan
 
+        # UVGAP: |log(UV) − log(median UV)| when BACI quantity is present.
+        if "quantity" in flows.columns and flows["quantity"].notna().any():
+            qty = (
+                flows.groupby(["year", "importer", "hs_code"], as_index=False)[
+                    "quantity"
+                ]
+                .sum(min_count=1)
+                .rename(columns={"importer": "iso3", "quantity": "qty"})
+            )
+            panel = panel.merge(qty, on=["year", "iso3", "hs_code"], how="left")
+            panel["uv"] = np.where(
+                panel["qty"].notna() & (panel["qty"] > 0) & (panel["impv"] > 0),
+                panel["impv"] / panel["qty"],
+                np.nan,
+            )
+            med = panel.groupby(["year", "hs_code"])["uv"].transform("median")
+            panel["uvgap"] = np.where(
+                panel["uv"].notna() & med.notna() & (med > 0),
+                np.abs(np.log(panel["uv"]) - np.log(med)),
+                np.nan,
+            )
+        else:
+            panel["uvgap"] = np.nan
+
         long_parts = [
             panel.assign(variable_id="IMPV", value=panel["impv"]),
             panel.assign(variable_id="GRW", value=panel["grw"]),
@@ -218,6 +242,7 @@ def compute_product_metrics(
             panel.assign(variable_id="ASIASH", value=panel["asiash"]),
             panel.assign(variable_id="REEXP", value=panel["reexp"]),
             panel.assign(variable_id="IMPC", value=panel["impc"]),
+            panel.assign(variable_id="UVGAP", value=panel["uvgap"]),
         ]
         for part in long_parts:
             frames.append(

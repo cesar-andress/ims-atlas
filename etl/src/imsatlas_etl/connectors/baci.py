@@ -69,6 +69,10 @@ def load_raw_trade(path: Path) -> pd.DataFrame:
     df["hs6"] = df["hs6"].str.zfill(6)
     df["hs4"] = df["hs6"].str.slice(0, 4)
     df["hs2"] = df["hs6"].str.slice(0, 2)
+    if "quantity" not in df.columns:
+        df["quantity"] = float("nan")
+    else:
+        df["quantity"] = pd.to_numeric(df["quantity"], errors="coerce")
     return df
 
 
@@ -102,6 +106,11 @@ def normalize_chunk(
         "n_unmapped_country": 0,
         "n_null_value": 0,
     }
+    qty = (
+        pd.to_numeric(chunk["q"], errors="coerce")
+        if "q" in chunk.columns
+        else pd.Series(float("nan"), index=chunk.index, dtype="float64")
+    )
     out = pd.DataFrame(
         {
             "year": pd.to_numeric(chunk["t"], errors="coerce"),
@@ -109,6 +118,7 @@ def normalize_chunk(
             "importer": chunk["j"].astype(str).str.strip().map(mapping),
             "hs6": chunk["k"].astype(str).str.strip().str.zfill(6),
             "value_usd": pd.to_numeric(chunk["v"], errors="coerce") * value_scale,
+            "quantity": qty,
         },
     )
     keep = out["year"].ge(year_min)

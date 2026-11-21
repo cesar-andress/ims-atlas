@@ -4,6 +4,13 @@ All notable changes to IMS Atlas are documented in this file.
 
 ## [Unreleased]
 
+### Trade quantity + UVGAP (B3 start)
+
+- BACI extract keeps `quantity` (`q`); curated/release trade tables carry it;
+  `UVGAP` is computed when quantity is present (absolute log gap vs median UV).
+  Existing curated without `q` stays compatible (null quantity). Re-extract BACI
+  with `--force` on the host before the next internal release to fill values.
+
 ### Ranking credibility (B1) + empty project (B2)
 
 - EOC openness winsorised at p95 (matrix, combined score, project panel) so

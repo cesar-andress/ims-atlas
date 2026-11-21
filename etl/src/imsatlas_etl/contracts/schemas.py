@@ -29,6 +29,7 @@ trade_schema = DataFrameSchema(
         "importer": ISO3,
         "hs6": Column(str, checks=Check.str_length(6, 6), nullable=False),
         "value_usd": Column(float, checks=Check.ge(0), nullable=False, coerce=True),
+        "quantity": Column(float, checks=Check.ge(0), nullable=True, coerce=True),
         "hs4": Column(str, checks=Check.str_length(4, 4), nullable=False),
         "hs2": Column(str, checks=Check.str_length(2, 2), nullable=False),
     },

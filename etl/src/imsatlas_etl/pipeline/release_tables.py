@@ -35,7 +35,7 @@ BILATERAL_LONG_COLS = [
     "flag_imputed",
     "flag_locf",
 ]
-TRADE_COLS = ["exporter", "importer", "year", "value_usd", "hs2"]
+TRADE_COLS = ["exporter", "importer", "year", "value_usd", "quantity", "hs2"]
 
 # Bilateral curated columns -> catalog variable ids
 BILATERAL_MAP = {
@@ -139,6 +139,9 @@ def build_trade_hs2(*, root: Path | None) -> pd.DataFrame:
     frame = pd.read_parquet(path)
     if "hs2" not in frame.columns:
         return _empty_trade()
+    if "quantity" not in frame.columns:
+        frame = frame.copy()
+        frame["quantity"] = float("nan")
     out = frame[TRADE_COLS].copy()
     return out.sort_values(
         ["hs2", "year", "exporter", "importer"],

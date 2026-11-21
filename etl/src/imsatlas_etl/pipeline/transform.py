@@ -39,7 +39,16 @@ EMPTY_BILATERAL = pd.DataFrame(
     ],
 )
 EMPTY_TRADE = pd.DataFrame(
-    columns=["year", "exporter", "importer", "hs6", "hs4", "hs2", "value_usd"],
+    columns=[
+        "year",
+        "exporter",
+        "importer",
+        "hs6",
+        "hs4",
+        "hs2",
+        "value_usd",
+        "quantity",
+    ],
 )
 
 
@@ -221,17 +230,19 @@ def build_trade_tables(
     if trade.empty:
         _missing(miss, "baci", "trade.csv is empty")
         return empty
+    if "quantity" not in trade.columns:
+        trade = trade.copy()
+        trade["quantity"] = float("nan")
     hs6 = trade.copy()
+    agg_cols = ["value_usd", "quantity"]
     hs4 = (
-        trade.groupby(["year", "exporter", "importer", "hs4"], as_index=False)[
-            "value_usd"
-        ]
-        .sum()
+        trade.groupby(["year", "exporter", "importer", "hs4"], as_index=False)[agg_cols]
+        .sum(min_count=1)
         .assign(hs2=lambda d: d["hs4"].str.slice(0, 2))
     )
     hs2 = trade.groupby(["year", "exporter", "importer", "hs2"], as_index=False)[
-        "value_usd"
-    ].sum()
+        agg_cols
+    ].sum(min_count=1)
     return {"trade_hs6": hs6, "trade_hs4": hs4, "trade_hs2": hs2}
 
 

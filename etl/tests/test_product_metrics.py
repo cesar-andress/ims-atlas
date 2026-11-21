@@ -58,6 +58,21 @@ def _toy_trade() -> pd.DataFrame:
     )
 
 
+def test_uvgap_from_quantity() -> None:
+    trade = _toy_trade().copy()
+    trade["quantity"] = [10.0, 10.0, 5.0, 10.0, 10.0]
+    metrics = compute_product_metrics(trade)
+    mex = metrics[
+        (metrics.iso3 == "MEX")
+        & (metrics.year == 2020)
+        & (metrics.hs_code == "870323")
+        & (metrics.hs_level == "hs6")
+        & (metrics.variable_id == "UVGAP")
+    ]
+    assert len(mex) == 1
+    assert mex.iloc[0]["value"] == mex.iloc[0]["value"]  # not NaN
+
+
 def test_compute_impv_hhi_asiash_reexp() -> None:
     metrics = compute_product_metrics(_toy_trade())
     mex_2020 = metrics[

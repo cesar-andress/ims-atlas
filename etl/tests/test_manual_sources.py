@@ -101,6 +101,7 @@ def test_baci_live_extract_normalises_and_counts(tmp_path: Path) -> None:
     first = frame[frame["hs6"] == "640399"].iloc[0]
     assert first["exporter"] == "COL" and first["importer"] == "ESP"
     assert first["value_usd"] == pytest.approx(100500.0)  # v * 1000
+    assert first["quantity"] == pytest.approx(10.0)
     assert "085000" in set(frame["hs6"])
     d = res["discards"]
     assert d["n_unmapped_country"] == 1
