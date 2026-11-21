@@ -1038,6 +1038,9 @@ export const en = {
   projectSaving: "Saving…",
   projectSaveFailed: "Could not save · Retry",
   projectSaveTeamFallback: "Could not save to the team. Saved in this browser. Retry",
+  projectSaveNameConflict:
+    "A project with that name already exists on the team. Rename and retry (saved in this browser).",
+  projectSavedRenamed: 'Saved as "{name}" (that name was already in use on the team).',
   projectUntitled: "Untitled project",
   homeAria: "IMS Atlas, home",
   helpButton: "Help",

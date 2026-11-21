@@ -1046,6 +1046,10 @@ const es = {
   projectSaveFailed: "No se ha podido guardar · Reintentar",
   projectSaveTeamFallback:
     "No se ha podido guardar en el equipo. Está guardado en este navegador. Reintentar",
+  projectSaveNameConflict:
+    "Ya existe un proyecto con ese nombre en el equipo. Cámbialo y reintenta (está guardado en este navegador).",
+  projectSavedRenamed:
+    'Guardado como "{name}" (ese nombre ya estaba en uso en el equipo).',
   projectUntitled: "Proyecto sin nombre",
   homeAria: "IMS Atlas, inicio",
   helpButton: "Ayuda",
