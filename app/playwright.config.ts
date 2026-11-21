@@ -1,7 +1,9 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const liveBase = process.env.ATLAS_E2E_BASE_URL?.replace(/\/$/, "");
 const port = 4173;
-const baseURL = `http://127.0.0.1:${port}`;
+const localBase = `http://127.0.0.1:${port}`;
+const baseURL = liveBase || localBase;
 
 export default defineConfig({
   testDir: "./e2e",
@@ -12,22 +14,30 @@ export default defineConfig({
   use: {
     baseURL,
     trace: "on-first-retry",
-    // The UI defaults to Spanish; the English assertions in these specs opt in via the
-    // saved language preference (the same key the ES/EN switch writes). Specs that test
-    // the default or the switch override storageState.
-    storageState: {
-      cookies: [],
-      origins: [
-        { origin: baseURL, localStorage: [{ name: "ims-atlas.lang", value: "en" }] },
-      ],
-    },
+    // Local preview defaults to English via saved preference. Live host keeps
+    // the app default (Spanish) — do not inject localhost storageState there.
+    storageState: liveBase
+      ? { cookies: [], origins: [] }
+      : {
+          cookies: [],
+          origins: [
+            {
+              origin: localBase,
+              localStorage: [{ name: "ims-atlas.lang", value: "en" }],
+            },
+          ],
+        },
   },
-  webServer: {
-    command: "pnpm exec vite preview --host 127.0.0.1 --port 4173 --strictPort",
-    url: baseURL,
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
-  },
+  ...(liveBase
+    ? {}
+    : {
+        webServer: {
+          command: "pnpm exec vite preview --host 127.0.0.1 --port 4173 --strictPort",
+          url: localBase,
+          reuseExistingServer: !process.env.CI,
+          timeout: 120_000,
+        },
+      }),
   projects: [
     {
       name: "chromium",
