@@ -90,6 +90,13 @@ def update_source_state(
     return row
 
 
+# Waiting for a manual drop or connector is not a hard failure: do not bump
+# consecutive_failures or send alert email (PROMPTS URGENTE §5).
+_NON_FAILURE_STATUSES = frozenset(
+    {"pending_file", "no_connector", "skipped", "daily_cap"},
+)
+
+
 def mark_check(
     source_id: str,
     *,
@@ -106,11 +113,16 @@ def mark_check(
     payload = load_sources_state(root=root)
     prev = dict((payload.get("sources") or {}).get(source_id) or {})
     fails = int(prev.get("consecutive_failures") or 0)
+    st = status or ("ok" if ok else "fail")
     if ok:
         fails = 0
         last_ok = _now()
         err = None
         st = status or "ok"
+    elif st in _NON_FAILURE_STATUSES:
+        # Keep prior failure count (do not inflate from missing files).
+        last_ok = prev.get("last_ok_at")
+        err = error
     else:
         fails += 1
         last_ok = prev.get("last_ok_at")
@@ -130,7 +142,7 @@ def mark_check(
         consecutive_failures=fails,
         check_count_delta=1,
     )
-    if fails == 3:
+    if fails == 3 and st not in _NON_FAILURE_STATUSES:
         maybe_send_failure_email(source_id, row)
     return row
 

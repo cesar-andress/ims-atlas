@@ -101,11 +101,35 @@ those drops.
 On a machine with the ETL env (after `make pipeline-fixture && make release-staging`):
 
 ```bash
-atlas-etl promote 0.1.0 --by "Your Name"
+# Prefer a non-person promoter label in automation (e.g. pipeline).
+atlas-etl promote 0.1.0 --by "pipeline" --audience internal
 ```
 
 Then sync `status/` + `data/release/` on the host (git does not track them) or rebuild
 them on the server with the same fixture/live pipeline.
+
+Release builds **refuse** an empty `country_product` when curated has ≥90 HS2
+chapters, and refuse >20 % row shrink vs the previous release of the same
+audience. Promote keeps the last **3** version directories.
+
+### Repair empty internal `country_product` (ops)
+
+If `data/release/internal/vX.Y.Z/country_product` only has `hs2=_empty` while
+`data/curated/country_product_by_hs2` is full, publish a **new** version (do not
+overwrite the broken tree) from curated:
+
+```bash
+cd /opt/services/ims-atlas
+docker run --rm -v "$PWD:/w" -w /w --memory=24g \
+  ghcr.io/astral-sh/uv:python3.11-bookworm-slim \
+  bash -lc 'cd /w/etl && uv sync --extra backtest --group dev \
+    && uv run python ../scripts/repair_internal_release_product.py \
+    --from-version 1.1.0 --to-version 1.2.0'
+./deploy/sync-public-status.sh
+docker compose -f deploy/docker-compose.yml up -d
+```
+
+Writes `status/internal_release_repair.json` with the cause note.
 
 ## Build without host Node
 

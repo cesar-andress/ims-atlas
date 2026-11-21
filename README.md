@@ -1,14 +1,22 @@
 # IMS Atlas
 
-Open, browser-based tool to **build, compare, stress-test and backtest** international
-market selection (IMS) indices on open data. All computation runs in the browser; there
-is no backend and no accounts.
+Browser-based tool to **build, compare, stress-test and backtest** international
+market selection (IMS) indices on open data. Ranking math runs in the browser
+(DuckDB-WASM + TypeScript `core`). Team access is gated by Authelia on
+[`https://atlas.aiserv.es`](https://atlas.aiserv.es); the public surface is a
+landing + methodology + privacy/legal pages only. Project drafts stay in the
+browser (IndexedDB) and optionally sync to the small team projects API.
 
 ## Status
 
-**v1.0.0** — browser app (ranking, matrix, map, SMAA, backtest, time, cite, BYOD, docs),
-TypeScript `core` with ims-backtest goldens, ETL + licence gate. Live:
-[`https://atlas.aiserv.es`](https://atlas.aiserv.es).
+**App v1.1.x** — ranking, matrix, map, SMAA, backtest, time, cite, BYOD, docs;
+TypeScript `core` with ims-backtest goldens; ETL + licence gate; dual
+public/internal data releases. Live: [`https://atlas.aiserv.es`](https://atlas.aiserv.es)
+(login required for the tool and `/data` / `/status`).
+
+Internal release repair (empty `country_product` after a bad promote): see
+[`scripts/repair_internal_release_product.py`](scripts/repair_internal_release_product.py)
+and [`deploy/README.host.md`](deploy/README.host.md).
 
 Release notes: [CHANGELOG.md](CHANGELOG.md). Zenodo steps: [docs/ZENODO_RELEASE.md](docs/ZENODO_RELEASE.md).
 

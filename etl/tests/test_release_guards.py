@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import pandas as pd
 import pytest
 
 from imsatlas_etl.pipeline.promote import prune_old_releases
+from imsatlas_etl.pipeline.release import assert_release_not_shrunk
 from imsatlas_etl.pipeline.release_tables import (
     MIN_COUNTRY_PRODUCT_CHAPTERS,
     write_bilateral_table,
@@ -78,4 +80,42 @@ def test_country_product_refuses_empty_when_curated_full(
             root=tmp_path,
             dest=tmp_path / "release",
             included_ids={"IMPV"},
+        )
+
+
+def test_assert_release_not_shrunk_blocks_empty_vs_prior(tmp_path: Path) -> None:
+    prev = tmp_path / "v1.1.0"
+    (prev / "country_product" / "hs2=09").mkdir(parents=True)
+    for i in range(MIN_COUNTRY_PRODUCT_CHAPTERS):
+        (prev / "country_product" / f"hs2={i:02d}").mkdir(parents=True, exist_ok=True)
+    (prev / "manifest.json").write_text(
+        json.dumps({"row_counts": {"country_product_rows": 1_000_000}}) + "\n",
+        encoding="utf-8",
+    )
+    dest = tmp_path / "v1.2.0"
+    (dest / "country_product" / "hs2=_empty").mkdir(parents=True)
+    with pytest.raises(ValueError, match="refuse shrink"):
+        assert_release_not_shrunk(
+            dest,
+            {"country_product_rows": 0},
+            previous=prev,
+        )
+
+
+def test_assert_release_not_shrunk_blocks_20pct_drop(tmp_path: Path) -> None:
+    prev = tmp_path / "v1.1.0"
+    prev.mkdir()
+    (prev / "manifest.json").write_text(
+        json.dumps({"row_counts": {"country_year_rows": 1000}}) + "\n",
+        encoding="utf-8",
+    )
+    dest = tmp_path / "v1.2.0"
+    dest.mkdir()
+    for i in range(MIN_COUNTRY_PRODUCT_CHAPTERS):
+        (dest / "country_product" / f"hs2={i:02d}").mkdir(parents=True)
+    with pytest.raises(ValueError, match="country_year_rows shrank"):
+        assert_release_not_shrunk(
+            dest,
+            {"country_product_rows": 100, "country_year_rows": 700},
+            previous=prev,
         )

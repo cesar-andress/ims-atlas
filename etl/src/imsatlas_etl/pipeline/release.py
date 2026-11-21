@@ -26,7 +26,10 @@ from imsatlas_etl.pipeline.io_paths import (
     staging_release_dir,
 )
 from imsatlas_etl.pipeline.provenance import build_provenance_for_release
-from imsatlas_etl.pipeline.release_tables import write_spec3_tables
+from imsatlas_etl.pipeline.release_tables import (
+    MIN_COUNTRY_PRODUCT_CHAPTERS,
+    write_spec3_tables,
+)
 from imsatlas_etl.rights import gate_for_variable, load_deployment
 from imsatlas_etl.sources import sources_by_id
 
@@ -36,6 +39,8 @@ Audience = str  # "public" | "internal"
 # SPEC §3 size budgets
 MAX_RELEASE_BYTES = 800 * 1024 * 1024
 MAX_SINGLE_FILE_BYTES = 5 * 1024 * 1024
+# Block publish when a table shrinks more than this vs the previous release.
+MAX_SHRINK_RATIO = 0.20
 
 
 def _now_iso() -> str:
@@ -327,6 +332,88 @@ def _previous_public(version: str, *, root: Path | None) -> Path | None:
     return older[-1] if older else None
 
 
+def _previous_release_dir(
+    version: str,
+    *,
+    root: Path | None,
+    audience: Audience,
+) -> Path | None:
+    parent = (
+        internal_release_dir(root=root)
+        if audience == "internal"
+        else public_release_dir(root=root)
+    )
+    if not parent.is_dir():
+        return None
+    versions = sorted(
+        p for p in parent.iterdir() if p.is_dir() and p.name.startswith("v")
+    )
+    current_name = f"v{version}"
+    older = [p for p in versions if p.name != current_name]
+    return older[-1] if older else None
+
+
+def _country_product_chapters(release_dir: Path) -> int:
+    base = release_dir / "country_product"
+    if not base.is_dir():
+        return 0
+    return sum(
+        1
+        for path in base.iterdir()
+        if path.is_dir() and path.name.startswith("hs2=") and "_empty" not in path.name
+    )
+
+
+def assert_release_not_shrunk(
+    dest: Path,
+    counts: dict[str, Any],
+    *,
+    previous: Path | None,
+) -> None:
+    """Refuse a release that empties or shrinks country_product vs the prior one."""
+    chapters = _country_product_chapters(dest)
+    cp_rows = int(counts.get("country_product_rows") or 0)
+    if chapters < MIN_COUNTRY_PRODUCT_CHAPTERS and cp_rows == 0:
+        # Allow empty public when BACI is not shippable; internal must keep chapters.
+        if previous is not None and _country_product_chapters(previous) >= (
+            MIN_COUNTRY_PRODUCT_CHAPTERS
+        ):
+            raise ValueError(
+                f"country_product has {chapters} chapters / {cp_rows} rows but "
+                f"previous {previous.name} had "
+                f"{_country_product_chapters(previous)} chapters — refuse shrink",
+            )
+    if chapters < MIN_COUNTRY_PRODUCT_CHAPTERS and cp_rows > 0:
+        raise ValueError(
+            f"country_product has {chapters} chapters "
+            f"(need ≥ {MIN_COUNTRY_PRODUCT_CHAPTERS})",
+        )
+    if previous is None or not previous.is_dir():
+        return
+    prev_manifest = previous / "manifest.json"
+    if not prev_manifest.is_file():
+        return
+    prev = json.loads(prev_manifest.read_text(encoding="utf-8"))
+    prev_counts = prev.get("row_counts") or {}
+    for key in (
+        "country_product_rows",
+        "country_year_rows",
+        "trade_rows",
+        "bilateral_year_rows",
+    ):
+        prev_n = prev_counts.get(key)
+        next_n = counts.get(key)
+        if not isinstance(prev_n, int) or prev_n <= 0:
+            continue
+        if not isinstance(next_n, int):
+            continue
+        if next_n < prev_n * (1.0 - MAX_SHRINK_RATIO):
+            raise ValueError(
+                f"{key} shrank from {prev_n} to {next_n} "
+                f"(>{int(MAX_SHRINK_RATIO * 100)}% drop vs {previous.name})",
+            )
+
+
 def _row_count(path: Path) -> int | None:
     if path.suffix != ".parquet":
         return None
@@ -375,6 +462,8 @@ def run_release(
     gates = _variable_gates(audience=audience)
     included_ids = {g["id"] for g in gates if g["included"]}
     counts = write_spec3_tables(dest, root=root, included_ids=included_ids)
+    previous_for_qa = _previous_release_dir(version, root=root, audience=audience)
+    assert_release_not_shrunk(dest, counts, previous=previous_for_qa)
     counts["provenance_rows"] = build_provenance_for_release(dest, root=root)[
         "provenance_rows"
     ]

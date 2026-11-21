@@ -584,8 +584,8 @@ def lineage_cmd() -> None:
 def release_dual_cmd(
     version: Annotated[
         str,
-        typer.Option("--version", help="Release version (e.g. 1.1.0)"),
-    ] = "1.1.0",
+        typer.Option("--version", help="Release version (e.g. 1.2.0)"),
+    ] = "1.2.0",
     force: Annotated[bool, typer.Option("--force")] = False,
 ) -> None:
     """Stage public + internal releases and write the Phase R dual report."""
