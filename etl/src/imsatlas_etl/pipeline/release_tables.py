@@ -303,11 +303,7 @@ def write_country_product_partitions(
         out,
         max_file_bytes=MAX_SINGLE_FILE_BYTES,
     )
-    chapters = [
-        key
-        for key in (meta.get("bytes_by_hs2") or {})
-        if key != "_empty"
-    ]
+    chapters = [key for key in (meta.get("bytes_by_hs2") or {}) if key != "_empty"]
     if (
         source_shippable("baci")
         and included_ids

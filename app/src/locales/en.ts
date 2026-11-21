@@ -618,6 +618,31 @@ export const en = {
   catalogSearchPlaceholder: "Search variable…",
   catalogSearchEmpty: "No variables match the search.",
   coverageNone: "No published coverage yet",
+  catalogSourceLinks: "Source links",
+  catalogSourceLanding: "Source page",
+  catalogSourceTerms: "Terms",
+  catalogSourceLicence: "Licence",
+  catalogSourceDownload: "Download",
+  catalogSourceNoUrls: "This source has no URL published in the registry.",
+  catalogCountrySearch: "Search country (name or ISO3)",
+  catalogCountrySearchPlaceholder: "Colombia / COL",
+  catalogCountryYearsTitle: "Years with data for this country",
+  catalogCountryYearsLoading: "Loading years from the published data version…",
+  catalogCountryYearsPresent: "With data: {ranges} ({n} years).",
+  catalogCountryYearsMissing: "Missing in the {y0}–{y1} window: {ranges} ({n} years).",
+  catalogCountryYearsAllPresent: "Data exists for every year in the {y0}–{y1} window.",
+  catalogCountryYearsNonePresent:
+    "No year has data for this country in the {y0}–{y1} window.",
+  catalogCountryYearsNeedsHs:
+    "Set the HS chapter in the project to see country-year coverage for this product variable.",
+  catalogCountryYearsBilateral:
+    "This variable is bilateral: country×year detail is not available in this view.",
+  catalogCountryYearsNotInRelease:
+    "No country×year detail for this variable in the published data version.",
+  catalogCountryYearsError: "Could not load years ({detail}).",
+  catalogCountryYearsPick:
+    "Pick a country to see which years have data and which are missing.",
+  catalogCountryYearsEmptyHits: "No country matches the search.",
   aliasOf: "Alias of {id} (same series)",
   proxyIcpNote: "ICP proxy (same series as PLI)",
   chartCreditAtlas: "Source: IMS Atlas (atlas.aiserv.es)",

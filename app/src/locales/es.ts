@@ -625,6 +625,31 @@ const es = {
   catalogSearchPlaceholder: "Buscar variable…",
   catalogSearchEmpty: "Ninguna variable coincide con la búsqueda.",
   coverageNone: "Sin cobertura publicada aún",
+  catalogSourceLinks: "Enlaces de la fuente",
+  catalogSourceLanding: "Página de la fuente",
+  catalogSourceTerms: "Términos",
+  catalogSourceLicence: "Licencia",
+  catalogSourceDownload: "Descarga",
+  catalogSourceNoUrls: "Esta fuente no tiene URL publicada en el registro.",
+  catalogCountrySearch: "Buscar país (nombre o ISO3)",
+  catalogCountrySearchPlaceholder: "Colombia / COL",
+  catalogCountryYearsTitle: "Años con dato para este país",
+  catalogCountryYearsLoading: "Cargando años desde la versión de datos…",
+  catalogCountryYearsPresent: "Con dato: {ranges} ({n} años).",
+  catalogCountryYearsMissing: "Sin dato en la ventana {y0}–{y1}: {ranges} ({n} años).",
+  catalogCountryYearsAllPresent: "Hay dato en todos los años de la ventana {y0}–{y1}.",
+  catalogCountryYearsNonePresent:
+    "No hay ningún año con dato para este país en la ventana {y0}–{y1}.",
+  catalogCountryYearsNeedsHs:
+    "Indica el capítulo HS en el proyecto para ver los años por país de esta variable de producto.",
+  catalogCountryYearsBilateral:
+    "Esta variable es bilateral: el detalle país×año no está disponible en esta vista.",
+  catalogCountryYearsNotInRelease:
+    "No hay detalle país×año de esta variable en la versión de datos publicada.",
+  catalogCountryYearsError: "No se pudieron cargar los años ({detail}).",
+  catalogCountryYearsPick:
+    "Elige un país para ver qué años tienen dato y cuáles faltan.",
+  catalogCountryYearsEmptyHits: "Ningún país coincide con la búsqueda.",
   aliasOf: "Alias de {id} (misma serie)",
   proxyIcpNote: "Proxy ICP (misma serie que PLI)",
   chartCreditAtlas: "Fuente: IMS Atlas (atlas.aiserv.es)",

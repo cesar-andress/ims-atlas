@@ -33,10 +33,18 @@ def _version_key(name: str) -> tuple[int, ...]:
     return tuple(int(part) for part in match.group(1).split("."))
 
 
-def prune_old_releases(dest_parent: Path, *, keep: int = KEEP_RELEASE_VERSIONS) -> list[str]:
+def prune_old_releases(
+    dest_parent: Path,
+    *,
+    keep: int = KEEP_RELEASE_VERSIONS,
+) -> list[str]:
     """Delete oldest ``vX.Y.Z`` dirs beyond ``keep`` (never touch CURRENT)."""
     versions = sorted(
-        (path for path in dest_parent.iterdir() if path.is_dir() and _VERSION_DIR.match(path.name)),
+        (
+            path
+            for path in dest_parent.iterdir()
+            if path.is_dir() and _VERSION_DIR.match(path.name)
+        ),
         key=lambda path: _version_key(path.name),
     )
     removed: list[str] = []
