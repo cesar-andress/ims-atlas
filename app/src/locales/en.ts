@@ -1207,6 +1207,9 @@ export const en = {
   envioDocsItemOrigin: "Certificate of origin (pending)",
   envioSyscomerLead:
     "Ideas taken from Syscomer (our design and sources; not their brand). Some are already in Incoterms (days and delays); the rest will follow.",
+  envioSysStatusLive: "Live",
+  envioSysStatusPartial: "Partial",
+  envioSysStatusPending: "Pending",
   envioSys1Title: "Time as well as cost",
   envioSys1Body: "Days per leg and Incoterm (already on the Incoterms tab).",
   envioSys2Title: "Several products in one container",

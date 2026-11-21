@@ -1218,6 +1218,9 @@ const es = {
   envioDocsItemOrigin: "Certificado de origen (pendiente)",
   envioSyscomerLead:
     "Ideas tomadas de Syscomer (con diseño y fuentes propias; sin su marca). Algunas ya están en Incoterms (días y retrasos); el resto se irá cerrando.",
+  envioSysStatusLive: "En vivo",
+  envioSysStatusPartial: "Parcial",
+  envioSysStatusPending: "Pendiente",
   envioSys1Title: "Tiempos además de costes",
   envioSys1Body: "Días por tramo e Incoterm (ya en la pestaña Incoterms).",
   envioSys2Title: "Varios productos en un contenedor",

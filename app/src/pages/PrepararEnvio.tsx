@@ -371,33 +371,34 @@ export function PrepararEnvio() {
         <div className="envio-panel" data-testid="envio-syscomer">
           <p className="muted">{t("envioSyscomerLead")}</p>
           <ol className="envio-syscomer-list" data-testid="envio-syscomer-list">
-            <li>
-              <b>{t("envioSys1Title")}</b> — {t("envioSys1Body")}
-            </li>
-            <li>
-              <b>{t("envioSys2Title")}</b> — {t("envioSys2Body")}
-            </li>
-            <li>
-              <b>{t("envioSys3Title")}</b> — {t("envioSys3Body")}
-            </li>
-            <li>
-              <b>{t("envioSys4Title")}</b> — {t("envioSys4Body")}
-            </li>
-            <li>
-              <b>{t("envioSys5Title")}</b> — {t("envioSys5Body")}
-            </li>
-            <li>
-              <b>{t("envioSys6Title")}</b> — {t("envioSys6Body")}
-            </li>
-            <li>
-              <b>{t("envioSys7Title")}</b> — {t("envioSys7Body")}
-            </li>
-            <li>
-              <b>{t("envioSys8Title")}</b> — {t("envioSys8Body")}
-            </li>
-            <li>
-              <b>{t("envioSys9Title")}</b> — {t("envioSys9Body")}
-            </li>
+            {(
+              [
+                ["envioSys1Title", "envioSys1Body", "live"],
+                ["envioSys2Title", "envioSys2Body", "pending"],
+                ["envioSys3Title", "envioSys3Body", "pending"],
+                ["envioSys4Title", "envioSys4Body", "live"],
+                ["envioSys5Title", "envioSys5Body", "pending"],
+                ["envioSys6Title", "envioSys6Body", "pending"],
+                ["envioSys7Title", "envioSys7Body", "partial"],
+                ["envioSys8Title", "envioSys8Body", "pending"],
+                ["envioSys9Title", "envioSys9Body", "pending"],
+              ] as const
+            ).map(([titleKey, bodyKey, status], idx) => (
+              <li key={titleKey} data-testid={`envio-sys-item-${idx + 1}`}>
+                <span
+                  className={`pill${status === "live" ? " ok" : status === "partial" ? "" : " warn"}`}
+                >
+                  {status === "live"
+                    ? t("envioSysStatusLive")
+                    : status === "partial"
+                      ? t("envioSysStatusPartial")
+                      : t("envioSysStatusPending")}
+                </span>{" "}
+                <b>{t(titleKey)}</b>
+                {" — "}
+                {t(bodyKey)}
+              </li>
+            ))}
           </ol>
         </div>
       ) : null}
