@@ -156,7 +156,8 @@ export async function loadProjectPanel(req: ProjectPanelRequest): Promise<DemoPa
 
   const client = getAtlasDataClient();
   await client.init();
-  await client.loadRelease({ basePath: base });
+  // country_year first (~0.8MB); bilateral (~2.5MB) overlaps product chapter fetch.
+  await client.loadRelease({ basePath: base, includeBilateral: false });
 
   const hs2 = hs2Of(hs);
   const hsDigits = hs.replace(/\D/g, "");
@@ -169,28 +170,29 @@ export async function loadProjectPanel(req: ProjectPanelRequest): Promise<DemoPa
   const productBases = team
     ? [await resolvePublicReleaseBase(), base]
     : [base];
-  let productOk = false;
-  let productBaseUsed = base;
-  for (const productBase of productBases) {
-    productOk = await client.loadCountryProductChapter(hs2, {
-      basePath: productBase,
-      years: yearWindow,
-      variableIds: [...PRODUCT_VAR_IDS],
-    });
-    if (!productOk) {
-      productOk = await client.loadCountryProductChapter(hs2, {
+
+  async function loadProductChapter(): Promise<string> {
+    for (const productBase of productBases) {
+      let ok = await client.loadCountryProductChapter(hs2, {
         basePath: productBase,
+        years: yearWindow,
         variableIds: [...PRODUCT_VAR_IDS],
       });
+      if (!ok) {
+        ok = await client.loadCountryProductChapter(hs2, {
+          basePath: productBase,
+          variableIds: [...PRODUCT_VAR_IDS],
+        });
+      }
+      if (ok) return productBase;
     }
-    if (productOk) {
-      productBaseUsed = productBase;
-      break;
-    }
-  }
-  if (!productOk) {
     throw new DemoPanelPendingError("TEAM_RESULTS_PENDING");
   }
+
+  const [productBaseUsed] = await Promise.all([
+    loadProductChapter(),
+    client.loadRelease({ basePath: base, includeBilateral: true }),
+  ]);
 
   const table = `country_product_hs2_${hs2}`;
   const productBest = new Map<string, { year: number; value: number }>();

@@ -28,13 +28,14 @@ export type AtlasDataClient = {
   getError(): string | undefined;
   init(): Promise<void>;
   /**
-   * Register release tables. Loads country_year eagerly; bilateral_year is a
-   * VIEW over HTTP parquet (no full materialisation) unless
-   * `materialiseBilateral: true` (expert / diagnostics only).
+   * Register release tables. Loads country_year; bilateral is optional so the
+   * product chapter can download in parallel (see `includeBilateral`).
    */
   loadRelease(opts?: {
     basePath?: string;
     materialiseBilateral?: boolean;
+    /** Default true. Set false to load only country_year first. */
+    includeBilateral?: boolean;
   }): Promise<void>;
   /** Ensure trade chapter URL is reachable (no full-table materialisation). */
   loadTradeChapter(hs2: string, opts?: { basePath?: string }): Promise<boolean>;
@@ -239,14 +240,53 @@ export async function fetchParquetBytes(url: string): Promise<Uint8Array> {
   return bytes;
 }
 
+/** In-memory parquet bytes (same URL → no second network hop this session). */
+const parquetByteCache = new Map<string, Uint8Array>();
+
+export async function fetchParquetBytesCached(url: string): Promise<Uint8Array> {
+  const hit = parquetByteCache.get(url);
+  if (hit) return hit;
+  const bytes = await fetchParquetBytes(url);
+  parquetByteCache.set(url, bytes);
+  return bytes;
+}
+
+/** Test helper. */
+export function clearParquetByteCacheForTests(): void {
+  parquetByteCache.clear();
+}
+
 async function registerParquetBuffer(
   database: AsyncDuckDB,
   vfsName: string,
   url: string,
 ): Promise<string> {
-  const bytes = await fetchParquetBytes(url);
+  const bytes = await fetchParquetBytesCached(url);
   await database.registerFileBuffer(vfsName, bytes);
   return vfsName;
+}
+
+/** Parallel register with a small concurrency cap (browser connection limit). */
+export async function registerParquetBuffersParallel(
+  database: AsyncDuckDB,
+  items: readonly { vfsName: string; url: string }[],
+  concurrency = 8,
+): Promise<string[]> {
+  if (!items.length) return [];
+  const out: string[] = new Array(items.length);
+  let next = 0;
+  async function worker(): Promise<void> {
+    for (;;) {
+      const idx = next;
+      next += 1;
+      if (idx >= items.length) return;
+      const item = items[idx]!;
+      out[idx] = await registerParquetBuffer(database, item.vfsName, item.url);
+    }
+  }
+  const n = Math.min(Math.max(1, concurrency), items.length);
+  await Promise.all(Array.from({ length: n }, () => worker()));
+  return out;
 }
 
 /**
@@ -267,15 +307,12 @@ async function resolveBilateralParquetVfs(
       const index = (await indexRes.json()) as { parts?: string[] };
       const parts = index.parts ?? [];
       if (parts.length) {
-        const names: string[] = [];
-        for (let i = 0; i < parts.length; i++) {
-          const rel = parts[i]!;
-          const url = `${base}/bilateral_year/${rel}`;
-          const vfs = `atlas_bil_${i}.parquet`;
-          await registerParquetBuffer(database, vfs, url);
-          names.push(`'${escapeSqlString(vfs)}'`);
-        }
-        return `[${names.join(", ")}]`;
+        const items = parts.map((rel, i) => ({
+          vfsName: `atlas_bil_${i}.parquet`,
+          url: `${base}/bilateral_year/${rel}`,
+        }));
+        const names = await registerParquetBuffersParallel(database, items);
+        return `[${names.map((n) => `'${escapeSqlString(n)}'`).join(", ")}]`;
       }
     }
   } catch (err) {
@@ -317,6 +354,8 @@ export function createDuckDbClient(): AtlasDataClient {
   let initPromise: Promise<void> | null = null;
   let releaseBase: string | null = null;
   let bilateralMaterialised = false;
+  let countryYearReady = false;
+  let bilateralReady = false;
   let releasePromise: Promise<void> | null = null;
   let releasePromiseKey: string | null = null;
   const tradeUrls = new Map<string, string>();
@@ -374,10 +413,13 @@ export function createDuckDbClient(): AtlasDataClient {
       const connection = await ensureConn();
       const base = absoluteDataUrl(opts?.basePath ?? releaseUrl());
       const materialiseBilateral = opts?.materialiseBilateral === true;
-      const wantKey = `${base}|mat=${materialiseBilateral ? 1 : 0}`;
-      // Idempotent: same base already registered at the requested materialisation level.
+      const includeBilateral = opts?.includeBilateral !== false;
+      const wantKey = `${base}|mat=${materialiseBilateral ? 1 : 0}|bil=${includeBilateral ? 1 : 0}`;
+      // Idempotent: already have what this call asks for on this base.
       if (
         releaseBase === base &&
+        countryYearReady &&
+        (!includeBilateral || bilateralReady) &&
         (!materialiseBilateral || bilateralMaterialised)
       ) {
         return;
@@ -391,33 +433,68 @@ export function createDuckDbClient(): AtlasDataClient {
         const countryUrl = `${base}/country_year.parquet`;
         try {
           if (!db) throw new AtlasDataError("DuckDB not initialised", "init");
-          // Credentialed browser fetch → VFS buffer (httpfs skips Authelia cookies).
-          const cyVfs = "atlas_country_year.parquet";
-          await registerParquetBuffer(db, cyVfs, countryUrl);
-          await connection.query(`
-            CREATE OR REPLACE TABLE country_year AS
-            SELECT * FROM read_parquet('${escapeSqlString(cyVfs)}');
-          `);
-          const bilateralSource = await resolveBilateralParquetVfs(db, base);
-          if (materialiseBilateral) {
-            // Explicit opt-in only — expands to ~250 MiB WASM heap.
+          const needCountry = releaseBase !== base || !countryYearReady;
+          const needBilateral =
+            includeBilateral && (releaseBase !== base || !bilateralReady);
+
+          if (needCountry && needBilateral) {
+            // Overlap network: country_year (~0.8MB) + bilateral (~2.5MB).
+            const cyVfs = "atlas_country_year.parquet";
+            const [, bilateralSource] = await Promise.all([
+              registerParquetBuffer(db, cyVfs, countryUrl),
+              resolveBilateralParquetVfs(db, base),
+            ]);
             await connection.query(`
-              CREATE OR REPLACE TABLE bilateral_year AS
-              SELECT * FROM read_parquet(${bilateralSource});
+              CREATE OR REPLACE TABLE country_year AS
+              SELECT * FROM read_parquet('${escapeSqlString(cyVfs)}');
             `);
-            bilateralMaterialised = true;
-          } else {
-            // VIEW over registered buffers — filters push down in SQL.
+            countryYearReady = true;
+            if (materialiseBilateral) {
+              await connection.query(`
+                CREATE OR REPLACE TABLE bilateral_year AS
+                SELECT * FROM read_parquet(${bilateralSource});
+              `);
+              bilateralMaterialised = true;
+            } else {
+              await connection.query(`
+                CREATE OR REPLACE VIEW bilateral_year AS
+                SELECT * FROM read_parquet(${bilateralSource});
+              `);
+              bilateralMaterialised = false;
+            }
+            bilateralReady = true;
+          } else if (needCountry) {
+            const cyVfs = "atlas_country_year.parquet";
+            await registerParquetBuffer(db, cyVfs, countryUrl);
             await connection.query(`
-              CREATE OR REPLACE VIEW bilateral_year AS
-              SELECT * FROM read_parquet(${bilateralSource});
+              CREATE OR REPLACE TABLE country_year AS
+              SELECT * FROM read_parquet('${escapeSqlString(cyVfs)}');
             `);
-            bilateralMaterialised = false;
+            countryYearReady = true;
+          } else if (needBilateral) {
+            const bilateralSource = await resolveBilateralParquetVfs(db, base);
+            if (materialiseBilateral) {
+              await connection.query(`
+                CREATE OR REPLACE TABLE bilateral_year AS
+                SELECT * FROM read_parquet(${bilateralSource});
+              `);
+              bilateralMaterialised = true;
+            } else {
+              await connection.query(`
+                CREATE OR REPLACE VIEW bilateral_year AS
+                SELECT * FROM read_parquet(${bilateralSource});
+              `);
+              bilateralMaterialised = false;
+            }
+            bilateralReady = true;
           }
-          // Drop chapter caches: VFS names are reused and would serve the old base.
+
           if (releaseBase !== base) {
             countryProductKeys.clear();
             tradeUrls.clear();
+            if (needCountry) {
+              /* base change already cleared product caches */
+            }
           }
           releaseBase = base;
           status = "ready";
@@ -427,6 +504,8 @@ export function createDuckDbClient(): AtlasDataClient {
           error = mapped.message;
           releaseBase = null;
           bilateralMaterialised = false;
+          countryYearReady = false;
+          bilateralReady = false;
           countryProductKeys.clear();
           tradeUrls.clear();
           throw mapped;
@@ -490,14 +569,12 @@ export function createDuckDbClient(): AtlasDataClient {
           const parts = filterCountryProductParts(index.parts ?? [], partOpts);
           if (!parts.length) return false;
           if (!db) return false;
-          const vfsNames: string[] = [];
-          for (let i = 0; i < parts.length; i++) {
-            const rel = parts[i]!;
-            const url = `${chapter}/${rel}`;
-            const vfs = `atlas_cp_${key}_${i}.parquet`;
-            await registerParquetBuffer(db, vfs, url);
-            vfsNames.push(`'${escapeSqlString(vfs)}'`);
-          }
+          const items = parts.map((rel, i) => ({
+            vfsName: `atlas_cp_${key}_${i}.parquet`,
+            url: `${chapter}/${rel}`,
+          }));
+          const registered = await registerParquetBuffersParallel(db, items, 8);
+          const vfsNames = registered.map((n) => `'${escapeSqlString(n)}'`);
           await connection.query(`
             CREATE OR REPLACE VIEW ${table} AS
             SELECT * FROM read_parquet([${vfsNames.join(", ")}]);

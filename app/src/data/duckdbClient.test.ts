@@ -6,8 +6,11 @@ import {
   createDuckDbClient,
   createDuckDbWasmLogger,
   createMemoryDataClient,
+  clearParquetByteCacheForTests,
   fetchParquetBytes,
+  fetchParquetBytesCached,
   getAtlasDataClient,
+  registerParquetBuffersParallel,
   resetAtlasDataClientForTests,
 } from "./duckdbClient";
 
@@ -144,9 +147,64 @@ describe("absoluteDataUrl + credentialed release probe contract", () => {
   });
 });
 
+describe("parquet byte cache + parallel register", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    clearParquetByteCacheForTests();
+  });
+
+  it("caches parquet bytes so the same URL is fetched once", async () => {
+    const parquet = new Uint8Array([0x50, 0x41, 0x52, 0x31, 1, 2, 3, 4]);
+    const fetchMock = vi.fn(
+      async () =>
+        new Response(parquet, {
+          status: 200,
+          headers: { "content-type": "application/octet-stream" },
+        }),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+    const url = "https://atlas.aiserv.es/data/v1.1.0/country_year.parquet";
+    await fetchParquetBytesCached(url);
+    await fetchParquetBytesCached(url);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("registerParquetBuffersParallel preserves order with concurrency", async () => {
+    const calls: string[] = [];
+    const database = {
+      registerFileBuffer: vi.fn(async (name: string) => {
+        calls.push(name);
+      }),
+    };
+    const parquet = new Uint8Array([0x50, 0x41, 0x52, 0x31, 0]);
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(
+        async () =>
+          new Response(parquet, {
+            status: 200,
+            headers: { "content-type": "application/octet-stream" },
+          }),
+      ),
+    );
+    const names = await registerParquetBuffersParallel(
+      database as never,
+      [
+        { vfsName: "a.parquet", url: "https://x/a.parquet" },
+        { vfsName: "b.parquet", url: "https://x/b.parquet" },
+        { vfsName: "c.parquet", url: "https://x/c.parquet" },
+      ],
+      2,
+    );
+    expect(names).toEqual(["a.parquet", "b.parquet", "c.parquet"]);
+    expect(database.registerFileBuffer).toHaveBeenCalledTimes(3);
+  });
+});
+
 describe("fetchParquetBytes (credentialed; rejects Authelia HTML)", () => {
   afterEach(() => {
     vi.unstubAllGlobals();
+    clearParquetByteCacheForTests();
   });
 
   it("requires credentials:include so Authelia cookies travel with the GET", async () => {
