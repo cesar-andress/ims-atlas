@@ -1122,6 +1122,9 @@ export const en = {
     "Data marked for internal use is not redistributed with the app: it can only be used from a local team copy or from files you upload.",
   datosOwnData: "Have your own data?",
   datosUploadMine: "Upload my data",
+  datosDownloadTemplate: "Download CSV template",
+  datosTemplateLegend:
+    "CSV with columns iso3 (ISO-3 country), year, value (number) and optional iso3_d (bilateral destination). The variable id (e.g. MYVAR) is chosen in the upload form, not in the file.",
   datosWarnMissing: "{name}: {missing} of {total} markets have no value.",
   datosWarnMore: "…and {n} more variables with gaps.",
   nav: navEn,

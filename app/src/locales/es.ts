@@ -1129,6 +1129,9 @@ const es = {
     "Los datos de uso interno no se redistribuyen con la aplicación: solo se pueden usar desde una copia local del equipo o desde los archivos que subes tú.",
   datosOwnData: "¿Tienes datos propios?",
   datosUploadMine: "Subir mis datos",
+  datosDownloadTemplate: "Descargar plantilla CSV",
+  datosTemplateLegend:
+    "CSV con columnas iso3 (país ISO-3), year (año), value (número) y opcional iso3_d (destino bilateral). El identificador de la variable (p. ej. MYVAR) se elige en el formulario al subir, no en el archivo.",
   datosWarnMissing: "{name}: faltan {missing} de {total} mercados.",
   datosWarnMore: "…y {n} variables más con huecos.",
   nav: navEs,

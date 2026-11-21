@@ -1,5 +1,9 @@
 import { PageShell } from "../../components/PageShell";
 import { PermalinkLink } from "../../components/PermalinkLink";
+import {
+  BYOD_TEMPLATE_FILENAME,
+  byodTemplatePublicPath,
+} from "../../byod/byodTemplate";
 import { useTranslation } from "../../i18n";
 import { useProjectData, type DataAccess } from "../../state/useProjectData";
 
@@ -83,6 +87,20 @@ export function ProjectDatos() {
         <PermalinkLink view="byod" data-testid="datos-byod-link">
           {t("datosUploadMine")}
         </PermalinkLink>
+        <span className="datos-byod-sep" aria-hidden="true">
+          {" · "}
+        </span>
+        <a
+          className="datos-byod-template"
+          href={byodTemplatePublicPath(import.meta.env.BASE_URL || "/")}
+          download={BYOD_TEMPLATE_FILENAME}
+          data-testid="datos-byod-template"
+        >
+          {t("datosDownloadTemplate")}
+        </a>
+      </p>
+      <p className="datos-byod-legend muted small" data-testid="datos-byod-legend">
+        {t("datosTemplateLegend")}
       </p>
     </PageShell>
   );

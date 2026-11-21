@@ -162,6 +162,8 @@ test.describe("Datos, Fuentes y datos and footer", () => {
     await page.goto(`/datos?c=${encodeConfig({ ...COL, view: "datos" })}`);
     await expect(page.getByTestId("datos-hub")).toBeVisible({ timeout: 15_000 });
     await expect(page.getByTestId("datos-byod-link")).toHaveText("Upload my data");
+    await expect(page.getByTestId("datos-byod-template")).toBeVisible();
+    await expect(page.getByTestId("datos-byod-legend")).toBeVisible();
     const heads = page.getByTestId("datos-table").locator("thead th");
     if (await page.getByTestId("datos-table").count()) {
       await expect(heads).toHaveText([

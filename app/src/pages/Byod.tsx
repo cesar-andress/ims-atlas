@@ -9,6 +9,7 @@ import {
   removeByodVariable,
   type ByodVariable,
 } from "../byod/byodStore";
+import { BYOD_TEMPLATE_FILENAME, byodTemplatePublicPath } from "../byod/byodTemplate";
 import type { Direction } from "@ims-atlas/core";
 
 const FACTORS = ["COST", "LOGI", "COMM", "ECON", "POLI", "CULT"] as const;
@@ -62,6 +63,20 @@ export function Byod() {
       <p className="muted">{t("byodIntro")}</p>
       <p className="callout" data-testid="byod-local-only" role="note">
         {t("byodLocalOnly")}
+      </p>
+      <p className="byod-template-row" data-testid="byod-template-row">
+        <a
+          className="byod-template-link"
+          href={byodTemplatePublicPath(import.meta.env.BASE_URL || "/")}
+          download={BYOD_TEMPLATE_FILENAME}
+          data-testid="byod-template-download"
+        >
+          {t("datosDownloadTemplate")}
+        </a>
+        <span className="muted small">
+          {" · "}
+          {t("datosTemplateLegend")}
+        </span>
       </p>
 
       <form
