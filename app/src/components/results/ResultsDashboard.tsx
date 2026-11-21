@@ -126,9 +126,17 @@ export function ResultsDashboard({ model }: Props) {
 
   const top = model.ranking[0];
   const leaders = eoc ? eoc.points.filter((p) => p.quadrant === 1) : [];
+  const leadersKnown = eoc != null;
   const topQ = top ? (qByIso.get(top.iso3) ?? null) : null;
   const topContrib = top ? contributions(model, top.iso3, criteria) : [];
-  const topTwo = [...topContrib].sort((a, b) => b.part - a.part).slice(0, 2);
+  const topTwo = [...topContrib]
+    .filter((c) => Number.isFinite(c.part) && c.part > 0)
+    .sort((a, b) => b.part - a.part)
+    .slice(0, 2);
+  const yearLabel =
+    typeof config.year === "number" && Number.isFinite(config.year)
+      ? String(config.year)
+      : "-";
 
   const rows = showAll ? model.ranking : model.ranking.slice(0, PREVIEW);
   const selected = selectedIso
@@ -148,34 +156,44 @@ export function ResultsDashboard({ model }: Props) {
 
   const illustrative = model.panel.illustrative || model.panel.synthetic;
 
+  const highlight =
+    top && topTwo.length > 0
+      ? lang === "es"
+        ? `El nº 1 destaca en ${topTwo
+            .map((c) => CRITERION_LABEL[c.id][lang])
+            .join(" y ")}.`
+        : `#1 is strongest on ${topTwo
+            .map((c) => CRITERION_LABEL[c.id][lang])
+            .join(" and ")}.`
+      : "";
+  const leadersLine = !leadersKnown
+    ? lang === "es"
+      ? "Líderes globales: pendiente de matriz EOC."
+      : "Global leaders: EOC matrix pending."
+    : lang === "es"
+      ? leaders.length === 0
+        ? `Ningún mercado en cuadrante 1 (líderes) de ${model.ranking.length} candidatos.`
+        : `Líderes globales: ${leaders.length} de ${model.ranking.length}.`
+      : leaders.length === 0
+        ? `No markets in quadrant 1 (leaders) of ${model.ranking.length} candidates.`
+        : `Global leaders: ${leaders.length} of ${model.ranking.length}.`;
+
   const summary =
     lang === "es"
-      ? `Para HS${config.hs ?? "-"} desde ${config.origin ?? "-"} (${config.year ?? "-"}), los tres mejores mercados son ${model.ranking
+      ? `Para HS${config.hs ?? "-"} desde ${config.origin ?? "-"} (${yearLabel}), los tres mejores mercados son ${model.ranking
           .slice(0, 3)
           .map(
             (r) =>
               `${countryLabel(r.iso3, lang)} (${formatScoreLocale(r.score, lang)})`,
           )
-          .join(", ")}. ${
-          top
-            ? `El nº 1 destaca en ${topTwo
-                .map((c) => CRITERION_LABEL[c.id][lang])
-                .join(" y ")}.`
-            : ""
-        } Líderes globales: ${leaders.length} de ${model.ranking.length}.`
-      : `For HS${config.hs ?? "-"} from ${config.origin ?? "-"} (${config.year ?? "-"}), the top three markets are ${model.ranking
+          .join(", ")}. ${highlight} ${leadersLine}`
+      : `For HS${config.hs ?? "-"} from ${config.origin ?? "-"} (${yearLabel}), the top three markets are ${model.ranking
           .slice(0, 3)
           .map(
             (r) =>
               `${countryLabel(r.iso3, lang)} (${formatScoreLocale(r.score, lang)})`,
           )
-          .join(", ")}. ${
-          top
-            ? `#1 is strongest on ${topTwo
-                .map((c) => CRITERION_LABEL[c.id][lang])
-                .join(" and ")}.`
-            : ""
-        } Global leaders: ${leaders.length} of ${model.ranking.length}.`;
+          .join(", ")}. ${highlight} ${leadersLine}`;
 
   const notice = illustrative
     ? t("illustrativeBanner")
@@ -272,15 +290,27 @@ export function ResultsDashboard({ model }: Props) {
             <p>-</p>
           )}
         </article>
-        <article className="results-card kpi">
+        <article className="results-card kpi" data-testid="global-leaders-kpi">
           <h2>{lang === "es" ? "Líderes globales" : "Global leaders"}</h2>
           <p className="kpi-title font-tabular">
-            {leaders.length} / {model.ranking.length}
+            {leadersKnown
+              ? `${leaders.length} / ${model.ranking.length}`
+              : lang === "es"
+                ? "—"
+                : "—"}
           </p>
           <p className="muted small">
-            {lang === "es"
-              ? "IMSFE y apertura por encima de la mediana"
-              : "IMSFE and openness above the median"}
+            {!leadersKnown
+              ? lang === "es"
+                ? "Matriz EOC aún no disponible"
+                : "EOC matrix not available yet"
+              : leaders.length === 0
+                ? lang === "es"
+                  ? "Ninguno en cuadrante 1 (IMSFE y apertura ≥ mediana)"
+                  : "None in quadrant 1 (IMSFE and openness ≥ median)"
+                : lang === "es"
+                  ? "IMSFE y apertura por encima de la mediana"
+                  : "IMSFE and openness above the median"}
           </p>
         </article>
         <article className="results-card kpi" data-testid="data-quality-card">

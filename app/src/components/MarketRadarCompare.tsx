@@ -3,6 +3,7 @@ import { useTranslation } from "../i18n";
 import { CRITERION_LABEL, isCriterionId } from "../design/criteria";
 import { formatScoreLocale } from "../design/formatLocale";
 import type { RankingViewModel } from "../ranking/rankingEngine";
+import { FACTOR_LABELS } from "../state/criterionWeights";
 
 type Props = {
   model: RankingViewModel;
@@ -12,7 +13,9 @@ type Props = {
 
 function factorLabel(id: string, lang: "es" | "en"): string {
   if (isCriterionId(id)) return CRITERION_LABEL[id][lang];
-  return id.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  const known = FACTOR_LABELS[id];
+  if (known) return known[lang];
+  return id.replace(/_/g, " ");
 }
 
 /** Side-by-side factor table for 2–4 markets (read-only compare). */

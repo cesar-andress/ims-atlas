@@ -337,14 +337,20 @@ function applyColors(
 ): void {
   if (rows.length === 0) return;
   ensureHatchPattern(map);
-  const analyzed = new Set(rows.map((r) => r.iso3));
-  const scores = rows.map((r) => r.score);
+  const finiteRows = rows.filter((r) => Number.isFinite(r.score));
+  if (finiteRows.length === 0) return;
+  const analyzed = new Set(finiteRows.map((r) => r.iso3));
+  const scores = finiteRows.map((r) => r.score);
   const min = Math.min(...scores);
   const max = Math.max(...scores);
   const span = max - min || 1;
+  if (!Number.isFinite(min) || !Number.isFinite(max) || !Number.isFinite(span)) {
+    return;
+  }
   const matchExpr: unknown[] = ["match", ["get", "ADM0_A3"]];
-  for (const row of rows) {
+  for (const row of finiteRows) {
     const t = (row.score - min) / span;
+    if (!Number.isFinite(t)) continue;
     matchExpr.push(row.iso3, scoreColor(t));
   }
   if (origin) matchExpr.push(origin, "#0f766e");
@@ -405,8 +411,9 @@ function applyColors(
       });
     }
     const heightExpr: unknown[] = ["match", ["get", "ADM0_A3"]];
-    for (const row of rows) {
+    for (const row of finiteRows) {
       const t = (row.score - min) / span;
+      if (!Number.isFinite(t)) continue;
       heightExpr.push(row.iso3, 20_000 + t * 280_000);
     }
     heightExpr.push(0);

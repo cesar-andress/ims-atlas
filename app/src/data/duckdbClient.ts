@@ -358,22 +358,31 @@ async function resolveBilateralParquetVfs(
   database: AsyncDuckDB,
   base: string,
 ): Promise<string> {
+  // Quiet mono fallback: probe index with HEAD so a missing hive index does
+  // not spam the browser console with a failed GET of index.json.
   const indexUrl = `${base}/bilateral_year/index.json`;
   try {
-    const indexRes = await fetch(indexUrl, {
+    const head = await fetch(indexUrl, {
+      method: "HEAD",
       cache: "no-store",
       ...CREDENTIALED,
     });
-    if (indexRes.ok) {
-      const index = (await indexRes.json()) as { parts?: string[] };
-      const parts = index.parts ?? [];
-      if (parts.length) {
-        const items = parts.map((rel, i) => ({
-          vfsName: `atlas_bil_${i}.parquet`,
-          url: `${base}/bilateral_year/${rel}`,
-        }));
-        const names = await registerParquetBuffersParallel(database, items);
-        return `[${names.map((n) => `'${escapeSqlString(n)}'`).join(", ")}]`;
+    if (head.ok) {
+      const indexRes = await fetch(indexUrl, {
+        cache: "no-store",
+        ...CREDENTIALED,
+      });
+      if (indexRes.ok) {
+        const index = (await indexRes.json()) as { parts?: string[] };
+        const parts = index.parts ?? [];
+        if (parts.length) {
+          const items = parts.map((rel, i) => ({
+            vfsName: `atlas_bil_${i}.parquet`,
+            url: `${base}/bilateral_year/${rel}`,
+          }));
+          const names = await registerParquetBuffersParallel(database, items);
+          return `[${names.map((n) => `'${escapeSqlString(n)}'`).join(", ")}]`;
+        }
       }
     }
   } catch (err) {

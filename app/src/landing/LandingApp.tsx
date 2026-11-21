@@ -127,7 +127,11 @@ function Shell({
 
       <footer className="l-footer">
         <div className="l-wrap l-footer-row">
-          <p>{copy.footerDev}</p>
+          <p>
+            {copy.footerDev}
+            {" · "}
+            <a href={`mailto:${copy.footerContact}`}>{copy.footerContact}</a>
+          </p>
           <nav aria-label={lang === "es" ? "Pie" : "Footer"}>
             <Link to="/privacidad">{copy.navPrivacy}</Link>
             <Link to="/aviso-legal">{copy.navLegal}</Link>

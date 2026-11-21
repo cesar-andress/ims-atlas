@@ -19,8 +19,9 @@ import {
   persistActiveProject,
   projectFromConfig,
 } from "./projectStore";
+import { readActiveProjectId, writeActiveProjectId } from "./activeProjectPersist";
 import { saveDraft } from "./projectIdb";
-import { upsertProject } from "./projectLibrary";
+import { getProject, upsertProject } from "./projectLibrary";
 import { DEFAULT_CONFIG, type AnalysisConfig, type ViewId } from "./schema";
 import {
   configToSearch,
@@ -29,6 +30,7 @@ import {
   pathForView,
   viewFromPath,
 } from "./urlState";
+import { preferredProjectView } from "./views";
 
 function uiIsSpanish(lang: AnalysisConfig["lang"]): boolean {
   const current =
@@ -77,6 +79,39 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
   const dirtyRef = useRef(dirty);
   dirtyRef.current = dirty;
   const savingRef = useRef(false);
+  const restoredRef = useRef(false);
+
+  // F5: reopen last active project (localStorage + cookie backup).
+  useEffect(() => {
+    if (restoredRef.current) return;
+    restoredRef.current = true;
+    const id = readActiveProjectId();
+    if (!id) return;
+    let cancelled = false;
+    void getProject(id).then((p) => {
+      if (cancelled || !p) return;
+      setActiveProject(p);
+      writeActiveProjectId(p.id);
+      setDirty(false);
+      setSaveStatus("saved");
+      const lang = configRef.current.lang ?? p.config.lang;
+      const view = viewFromPath(location.pathname);
+      // Keep current view if already on a project route; else preferred.
+      const nextView =
+        view === "datos" || view === "variables" || view === "analisis"
+          ? view
+          : preferredProjectView(p.config);
+      setConfigState({
+        ...p.config,
+        view: nextView,
+        ...(lang ? { lang } : {}),
+      });
+    });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- boot once
+  }, []);
 
   useEffect(() => {
     const view = viewFromPath(location.pathname);
@@ -200,6 +235,7 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
         saveDraft(proj);
         const saved = await persistActiveProject(proj);
         setActiveProject(saved);
+        writeActiveProjectId(saved.id);
         setDirty(false);
         if (saved.teamSync === "local_fallback") {
           setSaveStatus("error");
@@ -293,6 +329,7 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
             const project = importAtlasProjectJson(json);
             const saved = await upsertProject(project);
             setActiveProject(saved);
+            writeActiveProjectId(saved.id);
             setDirty(false);
             setSaveStatus(
               saved.teamSync === "ok"
@@ -322,6 +359,7 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
       },
       openProject: (project, view = "analisis") => {
         setActiveProject(project);
+        writeActiveProjectId(project.id);
         setDirty(false);
         setSaveStatus("saved");
         // The UI language is a user preference, not a project property.
@@ -333,6 +371,7 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
       },
       clearActiveProject: () => {
         setActiveProject(null);
+        writeActiveProjectId(null);
         setDirty(false);
         setSaveStatus("idle");
       },
