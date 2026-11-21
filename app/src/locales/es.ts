@@ -1108,8 +1108,14 @@ const es = {
   scopeClearProduct: "Quitar producto",
   scopeNoHsHits: "Ningún producto coincide",
   scopeTreeMore: "… y {n} más (usa la búsqueda)",
+  scopeTreeExpand: "Expandir capítulo",
+  scopeTreeCollapse: "Plegar capítulo",
+  scopeTreeNoChildren:
+    "Sin subcódigos HS4 en este capítulo (elige el código del capítulo o busca HS6).",
   scopeYearLabel: "Año del análisis",
   scopeYearPlaceholder: "Elige un año",
+  scopeYearHint:
+    "Datos del panel hasta {panelMax}. Años {panelMax}-{yearMax} usan la última observación disponible (LOCF, year <= t); no se inventan valores futuros.",
   projectCopySuffix: "copia",
   stepWarnNone: "sin avisos",
   stepWarnOne: "1 aviso",

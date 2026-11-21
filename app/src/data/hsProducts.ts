@@ -256,19 +256,55 @@ export function topImporterHints(hsCode: string): string[] {
 }
 
 export const HS_TRADE_YEAR_MIN = 2012;
+/**
+ * Last complete BACI / panel observation year (freshness.latest_complete_year).
+ * Analysis year t may exceed this via LOCF (year ≤ t); see {@link analysisYearMax}.
+ */
 export const HS_TRADE_YEAR_MAX = 2024;
 
-/** Clamp analysis year to the BACI pin window (rejects stale 2025/2026 drafts). */
-export function clampTradeYear(year: number): number {
-  if (!Number.isFinite(year)) return HS_TRADE_YEAR_MAX;
-  return Math.min(
-    HS_TRADE_YEAR_MAX,
-    Math.max(HS_TRADE_YEAR_MIN, Math.trunc(year)),
-  );
+/**
+ * Max LOCF look-back (years) when resolving values at analysis year t.
+ * Keep aligned with LOCF_MAX_LAG in projectPanel.ts.
+ */
+export const PANEL_LOCF_MAX_LAG = 5;
+
+/** Cap for typed product-search hits in the scope picker (was hard-clamped to ~12). */
+export const HS_SEARCH_HIT_LIMIT = 50;
+
+export type AnalysisYearOpts = {
+  /** Override calendar year (tests). Default: UTC full year. */
+  nowYear?: number;
+  /** Last observed panel/trade year. Default: {@link HS_TRADE_YEAR_MAX}. */
+  panelMaxYear?: number;
+  /** LOCF lag so the window still covers panelMax. */
+  locfLag?: number;
+};
+
+/**
+ * Highest selectable analysis year t.
+ * SPEC: features at t use observations with year ≤ t (LOCF). Allow t up to the
+ * current calendar year, but never past panelMax + locfLag (empty LOCF window).
+ */
+export function analysisYearMax(opts?: AnalysisYearOpts): number {
+  const panelMax = opts?.panelMaxYear ?? HS_TRADE_YEAR_MAX;
+  const lag = opts?.locfLag ?? PANEL_LOCF_MAX_LAG;
+  const now =
+    opts?.nowYear ??
+    (typeof Date !== "undefined" ? new Date().getUTCFullYear() : panelMax);
+  return Math.min(now, panelMax + lag);
 }
 
-export function tradeYearOptions(): number[] {
+/** Clamp analysis year into [HS_TRADE_YEAR_MIN, analysisYearMax]. */
+export function clampTradeYear(year: number, opts?: AnalysisYearOpts): number {
+  const max = analysisYearMax(opts);
+  if (!Number.isFinite(year)) return max;
+  return Math.min(max, Math.max(HS_TRADE_YEAR_MIN, Math.trunc(year)));
+}
+
+/** Descending year list for the scope year picker. */
+export function tradeYearOptions(opts?: AnalysisYearOpts): number[] {
+  const max = analysisYearMax(opts);
   const years: number[] = [];
-  for (let y = HS_TRADE_YEAR_MAX; y >= HS_TRADE_YEAR_MIN; y -= 1) years.push(y);
+  for (let y = max; y >= HS_TRADE_YEAR_MIN; y -= 1) years.push(y);
   return years;
 }

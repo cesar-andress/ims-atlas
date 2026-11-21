@@ -110,8 +110,8 @@ describe("loadProjectPanel", () => {
     );
   });
 
-  it("clamps year 2026 into BACI pin and queries LOCF with clamped yearMax", async () => {
-    expect(clampTradeYear(2026)).toBe(HS_TRADE_YEAR_MAX);
+  it("keeps analysis year 2026 and queries LOCF with yearMax=2026", async () => {
+    expect(clampTradeYear(2026, { nowYear: 2026 })).toBe(2026);
 
     const markets = isoList(25);
     loadCountryProductChapter.mockResolvedValue(true);
@@ -149,9 +149,10 @@ describe("loadProjectPanel", () => {
       )
       .mockResolvedValueOnce(
         markets.flatMap((iso3) => [
-          { iso3, variable_id: "DIST", value: 1000, year: 2020 },
-          { iso3, variable_id: "LANG", value: 1, year: 2020 },
-          { iso3, variable_id: "FTA", value: 1, year: 2020 },
+          // Must fall inside LOCF window for t=2026 (2021-2026).
+          { iso3, variable_id: "DIST", value: 1000, year: 2022 },
+          { iso3, variable_id: "LANG", value: 1, year: 2022 },
+          { iso3, variable_id: "FTA", value: 1, year: 2022 },
         ]),
       );
 
@@ -161,12 +162,15 @@ describe("loadProjectPanel", () => {
       year: 2026,
     });
 
-    expect(panel.year).toBe(HS_TRADE_YEAR_MAX);
+    expect(panel.year).toBe(2026);
     expect(panel.candidates.length).toBeGreaterThanOrEqual(20);
     expect(panel.variables.length).toBeGreaterThanOrEqual(6);
     const productSql = String(querySql.mock.calls[0]?.[0] ?? "");
-    expect(productSql).toContain(`year <= ${HS_TRADE_YEAR_MAX}`);
-    expect(productSql).not.toContain("year <= 2026");
+    expect(productSql).toContain("year <= 2026");
+    expect(productSql).toContain(`year >= ${2026 - 5}`);
     expect(loadCountryProductChapter).toHaveBeenCalled();
+    const loadArgs = loadCountryProductChapter.mock.calls[0]?.[1] as
+      { years?: number[] } | undefined;
+    expect(loadArgs?.years).toContain(HS_TRADE_YEAR_MAX);
   });
 });

@@ -15,10 +15,13 @@ import {
   isFullHsNomenclatureReady,
   resetHsNomenclatureForTests,
   searchHs,
+  analysisYearMax,
   clampTradeYear,
   tradeYearOptions,
+  HS_SEARCH_HIT_LIMIT,
   HS_TRADE_YEAR_MAX,
   HS_TRADE_YEAR_MIN,
+  PANEL_LOCF_MAX_LAG,
 } from "./hsProducts";
 
 const fullPath = join(
@@ -89,17 +92,38 @@ describe("HS nomenclature catalogue", () => {
     expect(hsLabel("09", "es")).toMatch(/Café/i);
   });
 
-  it("trade year options cover BACI pin range descending", () => {
-    const years = tradeYearOptions();
-    expect(years[0]).toBe(2024);
-    expect(years[years.length - 1]).toBe(2012);
+  it("trade year options reach calendar year via LOCF, not only the BACI pin", () => {
+    const years = tradeYearOptions({ nowYear: 2026 });
+    expect(years[0]).toBe(2026);
+    expect(years).toContain(2025);
+    expect(years).toContain(HS_TRADE_YEAR_MAX);
+    expect(years[years.length - 1]).toBe(HS_TRADE_YEAR_MIN);
     expect(years).toContain(2020);
   });
 
-  it("clamps obsolete years (2025/2026) into the BACI pin window", () => {
-    expect(clampTradeYear(2026)).toBe(HS_TRADE_YEAR_MAX);
-    expect(clampTradeYear(2010)).toBe(HS_TRADE_YEAR_MIN);
-    expect(clampTradeYear(2020)).toBe(2020);
+  it("analysisYearMax is min(now, panelMax + LOCF lag)", () => {
+    expect(analysisYearMax({ nowYear: 2026, panelMaxYear: 2024 })).toBe(2026);
+    expect(analysisYearMax({ nowYear: 2035, panelMaxYear: 2024 })).toBe(
+      2024 + PANEL_LOCF_MAX_LAG,
+    );
+    expect(analysisYearMax({ nowYear: 2023, panelMaxYear: 2024 })).toBe(2023);
+  });
+
+  it("keeps analysis years 2025/2026 when LOCF window still covers the panel pin", () => {
+    expect(clampTradeYear(2026, { nowYear: 2026 })).toBe(2026);
+    expect(clampTradeYear(2025, { nowYear: 2026 })).toBe(2025);
+    expect(clampTradeYear(2010, { nowYear: 2026 })).toBe(HS_TRADE_YEAR_MIN);
+    expect(clampTradeYear(2020, { nowYear: 2026 })).toBe(2020);
+    expect(clampTradeYear(2035, { nowYear: 2035 })).toBe(
+      HS_TRADE_YEAR_MAX + PANEL_LOCF_MAX_LAG,
+    );
+  });
+
+  it("search hit default stays above the old ~12 UI clamp", () => {
+    expect(HS_SEARCH_HIT_LIMIT).toBeGreaterThanOrEqual(50);
+    const hits = searchHs("6", "en", { limit: HS_SEARCH_HIT_LIMIT });
+    expect(hits.length).toBeGreaterThan(12);
+    expect(hits.length).toBeLessThanOrEqual(HS_SEARCH_HIT_LIMIT);
   });
 
   it("ensureFullHsNomenclature is idempotent after hydrate", async () => {

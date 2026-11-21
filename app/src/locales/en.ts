@@ -1098,8 +1098,14 @@ export const en = {
   scopeClearProduct: "Clear product",
   scopeNoHsHits: "No matching products",
   scopeTreeMore: "… and {n} more (use search)",
+  scopeTreeExpand: "Expand chapter",
+  scopeTreeCollapse: "Collapse chapter",
+  scopeTreeNoChildren:
+    "No HS4 children in this chapter (pick the chapter code or search HS6).",
   scopeYearLabel: "Analysis year",
   scopeYearPlaceholder: "Choose a year",
+  scopeYearHint:
+    "Panel data through {panelMax}. Years {panelMax}-{yearMax} use the latest observation available (LOCF, year <= t); future values are not invented.",
   projectCopySuffix: "copy",
   stepWarnNone: "no warnings",
   stepWarnOne: "1 warning",

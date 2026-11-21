@@ -8,7 +8,7 @@ import { loadAccessConfig } from "../auth/accessConfig";
 import { loadCatalogPreview } from "../data/catalogLoader";
 import { dataConfig, resolvePublicReleaseBase } from "../dataConfig";
 import { getAtlasDataClient } from "../data/duckdbClient";
-import { clampTradeYear } from "../data/hsProducts";
+import { clampTradeYear, PANEL_LOCF_MAX_LAG } from "../data/hsProducts";
 import { escapeSqlLiteral, locfSelectSql, locfYears } from "../data/panelQueryHelpers";
 import type { CatalogVariable } from "../data/types";
 import {
@@ -17,7 +17,8 @@ import {
   resetDemoPanelCache,
 } from "./demoPanel";
 
-const LOCF_MAX_LAG = 5;
+/** Keep in sync with {@link PANEL_LOCF_MAX_LAG} (analysis-year cap). */
+const LOCF_MAX_LAG = PANEL_LOCF_MAX_LAG;
 const PRODUCT_VAR_IDS = [
   "IMPV",
   "IMPC",
@@ -175,7 +176,7 @@ export async function loadProjectPanel(req: ProjectPanelRequest): Promise<DemoPa
   if (!origin || !hs || req.year == null || !Number.isFinite(req.year)) {
     throw new DemoPanelPendingError("TEAM_RESULTS_PENDING");
   }
-  // BACI pin ends at HS_TRADE_YEAR_MAX; 2025/2026 drafts yielded empty LOCF windows.
+  // Analysis year t may exceed the BACI pin; LOCF uses observations with year ≤ t.
   const year = clampTradeYear(Number(req.year));
 
   const [{ base, team }, catalogPreview] = await Promise.all([

@@ -9,6 +9,10 @@ import {
   type KeyboardEvent,
 } from "react";
 import {
+  HS2_PRODUCTS,
+  HS_SEARCH_HIT_LIMIT,
+  HS_TRADE_YEAR_MAX,
+  analysisYearMax,
   clampTradeYear,
   ensureFullHsNomenclature,
   hsCategoryTree,
@@ -51,6 +55,7 @@ export const ProjectScopeFields = forwardRef<ProjectScopeFieldsHandle, Props>(
     const { config, setConfig } = useAnalysis();
     const hsListId = useId();
     const hsInputRef = useRef<HTMLInputElement>(null);
+    const treeScrollRef = useRef<HTMLDivElement>(null);
 
     const [origin, setOrigin] = useState(config.origin ?? "");
     const [hs, setHs] = useState(config.hs ?? "");
@@ -94,6 +99,20 @@ export const ProjectScopeFields = forwardRef<ProjectScopeFieldsHandle, Props>(
       };
     }, [hsOpen, treeOpen]);
 
+    // Keep the selected HS2 chapter visible when the tree opens.
+    useEffect(() => {
+      if (!treeOpen || !hs) return;
+      const chapter = hs.replace(/\D/g, "").slice(0, 2);
+      if (chapter.length === 2) setTreeChapter(chapter);
+      const id = window.setTimeout(() => {
+        const active = treeScrollRef.current?.querySelector(
+          ".hs-tree-row button.active, .hs-tree-children button.active",
+        );
+        active?.scrollIntoView({ block: "nearest" });
+      }, 0);
+      return () => window.clearTimeout(id);
+    }, [treeOpen, hs, hsCatalogGen]);
+
     useImperativeHandle(ref, () => ({
       flush: () => {
         // Absorb a bare HS code still sitting in the open search box.
@@ -122,10 +141,12 @@ export const ProjectScopeFields = forwardRef<ProjectScopeFieldsHandle, Props>(
 
     const hsHits = useMemo(() => {
       if (!hsOpen) return [] as HsProduct[];
+      const q = hsQuery.trim();
+      // Empty browse: all HS2 chapters (~96). Typed search: HS_SEARCH_HIT_LIMIT.
       return searchHs(hsQuery, lang, {
-        limit: 12,
-        emptyMeans: hsQuery.trim() ? "all" : "hs2",
-      }).slice(0, 12);
+        limit: q ? HS_SEARCH_HIT_LIMIT : HS2_PRODUCTS.length,
+        emptyMeans: q ? "all" : "hs2",
+      });
       // hsCatalogGen: re-search when HS4/HS6 arrive
       // eslint-disable-next-line react-hooks/exhaustive-deps -- gen is intentional
     }, [hsOpen, hsQuery, lang, hsCatalogGen]);
@@ -135,6 +156,10 @@ export const ProjectScopeFields = forwardRef<ProjectScopeFieldsHandle, Props>(
       return hsCategoryTree();
     }, [hsCatalogGen]);
     const years = useMemo(() => tradeYearOptions(), []);
+    const yearCap = useMemo(() => analysisYearMax(), []);
+    const yearHint = t("scopeYearHint")
+      .replace("{panelMax}", String(HS_TRADE_YEAR_MAX))
+      .replace("{yearMax}", String(yearCap));
 
     function pickHs(code: string) {
       const normalized = normalizeHsDraft(code) ?? code;
@@ -147,6 +172,7 @@ export const ProjectScopeFields = forwardRef<ProjectScopeFieldsHandle, Props>(
     function clearHs() {
       setHs("");
       setHsQuery("");
+      setTreeOpen(false);
       setHsOpen(true);
       void Promise.resolve().then(() => hsInputRef.current?.focus());
     }
@@ -154,7 +180,10 @@ export const ProjectScopeFields = forwardRef<ProjectScopeFieldsHandle, Props>(
     function onHsKeyDown(e: KeyboardEvent<HTMLInputElement>) {
       if (e.key === "ArrowDown") {
         e.preventDefault();
-        if (!hsOpen) setHsOpen(true);
+        if (!hsOpen) {
+          setHsOpen(true);
+          setTreeOpen(false);
+        }
         setHsActive((i) => Math.min(i + 1, Math.max(hsHits.length - 1, 0)));
         return;
       }
@@ -220,11 +249,13 @@ export const ProjectScopeFields = forwardRef<ProjectScopeFieldsHandle, Props>(
                 data-testid="hs-search"
                 autoComplete="off"
                 onFocus={() => {
+                  setTreeOpen(false);
                   setHsOpen(true);
                   setHsQuery("");
                   setHsActive(0);
                 }}
                 onChange={(e) => {
+                  setTreeOpen(false);
                   setHsQuery(e.target.value);
                   setHsOpen(true);
                   setHsActive(0);
@@ -287,13 +318,19 @@ export const ProjectScopeFields = forwardRef<ProjectScopeFieldsHandle, Props>(
             className="hs-tree"
             data-testid="hs-category-tree"
             open={treeOpen}
-            onToggle={(e) => setTreeOpen((e.target as HTMLDetailsElement).open)}
+            onToggle={(e) => {
+              const open = (e.target as HTMLDetailsElement).open;
+              setTreeOpen(open);
+              if (open) setHsOpen(false);
+            }}
           >
             <summary>{t("hsCategoryTree")}</summary>
-            <div className="hs-tree-scroll">
+            <div className="hs-tree-scroll" ref={treeScrollRef}>
               <ul className="hs-tree-chapters">
                 {hsTree.map((node) => {
                   const expanded = treeChapter === node.code;
+                  const chapterActive =
+                    hs === node.code || (hs.length > 2 && hs.startsWith(node.code));
                   return (
                     <li key={node.code}>
                       <div className="hs-tree-row">
@@ -301,39 +338,42 @@ export const ProjectScopeFields = forwardRef<ProjectScopeFieldsHandle, Props>(
                           type="button"
                           className="hs-tree-toggle"
                           aria-expanded={expanded}
+                          aria-label={
+                            expanded ? t("scopeTreeCollapse") : t("scopeTreeExpand")
+                          }
                           onClick={() => setTreeChapter(expanded ? null : node.code)}
                         >
                           {expanded ? "▾" : "▸"}
                         </button>
                         <button
                           type="button"
-                          className={hs === node.code ? "active" : undefined}
+                          className={chapterActive ? "active" : undefined}
                           onClick={() => pickHs(node.code)}
                         >
-                          {node.code}: {node.name[lang]}
+                          <span className="hs-tree-code">{node.code}</span>
+                          <span className="hs-tree-name">{node.name[lang]}</span>
                         </button>
                       </div>
                       {expanded ? (
                         <ul className="hs-tree-children">
-                          {node.children.slice(0, 40).map((ch) => (
-                            <li key={ch.code}>
-                              <button
-                                type="button"
-                                className={hs === ch.code ? "active" : undefined}
-                                onClick={() => pickHs(ch.code)}
-                              >
-                                {ch.code}: {ch.name[lang]}
-                              </button>
+                          {node.children.length === 0 ? (
+                            <li className="muted small hs-tree-empty">
+                              {t("scopeTreeNoChildren")}
                             </li>
-                          ))}
-                          {node.children.length > 40 ? (
-                            <li className="muted small">
-                              {t("scopeTreeMore").replace(
-                                "{n}",
-                                String(node.children.length - 40),
-                              )}
-                            </li>
-                          ) : null}
+                          ) : (
+                            node.children.map((ch) => (
+                              <li key={ch.code}>
+                                <button
+                                  type="button"
+                                  className={hs === ch.code ? "active" : undefined}
+                                  onClick={() => pickHs(ch.code)}
+                                >
+                                  <span className="hs-tree-code">{ch.code}</span>
+                                  <span className="hs-tree-name">{ch.name[lang]}</span>
+                                </button>
+                              </li>
+                            ))
+                          )}
                         </ul>
                       ) : null}
                     </li>
@@ -361,7 +401,7 @@ export const ProjectScopeFields = forwardRef<ProjectScopeFieldsHandle, Props>(
             value={year ?? ""}
             onChange={(e) => {
               const v = e.target.value;
-              setYear(v ? Number(v) : undefined);
+              setYear(v ? clampTradeYear(Number(v)) : undefined);
             }}
           >
             <option value="">{t("scopeYearPlaceholder")}</option>
@@ -371,6 +411,9 @@ export const ProjectScopeFields = forwardRef<ProjectScopeFieldsHandle, Props>(
               </option>
             ))}
           </select>
+          <p className="muted small scope-hint" data-testid="scope-year-hint">
+            {yearHint}
+          </p>
         </section>
       </div>
     );
