@@ -12,16 +12,23 @@ if [[ "${ATLAS_OPEN_GITHUB_ISSUE:-0}" == "1" ]]; then
   OPEN_ISSUE_FLAG=(--open-issue)
 fi
 
+# Overlay resolved data path when repo data/ is a symlink (e.g. → /data/ims-atlas).
+DATA_HOST="$(readlink -f "$ROOT/data")"
+DATA_MOUNT=()
+if [[ -d "$DATA_HOST" ]]; then
+  DATA_MOUNT=(-v "$DATA_HOST:/w/data")
+fi
+
 if [[ -n "$FIXTURE" ]]; then
   docker run --rm \
-    -v "$ROOT:/w" -w /w/etl \
+    -v "$ROOT:/w" "${DATA_MOUNT[@]}" -w /w/etl \
     -e ATLAS_ROOT=/w \
     ghcr.io/astral-sh/uv:python3.11-bookworm-slim \
     uv run atlas-etl check-alert --fixture-root "$FIXTURE" "${OPEN_ISSUE_FLAG[@]}"
 else
   # Live probe (network). Falls back gracefully per-source inside check.
   docker run --rm \
-    -v "$ROOT:/w" -w /w/etl \
+    -v "$ROOT:/w" "${DATA_MOUNT[@]}" -w /w/etl \
     -e ATLAS_ROOT=/w \
     --network host \
     ghcr.io/astral-sh/uv:python3.11-bookworm-slim \

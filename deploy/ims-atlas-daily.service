@@ -1,0 +1,17 @@
+[Unit]
+Description=IMS Atlas daily full pipeline (hourly extract → live → release-dual → promote → export)
+After=network-online.target ims-atlas-check.service
+Wants=network-online.target
+OnFailure=ims-atlas-check.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/services/ims-atlas
+ExecStart=/opt/services/ims-atlas/deploy/atlas-etl-pipeline.sh
+EnvironmentFile=-/etc/ims-atlas/check.env
+Environment=ATLAS_FULL_RELEASE=1
+Nice=10
+TimeoutStartSec=12h
+
+[Install]
+WantedBy=multi-user.target

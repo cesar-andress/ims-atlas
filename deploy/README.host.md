@@ -73,6 +73,20 @@ release under `data/release/public/`) from the host trees `status/` and
 
 Do **not** scp/rsync the app tree. Publish only via git push → git pull.
 
+## Data root on the host
+
+Production checkout keeps `ATLAS_ROOT=/opt/services/ims-atlas`. Large trees live
+on the data volume via symlink:
+
+```text
+/opt/services/ims-atlas/data → /data/ims-atlas
+```
+
+ETL helpers bind-mount the resolved path over `/w/data` inside Docker so the
+symlink does not break container access. Compose mounts
+`../data/release` and `../data/store/cerrada` the same way (host resolves the
+symlink).
+
 ## Weekly freshness timer
 
 ```bash
@@ -87,27 +101,62 @@ sudo systemctl enable --now ims-atlas-check.timer
 
 Manual check: `deploy/atlas-etl-check.sh`
 
-## Weekly full pipeline timer (after the check)
+## Hourly incremental timer
 
-Runs live extract → dual release → promote (public + internal) → transparency
-export → COL/HS64 panel → `sync-public-status.sh` → compose reload. Writes under
-`status/` (including `changes/` and `updates.json` via export-transparency).
-Failures exit non-zero so systemd can alert; optional GitHub issue via the same
-`/etc/ims-atlas/check.env` as the freshness check.
+`ims-atlas-pipeline.timer` runs every hour (`Timezone=Europe/Madrid`). It only
+runs `atlas-etl hourly` (per-source check/extract), then
+`sync-public-status.sh`, `check-current`, and compose reload. Shared flock:
+`/var/lock/ims-atlas-pipeline.lock`. If the daily job holds the lock, hourly
+exits 0 with `skip: previous pipeline still running`.
 
 ```bash
 sudo cp deploy/ims-atlas-pipeline.service deploy/ims-atlas-pipeline.timer /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable --now ims-atlas-pipeline.timer
+```
+
+## Daily full pipeline timer
+
+`ims-atlas-daily.timer` at **03:30 Europe/Madrid** (`RandomizedDelaySec=3m`).
+Host `timedatectl` is often `Etc/UTC`; the unit sets `Timezone=Europe/Madrid`
+explicitly (winter ≈ 02:30 UTC, summer ≈ 01:30 UTC).
+
+Sets `ATLAS_FULL_RELEASE=1` and runs, in order:
+
+1. wait if `/data` migration or `atlas-release-dual` is still moving data
+2. blocking flock (hourly skips while this runs)
+3. `atlas-etl hourly` (stale check/extract)
+4. `atlas-etl run --live --force` (validate/transform/QA)
+5. `release-dual --version $V --force` (public + internal staging; writes local
+   `.zenodo.dataset.json` only — **no** Zenodo upload, **no** GitHub tag)
+6. `promote` public then internal (`--by pipeline` by default)
+7. `export-transparency` → `sync-public-status.sh` → `check-current` → compose
+
+Version `$V` = `ATLAS_RELEASE_VERSION` if set in `/etc/ims-atlas/check.env`,
+else the value in `data/release/internal/CURRENT` (strip leading `v`). The
+script refuses to invent a version. Public promote still applies the usual
+verified + redistributable gates (no CULT / closed rights invented).
+
+Logs: `journalctl -u ims-atlas-daily.service` and
+`/var/log/ims-atlas/ims-atlas-daily.log` (hourly → `ims-atlas-pipeline.log`).
+
+```bash
+sudo cp deploy/ims-atlas-daily.service deploy/ims-atlas-daily.timer \
+  deploy/ims-atlas-pipeline.service deploy/ims-atlas-pipeline.timer \
+  /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now ims-atlas-daily.timer
 systemctl list-timers 'ims-atlas-*'
-# Manual run:
-#   sudo systemctl start ims-atlas-pipeline.service
-#   journalctl -u ims-atlas-pipeline.service -n 200 --no-pager
+# Manual full run:
+#   sudo systemctl start ims-atlas-daily.service
+#   journalctl -u ims-atlas-daily.service -n 200 --no-pager
+#   tail -f /var/log/ims-atlas/ims-atlas-daily.log
 ```
 
 Requires host Docker, network access to source APIs, and the manual drops under
 `data/manual/` (BACI, Gravity, and any STEP 3 manual sources). Do **not** commit
-those drops.
+those drops. Shrink guards and empty-`country_product` refuses stay loud
+(non-zero exit → systemd failure / optional alert via check.env).
 
 ## Promote a data release
 

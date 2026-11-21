@@ -1,5 +1,5 @@
 [Unit]
-Description=IMS Atlas weekly full pipeline (live → release → promote → export)
+Description=IMS Atlas hourly pipeline tick (check/extract; skips if daily holds flock)
 After=network-online.target ims-atlas-check.service
 Wants=network-online.target
 OnFailure=ims-atlas-check.service
@@ -9,9 +9,10 @@ Type=oneshot
 WorkingDirectory=/opt/services/ims-atlas
 ExecStart=/opt/services/ims-atlas/deploy/atlas-etl-pipeline.sh
 # Optional secrets (never commit): EnvironmentFile=-/etc/ims-atlas/check.env
+# Full dual-release is ims-atlas-daily.service (ATLAS_FULL_RELEASE=1), not this unit.
 EnvironmentFile=-/etc/ims-atlas/check.env
 Nice=10
-TimeoutStartSec=6h
+TimeoutStartSec=2h
 
 [Install]
 WantedBy=multi-user.target
