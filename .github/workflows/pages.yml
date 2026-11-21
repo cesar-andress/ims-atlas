@@ -61,6 +61,28 @@ jobs:
         with:
           path: app/dist
 
+      # First-time enable: site must exist with build_type=workflow or deploy-pages 404s.
+      # Local PATs often lack Administration; GITHUB_TOKEN with pages:write may create it.
+      - name: Ensure Pages site (Actions source)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh api "repos/${{ github.repository }}/pages" >/dev/null 2>&1; then
+            echo "Pages site already configured"
+            exit 0
+          fi
+          echo "Creating Pages site with build_type=workflow"
+          if gh api --method POST "repos/${{ github.repository }}/pages" \
+            -f build_type=workflow; then
+            echo "Pages site created"
+            exit 0
+          fi
+          echo "::error::GitHub Pages is not enabled and GITHUB_TOKEN cannot create it."
+          echo "Enable once in the UI: Settings → Pages → Build and deployment → Source: GitHub Actions"
+          echo "https://github.com/${{ github.repository }}/settings/pages"
+          exit 1
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
