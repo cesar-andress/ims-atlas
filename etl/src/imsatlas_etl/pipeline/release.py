@@ -443,7 +443,32 @@ def run_release(
     ``audience=internal`` writes staging/internal/vX.Y.Z (research-use scope).
     ``out_dir`` overrides the destination directory (used by reproduce-release
     so a reference release is never overwritten).
+
+    Serialized via ``release_exclusive_lock`` so concurrent ``--force`` cannot
+    rmtree a sibling mid-write (mkdir / parquet race).
     """
+    from imsatlas_etl.pipeline.release_lock import release_exclusive_lock
+
+    with release_exclusive_lock(root=root):
+        return _run_release_unlocked(
+            version,
+            root=root,
+            staging=staging,
+            force=force,
+            out_dir=out_dir,
+            audience=audience,
+        )
+
+
+def _run_release_unlocked(
+    version: str,
+    *,
+    root: Path | None = None,
+    staging: bool = True,
+    force: bool = False,
+    out_dir: Path | None = None,
+    audience: Audience = "public",
+) -> dict[str, Any]:
     if audience not in ("public", "internal"):
         raise ValueError(f"audience must be public|internal, got {audience!r}")
     if out_dir is not None:

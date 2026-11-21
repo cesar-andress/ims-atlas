@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
 import pandas as pd
 
@@ -10,6 +11,7 @@ from imsatlas_etl.pipeline.product_metrics import (
     compute_product_metrics,
     write_parquet_retry,
     write_product_metrics_partitioned,
+    write_text_retry,
 )
 
 
@@ -151,3 +153,21 @@ def test_write_parquet_retry_remakes_vanished_parent(tmp_path, monkeypatch) -> N
     write_parquet_retry(frame, path)
     assert path.is_file()
     assert calls["n"] == 2
+
+
+def test_write_text_retry_remakes_vanished_parent(tmp_path, monkeypatch) -> None:
+    path = tmp_path / "hs2=93" / "index.json"
+    calls = {"n": 0}
+    real_write = Path.write_text
+
+    def flaky(self, data, *args, **kwargs):  # type: ignore[no-untyped-def]
+        calls["n"] += 1
+        if calls["n"] == 1:
+            raise FileNotFoundError(f"[Errno 2] No such file or directory: '{self}'")
+        return real_write(self, data, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "write_text", flaky)
+    write_text_retry(path, '{"hs2": "93"}\n')
+    assert path.is_file()
+    assert calls["n"] == 2
+    assert "93" in path.read_text(encoding="utf-8")

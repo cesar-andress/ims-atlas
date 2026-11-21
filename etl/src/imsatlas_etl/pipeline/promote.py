@@ -201,6 +201,29 @@ def promote_release(
     audience: str = "public",
     allow_pointer_demote: bool = False,
 ) -> dict[str, Any]:
+    """Promote staging → public/internal; serialized with ``release_exclusive_lock``."""
+    from imsatlas_etl.pipeline.release_lock import release_exclusive_lock
+
+    with release_exclusive_lock(root=root):
+        return _promote_release_unlocked(
+            version,
+            by=by,
+            root=root,
+            force=force,
+            audience=audience,
+            allow_pointer_demote=allow_pointer_demote,
+        )
+
+
+def _promote_release_unlocked(
+    version: str,
+    *,
+    by: str,
+    root: Path | None = None,
+    force: bool = False,
+    audience: str = "public",
+    allow_pointer_demote: bool = False,
+) -> dict[str, Any]:
     who = by.strip()
     if not who:
         raise ValueError("--by must be a non-empty human name")

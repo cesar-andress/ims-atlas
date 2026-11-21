@@ -25,6 +25,15 @@ PRODUCT_VAR_IDS = ("IMPV", "GRW", "HHI", "ASIASH", "REEXP", "IMPC")
 _PARQUET_WRITE_ATTEMPTS = 5
 
 
+def _is_vanished_dir_error(exc: OSError) -> bool:
+    msg = str(exc).lower()
+    return (
+        "non-existent directory" in msg
+        or "no such file" in msg
+        or getattr(exc, "errno", None) in {2, 20}  # ENOENT, ENOTDIR
+    )
+
+
 def write_parquet_retry(frame: pd.DataFrame, path: Path) -> None:
     """Write parquet after ensuring parents exist; retry on vanished-dir races."""
     last: OSError | None = None
@@ -35,8 +44,26 @@ def write_parquet_retry(frame: pd.DataFrame, path: Path) -> None:
             return
         except OSError as exc:
             last = exc
-            msg = str(exc).lower()
-            if "non-existent directory" not in msg and "no such file" not in msg:
+            if not _is_vanished_dir_error(exc):
+                raise
+            if attempt + 1 >= _PARQUET_WRITE_ATTEMPTS:
+                break
+            time.sleep(0.05 * (attempt + 1))
+    assert last is not None
+    raise last
+
+
+def write_text_retry(path: Path, text: str, *, encoding: str = "utf-8") -> None:
+    """Write text after ensuring parents exist; retry on vanished-dir races."""
+    last: OSError | None = None
+    for attempt in range(_PARQUET_WRITE_ATTEMPTS):
+        try:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(text, encoding=encoding)
+            return
+        except OSError as exc:
+            last = exc
+            if not _is_vanished_dir_error(exc):
                 raise
             if attempt + 1 >= _PARQUET_WRITE_ATTEMPTS:
                 break
@@ -268,14 +295,13 @@ def write_product_metrics_partitioned(
             chapter_bytes += size
             n_parts += 1
         # index.json after parts; remake parent if a concurrent force wiped it.
-        hs2_dir.mkdir(parents=True, exist_ok=True)
-        index_path.write_text(
+        write_text_retry(
+            index_path,
             json.dumps(
                 {"hs2": hs2_key, "parts": part_paths, "rows": int(len(chunk))},
                 indent=2,
             )
             + "\n",
-            encoding="utf-8",
         )
         sizes[hs2_key] = int(len(chunk))
         bytes_by[hs2_key] = chapter_bytes
