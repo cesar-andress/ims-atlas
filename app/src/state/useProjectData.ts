@@ -87,12 +87,16 @@ export function useProjectData(): {
   useEffect(() => {
     let cancelled = false;
     setBundle(null);
-    void loadBundle({
-      origin: config.origin,
-      hs: config.hs,
-      year: config.year,
-      ready,
-    }).then((b) => {
+    const scope: {
+      origin?: string;
+      hs?: string;
+      year?: number;
+      ready: boolean;
+    } = { ready };
+    if (config.origin) scope.origin = config.origin;
+    if (config.hs) scope.hs = config.hs;
+    if (config.year != null) scope.year = config.year;
+    void loadBundle(scope).then((b) => {
       if (!cancelled) setBundle(b);
     });
     return () => {
